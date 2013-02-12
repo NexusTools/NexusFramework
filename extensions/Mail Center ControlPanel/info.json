@@ -1,0 +1,6 @@
+{
+	"name": "Mail Center ControlPanel",
+	"description": "Provides a API to create and manage mailing lists, and email templates.",
+	"provides": "controlpanel-mail-center",
+	"dependancies": ["controlpanel", "mail-center"]
+}

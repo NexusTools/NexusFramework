@@ -1,0 +1,25 @@
+{
+	"type": "create-entry",
+	"database": "DataTables::getDatabase()",
+	"table": "tables",
+	"actions": {
+		"create": {
+			"page": "Edit Table",
+			"message": "Category Created Successfully!"
+		},
+		"discard": {
+			"page": "Tables"
+		}
+	},
+	"fields": {
+		"name": {
+			"maxlen": 40
+		},
+		"user-assoc": {
+			"type": "yesno",
+			"title": "Associate with User",
+			"help": "Whether or Not rows in this table associate with a user in the database",
+			"default": 1
+		}
+	}
+}

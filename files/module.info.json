@@ -1,0 +1,4 @@
+{
+	"name": "FileSystem",
+	"description": "Provides APIs for using the VirtualFileSystem"
+}

@@ -1,0 +1,19 @@
+{
+	"type": "manage-table",
+	"database": "DatabaseExtensionDatabase::getInstance()",
+	"table": "database-extensions",
+	"fields": {
+	    "name" : {
+			"value": "{{name}}\n{{small}}{{description}}{{endsmall}}"
+		},
+		"provides": {},
+		"version": {},
+		"author": {}
+	},
+	"actions": {
+		"Export Table": "Database/Export Table?db={{name}}&popup=true",
+		"Import Table": "Database/Import Table?db={{name}}&popup=true",
+		"View Definition": "Database/Database Definition?db={{name}}&popup=true"
+	},
+	"buttons": {}
+}

@@ -1,0 +1,23 @@
+{
+	"type": "manage-table",
+	"database": "EmailTriggers::getDatabase()",
+	"table": "triggers",
+	"fields": {
+		"provider": {
+			"render": "StringFormat::displayForID"
+		},
+		"event": {
+			"render": "StringFormat::displayForID"
+		}
+	},
+	"actions": {
+		"Edit": "Users/Edit?id={{rowid}}",
+		"Delete": "Users/Edit?id={{rowid}}&del"
+	},
+	"buttons": {
+		"new": {
+			"page": "Create Trigger"
+		}
+	},
+	"publishable": 1
+}

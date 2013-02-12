@@ -1,0 +1,27 @@
+{
+	"name": "User Permissions & Groups",
+	"description": "A account groups and permissions provider.",
+	"provides": "user-permission-groups",
+	"version": "0.1",
+	"database": {
+		"groups": {
+			"name": {
+			    "type": "VARCHAR(40)",
+			    "case-insensative": true,
+			    "primary": true
+			}
+		},
+		"members": {
+			"user": {
+				"type": "INTEGER",
+				"primary": true,
+				"class": "UserReference"
+			},
+			"group": {
+				"type": "INTEGER",
+				"primary": true,
+				"reference": "groups"
+			}
+		}
+	}
+}

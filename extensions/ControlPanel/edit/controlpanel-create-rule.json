@@ -1,0 +1,25 @@
+{
+	"type": "create-entry",
+	"database": "ControlPanel::getDatabase()",
+	"table": "access",
+	"actions": {
+		"create": {
+			"page": "Access Rules",
+			"message": "Rule Created Successfully!"
+		},
+		"discard": {
+			"page": "Categories"
+		}
+	},
+	"fields": {
+		"section": {
+		    "required": 1
+		},
+		"page": {
+		    "required": 1
+		},
+		"condition": {
+		    "required": 1
+		}
+	}
+}

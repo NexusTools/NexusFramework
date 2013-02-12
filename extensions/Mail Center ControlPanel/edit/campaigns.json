@@ -1,0 +1,35 @@
+{
+	"type": "manage-table",
+	"database": "MailCenter::getDatabase()",
+	"table": "campaigns",
+	"fields": {
+		"name": {},
+		"subject": {},
+		"mailing-list": {
+			"render": "MailCenter::nameForMailingListID"
+		},
+		"template": {
+			"render": "MailCenter::nameForTemplateID"
+		},
+		"views": {},
+		"interactions": {},
+		"sent": {
+			"display": "Total Sent"
+		},
+		"drop-offs": {
+			"display": "Opt-Outs"
+		},
+		"expires": {
+			"render": "StringFormat::formatDateForTimestamp"
+		}
+	},
+	"actions": {
+		"Edit": "Mail Center/Manage Campaign?id={{rowid}}"
+	},
+	"buttons": {
+		"new": {
+			"page": "Create Campaign",
+			"text": "Start Campaign"
+		}
+	}
+}

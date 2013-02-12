@@ -1,0 +1,35 @@
+{
+	"type": "create-entry",
+	"database": "PaymentCore::getDatabase()",
+	"table": "categories",
+	"actions": {
+		"create": {
+			"page": "Edit Category",
+			"message": "Category Created Successfully!"
+		},
+		"publish": {
+			"page": "Edit Category",
+			"message": "Category Created & Published Successfully!"
+		},
+		"discard": {
+			"page": "Categories"
+		}
+	},
+	"publishable": true,
+	"fields": {
+		"name": {
+			"maxlen": 40
+		},
+		"condition": {},
+		"parent": {
+			"database": "PaymentCore::getDatabase()",
+			"table": "categories"
+		},
+		"snippet": {
+			"type": "html"
+		},
+		"html": {
+			"type": "html"
+		}
+	}
+}

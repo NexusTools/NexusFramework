@@ -1,0 +1,90 @@
+{
+	"type": "edit-entry",
+	"database": "PaymentCore::getDatabase()",
+	"table": "inventory",
+	"actions": {
+		"save": {
+			"message": "Item Updated!"
+		},
+		"save-close": {
+			"message": "Item {{name}} Updated!",
+			"page": "Inventory"
+		},
+		"discard": {
+			"page": "Inventory"
+		},
+		"delete": {
+			"page": "Inventory",
+			"question": "Delete Item `{{name}}`?",
+			"message": "Item `{{name}}` Deleted!"
+		}
+	},
+	"publishable": 1,
+	"fields": {
+		"name": {
+			"maxlen": 40
+		},
+		"image": {
+			"title": "Product Image"
+		},
+		"condition": {},
+		"price": {},
+		"category": {
+			"type": "parent-selector",
+			"database": "PaymentCore::getDatabase()",
+			"table": "categories",
+			"show-all": 1
+		},
+		"tax": {
+			"type": "yesno",
+			"title": "Taxable"
+		},
+		"weight": {},
+		"weightunit": {
+			"type": "select",
+			"options": {
+				"lbs": "Pounds (lbs)",
+				"lb Box": "Pound Box (lb Box)"
+			}
+		},
+		"manufacturer": {},
+		"extra1name": {},
+		"extra1": {
+			"type": "html"
+
+		},
+		"extra2name": {},
+		"extra2": {
+			"type": "html"
+
+		},
+		"extra3name": {},
+		"extra3": {
+			"type": "html"
+
+		},
+		"extra4name": {},
+		"extra4": {
+			"type": "html"
+
+		},
+		"extra5name": {},
+		"extra5": {
+			"type": "html"
+		},
+		"extra6name": {},
+		"extra6": {
+			"type": "html"
+		},
+		"extra7name": {},
+		"extra7": {
+			"type": "html"
+		},
+		"snippet": {
+			"type": "html"
+		},
+		"html": {
+			"type": "html"
+		}
+	}
+}

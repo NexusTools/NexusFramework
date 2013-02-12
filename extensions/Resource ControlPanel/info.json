@@ -1,0 +1,7 @@
+{
+	"name": "Resource ControlPanel",
+	"description": "Resource Editor ControlPanel Extension",
+	"provides": "controlpanel-resources",
+	"dependancies": ["controlpanel", "filesystem-database"],
+	"version": "0.0.1"
+}

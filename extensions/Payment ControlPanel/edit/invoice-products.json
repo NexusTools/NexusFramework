@@ -1,0 +1,25 @@
+{
+	"type": "manage-table",
+	"database": "PaymentCore::getDatabase()",
+	"table": "invoice-products",
+	"fields": {
+		"product": {
+		    "render": "PaymentCore::productNameByID"
+		},
+		"price": {
+		    "render": "StringFormat::formatPrice"
+		},
+		"quantity": {},
+		"total": {
+		    "render": "StringFormat::formatPrice"
+		}
+	},
+	"buttons": {
+	    "Back": {
+	        "page": "Invoices"
+	    }
+	},
+	"actions": {
+	    "Edit": "Shopping Cart/Edit Invoice Product?id={{rowid}}&popup=true"
+	}
+}

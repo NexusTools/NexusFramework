@@ -1,0 +1,6 @@
+{
+	"name": "GD Image Manipulation",
+	"provides": "image-manipulation",
+	"description": "Cacheable GD Modified Images",
+	"page-root": "cached-images/"
+}

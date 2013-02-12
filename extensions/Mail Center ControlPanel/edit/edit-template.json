@@ -1,0 +1,33 @@
+{
+	"type": "edit-entry",
+	"database": "MailCenter::getDatabase()",
+	"table": "templates",
+	"actions": {
+		"save": {
+			"message": "Template Saved!"
+		},
+		"send": {
+			"page": "Send Email"
+		},
+		"save-close": {
+			"page": "Templates",
+			"message": "Template `{{NAME}}` Updated!"
+		},
+		"discard": {
+			"page": "Templates"
+		}
+	},
+	"fields": {
+		"name": {
+			"maxlen": 40
+		},
+		"html": {
+			"display": "HTML Copy",
+			"type": "html"
+		},
+		"text": {
+			"display": "Text Copy",
+			"type": "text"
+		}
+	}
+}

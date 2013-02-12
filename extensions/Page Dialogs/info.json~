@@ -1,0 +1,5 @@
+{
+    "name": "Page Dialogs",
+    "provides": "page-dialogs",
+    "description": "Automatically and easily translate existing pages into onscreen dialogs"
+}

@@ -1,0 +1,12 @@
+{
+	"name": "BBC Engine",
+	"description": "Convert BBC Code to HTML",
+	"provides": "bbc-engine",
+	"version": "0.2",
+	"database": {
+		"allowed-tags": {
+			"tag": "VARCHAR(40)",
+			"condition": "VARCHAR(200)"
+		}
+	}
+}

@@ -1,0 +1,55 @@
+{
+	"name": "VirtualPages",
+	"description": "Provides widget based page generation",
+	"provides": "virtual-pages",
+	"version": "0.2",
+	"page-root": "/",
+	"database": {
+		"pages": {
+			"published": {
+				"type": "BOOLEAN",
+				"default": false
+			},
+			"path": {
+			    "type": "VARCHAR(200)",
+			    "class": "PageModuleReference",
+			    "case-insensative": true
+			},
+			"title": "VARCHAR(50)",
+			"condition": {
+				"type": "VARCHAR(200)",
+				"default": ""
+			},
+			"type": "VARCHAR(40)",
+			"creator": {
+				"type": "INTEGER",
+				"default": "{{User::getID()}}"
+			}, 
+			"modifier": {
+				"type": "INTEGER",
+				"update": "{{User::getID()}}"
+			}
+		},
+		"basic-pages": {
+		    "fields": {
+			    "id": "INTEGER",
+			    "layout": "INTEGER"
+			},
+			"extends": "virtual-pages/pages"
+		},
+		"widgets": {
+			"location": "INTEGER",
+			"section": {
+				"type": "VARCHAR(40)",
+				"default": 0
+			},
+			"parent": {
+				"type": "INTEGER",
+				"default": 0
+			},
+			"type": "VARCHAR(40)",
+			"config": "BINARY(1000)",
+			"slot": "INTEGER"
+		}
+	}
+}

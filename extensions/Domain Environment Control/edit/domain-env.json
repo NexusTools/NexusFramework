@@ -1,0 +1,19 @@
+{
+	"type": "manage-table",
+	"database": "Database::getInstance('Domain Environment')",
+	"table": "environment",
+	"fields": {
+		"key": {},
+		"value": {},
+		"domain": {}
+	},
+	"buttons": {
+		"new": {
+			"page": "New Domain Variable",
+			"popup": true
+		}
+	},
+	"actions": {
+		"Edit": "Website/Edit Domain Variable?id={{rowid}}&popup=true"
+	}
+}

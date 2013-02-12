@@ -1,0 +1,6 @@
+{
+	"name": "Domain Environment Control",
+	"provides": "domain-environment-control",
+	"description": "Edit the Domain Environment",
+	"dependancies": ["domain-environment", "controlpanel"]
+}

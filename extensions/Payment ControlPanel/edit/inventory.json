@@ -1,0 +1,29 @@
+{
+	"type": "manage-table",
+	"database": "PaymentCore::getDatabase()",
+	"table": "inventory",
+	"fields": {
+		"name": {},
+		"price": {
+			"render": "StringFormat::formatPrice"
+		},
+		"manufacturer": {},
+		"condition": {
+			"render": "StringFormat::formatCondition",
+			"display": "Visibility"
+		},
+		"category": {
+			"render": "PaymentCore::categoryNameForID"
+		}
+	},
+	"buttons": {
+		"new": {
+			"page": "Create Inventory"
+		}
+	},
+	"actions": {
+		"Edit": "Shopping Cart/Edit Inventory?id={{rowid}}",
+		"Delete": "Shopping Cart/Edit Inventory?id={{rowid}}&del"
+	},
+	"publishable": 1
+}

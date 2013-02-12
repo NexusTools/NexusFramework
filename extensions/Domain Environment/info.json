@@ -1,0 +1,12 @@
+{
+	"name": "Domain Environment",
+	"provides": "domain-environment",
+	"description": "Provides a Domain Specific Environment",
+	"database": {
+		"environment": {
+			"domain": "VARCHAR(40)",
+			"key": "VARCHAR(40)",
+			"value": "VARCHAR(200)"
+		}
+	}
+}

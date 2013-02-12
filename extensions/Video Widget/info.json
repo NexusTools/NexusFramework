@@ -1,0 +1,6 @@
+{
+	"name": "Video Widget",
+	"provides": "widget-video",
+	"description": "A Video Playback Widget",
+	"dependancies": ["virtual-pages"]
+}

@@ -1,0 +1,4 @@
+{
+	"name": "Core",
+	"provides": "Framework Core APIs"
+}

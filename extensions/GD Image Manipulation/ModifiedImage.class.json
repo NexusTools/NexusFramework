@@ -1,0 +1,16 @@
+{
+    "name": "ModifiedImage",
+    "description": "Easily created modified copies of existing images.",
+    "long-description": "Easily created modified copies of existing images,\ncaches all results by generating a hash from the instructions.\nUses the GD image library to perform rendering.",
+    "virtual-modifiers": {
+        "URI": "Outputs a URI for the modified image",
+        "URL": "Outputs a URL for the modified image",
+        "Transparent": "This modifier can be used with URI or URL,\nhowver it must be placed before the URI or URL modifier."
+    },
+    "methods": {
+        "scaled": {
+            "arguments": "file, width, height",
+            "description": "Scales the image specified by the file argument."
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+	"type": "edit-entry",
+	"database": "UserGroups::getDatabase()",
+	"table": "groups",
+	"actions": {
+		"save-close": {
+			"page": "Groups",
+			"message": "Group {{name}} Updated!"
+		},
+		"discard": {
+			"page": "Groups"
+		}
+	},
+	"fields": {
+		"name": {
+			"maxlen": 40
+		}
+	}
+}

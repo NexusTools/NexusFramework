@@ -1,0 +1,29 @@
+{
+	"type": "manage-table",
+	"database": "PageCategories::getDatabase()",
+	"table": "categories",
+	"fields": {
+		"name": {},
+		"condition": {
+			"render": "StringFormat::formatCondition",
+			"display": "Visibility"
+		},
+		"parent": {
+			"render": "PageCategories::categoryNameForID"
+		},
+		"layout": {
+			"render-html": "VirtualPages::getLayoutVisual"
+		}
+	},
+	"buttons": {
+		"new": {
+			"page": "Create Category"
+		}
+	},
+	"actions": {
+		"Edit": "Pages/Edit Category?id={{rowid}}",
+		"Delete": "Pages/Edit Category?id={{rowid}}&del"
+	},
+	"hasParenting": true,
+	"publishable": true
+}

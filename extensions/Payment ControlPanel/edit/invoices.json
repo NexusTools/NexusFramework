@@ -1,0 +1,24 @@
+{
+	"type": "manage-table",
+	"database": "PaymentCore::getDatabase()",
+	"table": "invoices",
+	"fields": {
+		"rowid": {
+			"display": "#"
+		},
+		"user": {
+			"display": "Buyer",
+			"render": "User::getDisplayNameByID"
+		},
+		"subtotal": {
+		    "render": "StringFormat::formatPrice"
+		},
+		"total": {
+		    "render": "StringFormat::formatPrice"
+		}
+	},
+	"buttons": {},
+	"actions": {
+	    "Products": "Shopping Cart/Invoice Products?id={{rowid}}"
+	}
+}

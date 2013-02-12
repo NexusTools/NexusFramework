@@ -1,0 +1,50 @@
+{
+	"name": "Nexus Asset Library",
+	"provides": "asset-library",
+	"description": "Provides an asset library.",
+	"page-root": "assets",
+	"database": {
+		"domains": {
+			"long-name": "VARCHAR(10)",
+			"description": "VARCHAR(200)",
+			"name": "VARCHAR(15)",
+			"access": {
+				"type": "INTEGER",
+				"default": "1"
+			}
+		},
+		"domain-users": {
+			"domain": "INTEGER",
+			"access": {
+				"type": "INTEGER",
+				"default": "1"
+			}
+		},
+		"asset-groups": {
+			"name": "VARCHAR(10)",
+			"mirror-url": {
+				"type": "VARCHAR(50)",
+				"default": ""
+			},
+			"parent": "INTEGER",
+			"type": "VARCHAR(10)",
+			"access": {
+				"type": "INTEGER",
+				"default": "1"
+			}
+		},
+		"groups-users": {
+			"group": "INTEGER",
+			"access": {
+				"type": "INTEGER",
+				"default": "1"
+			}
+		},
+		"assets": {
+			"name": "VARCHAR(15)",
+			"platform": "INTEGER",
+			"group": "INTEGER",
+			"creator": "INTEGER"
+		}
+	}
+}

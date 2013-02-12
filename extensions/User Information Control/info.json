@@ -1,0 +1,6 @@
+{
+	"name": "User Information Control",
+	"description": "Extendable Default Control Panel",
+	"dependancies": ["user-information", "controlpanel"],
+	"provides": "user-information-controlpanel"
+}

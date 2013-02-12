@@ -1,0 +1,5 @@
+{
+	"name": "Editors",
+	"provides": "edit-core",
+	"description": "Provides an API for registering and querying editing widgets."
+}

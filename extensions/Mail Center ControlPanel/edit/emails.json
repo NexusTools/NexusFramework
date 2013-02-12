@@ -1,0 +1,44 @@
+{
+	"type": "manage-table",
+	"database": "MailCenter::getDatabase()",
+	"table": "emails",
+	"fields": {
+		"rowid": {
+			"display": "ID",
+			"render": "base64_encode"
+		},
+		"to": {
+			"render-html-field": "MailCenter::renderEmailHTML"
+		},
+		"from": {
+			"render-html-field": "MailCenter::renderEmailHTML"
+		},
+		"mailing-list": {
+			"render": "MailCenter::nameForMailingListID"
+		},
+		"campaign": {
+			"render": "MailCenter::nameForCampaignID"
+		},
+		"views": {},
+		"interactions": {},
+		"created": {
+		    "display": "Sent On",
+			"render": "StringFormat::formatDateForTimestamp"
+		},
+		"created-by": {
+		    "display": "Sent by User",
+			"render": "User::getFullNameByID"
+		},
+		"expires": {
+			"render": "StringFormat::formatDateForTimestamp"
+		}
+	},
+	"actions": {
+		"View": "Mail Center/View Email?id={{rowid}}"
+	},
+	"buttons": {
+		"new": {
+			"page": "Create"
+		}
+	}
+}

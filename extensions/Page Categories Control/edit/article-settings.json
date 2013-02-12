@@ -1,0 +1,25 @@
+{
+	"type": "edit-entry",
+	"database": "PageCategories::getDatabase()",
+	"table": "categories",
+	"actions": {
+		"save": {
+			"message": "Category Updated!"
+		},
+		"save-close": {
+			"message": "Category Updated!",
+			"page": "Categories"
+		},
+		"discard": {
+			"page": "Categories"
+		}
+	},
+	"fields": {
+		"name": {
+			"maxlen": 40
+		},
+		"condition": {},
+		"layout": {}
+	},
+	"id": 0
+}

@@ -1,0 +1,5 @@
+{
+	"name": "Context Menus",
+	"description": "Easily create context menus associated with any element",
+	"provides": "context-menus"
+}

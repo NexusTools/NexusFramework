@@ -1,0 +1,6 @@
+{
+	"name": "Map Caching",
+	"provides": "map-api-helper",
+	"description": "Provides a way to easily cache map lookups",
+	"dependancies": ["map-api"]
+}

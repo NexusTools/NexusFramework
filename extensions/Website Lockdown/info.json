@@ -1,0 +1,5 @@
+{
+	"name": "Website Lockdown",
+	"provides": "lockdown",
+	"description": "Prevents access to any content through the framework without prior authorization"
+}

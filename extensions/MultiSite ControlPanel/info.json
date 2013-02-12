@@ -1,0 +1,6 @@
+{
+	"name": "MultiSite ControlPanel",
+	"provides": "multisite-controlpanel",
+	"description": "Configure and Manage Multiple Distinct Websites",
+	"dependancies": ["controlpanel", "phpcomm"]
+}

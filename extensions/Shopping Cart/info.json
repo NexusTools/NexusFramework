@@ -1,0 +1,6 @@
+{
+	"name": "Shopping Cart",
+	"provides": "shopping-cart",
+	"description": "A Basic Shopping Cart Implementation",
+	"dependancies": ["shopping-lists"]
+}

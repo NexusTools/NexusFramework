@@ -1,0 +1,34 @@
+{
+	"name": "ControlPanel",
+	"description": "Extendable Default Control Panel",
+	"dependancies": ["extension-database", "cache-database", "edit-core"],
+	"provides": "controlpanel",
+	"page-root": "control",
+	"version": "0.2",
+	"condition": "User::isStaff()",
+	"database": {
+		"access": {
+			"section": {
+			    "type": "VARCHAR(40)",
+			    "primary": 1
+			},
+			"page": {
+			    "type": "VARCHAR(40)",
+			    "primary": 1
+			},
+			"condition": "VARCHAR(200)"
+		},
+		"repositories": {
+			"name": "VARCHAR(40)",
+			"url": "VARCHAR(100)"
+		},
+		"preferences": {
+			"section": "VARCHAR(40)",
+			"page": "VARCHAR(40)",
+			"path": "VARCHAR(200)",
+			"variable": "VARCHAR(1)",
+			"data": "BINARY(100)",
+			"user": ":UserReference"
+		}
+	}
+}

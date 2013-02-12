@@ -1,0 +1,6 @@
+{
+	"name": "YouTube BBC",
+	"provides": "bbc-youtube",
+	"description": "Embed YouTube Videos with BBC",
+	"dependancies": ["bbc-engine"]
+}

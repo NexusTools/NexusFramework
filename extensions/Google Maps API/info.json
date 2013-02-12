@@ -1,0 +1,5 @@
+{
+	"name": "Google Maps API",
+	"provides": "map-api",
+	"description": "Provides a interface for Google's Maps API"
+}

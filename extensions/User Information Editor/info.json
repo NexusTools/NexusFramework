@@ -1,0 +1,5 @@
+{
+	"name": "User Information Editor",
+	"provides": "user-information-editor",
+	"dependancies": ["user-information", "edit-core"]
+}

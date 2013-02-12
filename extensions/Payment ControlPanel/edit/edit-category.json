@@ -1,0 +1,41 @@
+{
+	"type": "edit-entry",
+	"database": "PaymentCore::getDatabase()",
+	"table": "categories",
+	"actions": {
+		"save": {
+			"message": "Category Updated!"
+		},
+		"save-close": {
+			"message": "Category Updated!",
+			"page": "Categories"
+		},
+		"discard": {
+			"page": "Categories",
+			"question": "Delete Category `{{name}}`?"
+		},
+		"delete": {
+			"page": "Categories",
+			"question": "Delete Category `{{name}}`?",
+			"message": "Category `{{name}}` Deleted?"
+		}
+	},
+	"publishable": true,
+	"fields": {
+		"name": {
+			"maxlen": 40
+		},
+		"condition": {},
+		"parent": {
+			"type": "parent-selector",
+			"database": "PaymentCore::getDatabase()",
+			"table": "categories"
+		},
+		"snippet": {
+			"type": "html"
+		},
+		"html": {
+			"type": "html"
+		}
+	}
+}

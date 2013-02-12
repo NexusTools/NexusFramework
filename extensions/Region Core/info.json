@@ -1,0 +1,22 @@
+{
+	"name": "Region Core",
+	"description": "Provides a base for Region based content.",
+	"provides": "region-core",
+	"condition": "extension_loaded('geoip')",
+	"dependancies": ["user-backend"],
+	"database": {
+		"account": {
+			"id": {
+				"type": "INTEGER",
+				"primary": true
+			},
+			"radius": "INTEGER",
+			"country": "VARCHAR(2)",
+			"region": "VARCHAR(2)",
+			"city": "VARCHAR(60)",
+			"postal": "VARCHAR(10)",
+			"latitude": "DOUBLE",
+			"longitude": "DOUBLE"
+		}
+	}
+}

@@ -1,0 +1,9 @@
+{
+    "name": "User Avatars",
+    "provides": "user-avatars",
+    "database": {
+        "avatars": {
+            "avatar": "VARCHAR(200)"
+        }
+    }
+}

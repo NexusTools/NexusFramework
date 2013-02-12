@@ -1,0 +1,9 @@
+<?php
+class SystemUser extends BuiltinUser {
+
+    public function __construct(){
+        UserInterface::__construct(-3, "", "system", 5);
+    }
+
+}
+?>

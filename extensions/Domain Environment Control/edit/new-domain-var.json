@@ -1,0 +1,21 @@
+{
+	"type": "create-entry",
+	"database": "Database::getInstance('Domain Environment')",
+	"table": "environment",
+	"actions": {
+		"create": {
+			"page": "Edit Domain Variable",
+			"message": "Domain Environment Variable Created Successfully!"
+		},
+		"discard": {
+			"page": "Domain Environment"
+		}
+	},
+	"fields": {
+		"key": {},
+		"value": {},
+		"domain": {
+			"help": "Leave blank to use as default."
+		}
+	}
+}

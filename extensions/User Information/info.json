@@ -1,0 +1,36 @@
+{
+	"name": "User Information",
+	"provides": "user-information",
+	"description": "Provides Contact Information for the User Backend",
+	"database": {
+	    "account": {
+	        "fields": {
+		        "salu": "VARCHAR(4)",
+		        "first": "VARCHAR(40)",
+		        "last": "VARCHAR(40)",
+		        "address": "VARCHAR(200)",
+		        "address2": "VARCHAR(200)",
+		        "city": "VARCHAR(40)",
+		        "province": "VARCHAR(40)",
+		        "country": "VARCHAR(40)",
+		        "postal": "VARCHAR(6)",
+		        "phone1": "VARCHAR(20)",
+		        "phone2": "VARCHAR(20)",
+		        "phone3": "VARCHAR(20)",
+		        "phone4": "VARCHAR(20)",
+		        "phone5": "VARCHAR(20)",
+		        "fax": "VARCHAR(20)",
+		        "email1": "VARCHAR(100)",
+		        "email2": "VARCHAR(100)",
+		        "email3": "VARCHAR(100)",
+		        "website": "VARCHAR(100)",
+		        "birth": "DATE",
+		        "live": "VARCHAR(100)",
+		        "skype": "VARCHAR(100)",
+		        "gtalk": "VARCHAR(100)",
+		        "aim": "VARCHAR(100)"
+		    },
+		    "extends": "user-backend/account"
+	    }
+	}
+}

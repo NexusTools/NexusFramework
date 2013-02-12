@@ -1,0 +1,7 @@
+{
+	"name": "Poll Widget",
+	"description": "Provides a Widget for Polling Statistics",
+	"provides": "widget-poll",
+	"dependancies": ["virtual-pages", "user-backend"],
+	"version": "0.3.2"
+}

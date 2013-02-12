@@ -1,0 +1,26 @@
+{
+	"type": "manage-table",
+	"database": "User::getDatabase()",
+	"table": "account",
+	"fields": {
+		"rowid": {
+			"display": "ID"
+		},
+		"username": {},
+		"level": {
+			"display": "Type",
+			"render": "User::levelString"
+		},
+		"email": {}
+	},
+	"actions": {
+		"Edit": "Users/Edit User?id={{rowid}}&popup=true",
+		"Change Password": "Users/Set User Password?id={{rowid}}&popup=true"
+	},
+	"buttons": {
+		"new": {
+			"page": "Create",
+			"popup": 1
+		}
+	}
+}

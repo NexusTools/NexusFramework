@@ -1,0 +1,6 @@
+{
+	"name": "Users ControlPanel",
+	"provides": "users-control",
+	"description": "Configure database users",
+	"dependancies": ["user-backend", "controlpanel"]
+}

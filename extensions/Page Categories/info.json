@@ -1,0 +1,29 @@
+{
+	"name": "Page Categories",
+	"description": "Provides Categories for Pages",
+	"provides": "page-categories",
+	"dependancies": ["virtual-pages"],
+	"database": {
+		"categories": {
+			"published": {
+				"type": "BOOLEAN",
+				"default": false
+			},
+			"name": "VARCHAR(40)",
+			"navbar": {
+				"type": "BOOLEAN",
+				"default": false
+			},
+			"layout": "TINYINT",
+			"genpage": "BOOLEAN",
+			"parent": "INTEGER",
+			"condition": "VARCHAR(200)",
+			"inherit-header": "BOOLEAN",
+			"inherit-footer": "BOOLEAN"
+		},
+		"category-tags": {
+			"tag": "VARCHAR(40)",
+			"page": "INTEGER"
+		}
+	}
+}

@@ -1,0 +1,6 @@
+{
+	"name": "Slideshow Widget",
+	"provides": "widget-slideshow",
+	"description": "A Image/Video Slideshow Widget for VirtualPages",
+	"dependancies": ["virtual-pages"]
+}

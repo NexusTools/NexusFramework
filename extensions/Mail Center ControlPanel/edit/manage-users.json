@@ -1,0 +1,24 @@
+{
+	"type": "manage-table",
+	"database": "User::getDatabase()",
+	"table": "account",
+	"fields": {
+		"rowid": {
+			"display": "ID"
+		},
+		"username": {},
+		"level": {
+			"display": "Type",
+			"render": "User::levelString"
+		},
+		"email": {}
+	},
+	"actions": {
+		"Edit": "Users/Edit?id={{rowid}}"
+	},
+	"buttons": {
+		"new": {
+			"page": "Create"
+		}
+	}
+}

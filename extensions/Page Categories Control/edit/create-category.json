@@ -1,0 +1,54 @@
+{
+	"type": "create-entry",
+	"database": "PageCategories::getDatabase()",
+	"table": "categories",
+	"actions": {
+		"create": {
+			"page": "Edit Category",
+			"message": "Category Created Successfully!"
+		},
+		"publish": {
+			"page": "Edit Category",
+			"message": "Category Created & Published Successfully!",
+			"callback": "PageCategories::updateNavigation"
+		},
+		"discard": {
+			"page": "Categories"
+		}
+	},
+	"publishable": true,
+	"fields": {
+		"name": {
+			"maxlen": 40
+		},
+		"condition": {},
+		"layout": {
+			"allow-inherit": true
+		},
+		"parent": {
+			"database": "PageCategories::getDatabase()",
+			"table": "categories"
+		},
+		"navbar": {
+			"type": "yesno",
+			"title": "Show in Website Navigation",
+			"help": "Will only show up if parent is visible, and at least 1 page is visible."
+		},
+		"genpage": {
+			"type": "yesno",
+			"title": "Generate Page",
+			"default": 0,
+			"help": "Whether or not this category generates a page when accessed via its url."
+		},
+		"inherit-header": {
+			"title": "Inherit Header Widgets",
+			"type": "yesno",
+			"default": 1
+		},
+		"inherit-footer": {
+			"title": "Inherit Footer Widgets",
+			"type": "yesno",
+			"default": 1
+		}
+	}
+}

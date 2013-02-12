@@ -1,0 +1,20 @@
+{
+	"type": "manage-table",
+	"database": "MailCenter::getDatabase()",
+	"table": "mailing-lists",
+	"fields": {
+		"name": {},
+		"rowid": {
+			"display": "Members",
+			"render": "MailCenter::membersStringForMailingList"
+		}
+	},
+	"actions": {
+		"Edit": "Templates/Edit Mailing List?id={{rowid}}"
+	},
+	"buttons": {
+		"new": {
+			"page": "Create Mailing List"
+		}
+	}
+}

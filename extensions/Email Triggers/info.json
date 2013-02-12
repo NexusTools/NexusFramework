@@ -1,0 +1,15 @@
+{
+	"name": "Email Triggers",
+	"provides": "email-triggers",
+	"description": "Send Emails after Specific Events Occur",
+	"database": {
+		"triggers": {
+			"provider": "VARCHAR(40)",
+			"event": "VARCHAR(40)",
+			"published": {
+				"type": "BOOLEAN",
+				"default": false
+			}
+		}
+	}
+}

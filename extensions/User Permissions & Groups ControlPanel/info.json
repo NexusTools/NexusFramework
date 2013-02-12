@@ -1,0 +1,6 @@
+{
+	"name": "User Permissions & Groups ControlPanel",
+	"provides": "user-permission-groups-control",
+	"description": "Configure extended user permissions and groups",
+	"dependancies": ["user-permission-groups", "controlpanel"]
+}

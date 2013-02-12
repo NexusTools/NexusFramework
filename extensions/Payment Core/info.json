@@ -1,0 +1,147 @@
+{
+	"name": "Payment Core",
+	"provides": "payment-core",
+	"description": "Payment system core, provides invoice generation",
+	"dependancies": ["user-information", "navigation", "mail-center"],
+	"page-root": "/products",
+	"database": {
+		"categories": {
+		    "fields": {
+			    "name": {
+			    	"type": "VARCHAR(40)",
+			    	"case-insensative": true
+			    },
+			    "parent": "INTEGER",
+			    "snippet": "VARCHAR(200)",
+			    "condition": "VARCHAR(200)",
+			    "html": "BINARY(2000)",
+			    "published": {
+				    "type": "BOOLEAN",
+				    "default": false
+			    }
+			},
+			"parent-field": "parent"
+		},
+		"metakeys": {
+			"name": "VARCHAR(10)"
+		},
+		"metadata": {
+			"key": "INTEGER",
+			"value": "BINARY(500)"
+		},
+		"inventory": {
+			"published": {
+				"type": "BOOLEAN",
+				"default": false
+			},
+			"name": {
+				"type": "VARCHAR(40)",
+				"case-insensative": true
+			},
+			"image": "VARCHAR(40)",
+			"category": {
+			    "type": "INTEGER",
+			    "reference": "categories"
+			},
+			"snippet": "VARCHAR(200)",
+			"condition": "VARCHAR(200)",
+			"price": "FLOAT",
+			"tax": "BOOLEAN",
+			"weight": "FLOAT",
+			"weightunit": "VARCHAR(5)",
+			"manufacturer": "VARCHAR(40)",
+			"html": "BINARY(2000)",
+			"extra1name": "VARCHAR(40)",
+			"extra1": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			},
+			"extra2name": "VARCHAR(40)",
+			"extra2": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			},
+			"extra3name": "VARCHAR(40)",
+			"extra3": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			},
+			"extra4name": "VARCHAR(40)",
+			"extra4": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			},
+			"extra5name": "VARCHAR(40)",
+			"extra5": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			},
+			"extra6name": "VARCHAR(40)",
+			"extra6": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			},
+			"extra7name": "VARCHAR(40)",
+			"extra7": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			},
+			"extra8name": "VARCHAR(40)",
+			"extra8": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			},
+			"extra9name": "VARCHAR(40)",
+			"extra9": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			},
+			"extra10name": "VARCHAR(40)",
+			"extra10": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			}
+		},
+		"invoices": {
+			"user": "INTEGER",
+			"subtotal": "FLOAT",
+			"total": "FLOAT"
+		},
+		"invoice-products": {
+			"invoice": "INTEGER",
+			"product": "INTEGER",
+			"price": "FLOAT",
+			"quantity": "INTEGER",
+			"total": "FLOAT"
+		},
+		"invoice-coupons": {
+			"invoice": "INTEGER",
+			"name": "VARCHAR(40)",
+			"discount": "FLOAT",
+			"invoice": "INTEGER"
+		},
+		"coupons": {
+			"name": "VARCHAR(40)",
+			"discount": "FLOAT",
+			"percent": "BOOLEAN",
+			"snippet": "VARCHAR(200)",
+			"condition": "VARCHAR(200)",
+			"html": "BINARY(2000)"
+		},
+		"coupon-requirements": {
+			"type": "TINYINT",
+			"package": "INTEGER",
+			"min": "FLOAT",
+			"max": "FLOAT"
+		},
+		"coupon-codes": {
+			"code": "VARCHAR(40)",
+			"coupon": "INTEGER"
+		},
+		"coupon-conditions": {
+			"name": "VARCHAR(40)",
+			"snippet": "VARCHAR(200)",
+			"condition": "VARCHAR(200)"
+		}
+	}
+}

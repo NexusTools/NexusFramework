@@ -1,0 +1,31 @@
+{
+	"name": "Articles",
+	"provides": "articles",
+	"description": "WordPress like Articles VirtualPage Type",
+	"dependancies": ["virtual-pages", "page-categories", "user-information", "navigation"],
+	"page-root": "/",
+	"database": {
+		"instances": {
+		    "fields": {
+			    "page": "INTEGER",
+			    "category": "INTEGER",
+			    "content": "BINARY(2000)",
+			    "navbar": {
+				    "type": "BOOLEAN",
+				    "default": false
+			    },
+			    "description": {
+				    "type": "VARCHAR(200)"
+			    },
+			    "infooter": "BOOLEAN",
+			    "inherit-headers": "BOOLEAN",
+			    "inherit-footers": "BOOLEAN"
+			},
+			"extends": "virtual-pages/pages"
+		},
+		"page-tags": {
+			"tag": "VARCHAR(40)",
+			"page": "INTEGER"
+		}
+	}
+}

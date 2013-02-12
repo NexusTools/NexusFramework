@@ -1,0 +1,5 @@
+{
+	"name": "FS Database",
+	"provides": "filesystem-database",
+	"description": "Provides Database Emulation for a Directory"
+}

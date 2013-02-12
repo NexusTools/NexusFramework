@@ -1,0 +1,16 @@
+{
+	"name": "Template Pages",
+	"provides": "template-pages",
+	"dependancies": ["page-categories", "virtual-pages"],
+	"description": "Provides Template Page Support",
+	"database": {
+		"instances": {
+			"page": "INTEGER",
+			"category": "INTEGER",
+			"navbar": {
+				"type": "BOOLEAN",
+				"default": false
+			}
+		}
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"name": "Social User Information",
+	"description": "Pull user information from social networks.",
+	"dependancies": ["user-backend"],
+	"provides": "user-information",
+	"version": "0.2",
+	"database": {
+		"information": {
+			"firstname": "VARCHAR(40)",
+			"middlename": "VARCHAR(40)",
+			"lastname": "VARCHAR(40)",
+			"address1": "VARCHAR(80)",
+			"address2": "VARCHAR(80)",
+			"phone": "VARCHAR(30)"
+		}
+	}
+}

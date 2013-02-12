@@ -1,0 +1,19 @@
+{
+	"type": "create-entry",
+	"database": "UserGroups::getDatabase()",
+	"table": "groups",
+	"actions": {
+		"create": {
+			"page": "Group Members",
+			"message": "Group Created Successfully!"
+		},
+		"discard": {
+			"page": "Groups"
+		}
+	},
+	"fields": {
+		"name": {
+			"maxlen": 40
+		}
+	}
+}

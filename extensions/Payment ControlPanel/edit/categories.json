@@ -1,0 +1,26 @@
+{
+	"type": "manage-table",
+	"database": "PaymentCore::getDatabase()",
+	"table": "categories",
+	"fields": {
+		"name": {},
+		"condition": {
+			"render": "StringFormat::formatCondition",
+			"display": "Visibility"
+		},
+		"parent": {
+			"render": "PaymentCore::categoryNameForID"
+		}
+	},
+	"buttons": {
+		"new": {
+			"page": "Create Category"
+		}
+	},
+	"actions": {
+		"Edit": "Shopping Cart/Edit Category?id={{rowid}}",
+		"Delete": "Shopping Cart/Edit Category?id={{rowid}}&del"
+	},
+	"hasParenting": true,
+	"publishable": true
+}

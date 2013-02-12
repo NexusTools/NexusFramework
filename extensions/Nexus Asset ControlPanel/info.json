@@ -1,0 +1,6 @@
+{
+	"name": "Nexus Asset ControlPanel",
+	"provides": "controlpanel-asset-library",
+	"description": "Provides a Control Panel for the Asset Library.",
+	"dependancies": ["controlpanel", "asset-library"]
+}

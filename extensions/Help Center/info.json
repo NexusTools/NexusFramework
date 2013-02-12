@@ -1,0 +1,6 @@
+{
+	"name": "Help Center",
+	"description": "Provides a FAQ implementation and LiveChat",
+	"page-root": "support",
+	"provides": "help-center"
+}

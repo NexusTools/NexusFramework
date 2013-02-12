@@ -1,0 +1,9 @@
+{
+	"name": "Social Integration",
+	"description": "Provides an API for Social Integration",
+	"provides": "social-integration",
+	"dependancies": ["user-backend"],
+	"suggests": ["controlpanel-social"],
+	"version": "0.0.1",
+	"page-root": "/"
+}

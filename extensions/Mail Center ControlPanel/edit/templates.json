@@ -1,0 +1,16 @@
+{
+	"type": "manage-table",
+	"database": "MailCenter::getDatabase()",
+	"table": "templates",
+	"fields": {
+		"name": {}
+	},
+	"actions": {
+		"Edit": "Mail Center/Edit Template?id={{rowid}}"
+	},
+	"buttons": {
+		"new": {
+			"page": "Create Template"
+		}
+	}
+}

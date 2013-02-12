@@ -1,0 +1,23 @@
+{
+	"name": "User Backend",
+	"provides": "user-backend",
+	"description": "User Account Backend",
+	"database": {
+		"account": {
+			"username": {
+				"type": "VARCHAR(40)",
+				"case-insensative": true,
+				"primary": true
+			},
+			"password": ":Password",
+			"email": {
+			    "type": "VARCHAR(200)",
+			    "unique": true
+			},
+			"level": {
+				"type": "TINYINT",
+				"default": 0
+			}
+		}
+	}
+}

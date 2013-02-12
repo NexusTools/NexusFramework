@@ -1,0 +1,22 @@
+{
+	"type": "manage-table",
+	"database": "UserGroups::getDatabase()",
+	"table": "groups",
+	"fields": {
+		"rowid": {
+			"display": "ID"
+		},
+		"name": {}
+	},
+	"actions": {
+		"Members": "Users/Group Members?id={{rowid}}",
+		"Rename": "Users/Rename Group?id={{rowid}}&popup=true",
+		"Delete": "Users/Rename Group?id={{rowid}}&del"
+	},
+	"buttons": {
+		"new": {
+			"page": "Create Group",
+			"popup": 1
+		}
+	}
+}

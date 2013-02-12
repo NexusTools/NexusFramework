@@ -1,0 +1,6 @@
+{
+	"name": "Payment ControlPanel",
+	"provides": "payment-controlpanel",
+	"description": "Create/View invoices, manage inventory & checkouts",
+	"dependancies": ["payment-core", "controlpanel"]
+}

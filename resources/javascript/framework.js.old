@@ -1,0 +1,430 @@
+var __framework__pageBaseURL = location.href;
+var pos;
+if((pos = __framework__pageBaseURL.indexOf("/", __framework__pageBaseURL.indexOf("://") + 3)) != -1)
+	__framework__pageBaseURL = __framework__pageBaseURL.substring(0, pos);
+	
+var __framework__currentURI = window.location.pathname;
+var __framework__redirectToMain = !history.pushState && __framework__currentURI.length > 1;
+    
+var __framework__pageContainer = document.getElementById("framework_page_div");
+var __framework__validHttpUrl = /(http|https):\/\/[\.\w\d]\/.+/i;
+var __framework__validProtocol = /[a-z]+:.+/i;
+var __framework__navbarLinks = [];
+
+var __framework__state;
+if(document.body.getAttribute) {
+	__framework__state = eval(base64decode(document.body.getAttribute("state")));
+	document.body.removeAttribute("state");
+} else {
+	__framework__state = eval(base64decode(document.body.state));
+	document.body.state = null;
+	delete document.body.state;
+}
+
+__framework__state.scripts = {};
+__framework__state.styles = {};
+
+if(!window._gaq)
+	var _gaq = {push: function(data){}};
+
+try{
+	if(window.XMLHttpRequest)
+    	__framework__httpRequest = new XMLHttpRequest();
+    else
+    	__framework__httpRequest = new ActiveXObject("MSXML2.XMLHTTP.3.0");
+    __framework__httpRequestAborted = false;
+}catch(e){
+    __framework__httprequest = false;
+}
+
+function __framework__formatTitle(pagename){
+	return __framework__state.page.titleFormat.replace(/\%pagename\%/g, pagename);
+}
+
+function __framework__scriptContainer(instance){
+	this.instance = instance;
+	this.attachedEvents = {};
+	this.timers = {};
+	this.unique_id = function() {
+	   return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+	}
+	this.reattachEvents = function() {
+		this.cleanupHooks();
+		
+		// TODO: Implement
+	}
+	this.attachEvent = function(idname, event, method) {
+		var element = document.getElementById(idname);
+		if(!element)
+			throw "No Element with ID `"+idname+"` Exists in Document.";
+
+		var uniqueID = this.unique_id();
+		var thisObject = this;
+		var callback = function(e){
+			if(!e && window.event)
+				e = window.event;
+				
+			method.call(thisObject.instance, thisObject, e);
+		};
+		attachEvent(element, event, callback, this);
+		while(this.attachedEvents[uniqueID])
+			uniqueID = this.unique_id();
+		this.attachedEvents[uniqueID] = {"element": element, "event": event, "callback": callback};
+		return uniqueID;
+	}
+	this.eventTarget = function(e){
+		var el = e.target ? e.target : e.srcElement;
+		return (el.nodeType == 3) ? el.parentNode : el;
+	}
+	this.removeEvent = function(event_id) {
+		// TODO: Implement
+	}
+	this.setTimeout = function(method, timeout) {
+		// TODO: Implement
+	}
+	this.clearTimeout = function(time_element) {
+		// TODO: Implement
+	}
+	this.cleanupHooks = function() {
+		// TODO: Implement
+	}
+	this.cleanup = function() {
+		if(instance.cleanup)
+			instance.cleanup.call(this.instance, this);
+			
+		// TODO: Cleanup Timeouts
+			
+		this.cleanupHooks();
+		this.attachedEvents = null;
+		delete this.attachedEvents;
+		this.instance = null;
+		delete this.instance;
+	}
+}
+
+function __framework__loadScripts(scriptList){
+	for(var script in __framework__state.scripts) {
+		if(scriptList[script])
+			continue;
+			
+		try {
+			__framework__state.scripts[script].cleanup.call(__framework__state.scripts[script]);
+		}catch(e){
+			alert("Error Unloading:\n" + e.toString());
+		}
+		__framework__state.scripts[script] = false;
+		delete __framework__state.scripts[script];
+	}
+	
+	for(var script in scriptList) {
+		var container = __framework__state.scripts[script];
+		if(container)
+			container.reattachEvents.call(container);
+		else {
+			try {
+				var instance = eval("({" + scriptList[script] + "})\n//@ sourceURL=" + script);
+			
+				container = new __framework__scriptContainer(instance);
+				if(instance.setup)
+					instance.setup.call(instance, container);
+				if(instance.hookElements)
+					instance.hookElements.call(instance, container);
+				
+				__framework__state.scripts[script] = container;
+			}catch(e){
+				alert("Error Processing:\n" + getErrorInformation(e).toString());
+				__framework__state.scripts[script] = false;
+				delete __framework__state.scripts[script];
+				
+				throw e;
+			}
+		}
+		
+		try{
+			if(container && container.instance.init)
+				container.instance.init.call(container.instance, container);
+		}catch(e){
+			alert("Error Hooking Elements:\n" + getErrorInformation(e).toString());
+				
+		}
+	}
+}
+
+function __framework__hashUpdated(){
+    var uri = location.hash;
+    if(uri == null || uri.length < 2) {
+        __framework__dynamicLoadURI("/");
+    } else if(uri.indexOf("#") == 0) {
+        __framework__dynamicLoadURI(uri.substring(1));
+    } else {
+        __framework__dynamicLoadURI(uri);
+    }
+}
+
+function __framework__isURLDynamic(url){
+	var yes = url.startsWith(__framework__pageBaseURL) || !__framework__validProtocol.test(url);
+	return yes;
+}
+
+function __framework__hookLinks(){
+	var links = document.links;
+    for(var i=0; i<links.length; i++){
+        if(links[i].processed)
+            continue;
+            
+        try{
+        	if(links[i].hasAttribute("module"))
+        		__framework__navbarLinks[links[i].getAttribute("module")] = links[i];
+        } catch(e) {
+        	if(links[i].module)
+        		__framework__navbarLinks[module] = links[i];
+        }
+            
+        try{
+			if(!links[i].hasAttribute("extern") && __framework__isURLDynamic(links[i].getAttribute("href")))
+				attachEvent(links[i], "click", __framework__linkClicked, true);
+		}catch(e){
+			if(!links[i].extern && __framework__isURLDynamic(links[i].href))
+				attachEvent(links[i], "click", __framework__linkClicked, true);
+		}
+		
+        links[i].processed = true;
+    }
+}
+
+function __framework__linkClicked(event){
+    if(!__framework__httpRequest)
+        return;
+        
+    var newUri = eventTargetAttribute(event, "href");
+    if(newUri.startsWith(__framework__pageBaseURL))
+        newUri = newUri.substring(__framework__pageBaseURL.length);
+    
+    __framework__dynamicLoadURI(newUri);
+    eventCancel(event);
+}
+
+function __framework__setupPage(){
+    __framework__hookLinks();
+    for(var i=0; i < document.forms.length; i++){
+        attachEvent(document.forms[i], "submit", __framework__dynamicFormSubmit, true);
+    }
+}
+
+function __framework__dynamicFormSubmit(event){
+    if(window.event)
+        event = window.event;
+    eventCancel(event);
+    var target = event.target ? event.target : event.srcElement;
+    try{
+        var elements = target.elements;
+        var postdata = "";
+        
+        for(var i=0; i<elements.length; i++){
+            var element = elements[i];
+            if(element == null)
+                break;
+            var name = element.getAttribute("name");
+            if(element instanceof Object && name != null && name.length > 0){
+                if(postdata.length > 0)
+                    postdata += "&";
+                
+                postdata += element.name;
+                postdata += "=";
+                postdata += escape(element.value);
+            }
+        }
+        
+        var uri = target.action ? target.action : __framework__currentURI;
+        if(uri.startsWith("http://")){
+            uri = uri.substring(uri.indexOf("/", 8));
+        }
+        __framework__dynamicLoadURI(uri, postdata);
+    }catch(e){
+        target.submit();
+    }
+}
+
+function __framework__setupDefaultState(){
+	if(!history.replaceState)
+		return;
+
+	var uri = {
+		title: document.title,
+		fullURI: __framework__currentURI,
+		module: __framework__state.page.module,
+		html: __framework__pageContainer.innerHTML};
+	history.replaceState(uri, uri.title, uri.fullURI);
+}
+
+function __framework__activateNavLink(modname){
+	var modlink = __framework__navbarLinks[modname];
+	if(modlink)
+		modlink.className = "active";
+}
+
+function __framework__deactivateNavLink(modname){
+	var modlink = __framework__navbarLinks[modname];
+	if(modlink)
+		modlink.className = "";
+}
+
+function __framework__processURIObject(uri){
+	__framework__switchPageHtml(uri.html);
+	__framework__setupPage();
+	__framework__loadScripts(uri.scripts);
+		            
+    if(!uri.error)
+    	_gaq.push(["_trackPageview", uri.fullURI]);
+   	
+   	document.title = uri.title;
+}
+
+function __framework__updateReturned(){
+	if (__framework__httpRequest.readyState == 4) {
+		document.body.style.cursor = "";
+        if(__framework__httpRequest.status == 200){
+        	try{
+                var data = eval(__framework__httpRequest.responseText);
+                if(data.uri != null) {
+                
+		        	data.uri.fullURI = __framework__currentURI;
+		        	data.uri.module = __framework__state.page.module;
+		        	data.uri.title = __framework__formatTitle(data.uri.title);
+		        
+		        	
+					__framework__processURIObject(data.uri);
+					__framework__activateNavLink(data.uri.module);
+		   			if(data.uri.location && data.uri.location != __framework__currentURI) {
+		   				__framework__currentURI = data.uri.location;
+		   				window.location.href = data.uri.location;
+		   				
+		   				history.replaceState(null, "Redirecting", "/redirected");
+		   			} else
+		   				if(history.replaceState)
+							history.replaceState(data.uri, data.uri.title, __framework__currentURI);
+                }
+             }catch(e){
+            	alert(e + "\n" + e.line);
+             	__framework__switchPageHtml("<h1>Failed to load page</h1>The server returned a malformed response");
+             	__framework__currentURI = null;
+             	
+             	__framework__deactivateNavLink(__framework__state.page.module);
+             }
+        } else {
+        	__framework__switchPageHtml("<h1>Failed to load page</h1>The server returned: "+__framework__httpRequest.statusText);
+        	__framework__currentURI = null;
+        	
+        	__framework__deactivateNavLink(__framework__state.page.module);
+        }
+    }
+}
+
+function __framework__switchPageHtml(html){
+	__framework__pageContainer.innerHTML = html;
+}
+
+function __framework__dynamicLoadURI(uri, post_data){
+	if(uri == "null")
+        uri = "/";
+    else if(!uri.startsWith("/")){
+        uri = "/" + uri;
+    }
+    if(!post_data && __framework__currentURI == uri)
+        return;
+        
+    if(!__framework__httpRequest){
+        if(post_data != null)
+            throw "Has Post Data";
+        location.href = uri;
+        return;
+    }
+    document.title = __framework__formatTitle("Loading Page...");
+    document.body.style.cursor = "progress";
+    var cmodule = uri.split("/")[1];
+    if(!cmodule || cmodule.length == 0)
+        cmodule = "root";
+        
+    if(cmodule != __framework__state.page.module){
+    	__framework__deactivateNavLink(__framework__state.page.module);
+    	__framework__state.page.module = cmodule;
+    	__framework__activateNavLink(__framework__state.page.module);
+    }
+        
+    __framework__currentURI = uri;
+    try{clearTimeout(requestTimer);}catch(e){}
+    __framework__httpRequest.abort();
+    
+    try{
+		__framework__switchPageHtml("");
+    }catch(e){}
+    
+    if(__framework__redirectToMain){
+        if(post_data != null)
+            throw "Has Post Data";
+        var path = "/";
+        if(uri.length > 1){
+            path += "#"+uri;
+        }
+        location.href = path;
+    } else {
+    	if(history.pushState)
+    		history.pushState({loadURI: uri, postData: post_data}, "Loading Page...", uri);
+    	else
+        	location.hash = uri;
+        __framework__httpRequest.open(post_data ? "POST" : "GET", "/api?uri="+escape(uri), true);
+            
+        if(post_data){
+            __framework__httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            __framework__httpRequest.setRequestHeader("Content-length", post_data.length);
+            __framework__httpRequest.setRequestHeader("Connection", "close");
+        }
+        
+        __framework__httpRequest.onreadystatechange = __framework__updateReturned;
+        __framework__httpRequest.send(post_data);
+    }
+}
+
+if ("onhashchange" in window)
+    window.onhashchange = __framework__hashUpdated;
+
+var popState;
+window.onpopstate = function(event) {
+	if(!event.state)
+		return;
+		
+	if(event.state.loadURI)
+		__framework__dynamicLoadURI(event.state.loadURI, event.state.postData);
+	else {
+		__framework__deactivateNavLink(__framework__state.page.module);
+		__framework__currentURI = event.state.fullURI;
+		__framework__state.page.module = event.state.module;
+		__framework__processURIObject(event.state);
+		__framework__activateNavLink(__framework__state.page.module);
+	}
+};
+
+__framework__setupPage();
+if(location.hash.length > 2){
+    var hash = location.hash;
+    if(hash.startsWith("#"))
+        hash = hash.substring(1);
+    
+    document.title = __framework__formatTitle("Loading Page...");
+    document.body.style.cursor = "progress";
+    __framework__dynamicLoadURI(hash);
+} else {
+	__framework__setupDefaultState();
+	__framework__loadScripts(__framework__state.page.scripts);
+
+	try {
+		if(!document.body.hasAttribute("errorPage"))
+			_gaq.push(["_trackPageview"]);
+	}catch(e){
+		if(!document.body.errorPage)
+			_gaq.push(["_trackPageview"]);
+	}
+}
+
+__framework__state.page.scripts = null;
+__framework__state.page.styles = null;

@@ -1,0 +1,21 @@
+{
+	"type": "manage-table",
+	"database": "UserGroups::getDatabase()",
+	"table": "members",
+	"where": {
+		"group": "id"
+	},
+	"fields": {
+		"user": {
+			"display": "UserID"
+		}
+	},
+	"actions": {
+		"Remove": "Users/Group Members?id={{rowid}}&del"
+	},
+	"buttons": {
+		"new": {
+			"page": "Add Group Member"
+		}
+	}
+}

@@ -1,0 +1,35 @@
+{
+	"type": "create-entry",
+	"database": "User::getDatabase()",
+	"table": "account",
+	"actions": {
+		"create": {
+			"page": "Edit User",
+			"message": "User Created Successfully!"
+		},
+		"discard": {
+			"page": "Manage"
+		}
+	},
+	"fields": {
+		"username": {
+			"maxlen": 40
+		},
+		"level": {
+			"type": "select",
+			"options": {
+				"-2": "Unverified",
+				"-1": "Disabled",
+				"0": "Member",
+				"1": "Staff",
+				"2": "Admin",
+				"3": "Super Admin",
+				"4": "Owner"
+			},
+			"help": "Staff or Higher have Access to this Control Panel. Super Admins cannot be Delete without Manually Altering the Database.",
+			"title": "Account Type"
+		},
+		"email": {},
+		"password": {}
+	}
+}

@@ -1,0 +1,1 @@
+<?php User::registerExtension("UserGroups"); ?>

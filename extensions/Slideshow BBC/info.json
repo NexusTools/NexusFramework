@@ -1,0 +1,6 @@
+{
+	"name": "Slideshow BBC",
+	"provides": "bbc-slideshow",
+	"description": "Embed a SlideShow Widget with BBC",
+	"dependancies": ["bbc-engine", "widget-slideshow"]
+}

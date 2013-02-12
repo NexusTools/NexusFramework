@@ -1,0 +1,24 @@
+{
+	"type": "manage-table",
+	"database": "PaymentCore::getDatabase()",
+	"table": "coupons",
+	"fields": {
+		"name": {},
+		"condition": {
+			"render": "StringFormat::formatCondition",
+			"display": "Visibility"
+		},
+		"discount": {}
+	},
+	"buttons": {
+		"new": {
+			"page": "Create Coupon"
+		}
+	},
+	"actions": {
+		"Edit": "Shopping Cart/Edit Coupon?id={{rowid}}",
+		"Delete": "Shopping Cart/Edit Coupon?id={{rowid}}&del"
+	},
+	"hasParenting": true,
+	"publishable": true
+}

@@ -1,0 +1,57 @@
+body {
+	cursor: default;
+	margin-top: 30px;
+	background: #072951;
+	font-family: arial, georgia;
+	font-size: 90%;
+}
+
+.page {
+	display: table;
+	margin: 0 auto;
+	padding: 15px;
+	border: solid 2pt gray;
+	border-radius: 15px;
+	background-color: white;
+	-webkit-box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 1);
+	-moz-box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 1);
+	box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 1);
+}
+
+.headbubble {
+	text-decoration: none;
+	color: #444;
+	font-weight: bold;
+	font-size: 140%;
+	display: table;
+	padding: 10px;
+	padding-right: 30px;
+	padding-left: 30px;
+	border-radius: 15px;
+	background-color: #f0f0f0;
+	text-shadow: 2px 2px 5px #cfcfcf;
+	filter: dropshadow(color=#cfcfcf, offx=2, offy=2);
+	margin-bottom: 30px;
+	
+	transition: all 200ms ease;
+	-moz-transition: all 200ms ease; /* Firefox 4 */
+	-webkit-transition: all 200ms ease; /* Safari and Chrome */
+	-o-transition: all 200ms ease; /* Opera */
+}
+
+.headbubble:hover {
+	color: #666;
+	background-color: #f5f5f5;
+	text-shadow: 0px 0px 0px #cfcfcf;
+	filter: none;
+}
+
+pre {
+	width: 600px;
+	max-height: 500px;
+	overflow: auto;
+}
+
+* {
+    outline: none;
+}

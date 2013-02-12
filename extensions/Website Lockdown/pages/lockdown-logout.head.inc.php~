@@ -1,0 +1,4 @@
+<?php
+unset($_SESSION['lockdown-password']);
+Framework::redirect("/");
+?>

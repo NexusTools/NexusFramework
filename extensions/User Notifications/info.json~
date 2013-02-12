@@ -1,0 +1,14 @@
+{
+    "name": "User Notifications",
+    "description": "Provides a database and renderer for noticiations with custom types",
+    "provides": "user-notifications",
+    "database": {
+        "notications": {
+        
+        },
+        "notification-users": {
+            "notification": "INTEGER",
+            "user": "INTEGER"
+        }
+    }
+}

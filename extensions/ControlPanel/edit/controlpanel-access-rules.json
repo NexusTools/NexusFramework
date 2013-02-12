@@ -1,0 +1,19 @@
+{
+	"type": "manage-table",
+	"database": "ControlPanel::getDatabase()",
+	"table": "access",
+	"fields": {
+		"section": {},
+		"page": {},
+		"condition": {}
+	},
+	"buttons": {
+		"new": {
+			"page": "Create Rule",
+			"popup": 1
+		}
+	},
+	"actions": {
+		"Edit": "ControlPanel/Edit Access Rule?id={{rowid}}&popup=true"
+	}
+}

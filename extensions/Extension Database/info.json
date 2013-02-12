@@ -1,0 +1,5 @@
+{
+	"name": "Extension Database",
+	"provides": "extension-database",
+	"description": "Provides Database Emulation for Managing Extensions"
+}

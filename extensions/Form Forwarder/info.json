@@ -1,0 +1,19 @@
+{
+	"name": "Form Forwarder",
+	"description": "Securely Forwards POST Forms",
+	"dependancies": ["page-categories", "articles", "virtual-pages"],
+	"provides": "form-forwarder",
+	"database": {
+		"instances": {
+		    "fields": {
+			    "page": "INTEGER",
+			    "referrer": "VARCHAR(200)",
+			    "destination": "VARCHAR(255)",
+			    "use-recaptcha": "BOOLEAN",
+			    "recaptcha-public-key": "VARCHAR(200)",
+			    "recaptcha-private-key": "VARCHAR(200)"
+			},
+			"extends": "virtual-pages/pages"
+		}
+	}
+}

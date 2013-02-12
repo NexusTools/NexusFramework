@@ -1,0 +1,48 @@
+{
+	"name": "Forum Backend",
+	"provides": "forum-backend",
+	"description": "Forum Helper Classes and Database",
+	"dependancies": [],
+	"database": {
+		"forums": {
+			"title": "VARCHAR(200)",
+			"path": {
+				"type": "VARCHAR(30)",
+				"primary": 1
+			},
+			"parent": "INTEGER",
+			"description": "TEXT",
+			"access": "VARCHAR(200)",
+			"moderator": "VARCHAR(200)",
+			"locked": "BOOLEAN"
+		},
+		"threads": {
+			"title": "VARCHAR(200)",
+			"path": {
+				"type": "VARCHAR(30)",
+				"primary": 1
+			},
+			"sticky": "BOOLEAN",
+			"access": "VARCHAR(200)",
+			"moderator": "VARCHAR(200)",
+			"locked": "BOOLEAN"
+		},
+		"polls": {
+			"question": "VARCHAR(200)",
+			"expires": "TIMESTAMP",
+			"required": "VARCHAR(200)"
+		},
+		"poll-questions": {
+			"poll": "INTEGER",
+			"text": "VARCHAR(200)"
+		},
+		"poll-votes": {
+			"thread": "INTEGER",
+			"question": "INTEGER"
+		},
+		"posts": {
+			"thread": "INTEGER",
+			"source": "TEXT"
+		}
+	}
+}

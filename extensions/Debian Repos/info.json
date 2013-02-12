@@ -1,0 +1,8 @@
+{
+	"name": "Debian Repos",
+	"provides": "debian-repos",
+	"description": "Provides a debian repo system.",
+	"page-root": "assets",
+	"database": {
+	}
+}

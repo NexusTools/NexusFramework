@@ -1,0 +1,78 @@
+{
+	"type": "edit-entry",
+	"database": "ExtendedUser::getDatabase()",
+	"table": "account",
+	"actions": {
+		"discard": {
+			"page": "Manage"
+		},
+		"save-close": {
+			"page": "Manage",
+			"message": "User {{username}} Contact Info Updated!",
+			"condition": "{{level}} < User::getLevel()",
+			"error-message": "Insufficient Permission to Alter this Account"
+		},
+		"save": {
+			"message": "Changes Saved!",
+			"condition": "{{level}} < User::getLevel()",
+			"error-message": "Insufficient Permission to Alter this Account"
+		}
+	},
+	"fields": {
+		"salu": {
+			"title": "Salutation",
+			"decode": "ucfirst",
+			"encode": "strtolower"
+		},
+		"first": {
+			"title": "First Name",
+			"decode": "ucfirst",
+			"encode": "strtolower"
+		},
+		"last": {
+			"title": "Last Name",
+			"decode": "ucfirst",
+			"encode": "strtolower"
+		},
+		"address": {
+			"title": "Address Line 1",
+			"decode": "StringFormat::properCase",
+			"encode": "strtolower"
+		},
+		"address2": {
+			"title": "Address Line 2",
+			"decode": "StringFormat::properCase",
+			"encode": "strtolower"
+		},
+		"country": {
+			"decode": "StringFormat::properCase",
+			"encode": "strtolower"
+		},
+		"province": {
+			"decode": "StringFormat::properCase",
+			"encode": "strtolower"
+		},
+		"city": {
+			"decode": "StringFormat::properCase",
+			"encode": "strtolower"
+		},
+		"postal": {
+			"decode": "strtoupper"
+		},
+		"phone1": {},
+		"phone2": {},
+		"phone3": {},
+		"phone4": {},
+		"phone5": {},
+		"fax": {},
+		"email1": {},
+		"email2": {},
+		"email3": {},
+		"website": {},
+		"birth": {},
+		"live": {},
+		"skype": {},
+		"gtalk": {},
+		"aim": {}
+	}
+}

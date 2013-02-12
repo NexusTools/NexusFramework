@@ -1,0 +1,6 @@
+{
+	"name": "Google Analytics",
+	"description": "Google Analytics with Dynamic Page Loader Integration.",
+	"provides": "googleanalytics",
+	"version": "0.0.1"
+}

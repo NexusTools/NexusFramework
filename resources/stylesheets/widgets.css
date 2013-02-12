@@ -1,0 +1,372 @@
+Framework\:Widgets {
+	display: block;
+	height: 100%;
+	width: 100%;
+	margin: 0 auto;
+	font-size: 12px;
+	
+	background-color: #fdfdfd;
+	color: #5b5b5b;
+	font-family: arial;
+	text-transform: none;
+}
+
+Framework\:Widgets h1,
+Framework\:Widgets h2,
+Framework\:Widgets h3,
+Framework\:Widgets h4 {
+	margin: 5px auto;
+	color: inherit;
+	display: block;
+	font-family: inherit;
+	text-transform: none;
+	line-height: 20px;
+}
+
+Framework\:Widgets h1 {
+	font-size: 16px;
+}
+
+Framework\:Widgets h2 {
+	font-size: 15px;
+}
+
+Framework\:Widgets h3 {
+	font-size: 14px;
+}
+
+Framework\:Widgets groupbox Table TD input.button {
+	width: 162px;
+}
+
+Framework\:Widgets select {
+	color: #555;
+	min-width: 162px;
+	border: solid 1pt #aaa;
+	background: white;
+	padding: 3px;
+	
+	transition: all 200ms ease;
+	-moz-transition: all 200ms ease; /* Firefox 4 */
+	-webkit-transition: all 200ms ease; /* Safari and Chrome */
+	-o-transition: all 200ms ease; /* Opera */
+	
+	
+}
+
+Framework\:Widgets select:focus,
+Framework\:Widgets select:hover {
+	color: #333;
+	border: solid 1pt #444;
+}
+
+Framework\:Widgets button.disabled,
+Framework\:Widgets button.disabled:hover,
+Framework\:Widgets button.disabled:active,
+Framework\:Widgets input.button.disabled,
+Framework\:Widgets input.button.disabled:hover,
+Framework\:Widgets input.button.disabled:active {
+	background: rgb(242,242,242);
+	border: solid 1pt #ccc;
+	color: #aaa;
+}
+
+Framework\:Widgets button,
+Framework\:Widgets input.button {
+	color: #888;
+	font-weight: bold;
+	text-align: center;
+	background: rgb(242,242,242);
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YyZjJmMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjE2JSIgc3RvcC1jb2xvcj0iI2Q2ZDZkNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZmVmZWYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(242,242,242,1) 0%, rgba(214,214,214,1) 16%, rgba(239,239,239,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(242,242,242,1)), color-stop(16%,rgba(214,214,214,1)), color-stop(100%,rgba(239,239,239,1)));
+	background: -webkit-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 16%,rgba(239,239,239,1) 100%);
+	background: -o-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 16%,rgba(239,239,239,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 16%,rgba(239,239,239,1) 100%);
+	background: linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 16%,rgba(239,239,239,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#efefef',GradientType=0 );
+
+	transition: all 500ms ease;
+	-moz-transition: all 500ms ease; /* Firefox 4 */
+	-webkit-transition: all 500ms ease; /* Safari and Chrome */
+	-o-transition: all 500ms ease; /* Opera */
+	
+	font-family: Arial;
+	font-size: 13px;
+	border: solid 1pt #888;
+	padding: 4px;
+	padding-right: 8px;
+	padding-left: 8px;
+}
+
+Framework\:Widgets input.button:hover,
+Framework\:Widgets button:hover {
+	color: #666;
+	background: rgb(242,242,242);
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YyZjJmMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjE0JSIgc3RvcC1jb2xvcj0iI2Q2ZDZkNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZGVkZWQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  rgba(242,242,242,1) 0%, rgba(214,214,214,1) 14%, rgba(237,237,237,1) 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(242,242,242,1)), color-stop(14%,rgba(214,214,214,1)), color-stop(100%,rgba(237,237,237,1)));
+background: -webkit-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 14%,rgba(237,237,237,1) 100%);
+background: -o-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 14%,rgba(237,237,237,1) 100%);
+background: -ms-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 14%,rgba(237,237,237,1) 100%);
+background: linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 14%,rgba(237,237,237,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#ededed',GradientType=0 );
+}
+
+Framework\:Widgets button:active span.icon,
+Framework\:Widgets button.disabled span.icon {
+	opacity: 0.5;
+}
+
+Framework\:Widgets button span.icon {
+	transition: opacity 200ms ease;
+	-moz-transition: opacity 200ms ease; /* Firefox 4 */
+	-webkit-transition: opacity 200ms ease; /* Safari and Chrome */
+	-o-transition: opacity 200ms ease; /* Opera */
+}
+
+Framework\:Widgets input.button:active,
+Framework\:Widgets button:active {
+	transition: all 200ms ease;
+	-moz-transition: all 200ms ease; /* Firefox 4 */
+	-webkit-transition: all 200ms ease; /* Safari and Chrome */
+	-o-transition: all 200ms ease; /* Opera */
+	color: #aaa;
+	background: rgb(201,201,201);
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2M5YzljOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjE2JSIgc3RvcC1jb2xvcj0iI2RiZGJkYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZGVkZWQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  rgba(201,201,201,1) 0%, rgba(219,219,219,1) 16%, rgba(237,237,237,1) 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(201,201,201,1)), color-stop(16%,rgba(219,219,219,1)), color-stop(100%,rgba(237,237,237,1)));
+background: -webkit-linear-gradient(top,  rgba(201,201,201,1) 0%,rgba(219,219,219,1) 16%,rgba(237,237,237,1) 100%);
+background: -o-linear-gradient(top,  rgba(201,201,201,1) 0%,rgba(219,219,219,1) 16%,rgba(237,237,237,1) 100%);
+background: -ms-linear-gradient(top,  rgba(201,201,201,1) 0%,rgba(219,219,219,1) 16%,rgba(237,237,237,1) 100%);
+background: linear-gradient(top,  rgba(201,201,201,1) 0%,rgba(219,219,219,1) 16%,rgba(237,237,237,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9c9c9', endColorstr='#ededed',GradientType=0 );
+
+}
+
+Framework\:Widgets input.text.large {
+	font-size: 16px;
+	width: 400px;
+}
+
+Framework\:Widgets textarea.disabled,
+Framework\:Widgets input.text.disabled,
+Framework\:Widgets input.text.disabled:hover,
+Framework\:Widgets input.text.disabled:focus,
+Framework\:Widgets select.disabled,
+Framework\:Widgets select.disabled:hover,
+Framework\:Widgets select.disabled:focus {
+	cursor: default;
+	border: solid 1pt #ccc;
+	color: #aaa;
+}
+
+Framework\:Widgets Table {
+	width: 100%;
+	border: solid 1pt #ccc;
+	border-spacing:0px;
+	color: #555;
+	font-size: 12px;
+	margin: 5px 0px;
+	padding: 0px;
+	font-family: arial, georgia;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	empty-cells:show;
+}
+
+Framework\:Widgets Table TH {
+	text-align: center;
+	padding: 8px;
+	font-size: 13px;
+	border-bottom: solid 1pt lightGray;
+}
+
+Framework\:Widgets Table TD {
+	height: 22px;
+	padding: 8px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-size: 12px;
+	white-space: nowrap;
+	border-right: solid 1pt rgb(235, 235, 235);
+}
+
+Framework\:Widgets Table TD.icon {
+	width: 16px;
+}
+
+Framework\:Widgets Table TD.last,
+Framework\:Widgets Table TD.icon {
+	border-right: none;
+}
+
+Framework\:Widgets Table TR.alt TD {
+	background-color: rgb(249, 249, 249);
+}
+
+Framework\:Widgets help {
+	display: inline;
+	font-size: 8px;
+	position: relative;
+	top: -5px;
+	cursor: help;
+}
+
+Framework\:Widgets textarea,
+Framework\:Widgets input.text {
+	border: solid 1pt #aaa;
+	border-top: solid 1pt #777;
+	color: #555;
+	padding: 4px;
+	width: 150px;
+	background-color: white;
+	
+	transition: all 200ms ease;
+	-moz-transition: all 200ms ease; /* Firefox 4 */
+	-webkit-transition: all 200ms ease; /* Safari and Chrome */
+	-o-transition: all 200ms ease; /* Opera */
+}
+
+Framework\:Widgets textarea:hover,
+Framework\:Widgets input.text:hover {
+	color: #5a5a5a;
+	border: solid 1pt #666;
+}
+
+Framework\:Widgets textarea:focus,
+Framework\:Widgets input.text:focus {
+	color: #333;
+	border: solid 1pt #444;
+	-webkit-box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.4);
+	box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.4);
+}
+
+Framework\:Widgets input,
+Framework\:Widgets select,
+Framework\:Widgets textarea,
+Framework\:Widgets buttons {
+	margin-top: -1px;
+}
+
+Framework\:Widgets bubble,
+Framework\:Widgets groupbox label {
+	
+	margin-left: 5px;
+	margin-bottom: 5px;
+	display: table;
+	padding: 3px;
+	padding-left: 6px;
+	padding-right: 6px;
+	border: solid 1pt lightGray;
+	border-radius: 4px;
+	background-color: white;
+}
+
+Framework\:Widgets groupbox table {
+	width: 100%;
+	border: none;
+}
+
+Framework\:Widgets groupbox table td {
+	padding: 2px;
+}
+
+Framework\:Widgets GroupBox textarea {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+Framework\:Widgets groupbox {
+	min-width: 340px;
+	min-height: 142px;
+	text-align: left;
+	margin: 5px;
+	margin-top: 30px;
+	
+	display: inline-block;
+	border: solid 1pt lightGray;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+Framework\:Widgets groupbox label {
+	margin-top: -16px;
+	font-weight: 400;
+}
+
+Framework\:Widgets Banner {
+	display: block;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border-radius: 5px;
+	border: solid 1pt gray;
+	background-color: #eee;
+	padding: 8px;
+	font-size: 14px;
+	font-weight: bold;
+	color: #888;
+}
+
+Framework\:Widgets Banner.success {
+	background-color: #c0ffbf;
+	border-color: #00ce1b;
+	color: #0d7500;
+}
+
+Framework\:Widgets Banner.error {
+	background-color: #ffc0bf;
+	border-color: #ce001b;
+	color: #750d00;
+}
+
+Framework\:Widgets textarea {
+	resize: none;
+}
+
+Framework\:Widgets Table TH,
+Framework\:Widgets groupbox label {
+	color: #444;
+	background: rgb(255,255,255);
+	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(249,249,249,1) 12%, rgba(255,255,255,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(12%,rgba(249,249,249,1)), color-stop(100%,rgba(255,255,255,1)));
+	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(249,249,249,1) 12%,rgba(255,255,255,1) 100%);
+	background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(249,249,249,1) 12%,rgba(255,255,255,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(249,249,249,1) 12%,rgba(255,255,255,1) 100%);
+	background: linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(249,249,249,1) 12%,rgba(255,255,255,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 );
+}
+
+Framework\:Widgets GroupList GroupBox Label {
+	cursor: move;
+}
+
+Framework\:Widgets GroupBox bubble {
+	font-size: 9px;
+	padding: 2px;
+	cursor: pointer;
+	text-decoration: none;
+	margin-top: -25px;
+	margin-right: 5px;
+	color: inherit;
+	display: table;
+	float: right;
+	transition: all 200ms ease;
+	-moz-transition: all 200ms ease; /* Firefox 4 */
+	-webkit-transition: all 200ms ease; /* Safari and Chrome */
+	-o-transition: all 200ms ease; /* Opera */
+}
+
+Framework\:Widgets GroupBox bubble:hover {
+	background-color: #f1f1f1;
+}
+
+Framework\:Widgets tooltip {
+	display: none;
+	position: absolute;
+	border: solid 1pt black;
+	padding: 5px;
+}

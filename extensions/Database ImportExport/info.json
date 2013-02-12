@@ -1,0 +1,7 @@
+{
+	"name": "Database ImportExport",
+	"description": "Import and Export data from any database",
+	"dependancies": ["controlpanel"],
+	"provides": "control-importexport",
+	"page-root": "/control/Database"
+}

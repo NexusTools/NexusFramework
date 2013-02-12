@@ -1,0 +1,13 @@
+<?php
+class BuiltinUser extends BasicBuiltinUser {
+    
+	public function setEmail($level){
+	    throw new Exception("Email of Built-in Users cannot be set");
+	}
+	
+	public function checkPassword($password){
+	    return false;
+	}
+    
+}
+?>

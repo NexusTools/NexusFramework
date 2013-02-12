@@ -1,0 +1,6 @@
+{
+	"name": "Email Triggers Control",
+	"provides": "email-triggers-control",
+	"description": "Configure Email Triggers",
+	"dependancies": ["email-triggers", "controlpanel"]
+}

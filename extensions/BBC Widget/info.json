@@ -1,0 +1,6 @@
+{
+	"name": "BBC Widget",
+	"provides": "widget-bbc",
+	"description": "Provides a BBC WIdget for use with virtual pages",
+	"dependancies": ["virtual-pages", "bbc-engine"]
+}

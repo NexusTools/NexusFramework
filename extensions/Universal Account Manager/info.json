@@ -1,0 +1,5 @@
+{
+	"name": "Universal Account Manager",
+	"provides": ["user-backend", "user-information", "user-permission-groups"],
+	"description": "UAM Connector"
+}

@@ -1,0 +1,39 @@
+{
+	"type": "edit-entry",
+	"database": "User::getDatabase()",
+	"table": "account",
+	"actions": {
+		"discard": {
+			"page": "Manage"
+		},
+		"save-close": {
+			"page": "Manage",
+			"message": "User {{username}} Updated!",
+			"condition": "{{level}} < User::getLevel()",
+			"error-message": "Insufficient Permission to Alter this Account"
+		},
+		"save": {
+			"message": "Changes Saved!",
+			"condition": "{{level}} < User::getLevel()",
+			"error-message": "Insufficient Permission to Alter this Account"
+		}
+	},
+	"fields": {
+		"username": {
+			"maxlen": 40
+		},
+		"level": {
+			"type": "select",
+			"options": {
+				"-1": "Disabled",
+				"0": "Member",
+				"1": "Staff",
+				"2": "Admin",
+				"3": "Super Admin"
+			},
+			"help": "Staff or Higher have Access to this Control Panel. Super Admins cannot be Delete without Manually Altering the Database.",
+			"title": "Account Type"
+		},
+		"email": {}
+	}
+}

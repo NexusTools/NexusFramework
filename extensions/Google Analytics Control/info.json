@@ -1,0 +1,7 @@
+{
+	"name": "Google Analytics Control",
+	"description": "Configure Google Analytics",
+	"provides": "controlpanel-googleanalytics",
+	"dependancies": ["googleanalytics", "controlpanel"],
+	"version": "0.0.1"
+}

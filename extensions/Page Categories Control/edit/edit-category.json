@@ -1,0 +1,67 @@
+{
+	"type": "edit-entry",
+	"database": "PageCategories::getDatabase()",
+	"table": "categories",
+	"actions": {
+		"save": {
+			"message": "Category Updated!",
+			"callback": "Articles::updateNavigation"
+		},
+		"save-close": {
+			"message": "Category Updated!",
+			"page": "Categories",
+			"callback": "Articles::updateNavigation"
+		},
+		"discard": {
+			"page": "Categories"
+		},
+		"delete": {
+			"page": "Categories",
+			"question": "Delete Category `{{name}}`?",
+			"message": "Category `{{name}}` Deleted?"
+		}
+	},
+	"fields": {
+		"name": {
+			"maxlen": 40
+		},
+		"condition": {},
+		"layout": {
+			"type": "layout",
+			"allow-inherit": true
+		},
+		"parent": {
+			"database": "PageCategories::getDatabase()",
+			"table": "categories"
+		},
+		"navbar": {
+			"title": "Show in Website Navigation",
+			"type": "yesno"
+		},
+		"genpage": {
+			"type": "yesno",
+			"title": "Generate Page",
+			"default": 0,
+			"help": "Whether or not this category generates a page when accessed via its url."
+		},
+		"inherit-header": {
+			"title": "Inherit Header Widgets",
+			"type": "yesno"
+		},
+		"head-widgets": {
+			"title": "Header Widgets",
+			"type": "category-widgets",
+			"readonly": true
+		},
+		"inherit-footer": {
+			"title": "Inherit Footer Widgets",
+			"type": "yesno"
+		},
+		"foot-widgets": {
+			"title": "Footer Widgets",
+			"type": "category-widgets",
+			"footer": true,
+			"readonly": true
+		}
+	}
+}

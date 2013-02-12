@@ -1,0 +1,17 @@
+{
+    "name": "User Notifications",
+    "description": "Provides a database and renderer for noticiations with custom types",
+    "provides": "user-notifications",
+    "database": {
+        "notications": {
+            "user": "INTEGER",
+            "type": "INTEGER",
+            "pointer": "INTEGER",
+            "message": "VARCHAR(250)"
+        },
+        "notification-users": {
+            "notification": "INTEGER",
+            "user": "INTEGER"
+        }
+    }
+}

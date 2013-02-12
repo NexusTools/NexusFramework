@@ -1,0 +1,24 @@
+{
+	"type": "edit-entry",
+	"database": "Database::getInstance('Domain Environment')",
+	"table": "environment",
+	"actions": {
+		"save": {
+			"message": "Domain Environment Variable Updated"
+		},
+		"save-close": {
+			"page": "Domain Environment",
+			"message": "Domain Environment Variable Updated"
+		},
+		"discard": {
+			"page": "Domain Environment"
+		}
+	},
+	"fields": {
+		"key": {},
+		"value": {},
+		"domain": {
+			"help": "Leave blank to use as default."
+		}
+	}
+}

@@ -1,0 +1,19 @@
+{
+	"name": "User Relationships",
+	"provides": "user-relationships",
+	"dependancies": ["user-backend"],
+	"description": "Provides a way for users to like, dislike, and block eachother.",
+	"database": {
+	    "relations": {
+	        "user": {
+	            "type": "INTEGER",
+	            "primary": true
+	        },
+	        "relation": {
+	            "type": "INTEGER",
+	            "primary": true
+	        },
+	        "stance": "INTEGER"
+	    }
+	}
+}
