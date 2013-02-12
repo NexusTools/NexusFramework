@@ -315,9 +315,7 @@ class Framework {
 		ExtensionLoader::loadEnabledExtensions();
 		
 		if(!count($_POST) && !count($_GET)) {
-			$clean = "/" . relativepath($requestURI);
-			while(endsWith($clean, "/") && ($len = strlen($clean)) > 1)
-				$clean = substr($clean, 0, $len -1);
+			$clean = cleanpath("/" . relativepath($requestURI));
 			if(($cpath = $clean) != $requestURI)
 				self::redirect($clean);
 			unset($clean);
