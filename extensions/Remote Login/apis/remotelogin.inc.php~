@@ -1,4 +1,0 @@
-<?php
-$user = User::checkLogin($_GET['user'], $_GET['pass']);
-return $user;
-?>

@@ -1,5 +1,0 @@
-{
-	"name": "Country States",
-	"description": "Provides a class and api for easily querying countries and states",
-	"provides": "country-states"
-}

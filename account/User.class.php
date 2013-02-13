@@ -182,6 +182,10 @@ class User {
 		
 		return false;
 	}
+	
+	public static function getRootUser(){
+		return self::fetch(0, self::FETCH_ALLOW_ROOT);
+	}
     
     public static function login($id, $pass, $allowRoot=true){
         $user = self::checkLogin($id, $pass, $allowRoot);

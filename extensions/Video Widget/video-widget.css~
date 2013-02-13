@@ -1,7 +1,0 @@
-widget.video video {
-    width: 100%;
-}
-
-widget.video embed {
-    width: 100%;
-}

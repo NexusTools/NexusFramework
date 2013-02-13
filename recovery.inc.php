@@ -52,6 +52,16 @@ h2 {
 	font-size: 110%;
 }
 
+h3 {
+	text-align: left; margin-top: 10px;
+}
+
+p {
+	margin: 4px;
+	margin-top: 0px;
+	text-align: left;
+}
+
 pre {
 	width: 600px;
 	max-height: 500px;
@@ -165,8 +175,53 @@ if(false){ ?>
 ?>
 <h1>Exception Recovery Assistant</h1>
 <h2><? echo date("F j, Y, g:i a", $data['date']); ?></h2>
-<pre align="left"><? print_r($data['exception']); ?></pre>
-<h2>Known Resolutions</h2>
+
+<h3>Error Message</h3><p>
+<?
+$exception = $data['exception'];
+if(array_key_exists("message", $exception))
+	echo $exception['message'];
+else
+	echo "No message was associated with this error";
+?></p>
+<?
+if(array_key_exists("file", $exception) &&
+	array_key_exists("line", $exception)) {
+?>
+<h3>File Location and Line</h3>
+<p>Occured in file <? echo $exception['file']; ?> on line <? echo $exception['line']; ?></p>
+<? } ?>
+
+<?
+if(array_key_exists("trace", $exception)) {
+?>
+<h3><a style="font-size: 70%; float: right" id="trace-link" href="javascript:toggleTrace();void(0);">Open</a>Stack Trace</h3>
+<pre style="display: none" id="trace" align="left"><?
+if(defined("JSON_PRETTY_PRINT"))
+	echo htmlentities(json_encode($exception['trace'], JSON_PRETTY_PRINT));
+else
+	echo htmlentities(print_r($exception['trace'], true));
+?></pre>
+
+<script>
+
+var open = false
+function toggleTrace(link){
+	var trace = document.getElementById("trace");
+	var link = document.getElementById("trace-link");
+	console.log(trace);
+	open = !open;
+	if(open){
+		link.innerHTML = "Close";
+		trace.style.display = "block";
+	} else {
+		link.innerHTML = "Open";
+		trace.style.display = "none";
+	}
+}
+</script>
+<? } ?>
+<br /><br /><h2>Known Resolutions</h2>
 Sorry but this error doesn't match anything currently in the database.<br /><br />
 <? } ?></div></body></html><? 
 	}

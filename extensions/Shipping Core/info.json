@@ -1,0 +1,12 @@
+{
+	"name": "Shipping Core",
+	"provides": "shipping-core",
+	"dependancies": ["country-states"],
+	"database": {
+		"invoice-shipping": {
+			"provider": "VARCHAR(10)",
+			"method": "VARCHAR(20)",
+			"cost": "FLOAT"
+		}
+	}
+}
