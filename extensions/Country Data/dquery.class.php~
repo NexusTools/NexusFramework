@@ -1,0 +1,49 @@
+<?php
+class CountryDataQuery extends CachedFileBase {
+
+	private $k;
+	private $v;
+
+	public function __construct($keyNode, $valueNode) {
+		$this->k = $keyNode;
+		$this->v = $valueNode;
+	}
+	
+	protected function getAdvancedID(){
+	    return $this->k . ":" . $this->v;
+	}
+	
+	protected function updateAdvancedMeta(&$metaObject){
+		$metaObject['nodes'] = Array("key" => $this->k, "value" => $this->k);
+	}
+	
+	public function getMimeType() {
+		return "country/data";
+	}
+	
+	public function getPrefix(){
+		return "country-data";
+	}
+	
+	protected function update(){
+		$data = simplexml_load_file(dirname(__FILE__) . DIRSEP . "data" . DIRSEP . "iso3166.xml");
+		header("Content-Type: text/plain");
+		while(ob_get_level())
+			ob_end_clean();
+		
+		$compiledData = Array();
+		foreach($data->children() as $child) {
+			print_r((string)$child[$this->k]);
+			//$compiledData[$child[$this->k]] = $child[$this->v];
+		}
+		
+		print_r($compiledData);
+		die();
+	}
+	
+	protected function isShared(){
+		return true;
+	}
+
+}
+?>

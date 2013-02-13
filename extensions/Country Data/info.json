@@ -1,0 +1,5 @@
+{
+	"name": "Country Data",
+	"description": "Provides a class and api for easily querying countries, states, and information about them",
+	"provides": "country-data"
+}
