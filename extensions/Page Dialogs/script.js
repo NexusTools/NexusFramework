@@ -20,8 +20,6 @@ function popupLoadPage(page){
     page = page.replace(new RegExp("/\/\//i"), "");
     page = page.replace(new RegExp("/\/$/i"), "");
     
-    console.log("Loading " + page);
-    
     popupOpenOverlay();
     var foundPopup = false;
     $$("popup.preload[preload-page]").each(function(popup){
@@ -29,7 +27,6 @@ function popupLoadPage(page){
             return;
         
         if(popup.readAttribute("preload-page") == page) {
-            console.log("Found Preloaded Popup");
             popup.removeClassName("hidden");
             __popupStack.push(popup);
             foundPopup = true; 
@@ -45,14 +42,13 @@ function popupLoadPage(page){
 }
 
 function _setupPopup_Link(el){
-    console.log(el);
     el.on("click", function(e){
         var link = e.findElement("a[href]");
         var href = link.readAttribute("href");
-        if(href.startsWith(Framework.BASE_URI))
-            href = href.substring(Framework.BASE_URI.length);
-        else if(href.startsWith(Framework.BASE_URL))
-            href = href.substring(Framework.BASE_URL.length);
+        if(href.startsWith(Framework.baseURI))
+            href = href.substring(Framework.baseURI.length);
+        else if(href.startsWith(Framework.baseURL))
+            href = href.substring(Framework.baseURL.length);
             
         if(__closeLast = link.hasAttribute("loading-text"))
             createPopup(link.readAttribute("loading-text"));
