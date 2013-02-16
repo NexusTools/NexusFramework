@@ -1,4 +1,4 @@
-var editableWidgets = $$("widget[vpages-widget], widgets[control-page]");
+var editableWidgets = $$("widget[vpages-widget], widget[control-page]");
 editableWidgets.each(function(widget) {
 	if(!widget.hasAttribute("control-page")) {
 		var widgetID = widget.readAttribute("vpages-widget") * 1;
@@ -6,7 +6,14 @@ editableWidgets.each(function(widget) {
 			return;
 		
 		widget.writeAttribute("control-page", "Pages/Edit Widget?id=" + widgetID);
+		widget.writeAttribute("vpages-widget", null);
+		if(widget.hasAttribute("vpages-name")) {
+			widget.writeAttribute("edit-title", "Edit `" + widget.readAttribute("vpages-name") + "`");
+			widget.writeAttribute("vpages-name", null);
+		}
 	}
+	
+	console.log(widget);
 	
 	widget.edit = document.createElement("widget-toolbar");
 	widget.edit.addClassName("hidden");
@@ -20,7 +27,7 @@ editableWidgets.each(function(widget) {
 			url += "&popup";
 		else
 			url += "?popup";
-		createPopup("<iframe border='0' style='border: none; width: 600px; height: 450px' src='" + url + "'></iframe>");
+		createPopup("<iframe border='0' style='border: none; width: 800px; height: 500px' src='" + url + "'></iframe>");
 	});
 	
 	widget.on("mouseover", function(){
@@ -38,17 +45,16 @@ editableWidgets.each(function(widget) {
 
 	widget.edit.updatePosition = function(){
 		var layout = widget.getLayout();
-		if(layout.get("height") > 19 &&
-			layout.get("width") > 29) {
+		//if(layout.get("height") > 19 &&
+		//	layout.get("width") > 29) {
 			var offset = widget.cumulativeOffset();
 		
 			widget.edit.setStyle({"left": (offset[0] + (layout.get("border-box-width") - 5 - widget.edit.measure("border-box-width"))) + "px",
 								"top": (offset[1] + 5) + "px",
 								"display": "block"});
 							
-			console.log(layout.get("left"));
-		} else
-			widget.edit.setStyle("visible", false);
+		//} else
+		//	widget.edit.setStyle("visible", false);
 	};
 	
 	document.body.appendChild(widget.edit, widget.firstChild);
