@@ -12,7 +12,7 @@ ControlPanel.ScrollEvent = function(e){
 }
 
 ControlPanel.navbar = {};
-ControlPanel.navbar.element = findChildByTag(ControlPanel.container, "NAVBAR");
+ControlPanel.navbar.element = $(ControlPanel.container.getElementsByTagName("NAVBAR")[0]);
 ControlPanel.navbar.uploads = ControlPanel.navbar.element.select("uploads")[0];
 ControlPanel.navbar.items = {};
 ControlPanel.navbar.active = {category: null, entry: null};
@@ -238,11 +238,11 @@ ControlPanel.submitForm = function(button, getVars){
 }
 
 ControlPanel.page = {};
-ControlPanel.page.element = findChildByTag(ControlPanel.container, "FRAMEWORK:PAGE");
-ControlPanel.page.breadcrum = findChildByTag(ControlPanel.page.element, "BREADCRUMB");
-ControlPanel.page.whiteout = findChildByTag(ControlPanel.container, "WHITEOUT");
-ControlPanel.page.whiteout.popup = findChildByTag(ControlPanel.page.whiteout, "POPUP");
-ControlPanel.page.content = findChildByTag(ControlPanel.page.element, "CONTENT");
+ControlPanel.page.element = $(ControlPanel.container.getElementsByTagName("FRAMEWORK:PAGE")[0]);
+ControlPanel.page.breadcrum = $(ControlPanel.page.element.getElementsByTagName("BREADCRUMB")[0]);
+ControlPanel.page.whiteout = $(ControlPanel.container.getElementsByTagName("WHITEOUT")[0]);
+ControlPanel.page.whiteout.popup = $(ControlPanel.page.whiteout.getElementsByTagName("POPUP")[0]);
+ControlPanel.page.content = $(ControlPanel.page.element.getElementsByTagName("CONTENT")[0]);
 ControlPanel.page.buttons = false;
 
 ControlPanel.HandleLink = function(e){
@@ -712,7 +712,7 @@ do {
 			ControlPanel.navbar.active.category = item;
 		ControlPanel.navbar.items[item.firstChild.data.trim()] = item;
 		
-		var subMenu = findChildByTag(item, "SUBMENU");
+		var subMenu = $(item.getElementsByTagName("SUBMENU")[0]);
 		subMenu.setAttribute("for", cat);
 		var subItem = subMenu.firstChild;
 		item.def = null;
