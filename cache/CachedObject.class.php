@@ -2,12 +2,13 @@
 abstract class CachedObject {
 
 	private static $instanceCount = 0;
+	private static $blacklist = false;
 	protected $storageObject = false;
 	protected $metaObject = false;
 	private $storagePath = false;
 	private $metaPath = false;
 	private $basePath = false;
-
+	
 	/*
 		Returns the storage ID for this object.
 	*/
@@ -68,12 +69,42 @@ abstract class CachedObject {
 		
 		$overtime = $this->metaObject['n'] <= time();
 	
-		if(!$overtime)
-			$updateNow = false;
-		else
-			$updateNow = $this->needsUpdate();
+	
+		if(!self::$blacklist) {
+			self::$blacklist = Array();
+			if(array_key_exists("__nocache__", $_GET)) {
+				$wildcard = preg_quote(preg_quote("*"));
+				
+				foreach(explode(",", $_GET['__nocache__']) as $filter) {
+					$filter = preg_quote($filter);
+					$filter = preg_replace("/" . $wildcard . "/", ".*", $filter);
+					array_push(self::$blacklist, "/^$filter$/");
+				}
+				if(!count(self::$blacklist))
+					array_push(self::$blacklist, "/^.+$/");
+				
+			}
+		}
+				
 		
-		if(($overtime && $this->needsUpdate()) || !is_array($this->metaObject) || !file_exists($this->storagePath)) {
+		if(count(self::$blacklist)) {
+			foreach(self::$blacklist as $filter) {
+				if(preg_match($filter, $this->getPrefix())) {
+					$updateNow = true;
+					break;
+				}
+			}
+		} else
+			$updateNow = false;
+		
+		if(!$updateNow) {
+			if(!$overtime)
+				$updateNow = false;
+			else
+				$updateNow = $this->needsUpdate();
+		}
+		
+		if($updateNow || !is_array($this->metaObject) || !file_exists($this->storagePath)) {
 			$this->metaObject = Array("u" => time(), "n" => time() + $this->getLifetime(),
 									  "pv" => method_exists($this, "getProvider") ? $this->getProvider() : get_class($this));
 			try {

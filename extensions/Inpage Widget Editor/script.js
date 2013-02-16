@@ -27,7 +27,25 @@ editableWidgets.each(function(widget) {
 			url += "&popup";
 		else
 			url += "?popup";
-		createPopup("<iframe border='0' style='border: none; width: 800px; height: 500px' src='" + url + "'></iframe>");
+		var popup = createPopup("<iframe border='0' style='border: none; width: 800px; height: 500px' src='" + url + "'></iframe>");
+		popup.down("iframe").contentWindow.close = function(reload){
+			closeLastPopup();
+			if(reload) {
+				var url = location.href;
+				var get;
+				var getPos = url.indexOf("?");
+				if(getPos > -1) {
+					get = url.substring(getPos+1);
+					url = url.substring(0, getPos);
+					
+					if(get.indexOf("__nocache__=") == -1)
+						get += "&__nocache__=*style*,*script*";
+				} else
+					get = "__nocache__=*style*,*script*";
+				
+				location.href = url + "?" + get;
+			}
+		};
 	});
 	
 	widget.on("mouseover", function(){

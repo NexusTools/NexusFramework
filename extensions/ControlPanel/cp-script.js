@@ -1,4 +1,7 @@
 var ControlPanel = {};
+var popupMode = location.href.endsWith("?popup") || location.href.endsWith("&popup");
+if(popupMode)
+	console.log("Running in Popup Mode");
 ControlPanel.container = $(document.getElementsByTagName("FRAMEWORK:WIDGETS")[0]);
 
 ControlPanel.ScrollEvent = function(e){
@@ -119,7 +122,7 @@ ControlPanel.loadURI = function(uri, postVars){
         }
     
         console.log("hasPostData: " + (hasPostData ? "YES" : "NO"));
-        if(!hasPostData && uri.indexOf('?') == -1){
+        if(!popupMode && !hasPostData && uri.indexOf('?') == -1){
             var urlStart = location.href.substring(0,
                     location.href.indexOf("/control") + 8) + "/";
             
@@ -140,6 +143,12 @@ ControlPanel.loadURI = function(uri, postVars){
         }
 		
 		ControlPanel.popupLoading = false;
+		if(popupMode) {
+			if(uri.indexOf("?") > -1)
+				uri = uri + "&popup";
+			else
+				uri += "?popup";
+		}
 		Framework.API.request("controlpanel", uri, postVars);
     }
     
@@ -579,6 +588,30 @@ Framework.API.registerHandler("controlpanel", function(data){
             }, 200);
         return;
     }
+    
+    if(popupMode) {
+    	var urlStart = location.href.substring(0,
+                    location.href.indexOf("/control") + 8) + "/";
+		var curUri = location.href.substring(urlStart.length);
+        var quPos = curUri.indexOf("?");
+        if(quPos > 0)
+            curUri = curUri.substring(0, quPos);
+            
+        if(!data.uri.startsWith(curUri)) {
+        	if(!window.close)
+        		alert("CLOSE FUNCTION UNDEFINED");
+        	else
+        		try {
+        			var div = document.createElement("div");
+        			div.innerHTML = data.html;
+            		window.close(Element.select(div, "banner[class=success]").length);
+            	}catch(e){
+            		console.log("Error in Exit");
+            		console.dir(e);
+            	}
+            return;
+        }
+    }
 
     ControlPanel.popupUri = false;
     ControlPanel.setBlur(false);
@@ -632,7 +665,7 @@ Framework.API.registerHandler("controlpanel", function(data){
                 ControlPanel.page.breadcrum.appendChild(span);
                 dumpSpacing = false;
             }
-        
+        	
             var entry = data.tools[tool];
 	
 	        var item = document.createElement("img");
