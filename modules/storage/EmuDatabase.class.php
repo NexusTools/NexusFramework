@@ -7,13 +7,6 @@ abstract class EmuDatabase {
 	    return false;
 	}
 	
-	public function __pregCallbackLikePattern($matches){
-		if($matches[0] == "%")
-			return ".*";
-		else
-			return preg_quote($matches[0]);
-	}
-	
 	public function queryRows($table, $where, $start, $limit, $orderBy=false){
 		$realEntries = $this->getEntries();
 	
@@ -47,8 +40,7 @@ abstract class EmuDatabase {
 		
 			foreach($where as $key => &$value){
 				if(startsWith($key, "LIKE "))
-					$value = "/^" . preg_replace_callback("/(%|[^%]+)/",
-							Array(__CLASS__, "__pregCallbackLikePattern"), $value) . "$/i";
+					$value = WildcardMatch::instance($value, "%");
 			}
 			
 			foreach($realEntries as $key => $extension) {
@@ -56,7 +48,7 @@ abstract class EmuDatabase {
 				foreach($where as $key => $value){
 					if(startsWith($key, "LIKE ")){
 						$key = substr($key, 5);
-						if(!preg_match($value, $extension[$key])) {
+						if(!$value->exactMatch($extension[$key])) {
 							$skip = true;
 							continue;
 						}

@@ -375,7 +375,7 @@ class Database extends Lockable {
 	}
 	
 	protected static function resolvePrototype($name){
-	    $path = FRAMEWORK_PATH . "storage" . DIRSEP . "classes" . DIRSEP . "$name.class.php";
+	    $path = dirname(__FILE__) . DIRSEP . "classes" . DIRSEP . "$name.class.php";
 	    if(!is_readable($path))
 	        throw new Exception("Failed to load prototype for `$name`");
 	    require_once($path);
