@@ -14,9 +14,9 @@ Framework.registerModule("PageDialogs", {
 			setup: function(){
 				console.log(this.getElement());
 				this.getElement().on("click", function(e){
-					e.stop();
-					Framework.PageDialogs.loadPage(e.readAttribute("href"));
 					
+					Framework.PageDialogs.loadPage(e.readAttribute("href"));
+					e.stop();
 				});
 			},
 			
@@ -30,6 +30,7 @@ Framework.registerModule("PageDialogs", {
 			uri = uri.replace(new RegExp("/\/$/i"), "");
 			
 			console.log("Loading Popup Page `"+uri+"`");
+			throw "Unimplemented";
 		},
 		
 		createPopup: function(){
