@@ -63,9 +63,15 @@ abstract class CachedObject {
 			
 		self::$instanceCount++;
 			
-		$this->updatePaths();
+		$this->storagePath = Framework::getTempFolder($this->getPrefix(), $this->isShared());
+		if(!is_dir($this->storagePath))
+			mkdir($this->storagePath, 0777, true);
+			
+		$this->storagePath .= $this->getID();
+		$this->metaPath = $this->storagePath . ".meta";
+		
 		if(file_exists($this->metaPath))
-			$this->metaObject = unserialize(file_get_contents($this->metaPath));
+			$this->metaObject = json_decode(file_get_contents($this->metaPath),true);
 		
 		$overtime = $this->metaObject['n'] <= time();
 	
@@ -110,23 +116,37 @@ abstract class CachedObject {
 			try {
 				$this->storageObject = $this->update();
 			}catch(Exception $e){
-				if(!file_exists($this->storagePath))
-					$this->storageObject = $e;
+				$this->storageObject = Array("error" => $e->toString());
 			}
 			
 			if($this->storageObject){
-				if(is_string($this->storageObject)) {
-					$this->metaObject['rs'] = true;
+				if(is_array($this->storageObject)) {
+					$this->metaObject['ext'] = "json";
+					$this->storagePath .= ".json";
+					file_put_contents($this->storagePath, json_encode($this->storageObject));
+				} else if(is_string($this->storageObject)) {
+					$this->metaObject['ext'] = "raw";
+					$this->storagePath .= ".raw";
 					file_put_contents($this->storagePath, $this->storageObject);
-				} else
-					file_put_contents($this->storagePath, serialize($this->storageObject));
+				} else {
+					try {
+						$this->storagePath .= ".php-serialized";
+						$this->metaObject['ext'] = "php-serialized";
+						file_put_contents($this->storagePath, serialize($this->storageObject));
+					} catch(Exception $e){}
+				}
 			}
 			
 			$this->updateMeta($this->metaObject);
-			file_put_contents($this->metaPath, serialize($this->metaObject));
-		} else if($overtime) {
-			$this->metaObject['n'] = time() + $this->getLifetime();
-			file_put_contents($this->metaPath, serialize($this->metaObject));
+			file_put_contents($this->metaPath, json_encode($this->metaObject));
+		} else {
+			if($this->metaObject['ext'])
+				$this->storagePath .= "." . $this->metaObject['ext'];
+			
+			if($overtime) {
+				$this->metaObject['n'] = time() + $this->getLifetime();
+				file_put_contents($this->metaPath, json_encode($this->metaObject));
+			}
 		}
 	}
 	
@@ -144,28 +164,25 @@ abstract class CachedObject {
 	
 	private function load(){
 		$this->loadMeta();
-		if($this->storageObject !== false)
+		if($this->storageObject !== false || !$this->metaObject['ext'])
 			return;
 		
-		if(isset($this->metaObject['ds']))
-			$this->storageObject = file_get_contents($this->storagePath);
-		else if(isset($this->metaObject['rs']))
-			$this->storageObject = file_get_contents($this->storagePath);
-		else
-			$this->storageObject = unserialize(file_get_contents($this->storagePath));
-	}
-	
-	private function updatePaths(){
-		if($this->storagePath)
-			return;
+		switch($this->metaObject['ext']) {
+			case "json":
+				$this->storageObject = json_decode(file_get_contents($this->storagePath), true);
+				break;
+				
+			case "php-serialized":
+				$this->storageObject = unserialize(file_get_contents($this->storagePath), true);
+				break;
+				
+			case "raw":
+				$this->storageObject = file_get_contents($this->storagePath);
+				break;
+				
 			
-		$this->storagePath = Framework::getTempFolder($this->getPrefix(), $this->isShared());
-		if(!is_dir($this->storagePath))
-			mkdir($this->storagePath, 0777, true);
-			
-		$this->storagePath .= $this->getID();
-		$this->metaPath = $this->storagePath . ".meta.dat";
-		$this->storagePath .= ".dat";
+		}
+		
 	}
 	
 	public function nextUpdate(){
