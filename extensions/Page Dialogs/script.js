@@ -49,10 +49,10 @@ function _setupPopup_Link(el){
     el.on("click", function(e){
         var link = e.findElement("a[href]");
         var href = link.readAttribute("href");
-        if(href.startsWith(Framework.Config.BASE_URI))
-            href = href.substring(Framework.Config.BASE_URI.length);
-        else if(href.startsWith(Framework.Config.BASE_URL))
-            href = href.substring(Framework.Config.BASE_URL.length);
+        if(href.startsWith(Framework.BASE_URI))
+            href = href.substring(Framework.BASE_URI.length);
+        else if(href.startsWith(Framework.BASE_URL))
+            href = href.substring(Framework.BASE_URL.length);
             
         if(__closeLast = link.hasAttribute("loading-text"))
             createPopup(link.readAttribute("loading-text"));
