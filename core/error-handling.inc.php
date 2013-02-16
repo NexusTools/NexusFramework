@@ -84,7 +84,7 @@ function recovery_process_exception($exception, $alwaysRedirect=false){
         $__framework_error_occured = false;
         Framework::runPage("/errordoc/500");
     }
-	require(FRAMEWORK_PATH . "recovery.inc.php");
+	require FRAMEWORK_CORE_PATH . "recovery.inc.php";
 	recovery_show_page($data);
 	die();
 }

@@ -1,101 +1,115 @@
-<?php
-require dirname(__FILE__) . DIRECTORY_SEPARATOR . "loader-shared.inc.php";
+<?php if(defined("LOADER_START_TIME"))	return;
+define("LOADER_START_TIME", microtime(true));
 
-if(function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc()) {
-    $strip_slashes_deep = function ($value) use (&$strip_slashes_deep) {
-        return is_array($value) ? array_map($strip_slashes_deep, $value) : stripslashes($value);
-    };
-    $_GET = array_map($strip_slashes_deep, $_GET);
-    $_COOKIE = array_map($strip_slashes_deep, $_COOKIE);
+// Setup Output Buffering
+define("NATIVE_OB_LEVEL", ob_get_level());
+if(!ob_get_level())
+    ob_start();
+    
+// Dump Early Errors
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
+// Test PHP Version
+if(floatval(phpversion()) < 5.3)
+	throw new Exception("PHP 5.3 or Higher Required.");
+
+// Shorter Aliases
+define("DIRSEP", DIRECTORY_SEPARATOR);
+define("PATHSEP", PATH_SEPARATOR);
+
+// Setup Common Paths
+define("FRAMEWORK_PATH", dirname(__FILE__) . DIRSEP);
+define("FRAMEWORK_CORE_PATH", FRAMEWORK_PATH . "core" . DIRSEP);
+define("FRAMEWORK_EXT_PATH", FRAMEWORK_PATH . "extensions" . DIRSEP);
+define("FRAMEWORK_RES_PATH", FRAMEWORK_PATH . "resources" . DIRSEP);
+define("FRAMEWORK_MODULE_PATH", FRAMEWORK_PATH . "modules" . DIRSEP);
+
+// Find Website Root
+$pos = 0;
+$stack = debug_backtrace(0);
+$fmpath_len = strlen(FRAMEWORK_PATH);
+while($pos < count($stack)) {
+	if(substr_compare($stack[$pos]['file'], FRAMEWORK_PATH, 0, $fmpath_len) !== 0) {
+		define("INDEX_FILE", $stack[$pos]['file']);
+		define("INDEX_PATH", dirname(INDEX_FILE) . DIRSEP);
+		break;
+	} else
+		$pos++;
 }
-if($_SERVER['REQUEST_METHOD'] == "POST" && !count($_FILES)) {
-    $_POST = Array();
-    foreach (explode("&", file_get_contents("php://input")) as $pair) {
-        $nv = explode("=", $pair);
-        $name = urldecode($nv[0]);
-        $value = urldecode($nv[1]);
-        if(isset($_POST[$name])) {
-            if(!is_array($_POST[$name]))
-                $_POST[$name] = Array($_POST[$name], $value);
-            else
-                array_push($_POST[$name], $value);
-        } else
-            $_POST[$name] = $value;
-    }
+unset($fmpath_len);
+unset($stack);
+unset($pos);
+
+define("EXT_PATH", INDEX_PATH . "extensions" . DIRSEP);
+
+require FRAMEWORK_CORE_PATH . "functions.inc.php";
+set_include_path(FRAMEWORK_PATH . PATHSEP . INDEX_PATH);
+
+// Request Defines
+$dmn = $_SERVER['HTTP_HOST'] ? $_SERVER['HTTP_HOST'] : "localhost";
+if(isset($_SERVER['HTTP_PORT']))
+	define("DOMAIN", $dmn
+		. ($_SERVER['HTTP_PORT'] != 80 ? ":" . $_SERVER['HTTP_PORT'] : ""));
+else
+	define("DOMAIN", $dmn);
+
+if(preg_match("/([\w\d]+)\.(\w+)$/", $dmn, $matches)) {
+	define("DOMAIN_TL", $matches[2]);
+	define("DOMAIN_SL", $matches[1]);
+} else {
+	define("DOMAIN_TL", "");
+	define("DOMAIN_SL", $dmn);
 }
+unset($dmn);
 
-if(strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false)
-    if(strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.') !== FALSE
-	    || strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 5.') !== FALSE) {
-	    while(ob_get_level() > NATIVE_OB_LEVEL)
-	        ob_end_clean();
-	    require "ie-upgrade.inc.php";
-	    die();
-    } else
-        header("X-UA-Compatible: IE=Edge,chrome=1");
+define("PROTOCOL", isset($_SERVER['HTTPS']) ? "https" : "http");
 
-if(is_file(INDEX_PATH . "framework.config.php"))
-	require INDEX_PATH . "framework.config.php";
-else {
-	while(ob_get_level() > NATIVE_OB_LEVEL)
-		ob_end_clean();
-	include "installer.inc.php";
-	return;
-}
+$pathoffset = strlen(INDEX_PATH) - strlen($_SERVER['DOCUMENT_ROOT']);
+if($pathoffset <= 0)
+	$pathoffset = 1;
+define("BASE_URI", substr($_SERVER['REQUEST_URI'] = urldecode($_SERVER['REQUEST_URI']), 0, $pathoffset));
+$uri = substr($_SERVER['REQUEST_URI'], $pathoffset - 1);
+if(($pos = strpos($uri, "?")) !== false)
+	$uri = substr($uri, 0, $pos);
+define("REQUEST_URI", $uri);
+define("BASE_URL", PROTOCOL . "://" . DOMAIN . BASE_URI);
+define("REQUEST_URL", BASE_URL . substr(REQUEST_URI, 1));
+unset($pathoffset);
+unset($uri);
+unset($pos);
 
-if(!defined("BASE_TMP_PATH")) {
-	$tmpPath = cleanpath(sys_get_temp_dir() . DIRSEP . "NexusFramework");
-	if(!is_writable(sys_get_temp_dir()) || (!is_dir($tmpPath) && !mkdir($tmpPath, 0777, true))) {
-		$tmpPath = INDEX_PATH . "tmp" . DIRSEP . DOMAIN;
-		if(!is_dir($tmpPath) && !mkdir($tmpPath, 0777, true))
-			throw new Exception("Unable to Make Temporary Directory");
-	}
-
-	define("BASE_TMP_PATH", $tmpPath . DIRSEP);
-	unset($tmpPath);
-}
-define("TMP_PATH", BASE_TMP_PATH . crc32(DOMAIN . INDEX_PATH) . DIRSEP);
-define("SHARED_TMP_PATH", BASE_TMP_PATH . "Shared" . DIRSEP);
-
-if(!defined("MEDIA_PATH"))
-	define("MEDIA_PATH", INDEX_PATH . "media" . DIRSEP);
-if(!defined("MEDIA_URL")) {
-	define("MEDIA_URI", BASE_URI . "media/");
-	define("MEDIA_URL", BASE_URL . "media/");
-} else if(!defined("MEDIA_URI"))
-	define("MEDIA_URI", MEDIA_URL);
-define("NOACCESS_MODE", false);
-if(!defined("SHARED_RESOURCE_URL")) {
-    define("SHARED_RESOURCE_URL", BASE_URL . "res" . RES_CONNECTOR);
-    define("SHARED_RESOURCE_URI", BASE_URI . "res" . RES_CONNECTOR);
-} else if(!defined("SHARED_RESOURCE_URI"))
-	define("SHARED_RESOURCE_URI", SHARED_RESOURCE_URL);
-if(!defined("CONFIG_PATH"))
-	define("CONFIG_PATH", INDEX_PATH . "config" . DIRSEP);
-
-if(!defined("DEBUG_MODE"))
-	define("DEBUG_MODE", false);
-if(!defined("BAD_CONDITION_STATUS"))
-	define("BAD_CONDITION_STATUS", 403);
-
-require "core/ClassLoader.class.php";
-OutputHandlerStack::init();
-
-session_name("S" . dechex(ClientInfo::getUniqueID()));
-ini_set('session.gc_maxlifetime', 60*60*24*30);
-ini_set('session.cookie_lifetime', 60*60*24*30);
-if(!session_start())
-    throw new Exception("Failed to start session...");
-
-if(array_key_exists("ClientID", $_SESSION) && $_SESSION["ClientID"] != ClientInfo::getUniqueID()) {
-    session_regenerate_id();
-    $_SESSION = Array("ClientID" => ClientInfo::getUniqueID(), "NextUpdate" => time() + (3600 * 12));
-} else if(!array_key_exists("ClientID", $_SESSION))
-    $_SESSION["ClientID"] = ClientInfo::getUniqueID();
-else if($_SESSION['NextUpdate'] < time()) {
-    session_regenerate_id(true);
-    $_SESSION["NextUpdate"] = time() + (3600 * 12);
+// Client Specific Defines
+if(strncasecmp(PHP_OS, 'WIN', 3) == 0) {
+	define("LEGACY_OS", true);
+	define("RES_CONNECTOR", "-");
+} else {
+	define("LEGACY_OS", false);
+	define("RES_CONNECTOR", ":");
 }
 
-Framework::run(REQUEST_URI, INDEX_PATH);
+define("LEGACY_BROWSER", isset($_SERVER['HTTP_USER_AGENT']) && 
+        preg_match('/(?i)msie [1-9]/',$_SERVER['HTTP_USER_AGENT']));
+
+// Setup Custom REQUEST
+$_REQUEST = array_merge($_GET, $_POST);
+
+// Load Framework Version
+define("FRAMEWORK_VERSION", file_get_contents(FRAMEWORK_PATH . "version"));
+
+//function __frameworkInternal__ignoreOutput(){return "";}
+//ob_start("__frameworkInternal__ignoreOutput");
+
+require FRAMEWORK_CORE_PATH . "error-handling.inc.php";
+
+// Process Framework Mode
+if(!defined("FRAMEWORK_MODE"))
+	define("FRAMEWORK_MODE", "website");
+
+$loaderPath = FRAMEWORK_CORE_PATH . FRAMEWORK_MODE . "-loader.inc.php";
+if(is_file($loaderPath))
+	require $loaderPath;
+else
+	throw new Exception("Missing Loader for Mode `" . FRAMEWORK_MODE . "`");
+
 ?>

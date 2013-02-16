@@ -42,7 +42,7 @@ class ClassLoader {
 	
 	public static function resolve($name){
 		if(!isset(self::$classes[$name])) {
-			$tname = glob(FRAMEWORK_PATH . "*" . DIRSEP . "$name.class.php");
+			$tname = glob(FRAMEWORK_MODULE_PATH . "*" . DIRSEP . "$name.class.php");
 			if($tname && count($tname))
 				require $tname[0];
 		} else {
