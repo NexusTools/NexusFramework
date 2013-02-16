@@ -273,7 +273,7 @@ class Template {
 			}
 			echo "<tr style=\"background-color: rgba(0, 0, 0, 0.5)\">";
 			echo "<td>Total</td><td>";
-			echo number_format((microtime(true) - START_TIME)*1000, 2);
+			echo number_format((microtime(true) - LOADER_START_TIME)*1000, 2);
 			echo "</td></tr></table></center></div>";
 		}
 		echo "</body></html>";

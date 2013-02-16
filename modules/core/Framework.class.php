@@ -308,6 +308,7 @@ class Framework {
 	}
 	
 	public static function run($requestURI, $basePath){
+		Profiler::start("Framework");
 	    ignore_user_abort(true);
 		ExtensionLoader::loadEnabledExtensions();
 		
@@ -535,7 +536,7 @@ class Framework {
 		DebugDump::dump(Profiler::getTimers(), "Profiler");
 		
 		echo "<br /><br /><span style=\"font-size: 10px;\">";
-		echo "Took " . number_format((microtime(true) - START_TIME)*1000, 2) . "ms to Generate.";
+		echo "Took " . number_format((microtime(true) - LOADER_START_TIME)*1000, 2) . "ms to Generate.";
 		echo "</span></body></html>";
 	}
 	

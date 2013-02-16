@@ -135,7 +135,7 @@ class API {
 			Profiler::finish("API");
 		DebugDump::dump(Profiler::getTimers(), "Profiler");
 		echo "<br /><br /><span style=\"font-size: 10px;\">";
-		echo "Took " . number_format((microtime(true) - START_TIME)*1000, 2) . "ms to Generate.";
+		echo "Took " . number_format((microtime(true) - LOADER_START_TIME)*1000, 2) . "ms to Generate.";
 		echo "</span></body></html>";
 	}
 	

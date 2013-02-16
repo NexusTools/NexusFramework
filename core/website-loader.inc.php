@@ -96,5 +96,6 @@ else if($_SESSION['NextUpdate'] < time()) {
     $_SESSION["NextUpdate"] = time() + (3600 * 12);
 }
 
+Profiler::finish("Loader");
 Framework::run(REQUEST_URI, INDEX_PATH);
 ?>

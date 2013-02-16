@@ -2,7 +2,7 @@
 class Profiler {
 
 	private static $timers = Array();
-	private static $activeTimers = Array("Framework" => START_TIME);
+	private static $activeTimers = Array("Loader" => LOADER_START_TIME);
 	
 	public static function start($name){
 		self::$activeTimers[$name] = microtime(true);
