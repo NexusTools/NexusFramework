@@ -95,11 +95,9 @@ define("LEGACY_BROWSER", isset($_SERVER['HTTP_USER_AGENT']) &&
 $_REQUEST = array_merge($_GET, $_POST);
 
 // Load Framework Version
-define("FRAMEWORK_VERSION", file_get_contents(FRAMEWORK_PATH . "version"));
+define("FRAMEWORK_VERSION", file_get_contents(FRAMEWORK_RES_PATH . "version"));
 
-//function __frameworkInternal__ignoreOutput(){return "";}
-//ob_start("__frameworkInternal__ignoreOutput");
-
+// Load Error Handling Hooks
 require FRAMEWORK_CORE_PATH . "error-handling.inc.php";
 
 // Process Framework Mode

@@ -269,17 +269,16 @@ class Framework {
 		        die("<html><head><title>Internal Error Occured</title></head><body><h1>Internal Error Occured</h1><p>An internal error occured while processing your request,<br />This error has been logged and we are working to fix it.<br />Sorry for any inconvenience.</p></body></html>");
 
             case "lgpl":
-                self::serveFile(FRAMEWORK_PATH . "LGPL3.0.html");
+                self::serveFile(FRAMEWORK_RES_PATH . "LGPL3.0.html");
                 
             case "license":
-                self::serveFile(FRAMEWORK_PATH . "license");
+                self::serveFile(FRAMEWORK_RES_PATH . "license");
 
 			case "script":
 				while(ob_get_level())
 		            ob_end_clean();
 				$scmpr = new ScriptCompressor(true);
-				$path = FRAMEWORK_PATH . "resources" . DIRSEP
-									 . "javascript" . DIRSEP;
+				$path = FRAMEWORK_RES_PATH . "javascript" . DIRSEP;
 				
 				$scmpr->addScript($path . "prototype.js");
 			    foreach(glob($path . "framework" . DIRSEP . "*.js") as $script){
@@ -291,7 +290,7 @@ class Framework {
 			case "style":
 				while(ob_get_level())
 		            ob_end_clean();
-				$style = new CompressedStyle(FRAMEWORK_PATH . "resources" . DIRSEP . "stylesheets" . DIRSEP . "widgets.css");
+				$style = new CompressedStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "widgets.css");
 				$style->dumpAsResponse();
 				self::finalize();
 		
