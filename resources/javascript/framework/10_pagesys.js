@@ -136,23 +136,27 @@ Framework.registerModule("PageSystem", {
 			Framework.PageElement.stopObserving("pagesys:" + event, callback);
 		},
 		
-		init: function(){
-			Framework.API.registerHandler("page", Framework.PageSystem.PageCallback);
-			Framework.PageElement.observe("pagesys:ready", Framework.PageSystem.PageReady);
-			Framework.PageElement.observe("pagesys:unloaded", Framework.PageSystem.PageUnloaded);
-			Framework.PageSystem.redirectToMain = !history.pushState && Framework.activePage.length > 1;
-		
+		initialize: function(){
+			
+			Framework.API.registerHandler("page", this.PageCallback);
+			Framework.PageElement.observe("pagesys:ready", this.PageReady);
+			Framework.PageElement.observe("pagesys:unloaded", this.PageUnloaded);
+			this.redirectToMain = !history.pushState && Framework.activePage.length > 1;
+			
 			if(history.replaceState){
 				var data = {title: document.title,
 					page: Framework.activePage,
 					html: Framework.PageElement.innerHTML};
 				history.replaceState(data, data.title, Framework.baseURI + data.page);
 			}
-			Framework.PageElement.observe("pagesys:ready", Framework.Components.setupContainer);
+			
+		},
 		
-			// Initialize Framework Addons
+		loaded: function(){
 			Framework.PageElement.fire("pagesys:loaded");
 			Framework.PageElement.fire("pagesys:ready");
+			
+			Framework.PageElement.observe("pagesys:ready", Framework.Components.setupContainer);
 		}
 		
 	}, ["API", "Components"]);

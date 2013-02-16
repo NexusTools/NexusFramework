@@ -3,7 +3,11 @@ Framework.registerModule("Components", {
 		registered: $H(),
 		
 		registerComponent: function(expression, structure){
-			Framework.Components.registered[expression] = Class.create(Framework.Components.baseClass, structure);
+			console.log("Registered Component for `" + expression + "`");
+		
+			var claz = Class.create(Framework.Components.baseClass, structure);
+			Framework.Components.registered.set(expression, claz);
+			console.log(claz);
 		},
 		
 		registerWidgetType: function(type, structure){
@@ -21,17 +25,23 @@ Framework.registerModule("Components", {
 			if(container.element instanceof Function)
 				container = container.element();
 				
-			console.log("Setting up Components");
-			console.log(container);
 			Framework.Components.registered.each(function(component){
+					console.log(component.key);
 					container.select(component.key).each(function(element){
+							console.log(element);
 							try {
 								if(!element.components)
 									element.components = [];
 								element.components.push(new component.value(element));
-							} catch(e) {}
+							} catch(e) {
+								console.trace(e);
+							}
 						});
 				});
+		},
+		
+		loaded: function(){
+			this.setupContainer(Framework.ThemeElement);
 		},
 		
 		baseClass: Class.create({

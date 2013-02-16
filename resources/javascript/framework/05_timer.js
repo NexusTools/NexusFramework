@@ -1,6 +1,6 @@
 Framework.registerModule("Timers", {
 
-	init: function(){
+	initialize: function(){
 
 		this.AccurateTimer = Class.create({
 			initialize: function(callback, frequency) {

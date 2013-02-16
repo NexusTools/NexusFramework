@@ -20,10 +20,11 @@ var Framework = {
 			return;
 		}
 		try {
-			Framework[name] = structure;
-			if(Framework[name].init)
-				Framework[name].init.apply(Framework[name]);
-				
+			Framework[name] = new (Class.create(structure))();
+			
+			if(Framework[name].loaded)
+				Event.on(window, "load", Framework[name].loaded.bind(Framework[name]));
+			
 			console.log("Module `" + name + "` Ready");
 			
 			while(Framework.moduleStasis.length)
@@ -37,7 +38,7 @@ var Framework = {
 };
 
 Framework.registerModule("Core", {
-	init: function() {
+	initialize: function() {
 		Framework.baseURL = $$("head base")[0].getAttribute("href");
 		Framework.baseURI = Framework.baseURL.substring(Framework.baseURL.indexOf('/', Framework.baseURL.indexOf("://") + 3));
 		Framework.activePage = location.href.substring(Framework.baseURL.length);
