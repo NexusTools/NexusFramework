@@ -2,6 +2,6 @@
 	"name": "Inpage Widget Editor",
 	"description": "Edit Widgets Live",
 	"provides": "inpage-widget-editor",
-	"dependancies": ["virtual-pages", "page-dialogs"],
+	"dependancies": ["controlpanel", "virtual-pages", "page-dialogs"],
 	"condition": "User::isStaff()"
 }

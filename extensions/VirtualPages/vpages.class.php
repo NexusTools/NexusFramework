@@ -242,7 +242,7 @@ class VirtualPages {
 		        else
 		            $customName = false;
 		        
-		        echo "<widget user='" . User::getID() . "'";
+		        echo "<widget";
 		        if($widgetID && User::isStaff()) {
 		            echo " vpages-widget='$widgetID' vpages-name='" . htmlspecialchars($customName ? $customName : StringFormat::displayForId($type)) . "'";
 		        }
