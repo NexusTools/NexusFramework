@@ -46,9 +46,14 @@ class ScriptCompressor extends CachedFileSet {
 	public function processFile($path){
 	    $code = file_get_contents($path);
 	    if(startsWith($path, FRAMEWORK_PATH . "resources" . DIRSEP))
-	        return self::processContent($code, true, false);
-	    
-	    return self::processContent($code);
+	        $code = self::processContent($code, true, false);
+	    else
+	    	$code = self::processContent($code);
+	    	
+	    if(DEBUG_MODE)
+	    	return "/* $path */\n" . $code;
+	    else
+	    	return $code;
 	}
 	
 	public function addScript($path){

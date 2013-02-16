@@ -280,13 +280,11 @@ class Framework {
 				$scmpr = new ScriptCompressor(true);
 				$path = FRAMEWORK_PATH . "resources" . DIRSEP
 									 . "javascript" . DIRSEP;
-			
+				
 				$scmpr->addScript($path . "prototype.js");
-				$scmpr->addScript($path . "domutils.js");
-				if(LEGACY_BROWSER)
-				    $scmpr->addScript($path . "framework.legacy.js");
-				else
-				    $scmpr->addScript($path . "framework.js");
+			    foreach(glob($path . "framework" . DIRSEP . "*.js") as $script){
+			    	$scmpr->addScript($script);
+			    }
 				$scmpr->dumpAsResponse();
 				self::finalize();
 		    

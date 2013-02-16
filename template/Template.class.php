@@ -218,8 +218,11 @@ class Template {
 			call_user_func($callable);
 			
 		$fm_config = Triggers::broadcast("template", "config");
+		
 		$fm_config = json_encode(array_merge_recursive($fm_config, Array("TITLE_FORMAT" => self::$titleFormat,
-								"DEFAULT_PAGE_NAME" => DEFAULT_PAGE_NAME)));
+								"DEFAULT_PAGE_NAME" => DEFAULT_PAGE_NAME,
+								"FRAMEWORK_VERSION" => FRAMEWORK_VERSION,
+								"LEGACY_BROWSER" => LEGACY_BROWSER)));
 		echo "<framework:config version=\"";
 		echo Framework::uniqueHash($fm_config, Framework::URLSafeHash);
 		echo "\"><!-- ($fm_config) --></framework:config>";
