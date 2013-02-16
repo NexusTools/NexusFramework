@@ -1,0 +1,30 @@
+widget-toolbar {
+	display: block;
+	padding: 6px;
+	border-radius: 3px;
+	background-color: rgba(0, 0, 0, 0.8);
+	transition: opacity 200ms;
+	-moz-transition: opacity 200ms; /* Firefox 4 */
+	-webkit-transition: opacity 200ms; /* Safari and Chrome */
+	-o-transition: opacity 200ms; /* Opera */
+	position: absolute;
+	opacity: 0.4;
+}
+
+widget-toolbar.widget-hover,
+widget-toolbar:hover {
+	opacity: 1;
+}
+
+widget-toolbar.hidden {
+	display: none;
+	opacity: 0;
+}
+
+widget-toolbar edit {
+	background-image: url({{/tool.png}});
+	cursor: pointer;
+	display: block;
+	height: 16px;
+	width: 16px;
+}

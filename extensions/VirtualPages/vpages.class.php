@@ -185,7 +185,7 @@ class VirtualPages {
 	}
 	
 	public static function runWidgets($location, $slot=self::PAGEAREA, $section="pages"){
-		foreach(self::fetchWidgets($location, $slot, 0, $section) as $widget)
+		foreach(self::fetchWidgets($location, $slot, 0, $section) as $widget) 
 			self::runWidget($widget['type'], self::RENDER,
 								unserialize($widget['config']), $widget['rowid']);
 	}
@@ -236,17 +236,18 @@ class VirtualPages {
 		    
 		    if($mode == self::RENDER) {
 		        if(array_key_exists("title", $args))
-		            $customName = trim(StringFormat::idForDisplay($args['title']));
+		            $customName = trim($args['title']);
 		        else if(array_key_exists("__widget_name", $args))
-		            $customName = trim(StringFormat::idForDisplay($args['__widget_name']));
+		            $customName = trim($args['__widget_name']);
 		        else
 		            $customName = false;
 		        
-		        $customName = $customName ? " title-$customName" : "";
-		        echo "<widget class='$type$customName'";
-		        if($widgetID && User::isStaff())
-		            echo " vpages-widget='$widgetID'";
-		        echo ">";
+		        echo "<widget user='" . User::getID() . "'";
+		        if($widgetID && User::isStaff()) {
+		            echo " vpages-widget='$widgetID' vpages-name='" . htmlspecialchars($customName ? $customName : StringFormat::displayForId($type)) . "'";
+		        }
+		        $customName = $customName ? " " . StringFormat::idForDisplay("Title $customName") : "";
+		        echo " class='$type$customName'>";
 		    }
 			$ret = require_chdir($handler['script'], $handler['path']);
 			if($mode == self::RENDER)

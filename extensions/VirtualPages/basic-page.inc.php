@@ -25,64 +25,40 @@ switch(VirtualPages::getMode()) {
 		$page = VirtualPages::getArguments();
 		$layout = VirtualPages::getDatabase()->selectField("basic-pages", Array("id" => $page['rowid']), "layout");
 		switch($layout){
-			case 0: // Single Column
-				echo "<Column class=\"pagearea large\"><Contents align=\"align\">";
-				try {
-					require_chdir("pagearea.inc.php", Theme::getPath());
-				} catch(Exception $e) {}
+			case 0: // Single column
+				echo "<column class=\"pagearea large\"><contents align=\"align\">";
 				VirtualPages::runWidgets($page['rowid']);
-				echo "</Contents></Column>";
+				echo "</contents></column>";
 				break;
 				
 			case 1: // Right Sidebar
-				echo "<Column class=\"pagearea medium\"><Contents>";
-				try {
-					require_chdir("pagearea.inc.php", Theme::getPath());
-				} catch(Exception $e) {}
+				echo "<column class=\"pagearea medium\"><contents>";
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::PAGEAREA);
-				echo "</Contents></Column>";
-				echo "<Column class=\"sidebar right\"><Contents>";
-				try {
-					require_chdir("right.inc.php", Theme::getPath());
-				} catch(Exception $e) {}
+				echo "</contents></column>";
+				echo "<column class=\"sidebar right\"><contents>";
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::RIGHTCOLUMN);
-				echo "</Contents></Column>";
+				echo "</contents></column>";
 				break;
 				
 			case 2: // Left Sidebar
-				echo "<Column class=\"sidebar left\"><Contents>";
-				try {
-					require_chdir("left.inc.php", Theme::getPath());
-				} catch(Exception $e) {}
+				echo "<column class=\"sidebar left\"><contents>";
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::LEFTCOLUMN);
-				echo "</Contents></Column>";
-				echo "<Column class=\"pagearea medium\"><Contents>";
-				try {
-					require_chdir("pagearea.inc.php", Theme::getPath());
-				} catch(Exception $e) {}
+				echo "</contents></column>";
+				echo "<column class=\"pagearea medium\"><contents>";
 				VirtualPages::runWidgets($page['rowid']);
-				echo "</Contents></Column>";
+				echo "</contents></column>";
 				break;
 				
 			case 3: // Dual Sidebars
-				echo "<Column class=\"sidebar left\"><Contents>";
-				try {
-					require_chdir("left.inc.php", Theme::getPath());
-				} catch(Exception $e) {}
+				echo "<column class=\"sidebar left\"><contents>";
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::LEFTCOLUMN);
-				echo "</Contents></Column>";
-				echo "<Column class=\"pagearea small\"><Contents>";
-				try {
-					require_chdir("pagearea.inc.php", Theme::getPath());
-				} catch(Exception $e) {}
+				echo "</contents></column>";
+				echo "<column class=\"pagearea small\"><contents>";
 				VirtualPages::runWidgets($page['rowid']);
-				echo "</Contents></Column>";
-				echo "<Column class=\"sidebar right\"><Contents>";
-				try {
-					require_chdir("right.inc.php", Theme::getPath());
-				} catch(Exception $e) {}
+				echo "</contents></column>";
+				echo "<column class=\"sidebar right\"><contents>";
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::RIGHTCOLUMN);
-				echo "</Contents></Column>";
+				echo "</contents></column>";
 				break;
 		}
 		break;
@@ -98,11 +74,11 @@ Layout<br /><?
 		if($layout >= 2) {
 			echo "<button onclick=\"";
 			echo "ControlPanel.loadPage('Pages', 'Edit Widgets', {location: $page[rowid], title: ";
-			echo htmlspecialchars("\"`$page[title]` [Left Column]\"");
+			echo htmlspecialchars("\"`$page[title]` [Left column]\"");
 			echo ", subtitle: ";
 			echo htmlspecialchars("\"$page[path]\"");
 			echo ", slot: " . VirtualPages::LEFTCOLUMN;
-			echo "});return false;\"><center>Left Column<br />";
+			echo "});return false;\"><center>Left column<br />";
 			echo VirtualPages::countWidgets($page['rowid'], VirtualPages::LEFTCOLUMN);
 			echo " Widgets</center></button>";
 		}
@@ -117,11 +93,11 @@ Layout<br /><?
 		if($layout == 1 || $layout == 3) {
 			echo "<button onclick=\"";
 			echo "ControlPanel.loadPage('Pages', 'Edit Widgets', {location: $page[rowid], title: ";
-			echo htmlspecialchars("\"`$page[title]` [Right Column]\"");
+			echo htmlspecialchars("\"`$page[title]` [Right column]\"");
 			echo ", subtitle: ";
 			echo htmlspecialchars("\"$page[path]\"");
 			echo ", slot: " . VirtualPages::RIGHTCOLUMN;
-			echo "});return false;\"><center>Right Column<br />";
+			echo "});return false;\"><center>Right column<br />";
 			echo VirtualPages::countWidgets($page['rowid'], VirtualPages::RIGHTCOLUMN);
 			echo " Widgets</center></button>";
 		}

@@ -11,6 +11,8 @@ chdir($base);
 Template::addScript($base . "cp-script.js");
 Template::addStyle(FRAMEWORK_PATH . "resources/stylesheets/widgets.css");
 Template::addStyle($base . "cp-style.css");
+if(array_key_exists("popup", $_GET))
+	Template::addStyle($base . "cp-popup.css");
 
 requireAddon("eventable-object");
 requireAddon("unfinished-work");

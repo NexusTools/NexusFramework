@@ -10,6 +10,11 @@ function registerPopupListener(listener){
 	__popupListeners.push(listener);
 }
 
+function popupOpenOverlay(){
+	if(darkOverlay.hasClassName("hidden"))
+        darkOverlay.removeClassName("hidden");
+}
+
 function popupLoadPage(page){
     page = page.replace(new RegExp("/^\//i"), "");
     page = page.replace(new RegExp("/\/\//i"), "");
@@ -17,8 +22,7 @@ function popupLoadPage(page){
     
     console.log("Loading " + page);
     
-    if(darkOverlay.hasClassName("hidden"))
-        darkOverlay.removeClassName("hidden");
+    popupOpenOverlay();
     var foundPopup = false;
     $$("popup.preload[preload-page]").each(function(popup){
         if(foundPopup)
@@ -76,8 +80,7 @@ function createPopup(html, allowClose){
     
     popup.appendChild(content);
     
-    if(darkOverlay.hasClassName("hidden"))
-        darkOverlay.removeClassName("hidden");
+    popupOpenOverlay();
     __popupStack.push(popup);
     
     positionPopups();

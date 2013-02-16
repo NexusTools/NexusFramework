@@ -15,7 +15,7 @@ class PageCategories {
 	public static function runCategoryWidgets($catid, $footer, $slot, $mode=VirtualPages::RENDER){
 		foreach(VirtualPages::fetchWidgets($catid, $slot, 0,
 							$footer ? "catfoot" : "cathead") as $widget)
-			VirtualPages::runWidget($widget['type'], $mode, unserialize($widget['config']));
+			VirtualPages::runWidget($widget['type'], $mode, unserialize($widget['config']), $widget['rowid']);
 		
 		if($catid) {
 			$cat = self::$database->selectRow("categories", Array("rowid" => $catid));

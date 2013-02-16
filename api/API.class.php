@@ -42,6 +42,10 @@ class API {
 		return self::$curArg;
 	}
 	
+	public static function getCurrentArgument(){
+		return self::$curArg;
+	}
+	
 	private static function parseURLArgs($data, &$storage){
 		foreach(explode("&", $data) as $key){
 			$value = "";
