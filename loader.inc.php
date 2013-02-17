@@ -18,6 +18,9 @@ if(floatval(phpversion()) < 5.3)
 define("DIRSEP", DIRECTORY_SEPARATOR);
 define("PATHSEP", PATH_SEPARATOR);
 
+// Helper Constants
+define("PHP_INT_MIN", -PHP_INT_MAX);
+
 // Setup Common Paths
 define("FRAMEWORK_PATH", dirname(__FILE__) . DIRSEP);
 define("FRAMEWORK_CORE_PATH", FRAMEWORK_PATH . "core" . DIRSEP);

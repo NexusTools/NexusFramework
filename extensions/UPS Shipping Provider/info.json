@@ -1,0 +1,6 @@
+{
+	"name": "UPS Shipping Provider",
+	"provides": "shipping-provider-ups",
+	"description": "UPS Extension for Shipping Core",
+	"dependancies": ["shipping-core"]
+}

@@ -2,9 +2,20 @@
 abstract class ShippingProvider {
 
 	public abstract function getName();
-	public abstract function getCode();
 	public abstract function getImage();
-	public abstract function getDescription();
+	
+	/*
+	
+		$from/to = Array(CountryCode, PostalCode)
+		
+		returns Array(Array(
+					"code" => (integer),
+					"name" => (string),
+					"cost" => (float)
+						) ...)
+		
+	*/
+	public abstract function getQuotes($from, $to, $packages);
 
 }
 ?>
