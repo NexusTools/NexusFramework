@@ -4,16 +4,16 @@ class UPSShippingProvider extends ShippingProvider {
 	private static $settings;
 	private static $services = Array(
 			11 => "UPS Standard",
-			03 => "UPS Ground",
+			3 => "UPS Ground",
 			12 => "UPS 3 Day Select",
-			02 => "UPS 2nd Day Air",
+			2 => "UPS 2nd Day Air",
 			59 => "UPS 2nd Day Air AM",
 			13 => "UPS Next Day Air Saver",
-			01 => "UPS Next Day Air",
+			1 => "UPS Next Day Air",
 			14 => "UPS Next Day Air Early A.M.",
-			07 => "UPS Worldwide Express",
+			7 => "UPS Worldwide Express",
 			54 => "UPS Worldwide Express Plus",
-			08 => "UPS Worldwide Expedited",
+			8 => "UPS Worldwide Expedited",
 			65 => "UPS World Wide Saver"
 		);
 
