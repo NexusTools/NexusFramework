@@ -1,5 +1,5 @@
 <?php
-class FilesystemDatabase extends EmuDatabase {
+class FilesystemDatabase extends BasicEmuDatabase {
 
 	private $filepath;
 	private $basepath;

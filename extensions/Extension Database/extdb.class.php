@@ -1,5 +1,5 @@
 <?php
-class ExtensionDatabase extends EmuDatabase {
+class ExtensionDatabase extends BasicEmuDatabase {
 
 	private static $instance;
 	

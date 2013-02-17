@@ -1,87 +1,63 @@
 <?php
 abstract class EmuDatabase {
 
-	protected abstract function getEntries();
+	public abstract function listColumns();
+	protected abstract function nextEntry();
+	protected abstract function skipEntry();
+	protected abstract function tryCountEntries();
 	
 	public function getName(){
 	    return false;
 	}
 	
-	public function queryRows($table, $where, $start, $limit, $orderBy=false){
-		$realEntries = $this->getEntries();
-	
+	public function queryRows($table, $where=Array(), $start=-1, $limit=-1, $orderBy=false){
 		$results = Array();
+		$count = $this->tryCountEntries();
+		$total = 0;
 		
-		if($orderBy){
-			$column = $orderBy[0];
-		
-			$orderedEntries = Array();
-			foreach($realEntries as $entry){
-				if(!isset($orderedEntries[$entry[$column]]))
-					$orderedEntries[$entry[$column]] = Array();
-					
-				array_push($orderedEntries[$entry[$column]], $entry);
-			}
-			
-			if($orderBy[1] == "ASC")
-				ksort($orderedEntries);
-			else
-				krsort($orderedEntries);
-				
-			$realEntries = Array();
-			foreach($orderedEntries as $entryArray){
-				foreach($entryArray as $entry)
-					array_push($realEntries, $entry);
-			}
+		foreach($where as $key => &$value){
+			if(startsWith($key, "LIKE "))
+				$value = WildcardMatch::instance($value, "%");
 		}
 		
-		if($where) {
-			$filteredEntries = Array();
-		
-			foreach($where as $key => &$value){
-				if(startsWith($key, "LIKE "))
-					$value = WildcardMatch::instance($value, "%");
+		if(!$orderBy) {
+			while($start > 0 && $this->skipEntry()) {
+				$start--;
+				$total++;
 			}
 			
-			foreach($realEntries as $key => $extension) {
+			while($limit > 0 && ($entry = $this->nextEntry())) {
 				$skip = false;
-				foreach($where as $key => $value){
-					if(startsWith($key, "LIKE ")){
+				
+				foreach($where as $key => $value) {
+					if(startsWith($key, "LIKE ")) {
 						$key = substr($key, 5);
-						if(!$value->exactMatch($extension[$key])) {
+						if(!$value->exactMatch($entry[$key])) {
 							$skip = true;
-							continue;
+							break;
 						}
-					} else if($extension[$key] != $value) {
+					} else if($entry[$key] != $value) {
 						$skip = true;
 						break;
 					}
 				}
-				if($skip)
-					continue;
-					
-				array_push($filteredEntries, $extension);
+				
+				
+				if(!$skip) {
+					array_push($results, $entry);
+					$limit--;
+				}
+				
+				$total++;
 			}
 			
-			$realEntries = $filteredEntries;
+			if(!$count)
+				while($this->skipEntry()) {
+					$total++;
+				}
 		}
 		
-		foreach($realEntries as $key => $extension){
-			if($start) {
-				$start--;
-				continue;
-			}
-		
-			array_push($results, $extension);
-		
-			if(!--$limit)
-				break;
-		}
-		
-		$entries = Array();
-		$entries['total'] = count($realEntries);
-		$entries['results'] = $results;
-		return $entries;
+		return Array("total" => $count ? $count : $total, "results" => $results);
 	}	
 	
 }
