@@ -30,12 +30,12 @@ class ShippingCore {
 	public static function getQuotes($from, $to, $packages){
 		$quotes = Array();
 		foreach(self::$providers as $key => $provider) {
+			$name = $provider->getName();
 			try {
-				$quotes[$key] = Array("name" => $provider->getName(),
-							"provider-id" => $key,
+				$quotes[$name] = Array("id" => $key,
 							"quotes" => $provider->getQuotes($from, $to, $packages));
 			} catch(Exception $e) {
-				$quotes[$key] = Array("error" => $e->getMessage());
+				$quotes[$name] = Array("error" => $e->getMessage());
 			}
 		}
 		return $quotes;
