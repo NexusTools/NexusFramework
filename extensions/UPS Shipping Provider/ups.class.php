@@ -120,7 +120,10 @@ class UPSShippingProvider extends ShippingProvider {
   </Shipment>
 </RatingServiceSelectionRequest>";
 
-		curl_setopt($ch, CURLOPT_URL, "https://www.ups.com/ups.app/xml/Rate");
+		if(self::$settings->getBoolean("testing", false))
+			curl_setopt($ch, CURLOPT_URL, "https://www.ups.com/ups.app/xml/Rate");
+		else
+			curl_setopt($ch, CURLOPT_URL, "https://wwwcie.ups.com/ups.app/xml/Rate");
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
