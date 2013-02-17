@@ -3,18 +3,18 @@ class UPSShippingProvider extends ShippingProvider {
 
 	private static $settings;
 	private static $services = Array(
-			11 => "UPS Standard",
-			3 => "UPS Ground",
-			12 => "UPS 3 Day Select",
-			2 => "UPS 2nd Day Air",
-			59 => "UPS 2nd Day Air AM",
-			13 => "UPS Next Day Air Saver",
-			1 => "UPS Next Day Air",
-			14 => "UPS Next Day Air Early A.M.",
-			7 => "UPS Worldwide Express",
-			54 => "UPS Worldwide Express Plus",
-			8 => "UPS Worldwide Expedited",
-			65 => "UPS World Wide Saver"
+			11 => "Standard",
+			3 => "Ground",
+			12 => "3 Day Select",
+			2 => "2nd Day Air",
+			59 => "2nd Day Air AM",
+			13 => "Next Day Air Saver",
+			1 => "Next Day Air",
+			14 => "Next Day Air Early A.M.",
+			7 => "Worldwide Express",
+			54 => "Worldwide Express Plus",
+			8 => "Worldwide Expedited",
+			65 => "World Wide Saver"
 		);
 
 	public static function init(){
