@@ -93,7 +93,7 @@ if(isset($_GET['recovery']) &&
 		is_dir(INDEX_PATH . "exceptions") &&
 		file_exists(INDEX_PATH . "exceptions" . DIRSEP . $_GET['recovery'] . ".json")){
 	
-	require(FRAMEWORK_PATH . "recovery.inc.php");
+	require(FRAMEWORK_CORE_PATH . "recovery.inc.php");
 	recovery_show_page(json_decode(file_get_contents(INDEX_PATH . "exceptions" . DIRSEP . $_GET['recovery'] . ".json"), true));
 	die();
 }
