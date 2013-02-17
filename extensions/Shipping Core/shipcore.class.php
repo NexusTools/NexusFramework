@@ -31,7 +31,8 @@ class ShippingCore {
 		$quotes = Array();
 		foreach(self::$providers as $key => $provider) {
 			try {
-				$quotes[$key] = $provider->getQuotes($from, $to, $packages);
+				$quotes[$key] = Array("name" => $provider->getName(),
+							"quotes" => $provider->getQuotes($from, $to, $packages));
 			} catch(Exception $e) {
 				$quotes[$key] = Array("error" => $e->getMessage());
 			}
