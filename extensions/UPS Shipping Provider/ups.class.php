@@ -135,7 +135,7 @@ class UPSShippingProvider extends ShippingProvider {
 		
 		$statusCode = (integer)$xml->Response->ResponseStatusCode;
 		if($statusCode != 1)
-			throw new Exception((string)$xml->Response->Error);
+			throw new Exception((string)$xml->Response->Error->ErrorDescription);
 			
 		$quotes = Array();
 		foreach($xml->RatedShipment as $quote) {
