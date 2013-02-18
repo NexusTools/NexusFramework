@@ -19,7 +19,7 @@ class DataCrypto {
 		$pad = $block - (strlen($str) % $block);
 		$str .= str_repeat(chr($pad), $pad);
 
-		return mcrypt_encrypt(MCRYPT_DES, $key, $str, MCRYPT_MODE_ECB);
+		return mcrypt_encrypt(MCRYPT_DES, crc32($key), $str, MCRYPT_MODE_ECB);
 	}
 	
 	public static function decryptURLObject($data, $key=null, $method=MCRYPT_DES)
@@ -36,7 +36,7 @@ class DataCrypto {
 	{   
 		if(!$key)
 			$key = ClientInfo::getUniqueID();
-		$str = mcrypt_decrypt(MCRYPT_DES, $key, $str, MCRYPT_MODE_ECB);
+		$str = mcrypt_decrypt(MCRYPT_DES, crc32($key), $str, MCRYPT_MODE_ECB);
 
 		$block = mcrypt_get_block_size('des', 'ecb');
 		$pad = ord($str[($len = strlen($str)) - 1]);
