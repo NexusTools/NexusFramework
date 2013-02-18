@@ -146,7 +146,6 @@ class UPSShippingProvider extends ShippingProvider {
 					"name" => $name,
 					"cost" => (float)$quote->TotalCharges->MonetaryValue
 						));
-			//print_r($quote);
 		}
 		
 		return $quotes;

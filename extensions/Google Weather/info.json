@@ -1,5 +1,0 @@
-{
-	"name": "Google Weather",
-	"description": "Provides a Interface for Querying Google's Weather API",
-	"provides": "google-weather"
-}
