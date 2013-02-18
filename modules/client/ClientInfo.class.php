@@ -4,6 +4,7 @@ class ClientInfo {
 	private static $remoteAddr;
 	private static $reservedIPs;
 	private static $uniqueID = false;
+	private static $uniqueDomainID = false;
 
 	public static function validateIP($addr){
 		if (empty($addr) || !($addr = ip2long($addr)))
@@ -32,6 +33,13 @@ class ClientInfo {
 	        self::$uniqueID = Framework::uniqueHash(self::getRemoteAddress() . ":" . $_SERVER["HTTP_USER_AGENT"], Framework::RawHash);
 	        
 	    return self::$uniqueID;
+	}
+	
+	public static function getUniqueDomainID() {
+	    if(!self::$uniqueDomainID)
+	        self::$uniqueDomainID = Framework::uniqueHash(self::getRemoteAddress() . ":" . $_SERVER["HTTP_USER_AGENT"], Framework::RawHash);
+	        
+	    return self::$uniqueDomainID;
 	}
 	
 	public static function getRemoteAddress(){

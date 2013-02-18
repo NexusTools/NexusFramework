@@ -1,0 +1,5 @@
+{
+	"name": "Data Crypto",
+	"provides": "data-crypto",
+	"description": "Cryptography using mcrypt"
+}
