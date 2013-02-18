@@ -1,6 +1,11 @@
 <?php
 class DataCrypto {
 
+	public static function encryptURLObject($data, $key=null, $method=MCRYPT_DES)
+	{
+		return urlencode(base64_encode(self::encryptJSON($data, $key, $method)));
+	}
+
 	public static function encryptJSON($data, $key=null, $method=MCRYPT_DES)
 	{
 		return self::encrypt(json_encode($data), $key, $method);
@@ -15,6 +20,11 @@ class DataCrypto {
 		$str .= str_repeat(chr($pad), $pad);
 
 		return mcrypt_encrypt(MCRYPT_DES, $key, $str, MCRYPT_MODE_ECB);
+	}
+	
+	public static function encryptURLObject($data, $key=null, $method=MCRYPT_DES)
+	{
+		return json_decode(self::encrypt(base64_decode($data), $key, $method), true);
 	}
 
 	public static function decryptJSON($data, $key=null, $method=MCRYPT_DES)
