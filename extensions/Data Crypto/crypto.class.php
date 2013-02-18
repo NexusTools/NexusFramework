@@ -22,7 +22,7 @@ class DataCrypto {
 		return mcrypt_encrypt(MCRYPT_DES, $key, $str, MCRYPT_MODE_ECB);
 	}
 	
-	public static function encryptURLObject($data, $key=null, $method=MCRYPT_DES)
+	public static function decryptURLObject($data, $key=null, $method=MCRYPT_DES)
 	{
 		return json_decode(self::encrypt(base64_decode($data), $key, $method), true);
 	}
