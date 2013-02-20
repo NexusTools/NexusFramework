@@ -67,15 +67,30 @@ class PayPalExpressGateway extends PaymentGateway {
 				$responseData[$entry[0]] = urldecode($entry[1]);
 			}
 		
-			//https://www.sandbox.paypal.com/webscr 
-			//	?cmd=_express-checkout&token=tokenValue
-		
-			if(array_key_exists("TOKEN", $responseData)) {
-				echo "";
-				echo urlencode($responseData['TOKEN']);
-				echo "\n\n";
-			}
-			//https://www$env.
+			if(array_key_exists("ACK", $responseData)) {
+				$ack = $responseData['ACK'];
+				switch($ack) {
+					case "Success":
+					case "SuccessWithWarning":
+						break;
+				
+					case "Failure":
+					case "FailureWithWarning":
+					case "Warning":
+						header("Content-Type: text/plain");
+						while(ob_get_level())
+							ob_end_clean();
+							
+						print_r($responseData);
+						die();
+					
+						break;
+				
+					default:
+						throw new Exception("Invalid Response Code");
+				}
+			} else
+				throw new Exception("Response Corrupt");
 		
 			return $responseData;
 		}
