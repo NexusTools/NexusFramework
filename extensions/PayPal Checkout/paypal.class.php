@@ -157,7 +157,7 @@ class PayPalExpressGateway extends PaymentGateway {
 		$args["TOKEN"] = $_SESSION['paypal-gateway']["token"];
 		$args["PAYERID"] = $_SESSION['paypal-gateway']["payerid"];
 		print_r(self::callNVP("DoExpressCheckoutPayment", $args));
-									
+		
 		die();
 	}
 	
@@ -176,7 +176,7 @@ class PayPalExpressGateway extends PaymentGateway {
 				if(!array_key_exists("PAYERID", $checkoutData))
 					throw new Exception("Missing PayerID");
 					
-				$_SESSION['paypal-gateway']['payerid'] = $_GET["PAYERID"];
+				$_SESSION['paypal-gateway']['payerid'] = $checkoutData["PAYERID"];
 				Framework::redirect(PaymentGateway::getReviewURI());
 				return;
 				
