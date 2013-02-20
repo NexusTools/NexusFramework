@@ -29,7 +29,7 @@ abstract class PaymentGateway {
 	}
 	
 	public static function isTestingMode(){
-		return self::$settings->getString("testing", true);
+		return self::$settings->getBoolean("testing", true);
 	}
 
 	public static function getGateways(){
