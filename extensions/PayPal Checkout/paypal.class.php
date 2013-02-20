@@ -17,10 +17,7 @@ class PayPalExpressGateway extends PaymentGateway {
 			self::$settings->hasValue("signature")) {
 			if(PaymentGateway::isTestingMode() || PROTOCOL_SECURE)
 				PaymentCore::registerGateway(new self());
-			else
-				throw new Exception("Invalid Setup");
-		} else
-			throw new Exception("Misconfigured");
+		}
 		
 	}
 
