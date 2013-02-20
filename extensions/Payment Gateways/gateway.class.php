@@ -13,19 +13,19 @@ abstract class PaymentGateway {
 	}
 	
 	public static function getConfirmURI(){
-		if(self::$settings->isValidString("review-url"))
-			return self::$settings->getValue("review-url");
+		if(self::$settings->isValidString("review-uri"))
+			return self::$settings->getValue("review-uri");
 		throw new Exception("No Review URL Set");
 	}
 	
 	public static function getReviewURI(){
-		if(self::$settings->isValidString("review-url"))
-			return self::$settings->getValue("review-url");
+		if(self::$settings->isValidString("review-uri"))
+			return self::$settings->getValue("review-uri");
 		throw new Exception("No Review URL Set");
 	}
 	
 	public static function getCancelURI(){
-		return self::$settings->getString("cancel-url", DOMAIN_SL);
+		return self::$settings->getString("cancel-uri", DOMAIN_SL);
 	}
 	
 	public static function isTestingMode(){

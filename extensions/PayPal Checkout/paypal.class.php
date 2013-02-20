@@ -153,7 +153,18 @@ class PayPalExpressGateway extends PaymentGateway {
 			throw new Exception("No Token");
 		
 		switch($page) {
+			case "ipn":
+				file_put_contents(INDEX_PATH . "ipn.out", print_r($_GET, true) . print_r($_POST, true)); 
+				die();
+		
 			case "return":
+				if($_GET['token'] != $_SESSION['paypal-gateway']["token"])
+					throw new Exception("Token Mismatch");
+					
+				if(!array_key_exists("PayerID", $_GET))
+					throw new Exception("Missing PayerID");
+					
+				$_SESSION['paypal-gateway']['buyer'] = $_GET["PayerID"];
 				Framework::redirect(PaymentGateway::getReviewURI());
 				return;
 				
