@@ -113,22 +113,23 @@ class PayPalExpressGateway extends PaymentGateway {
 		if($currencyCode)
 			$args['PAYMENTREQUEST_0_CURRENCYCODE'] = $currencyCode;
 		
-		$totalCost = 0;
 		$prodID = 0;
+		$totalCost = 0;
 		foreach($products as $product) {
 			$args["L_PAYMENTREQUEST_0_NAME$prodID"] = $product['name'];
-			$args["L_PAYMENTREQUEST_0_AMT$prodID"] = $product['cost'];
-			if(array_key_exists("quantity", $product))
+			$args["L_PAYMENTREQUEST_0_AMT$prodID"] = round($product['cost'],2);
+			if(array_key_exists("quantity", $product)) {
 				$args["L_PAYMENTREQUEST_0_QTY$prodID"] = $product['quantity'];
-			if(array_key_exists("quantity", $product))
-				$args["L_PAYMENTREQUEST_0_QTY$prodID"] = $product['quantity'];
-			$totalCost += $product['cost']*$product['quantity'];
+				$totalCost += $product['cost']*$product['quantity'];
+			} else
+				$totalCost += $product['cost'];
 			$prodID++;
 		}
 		
 		if($totalCost <= 0)
 			throw new Exception("No Cost Invoice");
 		
+		$totalCost += round($totalCost,2);
 		$args['PAYMENTREQUEST_0_ITEMAMT'] = $totalCost;
 		$args['PAYMENTREQUEST_0_AMT'] = $totalCost;
 		$args['PAYMENTREQUEST_0_INVNUM'] = $invoiceID;
