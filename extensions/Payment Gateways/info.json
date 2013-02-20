@@ -1,0 +1,5 @@
+{
+	"name": "Payment Gateways",
+	"provides": "payment-gateways",
+	"page-root": "payment-gateway-callbacks"
+}
