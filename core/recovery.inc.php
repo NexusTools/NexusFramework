@@ -56,13 +56,18 @@ h3 {
 	text-align: left; margin-top: 10px;
 }
 
+h4 {
+	margin: 0px;
+}
+
 p {
 	margin: 4px;
 	margin-top: 0px;
 	text-align: left;
 }
 
-pre {
+pre,
+div.container {
 	width: 600px;
 	max-height: 500px;
 	overflow: auto;
@@ -176,7 +181,7 @@ if(false){ ?>
 <h1><?
 $exception = $data['exception'];
 if(array_key_exists("type", $exception))
-	echo "Uncaught `$exception[type]` Occured";
+	echo "Uncaught $exception[type] Occured";
 else
 	echo "Unrecoverable Error Occured";
 ?></h1>
@@ -201,6 +206,48 @@ if(array_key_exists("file", $exception) &&
 <?
 if(array_key_exists("trace", $exception)) {
 ?>
+<h3><a style="font-size: 70%; float: right" id="previous-link" href="javascript:togglePrevious();void(0);">Open</a>Previous Exceptions</h3>
+<div style="display: none" class="container" id="previous" align="left"><?
+$prevExc = $exception;
+while(is_array($prevExc = $prevExc['previous'])) {
+	echo "<p style=\"margin-top: 8px\"><b>";
+	if(array_key_exists("type", $prevExc))
+		echo "$prevExc[type]: ";
+	else
+		echo "Error: ";
+	echo htmlentities($prevExc['message']);
+	echo "</b>";
+	if(array_key_exists("file", $exception) &&
+		array_key_exists("line", $exception)) {
+	?><br />
+	Occured in file <? echo $exception['file']; ?> on line <? echo $exception['line']; ?>
+	<? }
+	echo "</p>";
+}
+?></div>
+<script>
+
+var prevExceptionOpen = false
+function togglePrevious(){
+	var trace = document.getElementById("previous");
+	var link = document.getElementById("previous-link");
+	console.log(trace);
+	prevExceptionOpen = !prevExceptionOpen;
+	if(prevExceptionOpen){
+		link.innerHTML = "Close";
+		trace.style.display = "block";
+	} else {
+		link.innerHTML = "Open";
+		trace.style.display = "none";
+	}
+}
+</script>
+<? } ?>
+
+
+<?
+if(array_key_exists("trace", $exception)) {
+?>
 <h3><a style="font-size: 70%; float: right" id="trace-link" href="javascript:toggleTrace();void(0);">Open</a>Stack Trace</h3>
 <pre style="display: none" id="trace" align="left"><?
 if(defined("JSON_PRETTY_PRINT"))
@@ -211,13 +258,13 @@ else
 
 <script>
 
-var open = false
-function toggleTrace(link){
+var traceOpen = false
+function toggleTrace(){
 	var trace = document.getElementById("trace");
 	var link = document.getElementById("trace-link");
 	console.log(trace);
-	open = !open;
-	if(open){
+	traceOpen = !traceOpen;
+	if(traceOpen){
 		link.innerHTML = "Close";
 		trace.style.display = "block";
 	} else {

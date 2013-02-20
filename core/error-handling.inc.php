@@ -12,7 +12,7 @@ class Error extends Exception {
 	}
 }
 
-function __convertExtensionToArray($exception){
+function __convertExtensionToArray($exception, $includeTrace=true){
     if(!($exception instanceof Exception))
         return $exception;
 
@@ -22,8 +22,8 @@ function __convertExtensionToArray($exception){
                 "file" => $exception->getFile(),
                 "line" => $exception->getLine(),
                 "code" => $exception->getCode(),
-                "trace" => $exception->getTrace(),
-                "previous" => $exception->getPrevious()
+                "trace" => $includeTrace ? $exception->getTrace() : Array(),
+                "previous" => __convertExtensionToArray($exception->getPrevious(), false)
             );
 }
 
