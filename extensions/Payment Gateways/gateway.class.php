@@ -2,6 +2,7 @@
 abstract class PaymentGateway {
 
 	private static $settings;
+	private static $gateways = Array();
 
 	public static function init() {
 		self::$settings = new Settings("Payment Gateway");
@@ -32,13 +33,19 @@ abstract class PaymentGateway {
 	}
 
 	public static function getGateways(){
+		return self::$gateways;
 	}
 	
 	public static function getGateway($id){
+		return self::$gateways[$id];
 	}
 	
 	public static function registerGateway($impl){
 		$id = StringFormat::idForDisplay($impl->getName());
+		if(array_key_exists($id, self::$gateways))
+			throw new Exception("Gateway `$id` Already Registered");
+			
+		self::$gateways[$id] = $impl;
 	}
 	
 	public abstract function getName();
@@ -62,5 +69,5 @@ abstract class PaymentGateway {
 	
 	public abstract function handleCallback($page);
 
-}
+} PaymentGateway::init();
 ?>

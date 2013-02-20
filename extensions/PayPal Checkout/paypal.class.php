@@ -12,9 +12,9 @@ class PayPalExpressGateway extends PaymentGateway {
 		else
 			self::$domain = "paypal.com";
 		
-		if($settings->hasValue("username") &&
-			$settings->hasValue("password") &&
-			$settings->hasValue("signature")) {
+		if(self::$settings->hasValue("username") &&
+			self::$settings->hasValue("password") &&
+			self::$settings->hasValue("signature")) {
 			if(PaymentGateway::isTestingMode() || $_REQUEST['HTTPS'])
 				PaymentCore::registerGateway(new self());
 			
@@ -31,11 +31,11 @@ class PayPalExpressGateway extends PaymentGateway {
 	}
 	
 	protected static function callNVP($method, $arguments, $version=63){
-		"METHOD" = $method;
-		"VERSION" => 63;
-		"USER" = $settings->getValue("username");
-		"PWD" = $settings->getValue("password");
-		"SIGNATURE" = $settings->getValue("signature");
+		$arguments["METHOD"] = $method;
+		$arguments["VERSION"] = 63;
+		$arguments["USER"] = self::$settings->getValue("username");
+		$arguments["PWD"] = self::$settings->getValue("password");
+		$arguments["SIGNATURE"] = self::$settings->getValue("signature");
 	
 		$data = "";
 		foreach($arguments as $key => $value) {
@@ -89,7 +89,7 @@ class PayPalExpressGateway extends PaymentGateway {
 		Framework::redirect($url);
 	}
 	
-	public function startCheckout($products, $invoiceID, $currencyCode) {
+	public function startCheckout($products, $invoiceID, $currencyCode=false) {
 		$_SESSION['paypal-gateway'] = Array(); // Reset Paypal Session
 	
 		if(!count($products))
