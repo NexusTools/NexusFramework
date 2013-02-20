@@ -77,7 +77,7 @@ class PayPalExpressGateway extends PaymentGateway {
 					case "Failure":
 					case "FailureWithWarning":
 					case "Warning":
-						throw new Exception($responseData['L_ERRORCODE0'] . ": " . $responseData['L_LONGMESSAGE0']);
+						throw new Exception("NVP Error " . $responseData['L_ERRORCODE0'] . ": " . $responseData['L_LONGMESSAGE0']);
 				
 					default:
 						throw new Exception("Invalid Response Code");
@@ -129,6 +129,7 @@ class PayPalExpressGateway extends PaymentGateway {
 		if($totalCost <= 0)
 			throw new Exception("No Cost Invoice");
 		
+		$args['PAYMENTREQUEST_0_ITEMAMT'] = $totalCost;
 		$args['PAYMENTREQUEST_0_AMT'] = $totalCost;
 		$args['PAYMENTREQUEST_0_INVNUM'] = $invoiceID;
 		$args['PAYMENTREQUEST_0_NOTIFYURL'] = BASE_URL . "payment-gateway-callbacks/paypal/ipn";
