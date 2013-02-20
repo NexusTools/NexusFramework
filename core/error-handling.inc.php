@@ -17,6 +17,7 @@ function __convertExtensionToArray($exception){
         return $exception;
 
     return Array(
+    			"type" => get_class($exception),
                 "message" => $exception->getMessage(),
                 "file" => $exception->getFile(),
                 "line" => $exception->getLine(),

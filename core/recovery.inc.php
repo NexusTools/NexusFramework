@@ -16,7 +16,7 @@ if(defined("INAPI")) {
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 		header("Content-Type: text/html");
 ?><!doctype html>
-<html><head><title>Unrecoverable Exception Occured</title>
+<html><head><title>NexusFramework Issue Resolver</title>
 <style>
 body {
 	cursor: default;
@@ -173,12 +173,18 @@ if(false){ ?>
 <?
 } else {
 ?>
-<h1>Exception Recovery Assistant</h1>
+<h1><?
+$exception = $data['exception'];
+if(array_key_exists("type", $exception))
+	echo "Uncaught `$exception[type]` Occured";
+else
+	echo "Unrecoverable Error Occured";
+?></h1>
 <h2><? echo date("F j, Y, g:i a", $data['date']); ?></h2>
 
 <h3>Error Message</h3><p>
 <?
-$exception = $data['exception'];
+
 if(array_key_exists("message", $exception))
 	echo $exception['message'];
 else
