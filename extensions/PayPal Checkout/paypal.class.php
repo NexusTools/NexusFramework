@@ -145,7 +145,17 @@ class PayPalExpressGateway extends PaymentGateway {
 	}
 	
 	public function confirmCheckoutPayment() {
-		
+		if(!$_SESSION['paypal-gateway']["token"])
+			throw new Exception("No Token");
+	
+		while(ob_get_level())
+			ob_end_clean();
+		print_r(self::callNVP("GetExpressCheckoutDetails", Array(
+								"TOKEN" => $_SESSION['paypal-gateway']["token"],
+								"PAYERID" => $_SESSION['paypal-gateway']["payerid"]
+									)));
+									
+		die();
 	}
 	
 	public function handleCallback($page) {
@@ -158,13 +168,12 @@ class PayPalExpressGateway extends PaymentGateway {
 				die();
 		
 			case "return":
-				if($_GET['token'] != $_SESSION['paypal-gateway']["token"])
-					throw new Exception("Token Mismatch");
-					
-				if(!array_key_exists("PayerID", $_GET))
+				$checkoutData = self::callNVP("GetExpressCheckoutDetails", Array("TOKEN" => $_SESSION['paypal-gateway']["token"]));
+				
+				if(!array_key_exists("PAYERID", $checkoutData))
 					throw new Exception("Missing PayerID");
 					
-				$_SESSION['paypal-gateway']['buyer'] = $_GET["PayerID"];
+				$_SESSION['paypal-gateway']['payerid'] = $_GET["PAYERID"];
 				Framework::redirect(PaymentGateway::getReviewURI());
 				return;
 				
