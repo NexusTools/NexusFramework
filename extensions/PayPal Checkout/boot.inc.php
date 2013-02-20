@@ -1,3 +1,3 @@
 <?php
-PayPalGateway::init();
+PayPalExpressGateway::init();
 ?>

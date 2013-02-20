@@ -16,7 +16,7 @@ class PayPalExpressGateway extends PaymentGateway {
 			$settings->hasValue("password") &&
 			$settings->hasValue("signature")) {
 			if(PaymentGateway::isTestingMode() || $_REQUEST['HTTPS'])
-				PaymentCore::registerGateway(new PayPalExpressGateway());
+				PaymentCore::registerGateway(new self());
 			
 		}
 		

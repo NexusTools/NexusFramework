@@ -38,7 +38,7 @@ abstract class PaymentGateway {
 	}
 	
 	public static function registerGateway($impl){
-		
+		$id = StringFormat::idForDisplay($impl->getName());
 	}
 	
 	public abstract function getName();
