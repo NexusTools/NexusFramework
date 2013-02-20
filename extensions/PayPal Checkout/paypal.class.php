@@ -150,7 +150,7 @@ class PayPalExpressGateway extends PaymentGateway {
 	
 		while(ob_get_level())
 			ob_end_clean();
-		print_r(self::callNVP("GetExpressCheckoutDetails", Array(
+		print_r(self::callNVP("DoExpressCheckoutPayment", Array(
 								"TOKEN" => $_SESSION['paypal-gateway']["token"],
 								"PAYERID" => $_SESSION['paypal-gateway']["payerid"]
 									)));
