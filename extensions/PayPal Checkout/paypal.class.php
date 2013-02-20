@@ -26,7 +26,7 @@ class PayPalExpressGateway extends PaymentGateway {
 		return "PayPal";
 	}
 	
-	public abstract function getLogo() {
+	public function getLogo() {
 		return dirname(__FILE__) . DIRSEP . "paypal-logo.png";
 	}
 	
@@ -89,7 +89,7 @@ class PayPalExpressGateway extends PaymentGateway {
 		Framework::redirect($url);
 	}
 	
-	public abstract function startCheckout($products, $invoiceID, $currencyCode) {
+	public function startCheckout($products, $invoiceID, $currencyCode) {
 		$_SESSION['paypal-gateway'] = Array(); // Reset Paypal Session
 	
 		if(!count($products))
@@ -134,11 +134,11 @@ class PayPalExpressGateway extends PaymentGateway {
 			throw new Exception("Token Missing from Response");
 	}
 	
-	public abstract function confirmCheckoutPayment() {
+	public function confirmCheckoutPayment() {
 		
 	}
 	
-	public abstract function handleCallback($page) {
+	public function handleCallback($page) {
 		if(!$_SESSION['paypal-gateway']["token"])
 			throw new Exception("No Token");
 		
