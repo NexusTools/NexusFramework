@@ -108,7 +108,6 @@ class PayPalExpressGateway extends PaymentGateway {
 		$args['RETURNURL'] = BASE_URL . "payment-gateway-callbacks/paypal/return";
 		$args['CANCELURL'] = BASE_URL . "payment-gateway-callbacks/paypal/cancel";
 		
-		$args['PAYMENTACTION'] = "Order";
 		$args['BRANDNAME'] = PaymentGateway::getCompanyName();
 		if($currencyCode)
 			$args['PAYMENTREQUEST_0_CURRENCYCODE'] = $currencyCode;
@@ -136,6 +135,9 @@ class PayPalExpressGateway extends PaymentGateway {
 		$args['PAYMENTREQUEST_0_INVNUM'] = $invoiceID;
 		$args['PAYMENTREQUEST_0_NOTIFYURL'] = BASE_URL . "payment-gateway-callbacks/paypal/ipn";
 		
+		$_SESSION['paypal-gateway']['checkout-arguments'] = $args;
+		$args['PAYMENTACTION'] = "Order";
+		
 		$retData = self::callNVP("SetExpressCheckout", $args);
 		if($retData['TOKEN']) {
 			$_SESSION['paypal-gateway']["token"] = $retData['TOKEN'];
@@ -150,10 +152,11 @@ class PayPalExpressGateway extends PaymentGateway {
 	
 		while(ob_get_level())
 			ob_end_clean();
-		print_r(self::callNVP("DoExpressCheckoutPayment", Array(
-								"TOKEN" => $_SESSION['paypal-gateway']["token"],
-								"PAYERID" => $_SESSION['paypal-gateway']["payerid"]
-									)));
+			
+		$args = $_SESSION['paypal-gateway']['checkout-arguments'];
+		$args["TOKEN"] = $_SESSION['paypal-gateway']["token"];
+		$args["PAYERID"] = $_SESSION['paypal-gateway']["payerid"];
+		print_r(self::callNVP("DoExpressCheckoutPayment", $args));
 									
 		die();
 	}
