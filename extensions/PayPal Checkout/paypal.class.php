@@ -77,14 +77,7 @@ class PayPalExpressGateway extends PaymentGateway {
 					case "Failure":
 					case "FailureWithWarning":
 					case "Warning":
-						header("Content-Type: text/plain");
-						while(ob_get_level())
-							ob_end_clean();
-							
-						print_r($responseData);
-						die();
-					
-						break;
+						throw new Exception($responseData['L_ERRORCODE0'] . ": " . $responseData['L_LONGMESSAGE0']);
 				
 					default:
 						throw new Exception("Invalid Response Code");
