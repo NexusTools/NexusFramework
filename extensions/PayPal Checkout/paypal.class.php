@@ -122,7 +122,7 @@ class PayPalExpressGateway extends PaymentGateway {
 				$args["L_PAYMENTREQUEST_0_QTY$prodID"] = $product['quantity'];
 			if(array_key_exists("quantity", $product))
 				$args["L_PAYMENTREQUEST_0_QTY$prodID"] = $product['quantity'];
-			$totalCost += $product['cost'];
+			$totalCost += $product['cost']*$product['quantity'];
 			$prodID++;
 		}
 		
