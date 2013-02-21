@@ -167,7 +167,13 @@ class PayPalExpressGateway extends PaymentGateway {
 		
 		switch($page) {
 			case "ipn":
-				file_put_contents(INDEX_PATH . "ipn.out", print_r($_GET, true) . print_r($_POST, true)); 
+				header("Content-Type: text/plain");
+				while(ob_get_level())
+					ob_end_clean();
+					
+				$outFile = INDEX_PATH . "ipn.out";
+				echo $outFile;
+				file_put_contents($outFile, print_r($_GET, true) . print_r($_POST, true)); 
 				die();
 		
 			case "return":

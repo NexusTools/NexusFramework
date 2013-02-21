@@ -7,8 +7,8 @@ require $frameworkPath . DIRECTORY_SEPARATOR . "loader.inc.php";
 /*
 
 You can use the same framework install for multiple websites.
-Simple install the framework somewhere every website can access,
-and change $frameworkPath to point to its folder.
+Just install the framework somewhere every website can access,
+and change $frameworkPath on line 4 to point to its folder.
 
 */
 
