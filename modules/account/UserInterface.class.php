@@ -252,9 +252,8 @@ abstract class UserInterface {
 		    	
 		        if($this->isValid() || !$method) {
 		        	$newMethod = false;
-		        	$newThisObject = $thisObject;
 	                foreach(self::$extensions as $extension) {
-	                	
+	                	$newThisObject = $thisObject;
 		                try{
 			                $newMethod = new ReflectionMethod($extension, $name);
 			                if($newMethod->isPrivate())
