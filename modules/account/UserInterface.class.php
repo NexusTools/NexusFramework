@@ -154,7 +154,7 @@ abstract class UserInterface {
 	}
     
     protected function _getDisplayName(){
-		return $this->__call("getFullName");
+		return ucfirst($this->username);
 	}
 	
 	public function run($method, $arguments=Array()){
@@ -250,34 +250,45 @@ abstract class UserInterface {
 		            $method = false;
 		        }
 		    	
-		        if($this->isValid() || !$method)
+		        if($this->isValid() || !$method) {
+		        	$newMethod = false;
+		        	$newThisObject = $thisObject;
 	                foreach(self::$extensions as $extension) {
+	                	
 		                try{
-			                $method = new ReflectionMethod($extension, $name);
-			                if($method->isPrivate())
+			                $newMethod = new ReflectionMethod($extension, $name);
+			                if($newMethod->isPrivate())
 			                    throw new Exception("Method must not be private");
-			                if($method->isProtected())
-			                    $method->setAccessible(true);
-			                if(!$method->isStatic()) {
+			                if($newMethod->isProtected())
+			                    $newMethod->setAccessible(true);
+			                if(!$newMethod->isStatic()) {
 			                    if(!$this->isValid()) {
 			                        try {
-			                            $method = new ReflectionMethod($extension, $name . "Default");
-			                            $method->setAccessible(true);
+			                            $newMethod = new ReflectionMethod($extension, $name . "Default");
+			                            $newMethod->setAccessible(true);
 			                        } catch(Exception $e){
-			                            $method = self::getDefaultCallback();
+			                            $newMethod = self::getDefaultCallback();
 			                        }
-			                        self::$defaultmethodcache[$name] = $method;
+			                        self::$defaultmethodcache[$name] = $newMethod;
 			                        
-			                        return $method->invokeArgs(null, $arguments);
+			                        return $newMethod->invokeArgs(null, $arguments);
 			                    }
 			                    
-				                $thisObject = $this->__getBackend($extension);
+				                $newThisObject = $this->__getBackend($extension);
 				            }
 			                break;
 		                }catch(ReflectionException $e){
-		                    $method = false;
+		                    $newMethod = false;
 		                }
 	                }
+	                
+	                if($newMethod) {
+			        	$method = $newMethod;
+			        	$thisObject = $newThisObject;
+			        }
+	            }
+	            
+			        
 	        }
 	        
 	        if($method) {

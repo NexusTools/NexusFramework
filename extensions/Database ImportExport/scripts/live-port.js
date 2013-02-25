@@ -39,12 +39,8 @@ ControlPanel.importTableData = function(){
                         if("text" in data) {
                         	var text = data.text;
                         	if(data['error-messages'].length) {
-                        		text += "<br /><hr /><b>Error Messages</b>";
-                        		var errorID = 0;
-                        		$A(data['error-messages']).each(function(error) {
-                        			errorID++;
-                        			text += "<br />" + errorID + ": " + error[0];
-                        		});
+                        		text += "<br /><hr /><b>First Error Message</b>";
+                    			text += "<br />" + data['error-messages'][0][0][2];
                         	}
                             ControlPanel.alertDialog(text, "Import Complete");
                             return;
