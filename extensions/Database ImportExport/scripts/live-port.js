@@ -37,7 +37,16 @@ ControlPanel.importTableData = function(){
                     try {
                         var data = eval(xhr.responseText);
                         if("text" in data) {
-                            ControlPanel.alertDialog(data.text, "Import Complete");
+                        	var text = data.text;
+                        	if(data['error-messages'].length) {
+                        		text += "<br /><hr /><b>Error Messages</b>";
+                        		var errorID = 0;
+                        		$A(data['error-messages']).each(function(error) {
+                        			errorID++;
+                        			text += "<br />" + errorID + ": " + error[0];
+                        		});
+                        	}
+                            ControlPanel.alertDialog(text, "Import Complete");
                             return;
                         }
                     }catch(err){
