@@ -3,5 +3,5 @@
 NexusFramework was coded by members of <a target="_blank" href="http://www.nexustools.net/">NexusTools.net</a>.<br />
 It is free to use under the terms of the <a target="_blank" href="<? echo BASE_URI; ?>about:lgpl">LGPLv3.0</a> or later.
 <br /><br />
-<a href="<? echo BASE_URI; ?>about:license">View Framework License</a> | <a target="_blank" href="https://github.com/ktaeyln/NexusFramework">Get the Source Code</a>
+<a href="<? echo BASE_URI; ?>about:license">View Framework License</a> | <a target="_blank" href="https://github.com/NexusTools/NexusFramework">Get the Source Code</a>
 </p></widget>
