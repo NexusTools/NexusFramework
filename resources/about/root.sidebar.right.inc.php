@@ -3,7 +3,7 @@
 <a href="<? echo BASE_URI; ?>about:license">Licensing</a><br />
 <a href="<? echo BASE_URI; ?>about:sitemap">Sitemap</a>
 <hr />
-<a target="_blank" href="http://svn.nexustools.net/nexusframework/trunk">SVN Trunk</a></widget>
+<a target="_blank" href="https://github.com/NexusTools/NexusFramework">Source</a></widget>
 <?
 if(User::isStaff()) {
 ?><widget><h1>Developer References</h1>
