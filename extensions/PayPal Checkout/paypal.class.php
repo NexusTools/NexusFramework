@@ -181,7 +181,7 @@ class PayPalExpressGateway extends PaymentGateway {
 	public function handleCallback($page) {
 		switch($page) {
 			case "ipn":
-				$req = "";
+				$req = "cmd=_notify-validate";
 				foreach ($_POST as $key => $value)
 				   $req .= "&" . urlencode($key) . "=" . urlencode($value);
 				
@@ -197,7 +197,7 @@ class PayPalExpressGateway extends PaymentGateway {
 				 
 				if( !($res = curl_exec($ch)) ) {
 					curl_close($ch);
-					throw new Exception("Failed to Reach PayPal Servers: " . json_encode($_POST));
+					throw new Exception("Failed to Verify IPN: " . curl_error($ch) . "\n\n" . json_encode($_POST));
 				}
 				curl_close($ch);
 				 
