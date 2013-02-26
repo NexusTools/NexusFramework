@@ -13,7 +13,7 @@ class GravatarUser {
         return self::$database ? self::$database : (self::$database = Database::getInstance());
     }
     
-    public static function getAvatarDefault(){
+    public static function getAvatarDefault($size=128){
         if(!self::$domain)
     		self::$domain = PROTOCOL_SECURE ? "https://secure.gravatar.com/avatar/" : "https://secure.gravatar.com/avatar/";
     	
