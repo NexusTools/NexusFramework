@@ -1,7 +1,7 @@
 <?php
 
 $__framework_error_occured = false;
-$__framework_error_message = "No Error Message Provided";
+$__framework_error_message = array_key_exists("__errMess", $_GET) ? $_GET['__errMess'] : "No Error Message Provided";
 $__framework_embedded_errorPage_tried = false;
 
 class Error extends Exception {
@@ -72,20 +72,27 @@ function recovery_process_exception($exception, $alwaysRedirect=false){
 	$errorid = 0;
 	$data = false;
 	framework_store_exception($exception, $errorid, $data);
+	
+	if(defined("ABORT_ERROR"))
+		return;
+		
+	// Store Error Message
 	if(array_key_exists("message", $exception) && $exception['message'])
 		$__framework_error_message = $exception['message'];
 	else
 		$__framework_error_message = "No Error Information Provided";
-
-	if(defined("ABORT_ERROR"))
-		return;
 		
+	// Inject redirection if headers already sent
 	if($__framework_embedded_errorPage_tried || $alwaysRedirect || headers_sent()) {
-	    if($authorized)
+	    if($authorized) // Show Recovery Page
 	        die("<script>location.href=\"" . BASE_URL . "?recovery=$errorid\";</script><meta http-equiv=\"refresh\" content=\"1;url=" . BASE_URL . "?recovery=$errorid\">");
-	    if(REQUEST_URI == "/errordoc/500?__err=" . urlencode($__framework_error_message))
+	        
+	       
+	    if(REQUEST_URI == "/errordoc/500") // if error is on error document page, show internal error resource
 	        die("<script>location.href=\"" . BASE_URL . "res" . RES_CONNECTOR . "internal-error\";</script><meta http-equiv=\"refresh\" content=\"1;url=" . BASE_URL . "res" . RES_CONNECTOR . "internal-error\">");
-	    die("<script>location.href=\"" . BASE_URL . "errordoc/500\";</script><meta http-equiv=\"refresh\" content=\"1;url=" . BASE_URL . "errordoc/500?__err=" . urlencode($__framework_error_message) . "\">");
+	        
+	    $encoodedMessage = urlencode($__framework_error_message);
+	    die("<script>location.href=\"" . BASE_URL . "errordoc/500?__errMess=$encoodedMessage\";</script><meta http-equiv=\"refresh\" content=\"1;url=" . BASE_URL . "errordoc/500?__errMess=$encoodedMessage\">");
     }
     $__framework_embedded_errorPage_tried = true;
     if(!$authorized) {
