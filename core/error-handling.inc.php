@@ -1,6 +1,7 @@
 <?php
 
 $__framework_error_occured = false;
+$__framework_error_message = "No Error Message Provided";
 $__framework_embedded_errorPage_tried = false;
 
 class Error extends Exception {
@@ -27,6 +28,11 @@ function __convertExtensionToArray($exception, $includeTrace=true){
             );
 }
 
+function framework_get_error_message(){
+	global $__framework_error_message;
+	return $__framework_error_message;
+}
+
 function framework_store_exception(&$exception, &$errorid, &$data){
     $data = Array("date" => time(),
                     "exception" => ($exception = __convertExtensionToArray($exception)));
@@ -51,11 +57,10 @@ function framework_store_exception(&$exception, &$errorid, &$data){
 			die("--><h2 style=\"margin: 0px; padding: 10px; color: red; background-color: white; position: absolute; left: 0px; top: 0px\">A Internal Error Occured but could not be Processed</h2>");
 		}
 	}
-	return $convertedError;
 }
 
 function recovery_process_exception($exception, $alwaysRedirect=false){
-	global $__framework_error_occured, $__framework_embedded_errorPage_tried;
+	global $__framework_error_occured, $__framework_embedded_errorPage_tried, $__framework_error_message;
 	while(ob_get_level())
 		ob_end_clean();
 	if($__framework_error_occured)
@@ -67,6 +72,10 @@ function recovery_process_exception($exception, $alwaysRedirect=false){
 	$errorid = 0;
 	$data = false;
 	framework_store_exception($exception, $errorid, $data);
+	if(array_key_exists("message", $exception) && $exception['message'])
+		$__framework_error_message = $exception['message'];
+	else
+		$__framework_error_message = "No Error Information Provided";
 
 	if(defined("ABORT_ERROR"))
 		return;
@@ -74,9 +83,9 @@ function recovery_process_exception($exception, $alwaysRedirect=false){
 	if($__framework_embedded_errorPage_tried || $alwaysRedirect || headers_sent()) {
 	    if($authorized)
 	        die("<script>location.href=\"" . BASE_URL . "?recovery=$errorid\";</script><meta http-equiv=\"refresh\" content=\"1;url=" . BASE_URL . "?recovery=$errorid\">");
-	    if(REQUEST_URI == "/errordoc/500")
+	    if(REQUEST_URI == "/errordoc/500?__err=" . urlencode($__framework_error_message))
 	        die("<script>location.href=\"" . BASE_URL . "res" . RES_CONNECTOR . "internal-error\";</script><meta http-equiv=\"refresh\" content=\"1;url=" . BASE_URL . "res" . RES_CONNECTOR . "internal-error\">");
-	    die("<script>location.href=\"" . BASE_URL . "errordoc/500\";</script><meta http-equiv=\"refresh\" content=\"1;url=" . BASE_URL . "errordoc/500\">");
+	    die("<script>location.href=\"" . BASE_URL . "errordoc/500\";</script><meta http-equiv=\"refresh\" content=\"1;url=" . BASE_URL . "errordoc/500?__err=" . urlencode($__framework_error_message) . "\">");
     }
     $__framework_embedded_errorPage_tried = true;
     if(!$authorized) {

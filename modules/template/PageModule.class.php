@@ -80,25 +80,25 @@ class PageModule {
 			case 403:
 				$this->error = Array("code" => 403,
 								"message" => "Permission Denied",
-								"body" => "You do not have the permission required to view this page.");
+								"body" => "<p>You do not have the permission required to view this page.</p>");
 				break;
 		
 			case 404:
 				$this->error = Array("code" => 404,
 								 "message" => "Page Not Found",
-								 "body" => "The page your trying to visit does not exist.");
+								 "body" => "<p>The page your trying to visit does not exist.</p>");
 				break;
 								 
 			case 500:
 				$this->error = Array("code" => 500,
 								 "message" => "Internal Error",
-								 "body" => "An unknown internal error occured.");
+								 "body" => "<p>An error occured while processing your request.<br />It is not possible to recover from this error.<br /><br />Our technicians have been notified and will look into it as soon as possible.<br />Sorry for any Inconvenience.</p><br /><br /><pre style='font-size: 70%'><b>Error Message</b><br />" . framework_get_error_message() . "</pre>");
 				break;
 				
 			default:
 				$this->error = Array("code" => $status,
 								 "message" => "Unhandled Status Code",
-								 "body" => "So apparently you've decided to start entering random status codes,<br />well here's a list of <a href=\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html\">HTTP Status Codes</a>.<br /><br />If you didn't mean to get this page, please contact the administrator to report this.");
+								 "body" => "<p>So apparently you've decided to start entering random status codes,<br />well here's a list of <a href=\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html\">HTTP Status Codes</a>.<br /><br />If you didn't mean to get this page, please contact the administrator to report this.</p>");
 				break;
 		}
 		
