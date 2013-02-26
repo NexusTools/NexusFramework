@@ -1,7 +1,6 @@
 <?php
 abstract class PaymentGateway {
 
-	const STATUS_UNKNOWN = -2;
 	const STATUS_FAILED = -1;
 	const STATUS_PENDING = 0;
 	const STATUS_SUCCESS = 1;
