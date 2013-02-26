@@ -1,0 +1,5 @@
+{
+    "name": "Gravatar",
+    "provides": "user-avatars",
+    "description": "Provides User Avatars via Gravatar"
+}
