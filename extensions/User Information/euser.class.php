@@ -167,8 +167,8 @@ class ExtendedUser {
 			$this->address = StringFormat::properCase($data['address']);
 			$this->address2 = StringFormat::properCase($data['address2']);
 			$this->country = StringFormat::properCase($data['country']);
-			$this->city = StringFormat::properCase($data['city']);
-			$this->province = StringFormat::properCase($data['province']);
+			$this->city = strlen($data['city']) > 3 ? StringFormat::properCase($data['city']) : strtoupper($data['city']);
+			$this->province = strlen($data['province']) > 3 ? StringFormat::properCase($data['province']) : strtoupper($data['province']);
 			$this->postal = strtoupper($data['postal']);
 			/*$this->phone1 = StringFormat::expandPhoneNumber($data['phone1']);
 			$this->phone2 = StringFormat::expandPhoneNumber($data['phone2']);
