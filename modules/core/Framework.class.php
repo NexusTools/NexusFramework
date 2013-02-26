@@ -237,8 +237,6 @@ class Framework {
 	}
 	
 	public static function serveResource($res, $onlyShared=false){
-		
-	    
 		if(startsWith($res, "ref/")) {
 			$res = substr($res, 4);
 			if(!$onlyShared && is_file($refFile = TMP_PATH . "ref" . DIRSEP . $res) &&
@@ -470,6 +468,7 @@ class Framework {
 	}
 	
 	public static function startOutputBuffer(){
+		self::$pageContent = "";
 	    OutputHandlerStack::pushOutputHandler("Framework::pushContent");
 	}
 	
