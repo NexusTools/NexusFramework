@@ -96,7 +96,7 @@ class PayPalExpressGateway extends PaymentGateway {
 		Framework::redirect($url);
 	}
 	
-	public function startCheckout($products, $invoiceID, $currencyCode=false) {
+	public function startCheckout($products, $currencyCode=false) {
 		$_SESSION['paypal-gateway'] = Array(); // Reset Paypal Session
 	
 		if(!count($products))
@@ -132,7 +132,6 @@ class PayPalExpressGateway extends PaymentGateway {
 		$totalCost = round($totalCost,2);
 		$args['PAYMENTREQUEST_0_ITEMAMT'] = $totalCost;
 		$args['PAYMENTREQUEST_0_AMT'] = $totalCost;
-		$args['PAYMENTREQUEST_0_INVNUM'] = $invoiceID;
 		$args['PAYMENTREQUEST_0_NOTIFYURL'] = BASE_URL . "payment-gateway-callbacks/paypal/ipn";
 		
 		$_SESSION['paypal-gateway']['checkout-arguments'] = $args;
