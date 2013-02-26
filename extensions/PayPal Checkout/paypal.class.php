@@ -162,7 +162,7 @@ class PayPalExpressGateway extends PaymentGateway {
 						return PaymentGateway::STATUS_PENDING;
 						
 					case "Completed":
-						return PaymentGateway::STATUS_COMPLETE;
+						return PaymentGateway::STATUS_SUCCESS;
 						
 					case "Failed":
 					case "Expired":
@@ -214,7 +214,7 @@ class PayPalExpressGateway extends PaymentGateway {
 						
 						case "Completed":
 							Triggers::broadcast("Payment", "StatusUpdate",
-												Array(PaymentGateway::STATUS_COMPLETE, 
+												Array(PaymentGateway::STATUS_SUCCESS, 
 														$_POST['txn_id']));
 							return;
 						
