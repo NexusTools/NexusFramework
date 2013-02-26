@@ -159,16 +159,16 @@ class PayPalExpressGateway extends PaymentGateway {
 			if(array_key_exists("PAYMENTINFO_0_PAYMENTSTATUS", $data))
 				switch($data['PAYMENTINFO_0_PAYMENTSTATUS']) {
 					case "Pending":
-						return PaymentGateway::STATUS_PENDING;
+						$status = PaymentGateway::STATUS_PENDING;
 						
 					case "Completed":
-						return PaymentGateway::STATUS_SUCCESS;
+						$status = PaymentGateway::STATUS_SUCCESS;
 						
 					case "Failed":
 					case "Expired":
 					case "Denied":
 					case "Voided":
-						return PaymentGateway::STATUS_FAILED;
+						$status = PaymentGateway::STATUS_FAILED;
 						
 					default:
 						throw new Exception("Unknown Payment Status: " . $data['PAYMENTINFO_0_PAYMENTSTATUS'] . "\n\n" . json_encode($data));
