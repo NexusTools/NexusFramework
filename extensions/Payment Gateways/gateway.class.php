@@ -1,6 +1,11 @@
 <?php
 abstract class PaymentGateway {
 
+	const STATUS_UNKNOWN = -2
+	const STATUS_FAILED = -1
+	const STATUS_PENDING = 0
+	const STATUS_SUCCESS = 1
+
 	private static $settings;
 	private static $gateways = Array();
 
@@ -63,10 +68,20 @@ abstract class PaymentGateway {
 				) ...)
 	
 	*/
-	public abstract function startCheckout($products, $invoiceID, $currencyCode=false);
+	public abstract function startCheckout($products, $currencyCode=false);
+	
+	/*
+	
+		Returns Array((int)Status[, (string)TransactionID])
+	
+	*/
 	public abstract function confirmCheckoutPayment(); 
 	
+	/*
 	
+		Transaction Status Updates use Triggers, broadcast("Payment", "StatusUpdate", Array((int)Status, (string)TransactionID));
+	
+	*/
 	public abstract function handleCallback($page);
 
 } PaymentGateway::init();

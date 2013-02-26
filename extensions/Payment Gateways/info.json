@@ -1,5 +1,11 @@
 {
 	"name": "Payment Gateways",
 	"provides": "payment-gateways",
-	"page-root": "payment-gateway-callbacks"
+	"page-root": "payment-gateway-callbacks",
+	"database": {
+		"pending-payments": {
+			"txnid": "VARCHAR(100)",
+			"status": "INTEGER"
+		}
+	}
 }

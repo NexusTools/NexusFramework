@@ -149,16 +149,34 @@ class PayPalExpressGateway extends PaymentGateway {
 	public function confirmCheckoutPayment() {
 		if(!$_SESSION['paypal-gateway']["token"])
 			throw new Exception("No Token");
-	
-		while(ob_get_level())
-			ob_end_clean();
 			
 		$args = $_SESSION['paypal-gateway']['checkout-arguments'];
 		$args["TOKEN"] = $_SESSION['paypal-gateway']["token"];
 		$args["PAYERID"] = $_SESSION['paypal-gateway']["payerid"];
-		print_r(self::callNVP("DoExpressCheckoutPayment", $args));
 		
-		die();
+		$data = self::callNVP("DoExpressCheckoutPayment", $args);
+		if($data['PAYMENTINFO_0_ACK'] == "Success") {
+			$txnid = array_key_exists("PAYMENTINFO_0_TRANSACTIONID", $data) ? $data['PAYMENTINFO_0_TRANSACTIONID'] : null;
+			if(array_key_exists("PAYMENTINFO_0_PAYMENTSTATUS", $data))
+				switch($data['PAYMENTINFO_0_PAYMENTSTATUS']) {
+					case "Pending":
+						return PaymentGateway::STATUS_PENDING;
+						
+					case "Completed":
+						return PaymentGateway::STATUS_COMPLETE;
+						
+					case "Failed":
+					case "Expired":
+					case "Denied":
+					case "Voided":
+						return PaymentGateway::STATUS_FAILED;
+						
+				}
+			else
+				throw new Exception("Cannot Handle Response: " . json_encode($data));
+			return Array($status, $txnid);
+		} else
+			throw new Exception("Payment Failed with code: " . $data['PAYMENTINFO_0_ERRORCODE']);
 	}
 	
 	public function handleCallback($page) {
@@ -167,14 +185,55 @@ class PayPalExpressGateway extends PaymentGateway {
 		
 		switch($page) {
 			case "ipn":
-				header("Content-Type: text/plain");
-				while(ob_get_level())
-					ob_end_clean();
-					
-				$outFile = INDEX_PATH . "ipn.out";
-				echo $outFile;
-				file_put_contents($outFile, print_r($_GET, true) . print_r($_POST, true)); 
-				die();
+				$req = "";
+				foreach ($_POST as $key => $value)
+				   $req .= "&" . urlencode($key) . "=" . urlencode($value);
+				
+				$ch = curl_init('https://www.' . self::$domain . '/cgi-bin/webscr');
+				curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+				curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Close'));
+				 
+				if( !($res = curl_exec($ch)) ) {
+					curl_close($ch);
+					throw new Exception("Failed to Reach PayPal Servers: " . json_encode($_POST));
+				}
+				curl_close($ch);
+				 
+				if (strcmp ($res, "VERIFIED") == 0) {
+					switch($_POST['payment_status']) {
+						case "Pending":
+							Triggers::broadcast("Payment", "StatusUpdate",
+												Array(PaymentGateway::STATUS_PENDING, 
+														$_POST['txn_id']));
+							return;
+						
+						case "Completed":
+							Triggers::broadcast("Payment", "StatusUpdate",
+												Array(PaymentGateway::STATUS_COMPLETE, 
+														$_POST['txn_id']));
+							return;
+						
+						case "Failed":
+						case "Expired":
+						case "Denied":
+						case "Voided":
+							Triggers::broadcast("Payment", "StatusUpdate",
+												Array(PaymentGateway::STATUS_FAILED, 
+														$_POST['txn_id']));
+							return;
+						
+						default:
+							throw new Exception("Unknown Status Received: " . json_encode($_POST));
+						
+					}
+				} else if (strcmp ($res, "INVALID") == 0)
+					throw new Exception("Invalid IPN Received: " . json_encode($_POST));
 		
 			case "return":
 				$checkoutData = self::callNVP("GetExpressCheckoutDetails", Array("TOKEN" => $_SESSION['paypal-gateway']["token"]));
