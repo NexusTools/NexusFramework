@@ -92,7 +92,7 @@ class PageModule {
 			case 500:
 				$this->error = Array("code" => 500,
 								 "message" => "Internal Error",
-								 "body" => "<p>An error occured while processing your request.<br />It is not possible to recover from this error.<br /><br />Our technicians have been notified and will look into it as soon as possible.<br />Sorry for any Inconvenience.</p><br /><br /><pre style='font-size: 70%'><b>Error Message</b><br />" . framework_get_error_message() . "</pre>");
+								 "body" => "<p>An error occured while processing your request.<br />It is not possible to recover from this error.<br /><br />Our technicians have been notified and will look into it as soon as possible.<br />Sorry for any Inconvenience.</p><pre style='font-size: 85%'><b>Error Message</b><br />" . framework_get_error_message() . "</pre>");
 				break;
 				
 			default:
