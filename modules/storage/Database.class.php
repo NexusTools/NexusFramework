@@ -530,8 +530,9 @@ class Database extends Lockable {
 		    return false;
 		}
 		
-		Triggers::broadcast("Database", $this->getName() . ".$table", Array("insert", array_keys($values)));
-	    return $this->database->lastInsertId();
+		$rowid = $this->database->lastInsertId();
+		Triggers::broadcast("Database", $this->getName() . ".$table", Array("insert", $rowid, array_keys($values)));
+	    return $rowid;
 	}
 	
 	public function _selectRecursive($table, $parent=0, $checkConditions=false, $where=false, $parentField="parent", $idField="rowid", $useClassBackings=true){
