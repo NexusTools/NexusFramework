@@ -13,7 +13,7 @@ class DateFormat {
         return self::$timezones[$zoneid];
     }
     
-    public static function format($time, $neverForZero=true, $inputTZ="UTC") {
+    public static function format($time, $neverForZero=true, $inputTZ="UTC", $format=DEFAULT_DATE_FORMAT) {
         if($time === false)
 			$time = time();
 		else if(is_numeric($time)) {
@@ -26,7 +26,11 @@ class DateFormat {
 		
 		    
         $date->setTimeZone(self::getTimeZone());
-        return $date->format(DEFAULT_DATE_FORMAT);
+        return $date->format($format);
+    }
+    
+    public static function formatSqlTimestamp($time, $inputTZ="UTC") {
+    	return self::format($time, false, $inputTZ, "m-d-Y H:i:s");
     }
 
 }
