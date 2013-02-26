@@ -170,6 +170,8 @@ class PayPalExpressGateway extends PaymentGateway {
 					case "Voided":
 						return PaymentGateway::STATUS_FAILED;
 						
+					default:
+						throw new Exception("Unknown Payment Status: " . $data['PAYMENTINFO_0_PAYMENTSTATUS'] . "\n\n" . json_encode($data));
 				}
 			else
 				throw new Exception("Cannot Handle Response: " . json_encode($data));
