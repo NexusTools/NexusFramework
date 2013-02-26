@@ -14,16 +14,17 @@ class GravatarUser {
     }
     
     public static function getAvatarDefault(){
-        return Framework::getReferenceURI(dirname(__FILE__) . DIRSEP . "default.png");
+        if(!self::$domain)
+    		self::$domain = PROTOCOL_SECURE ? "https://secure.gravatar.com/avatar/" : "https://secure.gravatar.com/avatar/";
+    	
+        return self::$domain . "?s=" . $size;
     }
     
     public function getAvatar($size=128){
     	if(!self::$domain)
     		self::$domain = PROTOCOL_SECURE ? "https://secure.gravatar.com/avatar/" : "https://secure.gravatar.com/avatar/";
     	
-        return self::$domain . md5(strtolower(trim($this->email))) . "?d=" . urlencode(
-        								Framework::getReferenceURL(dirname(__FILE__) . DIRSEP . "default.png")
-        										) . "&s=" . $size;
+        return self::$domain . md5(strtolower(trim($this->email))) . "?s=" . $size;
     }
 
 }
