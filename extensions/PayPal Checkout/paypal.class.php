@@ -179,9 +179,6 @@ class PayPalExpressGateway extends PaymentGateway {
 	}
 	
 	public function handleCallback($page) {
-		if(!$_SESSION['paypal-gateway']["token"])
-			throw new Exception("No Token");
-		
 		switch($page) {
 			case "ipn":
 				$req = "";
@@ -235,6 +232,9 @@ class PayPalExpressGateway extends PaymentGateway {
 					throw new Exception("Invalid IPN Received: " . json_encode($_POST));
 		
 			case "return":
+				if(!$_SESSION['paypal-gateway']["token"])
+					throw new Exception("No Token");
+			
 				$checkoutData = self::callNVP("GetExpressCheckoutDetails", Array("TOKEN" => $_SESSION['paypal-gateway']["token"]));
 				
 				if(!array_key_exists("PAYERID", $checkoutData))
@@ -245,6 +245,9 @@ class PayPalExpressGateway extends PaymentGateway {
 				return;
 				
 			case "cancel":
+				if(!$_SESSION['paypal-gateway']["token"])
+					throw new Exception("No Token");
+			
 				Framework::redirect(PaymentGateway::getCancelURI());
 				return;
 		}
