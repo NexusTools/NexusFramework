@@ -114,7 +114,11 @@ abstract class CachedObject {
 			$this->metaObject = Array("u" => time(), "n" => time() + $this->getLifetime(),
 									  "pv" => method_exists($this, "getProvider") ? $this->getProvider() : get_class($this));
 			
-			$this->storageObject = $this->update();
+			try {
+				$this->storageObject = $this->update();
+			} catch(Exception $e) {
+				$this->storageObject = Array("error" => "$e");
+			}
 			
 			if($this->storageObject){
 				if(is_array($this->storageObject)) {
