@@ -136,7 +136,15 @@
 		},
 		"coupon-codes": {
 			"code": "VARCHAR(40)",
-			"coupon": "INTEGER"
+			"coupon": "INTEGER",
+			"one-use": {
+				"type": "BOOLEAN",
+				"default": 0
+			},
+			"used": {
+				"type": "BOOLEAN",
+				"default": 0
+			}
 		},
 		"coupon-conditions": {
 			"name": "VARCHAR(40)",
