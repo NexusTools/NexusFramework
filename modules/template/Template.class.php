@@ -146,7 +146,9 @@ class Template {
 	}
 	
 	public static function addElement($level, $tag, $attr, $content=false){
-		$element = Array("tag" => $tag, "content" => $content, "attr" => $attr);
+		$element = Array("tag" => $tag, "attr" => $attr);
+		if($content)
+			$element['content'] = $content;
 		if(isset($attr['id']))
 			self::$elements[$level][$attr['id']] = $element;
 		else if(isset($attr['name']))
@@ -182,8 +184,11 @@ class Template {
 		echo "</title><style>Framework\:Config,Framework\:AddonScript {display:none}</style>";
 		foreach(self::$elements[Template::Header] as $data){
 			echo "<$data[tag]";
-			foreach($data['attr'] as $key => $value)
-				echo " $key=\"" . htmlspecialchars($value) . "\"";
+			foreach($data['attr'] as $key => $value) {
+				echo " $key=\"";
+				echo htmlspecialchars($value);
+				echo "\"";
+			}
 			
 			if($data['content']) {
 				echo ">$data[content]</$data[tag]>";

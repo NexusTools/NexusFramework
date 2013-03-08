@@ -44,7 +44,9 @@ function setupContextElement(contextElement){
 		} else
 			contextMenuElement.show();
 		
-		contextMenuElement.setStyle({"left": (e.pointerX()) + "px", "top": (e.pointerY() - 10) + "px"});
+		var scrollOffsets = document.viewport.getScrollOffsets();
+		
+		contextMenuElement.setStyle({"left": (e.pointerX() - scrollOffsets.left) + "px", "top": (e.pointerY() - 10 - scrollOffsets.top) + "px"});
 		activeContextMenu = contextMenuElement;
 		contextBackground.show();
 		e.stop();
