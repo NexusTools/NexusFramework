@@ -5,7 +5,7 @@ var activeContextMenu = false;
 var activeContextElement = null;
 
 function getActiveContextElement() {
-	return activeElement;
+	return activeContextElement;
 }
 
 function closeLastContextMenu(e){
