@@ -2,6 +2,11 @@ var contextBackground = document.createElement("ContextBackground");
 contextBackground.hide();
 document.body.appendChild(contextBackground);
 var activeContextMenu = false;
+var activeContextElement = null;
+
+function getActiveContextElement() {
+	return activeElement;
+}
 
 function closeLastContextMenu(e){
 	contextBackground.hide();
@@ -44,8 +49,8 @@ function setupContextElement(contextElement){
 		} else
 			contextMenuElement.show();
 		
+		activeContextElement = contextElement;
 		var scrollOffsets = document.viewport.getScrollOffsets();
-		
 		contextMenuElement.setStyle({"left": (e.pointerX() - scrollOffsets.left) + "px", "top": (e.pointerY() - 10 - scrollOffsets.top) + "px"});
 		activeContextMenu = contextMenuElement;
 		contextBackground.show();
