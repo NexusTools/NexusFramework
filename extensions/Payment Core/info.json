@@ -100,6 +100,31 @@
 			"extra10": {
 				"type": "VARCHAR(200)",
 				"case-insensative": true
+			},
+			"extra11name": "VARCHAR(40)",
+			"extra11": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			},
+			"extra12name": "VARCHAR(40)",
+			"extra12": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			},
+			"extra13name": "VARCHAR(40)",
+			"extra13": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			},
+			"extra14name": "VARCHAR(40)",
+			"extra14": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
+			},
+			"extra15name": "VARCHAR(40)",
+			"extra15": {
+				"type": "VARCHAR(200)",
+				"case-insensative": true
 			}
 		},
 		"invoices": {
@@ -128,12 +153,6 @@
 			"condition": "VARCHAR(200)",
 			"html": "BINARY(2000)"
 		},
-		"coupon-requirements": {
-			"type": "TINYINT",
-			"package": "INTEGER",
-			"min": "FLOAT",
-			"max": "FLOAT"
-		},
 		"coupon-codes": {
 			"code": "VARCHAR(40)",
 			"coupon": "INTEGER",
@@ -145,11 +164,6 @@
 				"type": "BOOLEAN",
 				"default": 0
 			}
-		},
-		"coupon-conditions": {
-			"name": "VARCHAR(40)",
-			"snippet": "VARCHAR(200)",
-			"condition": "VARCHAR(200)"
 		}
 	}
 }
