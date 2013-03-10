@@ -126,10 +126,12 @@ class Template {
 		self::addScript("resources/javascript/addons/" . StringFormat::idForDisplay($script) . ".js");
 	}
 	
-	public static function addExternalStyle($style){
+	public static function addExternalStyle($style, $media="screen"){
 		$id = Framework::uniqueHash($style);
 		if(!isset(self::$styles[$id]))
 			self::$styles[$id] = $style;
+	    if($media)
+	        self::$styleMedia[$id] = $media;
 	}
 	
 	public static function addStyle($style, $media="screen"){
@@ -203,7 +205,7 @@ class Template {
 		}
 		foreach(self::$styles as $id => $style){
 		    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
-		    if($style instanceof CompressedStyle) {
+		    if($style instanceof StyleCompressor) {
 				echo $style->getReferenceURI("text/css");
 				if(DEBUG_MODE)
 					echo "\" storage=\"" . $style->getStoragePath();
