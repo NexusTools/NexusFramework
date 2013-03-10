@@ -126,6 +126,12 @@ class Template {
 		self::addScript("resources/javascript/addons/" . StringFormat::idForDisplay($script) . ".js");
 	}
 	
+	public static function addExternalStyle($style){
+		$id = Framework::uniqueHash($style);
+		if(!isset(self::$styles[$id]))
+			self::$styles[$id] = $style;
+	}
+	
 	public static function addStyle($style, $media="screen"){
 		$style = fullpath($style);
 		$id = Framework::uniqueHash($style);
@@ -197,9 +203,12 @@ class Template {
 		}
 		foreach(self::$styles as $id => $style){
 		    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
-		    echo $style->getReferenceURI("text/css");
-		    if(DEBUG_MODE)
-			    echo "\" storage=\"" . $style->getStoragePath();
+		    if($style instanceof CompressedStyle) {
+				echo $style->getReferenceURI("text/css");
+				if(DEBUG_MODE)
+					echo "\" storage=\"" . $style->getStoragePath();
+			} else
+				echo "$style";
 			if(isset(self::$styleMedia[$id]))
 			    echo "\" media=\"" . self::$styleMedia[$id];
 		    echo "\" resource-id=\"$id\" />";
