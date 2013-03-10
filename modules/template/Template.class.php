@@ -118,8 +118,8 @@ class Template {
 		$compressedScripts = new ScriptCompressor();
 		foreach($scripts as $script)
 			$compressedScripts->addScript($script = fullpath($script));
-		if(!isset(self::$styles[$compressedScripts->getID()]))
-			self::$styles[$compressedScripts->getID()] = $compressedScripts;
+		if(!isset(self::$scripts[$compressedScripts->getID()]))
+			self::$scripts[$compressedScripts->getID()] = $compressedScripts;
 	}
 	
 	public static function importPrototypeAddon($script){
