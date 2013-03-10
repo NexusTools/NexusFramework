@@ -188,9 +188,9 @@ class PageModule {
 		                    $this->sidebarLayout = trim(file_get_contents("$base$path.sidebars")) * 1;
 		                    
 		                if(!$this->leftSidebarScript && is_file("$base$path.sidebar.left.inc.php"))
-		                    $this->leftSidebarScript = trim(file_get_contents("$base$path.sidebar.left.inc.php"));
+		                    $this->leftSidebarScript = "$base$path.sidebar.left.inc.php";
 		                if(!$this->rightSidebarScript && is_file("$base$path.sidebar.right.inc.php"))
-		                    $this->rightSidebarScript = trim(file_get_contents("$base$path.sidebar.right.inc.php"));
+		                    $this->rightSidebarScript = "$base$path.sidebar.right.inc.php";
 		            }
 		            //die();
 				}
