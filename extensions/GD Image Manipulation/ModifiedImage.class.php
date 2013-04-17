@@ -171,7 +171,10 @@ class ModifiedImage extends CachedFileBase {
     
     public function update(){
     	$outputImage = $this->getOutputResource();
-    
+    	
+    	$this->operations = Array();
+		$this->inputImage = false;
+    	
         if($outputImage) {
         	switch($this->mimeType){
         		case "image/jpeg":

@@ -160,8 +160,8 @@ class StringFormat {
 	}
 	
 	public static function idForDisplay($display){
-		$display = str_replace(" ", "-", $display);
-		return  str_replace("--", "-", strtolower(preg_replace("/[^\w\-\d]/", "", $display)));
+		$display = preg_replace("/([^\d\w\-\.\,]|\s)+/", "-", strtolower($display));
+		return preg_replace("/(^\-|\-$)/", "", $display);
 	}
 	
 	public static function formatCondition($condition){
@@ -201,6 +201,10 @@ class StringFormat {
 		return $id;
 	}
 	
+	public static function cleanString($string) {
+		return self::displayForID(self::idForDisplay($string));
+	}
+
 	public static function formatPrice($price){
 		return "$" . number_format((float)$price, 2);
 	}
