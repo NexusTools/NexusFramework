@@ -8,11 +8,11 @@ abstract class UserBackend extends UserInterface {
     public abstract static function resolveUserIDByUsername($identifier);
     public abstract static function resolveUserIDByEmail($identifier);
     
-    public abstract static function getStaffIDs($minLevel=1);
+    public abstract static function getStaffIDs($minLevel);
     
     public abstract static function getDatabase();
     
-    public abstract static function register($user, $pass, $email, $requireVerification=false);
+    public abstract static function register($user, $pass, $email, $requireVerification);
     
 }
 ?>
