@@ -1,6 +1,7 @@
 <?php
 abstract class UserBackend extends UserInterface {
     
+    /*
     // Return a instance of your User backend
     // or null if none can be found
     public abstract static function getUserForID($id);
@@ -13,6 +14,7 @@ abstract class UserBackend extends UserInterface {
     public abstract static function getDatabase();
     
     public abstract static function register($user, $pass, $email, $requireVerification);
+    */
     
 }
 ?>
