@@ -5,7 +5,7 @@ class PayPalExpressGateway extends PaymentGateway {
 	private static $domain;
 
 	public static function init() {
-		self::$settings = new Settings("Payment Gateway", "Paypal Express");
+		self::$settings = new Settings("Payment Gateways", "Paypal Express");
 		
 		if(PaymentGateway::isTestingMode())
 			self::$domain = "sandbox.paypal.com";
