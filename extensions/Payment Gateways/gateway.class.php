@@ -41,6 +41,8 @@ abstract class PaymentGateway {
 	}
 	
 	public static function getGateway($id){
+		if(!array_key_exists($id, self::$gateways))
+			throw new Exception("Unknown Payment Gateway Requested: " . $id . "\n\nAvailable gateways are: " . json_encode(self::$gateways));
 		return self::$gateways[$id];
 	}
 	
