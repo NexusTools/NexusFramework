@@ -17,6 +17,8 @@ class PageModule {
 	private $realUri = false;
 	private $html = false;
 	private $badCond = false;
+	private $get;
+	private $post;
 	
 	const RAW_SIDEBAR_OUTPUT = false;
 	const NO_SIDEBARS = 0;
@@ -135,6 +137,8 @@ class PageModule {
 		}
 	
 		self::$instance = $this;
+		$this->get = $_GET;
+		$this->post = $_POST;
 		if(defined("THEME"))
 			$this->themePath = "themes" . DIRSEP . THEME . DIRSEP;
 		else
@@ -209,6 +213,8 @@ class PageModule {
 		if(DEBUG_MODE)
 			Profiler::start("PageModule[Initialize]");
 		
+		$_GET = $this->get;
+		$_POST = $this->post;
 		if($this->pageTitle)
 			Template::setTitle($this->pageTitle);
 		
@@ -234,6 +240,9 @@ class PageModule {
 	        $this->leftSidebarScript = false;
 	    }
 	    
+	    
+		$_GET = $this->get;
+		$_POST = $this->post;
 		$mname = count($parts) > 0 ? array_shift($parts) : "root";
 		if(is_file($basepath ."root.exists.inc.php") &&
 				!require($basepath ."root.exists.inc.php"))
@@ -299,6 +308,10 @@ class PageModule {
 				    $this->headscript = fullpath("$basepath$mname.head.inc.php");
 			
 			    $this->script = fullpath("$basepath$mname.inc.php");
+			    
+			    
+			    $this->get = $_GET;
+			    $this->post = $_POST;
 			    return true;
 		    }
         }
@@ -330,6 +343,8 @@ class PageModule {
 		    if(!is_file($this->script))
 			    throw new IOException($this->script, IOException::NotFound, "PageModule provides virtual existence script, but no page implementation.");
 			    
+			$this->get = $_GET;
+			$this->post = $_POST;
 			return true;
 	    }
 	    
