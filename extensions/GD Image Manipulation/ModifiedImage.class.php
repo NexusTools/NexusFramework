@@ -22,11 +22,12 @@ class ModifiedImage extends CachedFileBase {
     		$path->getData();
     		$path = $path->getStoragePath();
     	}
+    	
         CachedFileBase::__construct($path);
         $this->inputImage = new ImageReference($path);
         
-        $this->canvasSize = Array($width > 0 ? $width : $this->size[0],
-        							$height > 0 ? $height : $this->size[1]);
+        $this->canvasSize = Array($width > 0 ? $width : $this->inputImage->getWidth(),
+        							$height > 0 ? $height : $this->inputImage->getHeight());
         $this->quality = $quality;
         
         switch($this->inputImage->getType()){
@@ -275,6 +276,30 @@ class ModifiedImage extends CachedFileBase {
         }
         $modifiedImage->addOperationRaw(Array("imagecopyresampled", "{{DEST}}", "{{SRC}}", floor($width/2 - $scaledWidth/2), floor($height/2 - $scaledHeight/2), 0, 0, floor($scaledWidth), floor($scaledHeight), "{{WIDTH}}", "{{HEIGHT}}"));
         return $modifiedImage;
+    }
+    
+    private static function __tinted($input, $rgb =Array(0, 255, 0)){
+        $modifiedImage = new ModifiedImage($input);
+        $modifiedImage->addOperationRaw(Array("ModifiedImage::tintedcopy", "{{DEST}}", "{{SRC}}", $rgb));
+        return $modifiedImage;
+    }
+    
+    public static function tint($out, $in, $rgb) {
+    	$xSize = imagesx($in);
+    	$ySize = imagesy($in);
+    	
+    	$rgb = Array((float)$rgb[0]/255.0, (float)$rgb[1]/255.0, (float)$rgb[2]/255.0);
+    	
+    	for( $x = 0; $x < $xSize; $x++ ) {
+        	for( $y = 0; $y < $ySize; $y++ ) {
+		        $pixel = imagecolorsforindex( $in, imagecolorat( $in, $x, $y ) );
+		        imagesetpixel($out, $x, $y, imagecolorallocatealpha( $out,
+		        			$pixel['red'] * $rgb[0],
+		        			$pixel['green'] * $rgb[1],
+		        			$pixel['blue'] * $rgb[2],
+		        			$pixel['alpha']));
+        	}
+        }
     }
     
 }
