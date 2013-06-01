@@ -44,7 +44,7 @@ class Template {
 			Template::setMetaTag("description", META_DESCRIPTION);
 
 		Template::setMetaTag("generator", "NexusFramework " . FRAMEWORK_VERSION . " - OpenSource WebFramework");
-		self::setRobotsPolicy(true);
+		self::setRobotsPolicy(!defined("NO_ROBOTS"));
 
 		if(is_file($favicon = fullpath("favicon.ico")))
 			self::setFavicon($favicon);
