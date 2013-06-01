@@ -317,8 +317,23 @@ class Framework {
 			unset($clean);
 		}
 		
-		if($requestURI == "robots.txt" && is_file($file = INDEX_PATH . "robots.txt"))
-			self::serveFile($file, "text/plain");
+		if($requestURI == "/robots.txt") {
+			if(is_file($file = INDEX_PATH . "robots.txt"))
+				self::serveFile($file, "text/plain");
+			else if(defined("NO_ROBOTS")) {
+				$robotContent = "# Automatically Generated
+User-agent: *
+Disallow: " . BASE_URI;
+				header("Content-Length: $size");
+				header("Content-Type: text/plain");
+		
+				while(ob_get_level())
+					ob_end_clean();
+					
+				echo $robotContent;
+				exit;
+			}
+		}
 
 		if(startsWith($requestURI, "/media/")) {
 			$file = cleanpath($basePath . $requestURI);
