@@ -89,7 +89,7 @@ if(strncasecmp(PHP_OS, 'WIN', 3) == 0) {
 	define("RES_CONNECTOR", "-");
 } else {
 	define("LEGACY_OS", false);
-	define("RES_CONNECTOR", ":");
+	define("RES_CONNECTOR", "-");
 }
 
 define("LEGACY_BROWSER", isset($_SERVER['HTTP_USER_AGENT']) && 
