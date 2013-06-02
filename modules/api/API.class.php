@@ -109,6 +109,7 @@ class API {
 
 				$_GET = $val['get'];
 				$_POST = $val['post'];
+				$_REQUEST = array_merge($_GET, $_POST);
 				$dataObject[$key] = include($callback['script']);
 			} catch(Exception $e) {
 				$dataObject[$key] = Array("error" => $e->getMessage());
