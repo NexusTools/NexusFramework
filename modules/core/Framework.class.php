@@ -97,7 +97,6 @@ class Framework {
 		    die("Headers Already Sent by: $header_file:$header_line");
 		}
 		
-		header(":path: $file");
 		header("Content-Type: $mimetype");
 		header("Last-Modified: $modtime");
 		header('Accept-Ranges: bytes');
@@ -118,9 +117,10 @@ class Framework {
 		header_remove("Cache-Control");
 		header_remove("Pragma");
 		
-		if(!$expiresAt) // Default to expiring after between 5 and 10 minutes to try and balance update checking
-			$expiresAt = time() + rand(300, 600);
+		if(!$expiresAt) // Default to expiring after between 2 and 15 minutes to try and balance update checking
+			$expiresAt = time() + rand(120, 900);
 		header("Expires: " . self::formatGMTDate($expiresAt));
+		header("X-Process-Time: " . (microtime(true) - LOADER_START_TIME) * 1000);
 		
 		if (isset($_SERVER['HTTP_RANGE']) && preg_match('/bytes=(\d*)-(\d*)/', $_SERVER['HTTP_RANGE'], $range)) {
 		    $range = Array(intval($range[1]), intval($range[2]));
