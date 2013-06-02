@@ -16,9 +16,7 @@ function popupOpenOverlay(){
 }
 
 function popupLoadPage(page){
-    page = page.replace(new RegExp("/^\//i"), "");
-    page = page.replace(new RegExp("/\/\//i"), "");
-    page = page.replace(new RegExp("/\/$/i"), "");
+    page = page.replace(new RegExp("^\/|\/\/|\/$"), "");
     
     console.log("Loading " + page);
     
