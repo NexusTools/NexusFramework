@@ -156,8 +156,9 @@ class Framework {
 		$headers = getallheaders();
 		if((isset($headers['If-None-Match']) && $headers['If-None-Match'] == $etag) ||
 				(isset($headers['If-Modified-Since']) && $headers['If-Modified-Since'] == $modtime)) {
+			header("X-Process-Time: " . (microtime(true) - LOADER_START_TIME) * 1000);
 			header("HTTP/1.1 304 Not Modified");
-			die();
+			exit;
 		}
 		
 		header("Content-Length: $size");
