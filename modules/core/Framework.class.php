@@ -75,13 +75,13 @@ class Framework {
 	}
 	
 	public static function serveFile($file, $mimetype=false, $realName=false, $expiresAt=false){
-		if(!is_file($file = fullpath($file)) || !($size = filesize($file)))
-		    self::runPage("/errordoc/404");
-		
-		self::serveFileInternal($file, $mimetype, $realName, $expiresAt);
+		self::serveFileInternal(fullpath($file), $mimetype, $realName, $expiresAt);
 	}
 	
 	private static function serveFileInternal($file, $mimetype=false, $realName=false, $expiresAt=false){
+		if(!is_file($file) || !($size = filesize($file)))
+		    self::runPage("/errordoc/404");
+	
 		$etag = self::fileETag($file);
 		$modtime = self::formatGMTDate(filemtime($file));
 		if(!is_string($mimetype) || !strlen($mimetype = trim($mimetype))) {
@@ -97,6 +97,7 @@ class Framework {
 		    die("Headers Already Sent by: $header_file:$header_line");
 		}
 		
+		header(":path: $file");
 		header("Content-Type: $mimetype");
 		header("Last-Modified: $modtime");
 		header('Accept-Ranges: bytes');
@@ -316,21 +317,7 @@ class Framework {
 	    ignore_user_abort(true);
 	    chdir($basePath);
 		
-		if(file_exists("upgrade-message"))
-			self::serveFileInternal("upgrade-message");
-		
-		if(!count($_POST) && !count($_GET)) {
-			$clean = '/' . relativepath($requestURI);
-			if($clean != $requestURI) {
-				ExtensionLoader::loadEnabledExtensions();
-				self::redirect($clean);
-			} else {
-				$requestURI = substr($clean, 1);
-				unset($clean);
-			}
-		} else
-			$requestURI = relativepath($requestURI);
-		
+		$requestURI = relativepath($requestURI);
 		if($requestURI == "robots.txt") {
 			if(is_file("robots.txt"))
 				self::serveFileInternal("robots.txt", "text/plain");
@@ -347,6 +334,18 @@ Disallow: " . BASE_URI;
 				echo $robotContent;
 				exit;
 			}
+		}
+		
+		if(file_exists("upgrade-message"))
+			self::serveFileInternal("upgrade-message");
+		
+		if(!count($_POST) && !count($_GET)) {
+			$clean = "/$requestURI";
+			if($clean != REQUEST_URI) {
+				ExtensionLoader::loadEnabledExtensions();
+				self::redirect($clean);
+			} else
+				unset($clean);
 		}
 
 		if(startsWith($requestURI, "media/")) {
