@@ -75,7 +75,6 @@ abstract class CachedObject {
 		
 		$overtime = $this->metaObject['n'] <= time();
 	
-	
 		if(!self::$blacklist) {
 			self::$blacklist = Array();
 			if(array_key_exists("__nocache__", $_GET)) {
@@ -93,6 +92,7 @@ abstract class CachedObject {
 		}
 				
 		
+		$updateNow = false;
 		if(count(self::$blacklist)) {
 			foreach(self::$blacklist as $filter) {
 				if(preg_match($filter, $this->getPrefix())) {
@@ -100,20 +100,26 @@ abstract class CachedObject {
 					break;
 				}
 			}
-		} else
-			$updateNow = false;
-		
-		if(!$updateNow) {
-			if(!$overtime)
-				$updateNow = false;
-			else
-				$updateNow = $this->needsUpdate();
 		}
 		
-		if($updateNow || !is_array($this->metaObject) || !file_exists($this->storagePath)) {
+		if(!$updateNow && $overtime)
+			$updateNow = $this->needsUpdate();
+		
+		$testStoragePath = $this->storagePath;
+		if(array_key_exists("ext", $this->metaObject)) {
+			$testStoragePath .= '.' . $this->metaObject['ext'];
+			$oldStorageExists = is_file($testStoragePath);
+			$updateNow = $updateNow || !$oldStorageExists;
+		} else
+			$oldStorageExists = false;
+			
+		if($updateNow || !is_array($this->metaObject)) {
 			$this->metaObject = Array("u" => time(), "n" => time() + $this->getLifetime(),
 									  "pv" => method_exists($this, "getProvider") ? $this->getProvider() : get_class($this));
 			
+			if($oldStorageExists)
+				@unlink($testStoragePath);
+				
 			try {
 				$this->storageObject = $this->update();
 			} catch(Exception $e) {
@@ -141,8 +147,7 @@ abstract class CachedObject {
 			$this->updateMeta($this->metaObject);
 			file_put_contents($this->metaPath, json_encode($this->metaObject));
 		} else {
-			if($this->metaObject['ext'])
-				$this->storagePath .= "." . $this->metaObject['ext'];
+			$this->storagePath = $testStoragePath;
 			
 			if($overtime) {
 				$this->metaObject['n'] = time() + $this->getLifetime();
