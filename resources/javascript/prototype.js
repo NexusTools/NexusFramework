@@ -73,12 +73,15 @@ var Class = (function() {
   function subclass() {};
   function create() {
     var parent = null, properties = $A(arguments);
+    
+    var name = "anonymous";
+    if (Object.isString(properties[0]))
+      name = properties.shift();
+      
     if (Object.isFunction(properties[0]))
       parent = properties.shift();
 
-    function klass() {
-      this.initialize.apply(this, arguments);
-    }
+    eval("function " + name + "(){this.initialize.apply(this, arguments);}var klass = " + name + ";");
 
     Object.extend(klass, Class.Methods);
     klass.superclass = parent;

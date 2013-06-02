@@ -5,6 +5,11 @@ Framework.registerModule("API", {
 		callbacks: {},
 		requests: {},
 		
+		initialize: function() {
+			this.minTimeout = location.protocol === 'https:' ? 2000 : 750;
+			console.log("Using a " + this.minTimeout + "ms minimum API queue timeout");
+		},
+		
 		registerHandler: function(module, callback){
 			Framework.API.callbacks[module] = callback;
 		},
@@ -25,7 +30,7 @@ Framework.registerModule("API", {
 		},
 		
 		resetTimer: function(){
-			Framework.API.minimumNextRequest = (new Date().getTime() + 750);
+			Framework.API.minimumNextRequest = (new Date().getTime() + Framework.API.minTimeout);
 		},
 		
 		queueRequests: function(){
@@ -36,8 +41,8 @@ Framework.registerModule("API", {
 			if(callWait < 5)
 				callWait = 5;
 			
-			if(callWait > 750)
-				callWait = 750;
+			if(callWait > Framework.API.minTimeout)
+				callWait = Framework.API.minTimeout;
 			
 			console.log("Scheduled next API call in " + callWait + "ms");
 			Framework.API.requestTimeout = setTimeout(Framework.API.makeRequests, callWait);

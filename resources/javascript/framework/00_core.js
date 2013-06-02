@@ -20,7 +20,8 @@ var Framework = {
 			return;
 		}
 		try {
-			Framework[name] = new (Class.create(structure))();
+			var impl = Class.create(name, structure);
+			Framework[name] = new impl();
 			
 			if(Framework[name].loaded)
 				Event.on(window, "load", Framework[name].loaded.bind(Framework[name]));
