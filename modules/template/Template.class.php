@@ -146,7 +146,7 @@ class Template {
 	public static function addStyles($styles, $media="screen"){
 		$compressedStyles = new StyleCompressor();
 		foreach($styles as $style)
-			$compressedStyles->addStyle($style = fullpath($style));
+			$compressedStyles->addStyle(fullpath($style));
 		if(!isset(self::$styles[$compressedStyles->getID()]))
 			self::$styles[$compressedStyles->getID()] = $compressedStyles;
 	    if($media)
@@ -245,7 +245,12 @@ class Template {
 		echo "<script resource-id=\"__framework-base__\" src=\"" . SHARED_RESOURCE_URL . "script\" language=\"javascript\"></script>";
 		foreach(self::$scripts as $id => $script) {
 			echo "<script resource-id=\"$id\" src=\"";
-			echo $script;
+		    if($script instanceof ScriptCompressor) {
+				echo $script->getReferenceURI("text/javascript");
+				if(DEBUG_MODE)
+					echo "\" storage=\"" . $script->getStoragePath();
+			} else
+				echo "$script";
 			echo "\" language=\"javascript\"></script>";
 	    }
 		
