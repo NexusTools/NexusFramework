@@ -16,7 +16,7 @@ function popupOpenOverlay(){
 }
 
 function popupLoadPage(page){
-    page = page.replace(new RegExp("^\/|\/\/|\/$"), "");
+    page = page.replace(/^\/|\/\/|\/$/g, "");
     
     console.log("Loading " + page);
     
