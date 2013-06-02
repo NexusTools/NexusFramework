@@ -106,14 +106,16 @@ abstract class CachedObject {
 			$updateNow = $this->needsUpdate();
 		
 		$testStoragePath = $this->storagePath;
-		if(array_key_exists("ext", $this->metaObject)) {
+		if(!is_array($this->metaObject))
+			$updateNow = true;
+		else if(array_key_exists("ext", $this->metaObject)) {
 			$testStoragePath .= '.' . $this->metaObject['ext'];
 			$oldStorageExists = is_file($testStoragePath);
 			$updateNow = $updateNow || !$oldStorageExists;
 		} else
 			$oldStorageExists = false;
 			
-		if($updateNow || !is_array($this->metaObject)) {
+		if($updateNow) {
 			$this->metaObject = Array("u" => time(), "n" => time() + $this->getLifetime(),
 									  "pv" => method_exists($this, "getProvider") ? $this->getProvider() : get_class($this));
 			
