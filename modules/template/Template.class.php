@@ -117,7 +117,7 @@ class Template {
 	public static function addScripts($scripts){
 		$compressedScripts = new ScriptCompressor();
 		foreach($scripts as $script)
-			$compressedScripts->addScript($script = fullpath($script));
+			$compressedScripts->addScript(fullpath($script));
 		if(!isset(self::$scripts[$compressedScripts->getID()]))
 			self::$scripts[$compressedScripts->getID()] = $compressedScripts;
 	}

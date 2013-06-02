@@ -74,7 +74,7 @@ class Framework {
 		return eval("return $condition;");
 	}
 	
-	public static function serveFile($file, $mimetype=false, $realName=false){
+	public static function serveFile($file, $mimetype=false, $realName=false, $expiresAt=false){
 	    ignore_user_abort(false);
 		if(!is_file($file = fullpath($file)) || !($size = filesize($file)))
 		    self::runPage("/errordoc/404");
@@ -112,8 +112,11 @@ class Framework {
 		}
 		
 		header_remove("Cache-Control");
-		header_remove("Expires");
 		header_remove("Pragma");
+		
+		if(!$expiresAt) // Default to expiring after between 5 and 10 minutes to try and balance update checking
+			$expiresAt = time() + rand(300, 600);
+		header("Expires: " . self::formatGMTDate($expiresAt));
 		
 		if (isset($_SERVER['HTTP_RANGE']) && preg_match('/bytes=(\d*)-(\d*)/', $_SERVER['HTTP_RANGE'], $range)) {
 		    $range = Array(intval($range[1]), intval($range[2]));
