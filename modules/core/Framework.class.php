@@ -75,10 +75,13 @@ class Framework {
 	}
 	
 	public static function serveFile($file, $mimetype=false, $realName=false, $expiresAt=false){
-	    ignore_user_abort(false);
 		if(!is_file($file = fullpath($file)) || !($size = filesize($file)))
 		    self::runPage("/errordoc/404");
 		
+		self::serveFileInternal($file, $mimetype, $realName, $expiresAt);
+	}
+	
+	private static function serveFileInternal($file, $mimetype=false, $realName=false, $expiresAt=false){
 		$etag = self::fileETag($file);
 		$modtime = self::formatGMTDate(filemtime($file));
 		if(!is_string($mimetype) || !strlen($mimetype = trim($mimetype))) {
@@ -311,18 +314,14 @@ class Framework {
 	public static function run($requestURI, $basePath){
 		Profiler::start("Framework");
 	    ignore_user_abort(true);
-		ExtensionLoader::loadEnabledExtensions();
+	    chdir($basePath);
 		
-		if(!count($_POST) && !count($_GET)) {
-			$clean = "/" . relativepath($requestURI);
-			if(($cpath = $clean) != $requestURI)
-				self::redirect($clean);
-			unset($clean);
-		}
+		if(file_exists("upgrade-message"))
+			self::serveFileInternal("upgrade-message");
 		
 		if($requestURI == "/robots.txt") {
-			if(is_file($file = INDEX_PATH . "robots.txt"))
-				self::serveFile($file, "text/plain");
+			if(is_file("robots.txt"))
+				self::serveFileInternal("robots.txt", "text/plain");
 			else if(defined("NO_ROBOTS")) {
 				$robotContent = "# Automatically Generated
 User-agent: *
@@ -337,13 +336,36 @@ Disallow: " . BASE_URI;
 				exit;
 			}
 		}
+	
+		ExtensionLoader::loadEnabledExtensions();
+		
+		if(!count($_POST) && !count($_GET)) {
+			$clean = "/" . relativepath($requestURI);
+			if(($cpath = $clean) != $requestURI)
+				self::redirect($clean);
+			unset($clean);
+		}
 
 		if(startsWith($requestURI, "/media/")) {
-			$file = cleanpath($basePath . $requestURI);
-			if(file_exists($file))
-				self::serveMediaFile($file);
-			else
-				self::runPage("/errordoc/404");
+			$requestURI = substr($requestURI, 1);
+			if(file_exists($requestURI))
+				self::serveFileInternal($requestURI);
+			else {
+				if(!endsWith($requestURI, "/"))
+					$requestURI .= "/";
+				if(file_exists($indexFile = "$requestURI.htm"))
+					self::serveFileInternal($indexFile);
+				else if(file_exists($indexFile = "$requestURI.html"))
+					self::serveFileInternal($indexFile);
+				else {
+					while(ob_get_level())
+						ob_end_clean();
+						
+					echo $requestURI;
+					die;
+					self::runPage("/errordoc/404");
+				}
+			}
 		}
 
 		chdir($basePath);
