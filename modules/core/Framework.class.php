@@ -122,6 +122,13 @@ class Framework {
 		header("Expires: " . self::formatGMTDate($expiresAt));
 		header("X-Process-Time: " . (microtime(true) - LOADER_START_TIME) * 1000);
 		
+		$headers = getallheaders();
+		if((isset($headers['If-None-Match']) && $headers['If-None-Match'] == $etag) ||
+				(isset($headers['If-Modified-Since']) && $headers['If-Modified-Since'] == $modtime)) {
+			header("HTTP/1.1 304 Not Modified");
+			exit;
+		}
+		
 		if (isset($_SERVER['HTTP_RANGE']) && preg_match('/bytes=(\d*)-(\d*)/', $_SERVER['HTTP_RANGE'], $range)) {
 		    $range = Array(intval($range[1]), intval($range[2]));
 		    if($range[1] < 1)
@@ -151,14 +158,6 @@ class Framework {
 		        
 		        die();
 		    }
-		}
-		
-		$headers = getallheaders();
-		if((isset($headers['If-None-Match']) && $headers['If-None-Match'] == $etag) ||
-				(isset($headers['If-Modified-Since']) && $headers['If-Modified-Since'] == $modtime)) {
-			header("X-Process-Time: " . (microtime(true) - LOADER_START_TIME) * 1000);
-			header("HTTP/1.1 304 Not Modified");
-			exit;
 		}
 		
 		header("Content-Length: $size");
@@ -239,9 +238,10 @@ class Framework {
 	}
 	
 	public static function serveMediaFile($path){
+		$path = fullpath($path);
 		if(!startsWith($path, MEDIA_PATH))
 			self::runPage("/errordoc/403");
-		self::serveFile($path);
+		self::serveFileInternal($path);
 	}
 	
 	public static function serveResource($res, $onlyShared=false){
