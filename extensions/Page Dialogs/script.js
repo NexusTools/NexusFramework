@@ -29,6 +29,7 @@ function popupLoadPage(page){
         if(popup.readAttribute("preload-page") == page) {
             console.log("Found Preloaded Popup");
             popup.removeClassName("hidden");
+            popup.allowClose = true;
             __popupStack.push(popup);
             foundPopup = true; 
             var pageFormsInputs = popup.select("form input");
