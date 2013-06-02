@@ -50,10 +50,8 @@ abstract class CachedFileSet extends CachedObject {
 	
 	public function needsUpdate(){
 	    foreach($this->files as $file)
-	        if($file->needsUpdate()) {
-	        	throw new Exception("Needs Update: " . print_r($file, true));
+	        if($file->needsUpdate())
 	            return true;
-	        }
 	    return false;
 	}
 	
