@@ -319,7 +319,19 @@ class Framework {
 		if(file_exists("upgrade-message"))
 			self::serveFileInternal("upgrade-message");
 		
-		if($requestURI == "/robots.txt") {
+		if(!count($_POST) && !count($_GET)) {
+			$clean = '/' . relativepath($requestURI);
+			if($clean != $requestURI) {
+				ExtensionLoader::loadEnabledExtensions();
+				self::redirect($clean);
+			} else {
+				$requestURI = substr($clean, 1);
+				unset($clean);
+			}
+		} else
+			$requestURI = relativepath($requestURI);
+		
+		if($requestURI == "robots.txt") {
 			if(is_file("robots.txt"))
 				self::serveFileInternal("robots.txt", "text/plain");
 			else if(defined("NO_ROBOTS")) {
@@ -328,26 +340,16 @@ User-agent: *
 Disallow: " . BASE_URI;
 				header("Content-Length: $size");
 				header("Content-Type: text/plain");
-		
-				while(ob_get_level())
+				
+				while(ob_get_level() > NATIVE_OB_LEVEL)
 					ob_end_clean();
 					
 				echo $robotContent;
 				exit;
 			}
 		}
-	
-		ExtensionLoader::loadEnabledExtensions();
-		
-		if(!count($_POST) && !count($_GET)) {
-			$clean = "/" . relativepath($requestURI);
-			if(($cpath = $clean) != $requestURI)
-				self::redirect($clean);
-			unset($clean);
-		}
 
-		if(startsWith($requestURI, "/media/")) {
-			$requestURI = substr($requestURI, 1);
+		if(startsWith($requestURI, "media/")) {
 			if(file_exists($requestURI))
 				self::serveFileInternal($requestURI);
 			else {
@@ -358,20 +360,18 @@ Disallow: " . BASE_URI;
 				else if(file_exists($indexFile = "$requestURI.html"))
 					self::serveFileInternal($indexFile);
 				else {
-					while(ob_get_level())
-						ob_end_clean();
-						
-					echo $requestURI;
-					die;
+					ExtensionLoader::loadEnabledExtensions();
 					self::runPage("/errordoc/404");
 				}
 			}
 		}
+		
+		ExtensionLoader::loadEnabledExtensions();
 
 		chdir($basePath);
-		if(startsWith($requestURI, "/res" . RES_CONNECTOR))
-			self::serveResource(substr($requestURI, 5));
-		else if($requestURI == "/" && isset($_GET['api'])) {
+		if(startsWith($requestURI, "res" . RES_CONNECTOR))
+			self::serveResource(substr($requestURI, 4));
+		else if($requestURI == "" && isset($_GET['api'])) {
 			ExtensionLoader::registerAPICalls();
 			if(DEBUG_MODE)
 				Profiler::finish("Framework");
@@ -381,15 +381,14 @@ Disallow: " . BASE_URI;
 			API::run();
 		}
 		
-		$rawpath = substr($requestURI, 1);
-		if(file_exists("$rawpath.php") && REQUEST_URI != "/index" && REQUEST_URI != "/framework.config"){
-			@chdir(dirname($rawpath));
+		if(file_exists("$requestURI.php") && REQUEST_URI != "/index" && REQUEST_URI != "/framework.config"){
+			@chdir(dirname($requestURI));
 			while(ob_get_level())
 			    ob_end_clean();
-			require("$rawpath.php");
+			require("$requestURI.php");
 			self::finalize();
-		} else if(is_dir($rawpath) && file_exists("$rawpath/index.php")){
-			@chdir($rawpath);
+		} else if(is_dir($requestURI) && file_exists("$requestURI/index.php")){
+			@chdir($requestURI);
 			while(ob_get_level())
 			    ob_end_clean();
 			require("index.php");
@@ -398,7 +397,7 @@ Disallow: " . BASE_URI;
 		
 		if(DEBUG_MODE)
 			Profiler::finish("Framework");
-		self::runPage($rawpath);
+		self::runPage($requestURI);
 	}
 	
 	public static function isLegacyOS(){
