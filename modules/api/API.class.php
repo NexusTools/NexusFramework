@@ -13,7 +13,7 @@ class API {
 	private static function array_to_xml($dataObject, &$xmlObject) {
 		foreach($dataObject as $key => $value) {
 	        if(is_numeric($key))
-	            $key = "node";
+	            $key = "node-$key";
 		    if(is_array($value)) {
 		        $subnode = $xmlObject->addChild("$key");
 		        self::array_to_xml($value, $subnode);
