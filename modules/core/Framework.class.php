@@ -87,6 +87,11 @@ class Framework {
 				self::runPage("/errordoc/404");
 			if(!($handle = opendir($file)))
 				self::runPage("/errordoc/500");
+				
+			if(is_file($indexPath = $file . "index.htm") && is_readable($indexPath))
+				self::serveFileInternal($indexPath);
+			if(is_file($indexPath = $file . "index.html") && is_readable($indexPath))
+				self::serveFileInternal($indexPath);
 			
 			$path = substr($file, strlen(INDEX_PATH)-1);
 			while(ob_get_level())
@@ -389,17 +394,8 @@ Disallow: " . BASE_URI;
 		if(startsWith($requestURI, "media")) {
 			if(file_exists($requestURI))
 				self::serveFileInternal($requestURI);
-			else {
-				if(!endsWith($requestURI, "/"))
-					$requestURI .= "/";
-				if(file_exists($indexFile = "$requestURI.htm"))
-					self::serveFileInternal($indexFile);
-				else if(file_exists($indexFile = "$requestURI.html"))
-					self::serveFileInternal($indexFile);
-				else
-					self::runPage("/errordoc/404");
-			
-			}
+			else
+				self::runPage("/errordoc/404");
 		}
 
 		chdir($basePath);
