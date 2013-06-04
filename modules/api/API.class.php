@@ -58,7 +58,6 @@ class API {
 	}
 	
 	public static function run(){
-		
 		if(DEBUG_MODE) {
 			Profiler::start("API");
 			Profiler::start("API[PreProcessor]");
@@ -70,11 +69,17 @@ class API {
 		
 		$dataObject = Array();
 		self::$apiData = Array();
-		$format = isset($_GET['format']) ? strtolower($_GET['format']) : "json";
+		$format = false;
 		foreach($_GET as $key => $value){
-			if($key == "api" || $key == "format")
+			if($key == "api")
 				continue;
-				
+			
+			if($key == "format") {
+				$format = $value;
+				continue;
+			}
+			if(!$format)
+				$format = "json";
 			if(!isset(self::$callbacks[$key])){
 				$dataObject[$key] = Array("ERROR" => "No Such API Found");
 				continue;
@@ -94,6 +99,8 @@ class API {
 										"post" => $postData,
 										"get" => $getData);
 		}
+		if(!$format)
+			$format = "help";
 		
 		if(DEBUG_MODE)
 			Profiler::finish("API[PreProcessor]");
@@ -211,5 +218,5 @@ API::registerEncoder("serialize", "API::_serializeEncoder");
 if(DEBUG_MODE)
 	API::registerEncoder("debug", "API::_debugEncoder");
 
-API::registerCallback("page", FRAMEWORK_PATH . "page-api.inc.php");
+API::registerCallback("page", __DIR__ . DIRSEP . "page.inc.php");
 ?>
