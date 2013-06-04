@@ -64,7 +64,8 @@ class API {
 		}
 		define("INAPI", true);
 		header("X-Content-Type-Options: nosniff");
-	
+		ExtensionLoader::loadEnabledExtensions();
+		
 		$dataObject = Array();
 		self::$apiData = Array();
 		$format = isset($_GET['format']) ? strtolower($_GET['format']) : "json";

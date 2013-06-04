@@ -3,8 +3,7 @@ define("LOADER_START_TIME", microtime(true));
 
 // Setup Output Buffering
 define("NATIVE_OB_LEVEL", ob_get_level());
-if(!ob_get_level())
-    ob_start();
+ob_start();
     
 // Dump Early Errors
 error_reporting(E_ALL);

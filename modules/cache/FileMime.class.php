@@ -28,5 +28,10 @@ class FileMime extends CachedFile {
 		return "file-mimes";
 	}
 	
+	public static function forFile($file) {
+		$mime = new FileMime($file);
+		return $mime->getData();
+	}
+	
 }
 ?>
