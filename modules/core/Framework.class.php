@@ -398,11 +398,9 @@ Disallow: " . BASE_URI;
 				self::runPage("/errordoc/404");
 		}
 
-		chdir($basePath);
 		if(startsWith($requestURI, "res" . RES_CONNECTOR))
 			self::serveResource(substr($requestURI, 4));
 		else if($requestURI == "" && isset($_GET['api'])) {
-			ExtensionLoader::registerAPICalls();
 			if(DEBUG_MODE)
 				Profiler::finish("Framework");
 	        

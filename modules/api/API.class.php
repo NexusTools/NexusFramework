@@ -58,6 +58,7 @@ class API {
 	}
 	
 	public static function run(){
+		
 		if(DEBUG_MODE) {
 			Profiler::start("API");
 			Profiler::start("API[PreProcessor]");
@@ -65,6 +66,7 @@ class API {
 		define("INAPI", true);
 		header("X-Content-Type-Options: nosniff");
 		ExtensionLoader::loadEnabledExtensions();
+		ExtensionLoader::registerAPICalls();
 		
 		$dataObject = Array();
 		self::$apiData = Array();
