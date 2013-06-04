@@ -12,13 +12,18 @@ class API {
 	
 	private static function array_to_xml($dataObject, &$xmlObject) {
 		foreach($dataObject as $key => $value) {
-	        if(is_numeric($key))
-	            $key = "node-$key";
+	        if(is_numeric($key)) {
+	        	$index = floatval($key);
+	            $key = "node";
+	        } else
+				$index = false;
 		    if(is_array($value)) {
-		        $subnode = $xmlObject->addChild("$key");
+		        $subnode = $xmlObject->addChild($key);
 		        self::array_to_xml($value, $subnode);
 		    } else
-		        $xmlObject->addChild($key, "$value");
+		        $subnode = $xmlObject->addChild($key, "$value");
+		    if($index !== false)
+		    	$subnode->addAttribute("index", $index);
 		}
 	}
 	
