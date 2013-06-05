@@ -17,7 +17,7 @@ class ForumUser {
 	    echo "'><table class='user-card'><tr><td class='display-picture' rowspan=\"2\"><img src='";
 	    echo $this->user->getAvatar();
 	    echo "' /></td><td class='username' valign='bottom'>";
-	    echo $this->user->getDisplayName();
+	    echo $this->getDisplayName();
 	    echo "</td></tr><tr><td valign='top' class='title'>";
 	    echo $this->getTitle();
 	    echo "</td></tr></table></a>";
