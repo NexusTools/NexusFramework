@@ -54,10 +54,11 @@ class DatabaseUser extends UserBackend {
     }
     
     public static function register($user, $pass, $email, $requireVerification=true){
-        return self::getDatabase()->insert("account", Array("username" => $user,
+        $id = self::getDatabase()->insert("account", Array("username" => $user,
                                             "password" => md5($pass, true),
                                             "email" => $email,
                                             "level" => $requireVerification ? -1 : 0));
+    	return $id === false ? null : $id;
     }
 
 }

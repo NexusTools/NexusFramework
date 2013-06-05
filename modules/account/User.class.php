@@ -109,7 +109,7 @@ class User {
     }
     
     protected static function backendIfAvailable($callable, $arguments=Array(), $badReturn=null){
-        if(self::$backend === false)
+        if(!self::$backend)
             return $badReturn;
         
         return call_user_func_array(Array(self::$backend, $callable), $arguments);
@@ -192,7 +192,7 @@ class User {
         return $user ? self::setLoggedUser($user) : false;
 	}
 	
-	public static function register($user, $pass, $email){
+	public static function register($user, $pass, $email, $requireVerification=true){
 	    if(!self::validateUsername($user))
 	        throw new Exception("Bad Username");
 	    if(!self::validateEmail($email))
@@ -201,10 +201,10 @@ class User {
 	    if(self::resolveUserIDByUsername($user) != -1)
 	        return false;
 	    
-	    if(self::resolveUserIDByEmail($user) != -1)
+	    if(self::resolveUserIDByEmail($email) != -1)
 	        return 0;
 	    
-	    return self::backendIfAvailable("register", Array($user, $pass, $email));
+	    return self::backendIfAvailable("register", Array($user, $pass, $email, $requireVerification));
 	}
 	
 	public static function getStaffIDs($minLevel = 1){
