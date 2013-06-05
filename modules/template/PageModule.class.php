@@ -240,13 +240,19 @@ class PageModule {
 	        $this->leftSidebarScript = false;
 	    }
 	    
-	    
 		$_GET = $this->get;
 		$_POST = $this->post;
 		$mname = count($parts) > 0 ? array_shift($parts) : "root";
-		if(is_file($basepath ."root.exists.inc.php") &&
-				!require($basepath ."root.exists.inc.php"))
-			return false;
+		if(is_file($basepath ."root.exists.inc.php")) {
+			while(ob_get_level())
+				ob_end_clean();
+			$ret = require($basepath ."root.exists.inc.php");
+			if($ret === false)
+				return false;
+			else if(is_string($ret)) {
+				return PageModule::findModule("$basepath$ret/", $parts, false);
+			}
+		}
 		if(is_file($basepath ."root.cond.inc.php") &&
 				!require($basepath ."root.cond.inc.php")) {
 			$this->badCond = true;

@@ -209,7 +209,6 @@ class API {
 		echo "API arguments are normal url strings, they can contain GET and POST variables, and set the GET and POST global variables respectively server-side while running the API provider.<br />GET variables must be at the end of the GET argument for the API, the same way you would with a URL: ?key=val&key2=val2...<br />Where as POST variables must appear in the request POST header, assocated to the API's name.";
 		echo "</body></html>";
 	}
-	
 }
 
 API::registerEncoder("xml", "API::_xmlEncoder");
