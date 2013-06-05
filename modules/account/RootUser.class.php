@@ -8,8 +8,10 @@ class RootUser extends BasicBuiltinUser {
     }
 
     protected function __construct(){
-        $email = file_get_contents(INDEX_PATH . "framework.config.rootemail.txt");
-        UserInterface::__construct(0, $email ? $email : "[unset]", "root", 6);
+    	$emailFile = INDEX_PATH . "framework.config.rootemail.txt";
+        $email = is_file($emailFile) && is_readable($emailFile) ?
+        	trim(file_get_contents($emailFile)) : "";
+        UserInterface::__construct(0, strlen($email) ? $email : "[unset]", "root", 6);
     }
     
     protected function setEmailImpl($email){
