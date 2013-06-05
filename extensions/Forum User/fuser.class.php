@@ -51,5 +51,15 @@ class ForumUser {
 	    return $this->displayName;
 	}
 	
+	public function setDisplayName($display){
+	    if(self::getDatabase()->update("account",
+	    		Array("display-name" => $display),
+	    		Array("rowid" => $this->user->getID()))) {
+	    	$this->displayName = $display;
+	    	return true;
+	    } else
+	    	return false;
+	}
+	
 }
 ?>
