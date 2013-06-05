@@ -110,7 +110,7 @@ class User {
     
     protected static function backendIfAvailable($callable, $arguments=Array(), $badReturn=null){
         if(self::$backend === false)
-            return $badBackend;
+            return $badReturn;
         
         return call_user_func_array(Array(self::$backend, $callable), $arguments);
     }
@@ -197,7 +197,7 @@ class User {
 	        throw new Exception("Bad Username");
 	    if(!self::validateEmail($email))
 	        throw new Exception("Bad Email");
-	
+		
 	    if(self::resolveUserIDByUsername($user) != -1)
 	        return false;
 	    
