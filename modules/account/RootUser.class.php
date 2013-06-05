@@ -3,7 +3,7 @@ class RootUser extends BasicBuiltinUser {
 
     private static $instance = false;
     
-    public function instance(){
+    public static function instance(){
         return self::$instance === false ? (self::$instance = new RootUser()) : self::$instance;
     }
 
