@@ -9,8 +9,8 @@ class User {
     const FETCH_ALLOW_ROOT = 1;
     const FETCH_HIDE_SYSTEM = true;
     const FETCH_ANY_USER = false;
-    const EMAIL_REGEXP = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
-    const USERNAME_REGEXP = "/^[a-z]+([_\\.-][a-z0-9]+)*?$/i";
+    const EMAIL_REGEXP = "/^[\w\d][_\\.-\w\d]*@[\w\d]+([\\.-_][\w\d]+)*\\.[\w]{2,5}$/";
+    const USERNAME_REGEXP = "/^[\w][_\\.-\w\d]*$/";
     
     public static function validateEmail($email) {
         return preg_match(self::EMAIL_REGEXP, $email);
