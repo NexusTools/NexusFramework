@@ -212,7 +212,8 @@ class User {
 	}
 	
 	public static function checkLogin($id, $pass, $allowRoot=true){
-	    $user = self::fetch($id, $allowRoot ? self::FETCH_ALLOW_ROOT : self::FETCH_HIDE_SYSTEM);
+	    $user = self::fetch($id, $allowRoot ?
+	    	self::FETCH_ALLOW_ROOT : self::FETCH_HIDE_SYSTEM);
         
         if($user->isVerified() && $user->checkPassword($pass)) 
             return $user;
