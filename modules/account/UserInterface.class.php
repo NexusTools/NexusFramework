@@ -10,7 +10,7 @@ abstract class UserInterface {
     private static $extensions = Array();
     private static $staticmethodcache = Array();
     private static $defaultmethodcache = Array();
-    private static $defaultMethod = falseUserBackend;
+    private static $defaultMethod = false;
     
     public function initBackends(){
 		if($this->isValid())
@@ -63,10 +63,10 @@ abstract class UserInterface {
 	        return true;
 	    }
 	    return false;
-	}UserBackend
+	}
 	
 	public function setUsername($username){
-	    if($this->setUsernameImpl($usernamUserBackende)){
+	    if($this->setUsernameImpl($username)){
 	        $this->username = $username;
 	        return true;
 	    }
