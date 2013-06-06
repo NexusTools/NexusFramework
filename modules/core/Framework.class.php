@@ -104,16 +104,30 @@ class Framework {
 <?
 
 chdir($file);
+$files = Array();
 while (false !== ($entry = readdir($handle))) {
-	if($entry == "." || $entry == "..")
+	if($entry == "." || $entry == ".." ||
+			!is_readable($entry))
 		continue;
+		
+	if(is_file($entry)) {
+		array_push($files, $entry);
+		continue;
+	}
 	
+	?><tr><td><?
+	?><img src="<? echo BASE_URI . "res:folder"; ?>" width="22" height="22" /></td><td><a href="<?
+	echo cleanpath(BASE_URI . REQUEST_URI . DIRSEP . $entry);
+	?>"><? echo $entry; ?></a></td><td>directory</td><td><?
+	echo StringFormat::formatFilesize(filesize($entry));
+	?></td></tr><?
+}
+
+foreach($files as $entry) {
 	?><tr><td><?
 	$mime = self::mimeForFile($entry);
 	if(startsWith($mime, "image/"))
 		$icon = Framework::getReferenceURI($entry);
-	else if($mime == "directory")
-		$icon = BASE_URI . "res:folder";
 	else
 		$icon = BASE_URI . "res:file";
 	
