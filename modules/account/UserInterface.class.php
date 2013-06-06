@@ -155,7 +155,7 @@ abstract class UserInterface {
 	}
 	
 	public function getRegisterDate() {
-		return return $this->registerDateImpl();;
+		return $this->registerDateImpl();
 	}
 	
 	public function getRegisterString() {
