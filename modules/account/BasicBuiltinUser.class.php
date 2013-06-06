@@ -8,6 +8,10 @@ abstract class BasicBuiltinUser extends UserInterface {
 	protected function setUsernameImpl($username){
 	    throw new Exception("Username of Built-in Users cannot be changed");
 	}
+	
+	protected function registerDateImpl(){
+		return 0;
+	}
     
 }
 ?>
