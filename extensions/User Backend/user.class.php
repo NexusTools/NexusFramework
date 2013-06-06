@@ -12,7 +12,7 @@ class DatabaseUser extends UserBackend {
     }
     
     protected function registerDateImpl() {
-    	return strtotime(self::getDatabase()->selectField("account",
+    	return Database::timestampToTime(self::getDatabase()->selectField("account",
     			Array("rowid" => $this->getID()), "created"));
     }
 
