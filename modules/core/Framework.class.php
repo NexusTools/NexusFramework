@@ -97,9 +97,10 @@ class Framework {
 			while(ob_get_level())
 				ob_end_clean();
 			?><!DOCTYPE html>
-<html><head><title>Directory Listing: <? echo $path; ?></title></head>
+<html><head><title>Directory Listing: <? echo $path; ?></title>
+<link href="<? echo BASE_URI; ?>res:dirstyle" rel="stylesheet" type="text/css" /></head>
 <body><h1>Directory Listing: <? echo $path; ?></h1>
-<table><tr><th>Filename</th><th>Type</th><th>Size</th></tr>
+<table cellspacing="0"><tr><th colspan="2">Filename</th><th>Type</th><th>Size</th></tr>
 <?
 
 chdir($file);
@@ -107,10 +108,19 @@ while (false !== ($entry = readdir($handle))) {
 	if($entry == "." || $entry == "..")
 		continue;
 	
-	?><tr><td><a href="<?
+	?><tr><td><?
+	$mime = self::mimeForFile($entry);
+	if(startsWith($mime, "image/"))
+		$icon = Framework::getReferenceURI($entry);
+	else if($mime == "directory")
+		$icon = BASE_URI . "res:folder";
+	else
+		$icon = BASE_URI . "res:file";
+	
+	?><img src="<? echo $icon; ?>" width="22" height="22" /></td><td><a href="<?
 	echo cleanpath(BASE_URI . REQUEST_URI . DIRSEP . $entry);
 	?>"><? echo $entry; ?></a></td><td><?
-	echo FileMime::forFile($entry);
+	echo $mime;
 	?></td><td><?
 	echo StringFormat::formatFilesize(filesize($entry));
 	?></td></tr><?
@@ -335,6 +345,22 @@ closedir($handle);
 			    }
 				$scmpr->dumpAsResponse();
 				self::finalize();
+				
+			case "dirstyle":
+				while(ob_get_level())
+		            ob_end_clean();
+				$style = new CompressedStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "dirlisting.css");
+				$style->dumpAsResponse();
+				self::finalize();
+				
+			case "folder":
+				self::serveFileInternal(FRAMEWORK_RES_PATH . "images" . DIRSEP . "folder.png", "image/png");
+				
+			case "file":
+				self::serveFileInternal(FRAMEWORK_RES_PATH . "images" . DIRSEP . "file.png", "image/png");
+				
+			case "lgpl-logo":
+				self::serveFileInternal(FRAMEWORK_RES_PATH . "images" . DIRSEP . "lgplv3.png", "image/png");
 		    
 			case "style":
 				while(ob_get_level())
