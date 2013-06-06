@@ -44,6 +44,33 @@ abstract class UserInterface {
 	public function getLevelString(){
 	    return self::levelString($this->getLevel());
 	}
+    
+    public static function longLevelString($level){
+		if($level >= 6)
+			return "Root Account";
+		else if($level >= 5)
+			return "System Account";
+		else if($level >= 4)
+			return "Website Owner";
+		else if($level >= 3)
+			return "Super Administrator";
+		else if($level >= 2)
+			return "Administrator";
+		else if($level >= 1)
+			return "Website Staff";
+		else if($level >= 0)
+			return "Active Member";
+		else if($level >= -1)
+			return "Unverified";
+        else if($level >= -2)
+			return "Banned Account";
+		else
+		    return "Corrupt Account"; 
+	}
+	
+	public function getLongLevelString(){
+	    return self::longLevelString($this->getLevel());
+	}
 	
 	public function setLogged(){
 		User::setLoggedUser($this);
