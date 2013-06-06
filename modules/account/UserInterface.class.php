@@ -154,11 +154,11 @@ abstract class UserInterface {
 		return ucfirst($this->username);
 	}
 	
-	protected function getRegisterDate() {
+	public function getRegisterDate() {
 		return 0;
 	}
 	
-	protected function getRegisterString() {
+	public function getRegisterString() {
 		return StringFormat::formatDate($this->getRegisterDate(), false);
 	}
     
