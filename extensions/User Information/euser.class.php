@@ -121,6 +121,10 @@ class ExtendedUser {
 		return $this->website;
 	}
 	
+	public function hasWebsite(){
+		return strlen($this->website);
+	}
+	
 	public function getBirthDate(){
 		return $this->birth;
 	}
