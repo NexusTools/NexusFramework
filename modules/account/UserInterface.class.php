@@ -73,6 +73,7 @@ abstract class UserInterface {
 	    return false;
 	}
 	
+	protected abstract function registerDateImpl();
 	protected abstract function setLevelImpl($level);
 	protected abstract function setEmailImpl($email);
 	protected abstract function setUsernameImpl($username);
@@ -151,6 +152,14 @@ abstract class UserInterface {
     
     protected function _getFullName(){
 		return ucfirst($this->username);
+	}
+	
+	protected function getRegisterDate() {
+		return 0;
+	}
+	
+	protected function getRegisterString() {
+		return StringFormat::formatDate($this->getRegisterDate(), false);
 	}
     
     protected function _getDisplayName(){

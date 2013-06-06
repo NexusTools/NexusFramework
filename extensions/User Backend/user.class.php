@@ -10,6 +10,11 @@ class DatabaseUser extends UserBackend {
     public static function getStaffIDs($minLevel = 1){
         return self::getDatabase()->selectFields("account", "rowid", Array(">= level" => $minLevel));
     }
+    
+    protected function registerDateImpl() {
+    	return strtotime(self::getDatabase()->selectField("account",
+    			Array("rowid" => $this->getID()), "created"));
+    }
 
     protected function setLevelImpl($level){
         return self::getDatabase()->update("account", Array("level" => $level), Array("rowid" => $this->getID()));
@@ -28,8 +33,6 @@ class DatabaseUser extends UserBackend {
 	}
 	
 	public function checkPassword($password){
-	    
-	    
 	    return self::getDatabase()->selectField("account", Array("rowid" => $this->getID(),
 	                                                "password" => md5($password, true)),
 	                                                "rowid") === $this->getID();
