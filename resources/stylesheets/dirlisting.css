@@ -1,0 +1,11 @@
+th, td {
+	text-align: left;
+}
+
+th {
+	border-bottom: solid 1pt gray;
+}
+
+td {
+	padding: 2px;
+}
