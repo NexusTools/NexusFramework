@@ -36,10 +36,11 @@ class ForumUser {
 	    $this->currentTitle = $forumUser['custom-title'];
 	}
 	
-	public function getTitle(){
+	public function getTitle($long=false){
 	    if(!$this->currentTitle) {
 	        if($this->user->getLevel() != 0)
-	            $this->currentTitle = $this->user->getLevelString();
+	            $this->currentTitle = $long ? $this->user->getLongLevelString()
+	            	: $this->user->getLevelString();
 	        else
 	            $this->currentTitle = self::getDatabase()->selectField("reputation-titles", Array("< req-rep" => $this->reputation), "title", "No Title", "reputation DESC");
 	    }
