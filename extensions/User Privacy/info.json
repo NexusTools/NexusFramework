@@ -1,0 +1,19 @@
+{
+	"name": "User Privacy",
+	"provides": "user-privacy",
+	"dependancies": ["user-backend"],
+	"description": "Provides a key/integer user extension for privacy settings.",
+	"database": {
+	    "privacy": {
+	        "user": {
+	            "type": "INTEGER",
+	            "primary": true
+	        },
+	        "key": {
+	            "type": "VARCHAR(20)",
+	            "primary": true
+	        },
+	        "value": "INTEGER"
+	    }
+	}
+}

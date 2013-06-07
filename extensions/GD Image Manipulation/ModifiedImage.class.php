@@ -25,7 +25,6 @@ class ModifiedImage extends CachedFileBase {
     	
         CachedFileBase::__construct($path);
         $this->inputImage = new ImageReference($path);
-        
         $this->canvasSize = Array($width > 0 ? $width : $this->inputImage->getWidth(),
         							$height > 0 ? $height : $this->inputImage->getHeight());
         $this->quality = $quality;

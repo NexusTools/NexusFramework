@@ -173,11 +173,13 @@ class Database extends Lockable {
 	
 	public function _selectField($table, $where, $field, $default=false, $orderBy=false, $resolveProtoValue=false){
 		$res = $this->_select($table, $where, Array($field), 1, false, $orderBy, false);
-		if($res && count($res)) {
-		    if($resolveProtoValue === true && $res[0][0] instanceof DatabaseDataPrototype)
-		        return $res[0][0]->resolve();
+		if($res && array_key_exists(0, $res) &&
+				array_key_exists(0, $res[0])) {
+			$value = $res[0][0];
+		    if($resolveProtoValue === true && $value instanceof DatabaseDataPrototype)
+		        return $value->resolve();
 		        
-			return $res[0][0];
+			return $value;
 		} else
 			return $default;
 	}
@@ -460,15 +462,8 @@ class Database extends Lockable {
 	    fwrite(self::$logFile, $content);
 	}
 	
-	public function _insert($table, $values, $upsert=false) {
-		$query = "INSERT";
-		if($upsert === true)
-		    $query .= " OR REPLACE";
-		else if(!is_bool($upsert))
-		    throw new Exception("3rd parameter must be boolean");
-		$query .= " INTO `$table` (";
-		
-		
+	public function _insert($table, $values) {
+		$query = "INSERT INTO `$table` (";
 		
 		// Process defaults
 		$tblDef = $this->getDefinition($table);
@@ -530,7 +525,7 @@ class Database extends Lockable {
 		    return false;
 		}
 		
-		$rowid = $this->database->lastInsertId();
+		$rowid = intval($this->database->lastInsertId());
 		Triggers::broadcast("Database", $this->getName() . ".$table", Array("insert", $rowid, array_keys($values)));
 	    return $rowid;
 	}
@@ -579,7 +574,21 @@ class Database extends Lockable {
 	    $this->_update($table, Array($field => "NOT `$field`"), $where, $now);
 	}
 	
-	public function _update($table, $values, $where=false, $now=true) {
+	public function _upsert($table, $values, $where=false) {
+		if(is_numeric($where)) // allow passing where as rowid
+			$where = Array("rowid" => $where);
+		
+		$count = $this->update($table, $values, $where);
+		if($count === false)
+			return false;
+		if($count > 0)
+			return true;
+		if($where)
+			$values = array_merge($values, $where);
+		return $this->insert($table, $values);
+	}
+	
+	public function _update($table, $values, $where=false) {
 		if(is_numeric($where)) // allow passing where as rowid
 			$where = Array("rowid" => $where);
 			
@@ -626,10 +635,11 @@ class Database extends Lockable {
 			$this->lastError = $this->database->errorInfo();
 			$this->lastQuery = $updateQuery;
 			$this->lastException = new Exception("DatabaseError: " . json_encode($this->database->errorInfo()));
+			return false;
 		}
 		
 		Triggers::broadcast("Database", $this->getName() . ".$table", Array("insert", $where ? array_keys($where) : Array()));
-		return $ret;
+		return $statement->rowCount();
 	}
 	
 	public function _updateTable($name, $def){
