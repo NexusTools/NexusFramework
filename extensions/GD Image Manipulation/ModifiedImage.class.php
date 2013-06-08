@@ -303,6 +303,9 @@ class ModifiedImage extends CachedFileBase {
 		        	$pixel['red'] = 255 - $pixel['red'];
         			$pixel['green'] = 255 - $pixel['green'];
         			$pixel['blue'] = 255 - $pixel['blue'];
+        			$rgb[0] = 1-$rgb[0];
+        			$rgb[1] = 1-$rgb[1];
+        			$rgb[2] = 1-$rgb[2];
 		        }
 	        	$pixel['red'] *= $rgb[0];
     			$pixel['green'] *= $rgb[1];
