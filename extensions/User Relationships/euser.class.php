@@ -42,16 +42,16 @@ class UserRelation {
                         "relation" => User::resolveUserID($uid), "stance" => $stance), true) !== false;
     }
 
-    public function isFriendsWith($uid, $requiresMutual=true) {
+    public function isFriendsWith($uid, $requiresMutual=false) {
         return $this->getStanceTowards($uid, $requiresMutual) > 0;
         
     }
     
-    public function isBestFriendsWith($uid, $requiresMutual=true) {
+    public function isBestFriendsWith($uid, $requiresMutual=false) {
         return $this->getStanceTowards($uid, $requiresMutual) > 1;
     }
 
-    public function listFriends($requiresMutual=true) {
+    public function listFriends($requiresMutual=false) {
         $friends = Array();
         foreach(self::getDatabase()->selectFields("relations", "relation", Array("user" => $this->uid)) as $relation) {
             if($this->isFriendsWith($relation))
@@ -62,15 +62,15 @@ class UserRelation {
     
     }
 
-    public function isEnemiesWith($uid, $requiresMutual=true) {
+    public function isEnemiesWith($uid, $requiresMutual=false) {
         return $this->getStanceTowards($uid, $requiresMutual) < 0;
     }
     
-    public function isEnemiesMortalWith($uid, $requiresMutual=true) {
-        return $this->getStanceTowards($uid, $requiresMutual) < 0;
+    public function isMortalEnemiesWith($uid, $requiresMutual=false) {
+        return $this->getStanceTowards($uid, $requiresMutual) < -1;
     }
     
-    public function listEnemies($requiresMutual=true) {
+    public function listEnemies($requiresMutual=false) {
         $friends = Array();
         foreach(self::getDatabase()->selectFields("relations", "relation", Array("user" => $this->uid)) as $relation) {
             if($this->isEnemiesWith($relation))
