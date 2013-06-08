@@ -22,7 +22,9 @@ class PrivateUser {
     
     public function setPrivacyValue($key, $value){
         $key = StringFormat::idForDisplay($key);
-        if(self::getDatabase()->upsert("privacy", Array("value" => $value, "user" => $this->uid, "key" => $key))) {
+        if(self::getDatabase()->upsert("privacy",
+        		Array("value" => $value),
+        		Array("user" => $this->uid, "key" => $key))) {
         	$this->cache[$key] = $value;
         	return true;
         }
