@@ -9,10 +9,7 @@
 	            "type": "INTEGER",
 	            "primary": true
 	        },
-	        "key": {
-	            "type": "VARCHAR(20)",
-	            "primary": true
-	        },
+	        "key": "VARCHAR(20)",
 	        "value": "INTEGER"
 	    }
 	}

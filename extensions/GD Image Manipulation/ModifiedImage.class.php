@@ -279,11 +279,17 @@ class ModifiedImage extends CachedFileBase {
     
     private static function __tinted($input, $rgb =Array(0, 255, 0)){
         $modifiedImage = new ModifiedImage($input);
-        $modifiedImage->addOperationRaw(Array("ModifiedImage::tintedcopy", "{{DEST}}", "{{SRC}}", $rgb));
+        $modifiedImage->addOperationRaw(Array("ModifiedImage::tint", "{{DEST}}", "{{SRC}}", $rgb));
         return $modifiedImage;
     }
     
-    public static function tint($out, $in, $rgb) {
+    private static function __itinted($input, $rgb =Array(0, 255, 0)){
+        $modifiedImage = new ModifiedImage($input);
+        $modifiedImage->addOperationRaw(Array("ModifiedImage::tint", "{{DEST}}", "{{SRC}}", $rgb, true));
+        return $modifiedImage;
+    }
+    
+    public static function tint($out, $in, $rgb, $invert=false) {
     	$xSize = imagesx($in);
     	$ySize = imagesy($in);
     	
@@ -292,11 +298,24 @@ class ModifiedImage extends CachedFileBase {
     	for( $x = 0; $x < $xSize; $x++ ) {
         	for( $y = 0; $y < $ySize; $y++ ) {
 		        $pixel = imagecolorsforindex( $in, imagecolorat( $in, $x, $y ) );
-		        imagesetpixel($out, $x, $y, imagecolorallocatealpha( $out,
-		        			$pixel['red'] * $rgb[0],
-		        			$pixel['green'] * $rgb[1],
-		        			$pixel['blue'] * $rgb[2],
-		        			$pixel['alpha']));
+		        
+		        if($invert) {
+		        	$pixel['red'] = 255 - $pixel['red'];
+        			$pixel['green'] = 255 - $pixel['green'];
+        			$pixel['blue'] = 255 - $pixel['blue'];
+		        }
+	        	$pixel['red'] *= $rgb[0];
+    			$pixel['green'] *= $rgb[1];
+    			$pixel['blue'] *= $rgb[2];
+		        if($invert) {
+		        	$pixel['red'] = 255 - $pixel['red'];
+        			$pixel['green'] = 255 - $pixel['green'];
+        			$pixel['blue'] = 255 - $pixel['blue'];
+		        }
+		        
+		        imagesetpixel($out, $x, $y, imagecolorallocatealpha($out,
+		        			$pixel['red'], $pixel['green'],
+		        			$pixel['blue'], $pixel['alpha']));
         	}
         }
     }
