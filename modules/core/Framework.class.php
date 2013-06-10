@@ -421,9 +421,11 @@ Disallow: " . BASE_URI;
 		}
 		
 		if(file_exists("upgrade-message")) {
-			if(REQUEST_URI != "/")
-				Framework::redirect("/");
-			self::serveFileInternal("upgrade-message");
+			header("Content-Type: text/plain");
+			while(ob_get_level())
+				ob_end_clean();
+			echo file_get_contents("upgrade-message");
+			die;
 		}
 		
 		if(!count($_POST) && !count($_GET)) {
