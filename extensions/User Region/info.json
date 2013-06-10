@@ -1,0 +1,21 @@
+{
+	"name": "User Region",
+	"description": "Provides a user extension for region information.",
+	"provides": "user-region",
+	"dependancies": ["region-core", "user-backend"],
+	"database": {
+		"account": {
+			"id": {
+				"type": "INTEGER",
+				"primary": true
+			},
+			"radius": "INTEGER",
+			"country": "VARCHAR(2)",
+			"region": "VARCHAR(2)",
+			"city": "VARCHAR(60)",
+			"postal": "VARCHAR(10)",
+			"latitude": "DOUBLE",
+			"longitude": "DOUBLE"
+		}
+	}
+}
