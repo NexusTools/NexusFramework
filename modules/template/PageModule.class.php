@@ -247,8 +247,12 @@ class PageModule {
 			$ret = require($basepath ."root.exists.inc.php");
 			if($ret === false)
 				return false;
-			else if(is_string($ret))
-				return PageModule::findModule("$basepath$ret/", $parts, false);
+			else if(is_string($ret)) {
+				if(startsWith($ret, "/"))
+					return PageModule::findModule("$ret/", $parts, false);
+				else
+					return PageModule::findModule("$basepath" . relativepath($ret) . "/", $parts, false);
+			}
 		}
 		if(is_file($basepath ."root.cond.inc.php") &&
 				!require($basepath ."root.cond.inc.php")) {
@@ -330,8 +334,12 @@ class PageModule {
 				    return false;
 			    } else
 				    return false;
-		    } else if(is_string($ret))
-			    return PageModule::findModule("$basepath$ret/", $parts, false);
+		    } else if(is_string($ret)) {
+				if(startsWith($ret, "/"))
+					return PageModule::findModule("$ret/", $parts, false);
+				else
+					return PageModule::findModule("$basepath" . relativepath($ret) . "/", $parts, false);
+			}
 		
 		    if(is_file($basepath . "virtual.cond.inc.php") &&
 				    !require($basepath . "virtual.cond.inc.php")) {
