@@ -18,8 +18,8 @@ class RegionCore {
 			}
 			unset($record);
 			
-			if(array_key_exists("country", $data) && array_key_exists("region", $data))
-				$data['timezone'] = geoip_time_zone_by_country_and_region($data['country'], $data['region']);
+			if(array_key_exists("country-code", $data) && array_key_exists("region", $data))
+				$data['timezone'] = geoip_time_zone_by_country_and_region($data['country-code'], $data['region']);
 			
 			return $data;
 		} catch(Exception $e) {
