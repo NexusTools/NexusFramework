@@ -35,7 +35,7 @@ class CountryDataParser extends CachedFile {
 				
 			if(!$this->v)
 				array_push($compiledData, $k);
-			else if(strlen($v = trim((string)$child[$this->v]) > 0)
+			else if(strlen($v = trim((string)$child[$this->v])) > 0)
 				$compiledData[$k] = $v;
 			
 		}
