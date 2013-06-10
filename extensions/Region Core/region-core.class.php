@@ -6,12 +6,24 @@ class RegionCore {
 			if(!$addr)
 				$addr = ClientInfo::getRemoteAddress();
 			$record = geoip_record_by_name($addr);
-			$record['timezone'] = geoip_time_zone_by_country_and_region($record['country'], $record['region']);
-			$record['postal-code'] = $record['postal_code'];
+			if(!$record)
+				throw new Exception("No Record Returned");
+				
+			$data = Array();
+			foreach($record as $key => $val) {
+				if(strlen($val) < 1)
+					continue;
+				$key = str_replace("_", "-", $key);
+				$data[$key] = $val;
+			}
+			unset($record);
 			
-			return $record;
+			if(array_key_exists("country", $data) && array_key_exists("region", $data))
+				$data['timezone'] = geoip_time_zone_by_country_and_region($data['country'], $data['region']);
+			
+			return $data;
 		} catch(Exception $e) {
-			return false;
+			return Array("error" => $e->getMessage());
 		}
 	}
 

@@ -25,9 +25,9 @@ class UserRegion {
 			try{
 				$record = geoip_record_by_name(ClientInfo::getRemoteAddress());
 				$this->city = $record['city'];
-				$this->country = $record['country_code'];
+				$this->country = $record['country-code'];
 				$this->region = $record['region'];
-				$this->postal = $record['postal_code'];
+				$this->postal = $record['postal-code'];
 				//$user->setTimeZone(geoip_time_zone_by_country_and_region($this->country, $this->region));
 				$this->latitude = $record['latitude'];
 				$this->longitude = $record['longitude'];
