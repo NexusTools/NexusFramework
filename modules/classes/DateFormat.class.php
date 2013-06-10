@@ -3,6 +3,10 @@ class DateFormat {
 
     private static $timezones = Array();
     
+    public static function getFormat() {
+    	return DEFAULT_DATE_FORMAT;
+    }
+    
     public static function getTimeZone($zoneid=false){
         if($zoneid === false)
             $zoneid = date_default_timezone_get();
@@ -34,4 +38,7 @@ class DateFormat {
     }
 
 }
+
+if(!defined("DEFAULT_DATE_FORMAT"))
+	define("DEFAULT_DATE_FORMAT", "M jS, Y @ g:ia T");
 ?>
