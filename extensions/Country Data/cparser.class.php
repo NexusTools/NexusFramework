@@ -30,10 +30,14 @@ class CountryDataParser extends CachedFile {
 		$data = simplexml_load_file($this->getFilePath());
 		$compiledData = Array();
 		foreach($data->children() as $child) {
+			if(strlen($k = trim((string)$child[$this->k])) < 1)
+				continue;
+				
 			if(!$this->v)
-				array_push($compiledData, (string)$child[$this->k]);
-			else
-				$compiledData[(string)$child[$this->k]] = (string)$child[$this->v];
+				array_push($compiledData, $k);
+			else if(strlen($v = trim((string)$child[$this->v]) > 0)
+				$compiledData[$k] = $v;
+			
 		}
 		
 		return $compiledData;
