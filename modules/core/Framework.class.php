@@ -420,8 +420,11 @@ Disallow: " . BASE_URI;
 			}
 		}
 		
-		if(file_exists("upgrade-message"))
+		if(file_exists("upgrade-message")) {
+			if(REQUEST_URI != "/")
+				Framework::redirect("/");
 			self::serveFileInternal("upgrade-message");
+		}
 		
 		if(!count($_POST) && !count($_GET)) {
 			$clean = "/$requestURI";
