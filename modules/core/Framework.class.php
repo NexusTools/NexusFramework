@@ -126,7 +126,7 @@ while (false !== ($entry = readdir($handle))) {
 foreach($files as $entry) {
 	?><tr><td><?
 	$mime = self::mimeForFile($entry);
-	if(startsWith($mime, "image/"))
+	if(startsWith($mime, "image/") && filesize($entry) < 5242880)
 		$icon = Framework::getReferenceURI($entry);
 	else
 		$icon = BASE_URI . "res:file";
