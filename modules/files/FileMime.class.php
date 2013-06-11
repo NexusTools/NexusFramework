@@ -1,7 +1,22 @@
 <?php
 class FileMime extends CachedFile {
 
-	public function __construct($path){
+	private static $instances;
+	
+	public static function __init() {
+		self::$instances = new ReferenceMap();
+	}
+	
+	public static function instance($path) {
+		$path = fullpath($path);
+		$val = self::$instances->getValue($path);
+		if($val)
+			return $val;
+		
+		return self::$instances->setValue($path, new FileMime($path));
+	}
+
+	protected function __construct($path){
 		CachedFile::__construct($path);
 	}
 	
@@ -29,9 +44,9 @@ class FileMime extends CachedFile {
 	}
 	
 	public static function forFile($file) {
-		$mime = new FileMime($file);
+		$mime = FileMime::instance($file);
 		return $mime->getData();
 	}
 	
-}
+} FileMime::__init();
 ?>

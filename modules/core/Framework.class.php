@@ -519,8 +519,7 @@ Disallow: " . BASE_URI;
 	}
 	
 	public static function mimeForFile($path){
-	    $fileMime = new FileMime($path);
-	    return $fileMime->getData();
+	    return FileMime::forFile($path);
 	}
 	
 	private static function getFileReference($rawPath, $mime_type, $realFilename, $shared, $relative){
