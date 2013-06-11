@@ -11,11 +11,13 @@ Framework.registerModule("API", {
 		},
 		
 		registerHandler: function(module, callback){
+			var oldCallback = Framework.API.callbacks[module];
 			Framework.API.callbacks[module] = callback;
+			return oldCallback;
 		},
 		
 		unregisterHandler: function(module){
-			Framework.API.callbacks[module] = null;
+			Framework.API.callbacks[module] = undefined;
 		},
 		
 		request: function(module, data, postVars){
