@@ -76,21 +76,27 @@ if(!defined("DEBUG_MODE"))
 	define("DEBUG_MODE", false);
 if(!defined("BAD_CONDITION_STATUS"))
 	define("BAD_CONDITION_STATUS", 403);
-
+	
+// Load required classes
+require FRAMEWORK_MODULE_PATH . "core" . DIRSEP . "Framework.class.php";
+require FRAMEWORK_MODULE_PATH . "core" . DIRSEP . "cache" . DIRSEP . "CachedObject.class.php";
+require FRAMEWORK_MODULE_PATH . "core" . DIRSEP . "cache" . DIRSEP . "CachedFileBase.class.php";
+require FRAMEWORK_MODULE_PATH . "core" . DIRSEP . "cache" . DIRSEP . "FrameworkClassLocation.class.php";
 require FRAMEWORK_MODULE_PATH . "core" . DIRSEP . "ClassLoader.class.php";
 OutputHandlerStack::init();
 
 session_name("S" . dechex(ClientInfo::getUniqueID()));
-ini_set('session.gc_maxlifetime', 60*60*24*30);
-ini_set('session.cookie_lifetime', 60*60*24*30);
 if(!session_start())
     throw new Exception("Failed to start session...");
 
-if(array_key_exists("ClientID", $_SESSION) && $_SESSION["ClientID"] != ClientInfo::getUniqueID()) {
+if(array_key_exists("ClientID", $_SESSION) &&
+		$_SESSION["ClientID"] != ClientInfo::getUniqueID()) {
     session_regenerate_id();
-    $_SESSION = Array("ClientID" => ClientInfo::getUniqueID(), "NextUpdate" => time() + (3600 * 12));
+    $_SESSION = Array("ClientID" => ClientInfo::getUniqueID(),
+    				"NextUpdate" => time() + (3600 * 12));
 } else if(!array_key_exists("ClientID", $_SESSION))
-    $_SESSION["ClientID"] = ClientInfo::getUniqueID();
+    $_SESSION = Array("ClientID" => ClientInfo::getUniqueID(),
+    				"NextUpdate" => time() + (3600 * 12));
 else if($_SESSION['NextUpdate'] < time()) {
     session_regenerate_id(true);
     $_SESSION["NextUpdate"] = time() + (3600 * 12);

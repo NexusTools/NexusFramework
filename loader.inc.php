@@ -1,5 +1,9 @@
-<?php if(defined("LOADER_START_TIME"))	return;
+<?php
 define("LOADER_START_TIME", microtime(true));
+
+// Test PHP Version
+if(!defined("PHP_MAJOR_VERSION"))
+	throw new Exception("PHP version incompatible.");
 
 // Setup Output Buffering
 define("NATIVE_OB_LEVEL", ob_get_level());
@@ -8,10 +12,6 @@ ob_start();
 // Dump Early Errors
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-
-// Test PHP Version
-if(floatval(phpversion()) < 5.3)
-	throw new Exception("PHP 5.3 or Higher Required.");
 
 // Shorter Aliases
 define("DIRSEP", DIRECTORY_SEPARATOR);
@@ -107,7 +107,7 @@ require FRAMEWORK_CORE_PATH . "error-handling.inc.php";
 if(!defined("FRAMEWORK_MODE"))
 	define("FRAMEWORK_MODE", "website");
 
-$loaderPath = FRAMEWORK_CORE_PATH . FRAMEWORK_MODE . "-loader.inc.php";
+$loaderPath = FRAMEWORK_CORE_PATH . "loaders" . DIRSEP . FRAMEWORK_MODE . ".inc.php";
 if(is_file($loaderPath))
 	require $loaderPath;
 else
