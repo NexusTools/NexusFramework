@@ -39,7 +39,7 @@ class DatabaseUser extends UserBackend {
 	}
 	
 	public static function getUserForID($id){
-	    $userData = self::getDatabase()->selectRow("account", Array("rowid" => $id), Array("email", "username", "level"));
+	    $userData = self::getDatabase()->selectRow("account", Array("rowid" => $id), Array("email", "username", "level"), false, false);
 	    return $userData === false ? false : new DatabaseUser($id, $userData);
 	    return false;
 	}

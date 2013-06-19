@@ -164,8 +164,15 @@ if(isset($_POST['action'])){
 
 if($values)
 	$values = fetch_posted_values($errors, $fields, false);
-else
-	$values = $id == -1 ? $_POST : $database->selectRow($table, Array("rowid" => $id));
+else {
+	if($id == -1)
+		$values = $_POST;
+	else {
+		$values = $database->selectRow($table, Array("rowid" => $id));
+		if(!$values)
+			throw $database->lastException();
+	}
+}
 	
 if(isset($_GET['del'])){
 	if($_GET['del'] === "yes") {
