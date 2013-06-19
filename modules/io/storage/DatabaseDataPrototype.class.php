@@ -24,8 +24,8 @@ abstract class DatabaseDataPrototype {
     
     protected abstract function resolveImpl(); // Return a resolved version
     protected abstract function initImpl($db);
-    public static abstract function preferredType(); // The database backing
-    public static abstract function isVirtual(); // Whether or not this field should actually exist in the database
+    //public static abstract function preferredType(); // The database backing
+    //public static abstract function isVirtual(); // Whether or not this field should actually exist in the database
 
     public function getRaw(){
         return $this->raw;

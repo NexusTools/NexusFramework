@@ -42,7 +42,7 @@ class ForumUser {
 	            $this->currentTitle = $long ? $this->user->getLongLevelString()
 	            	: $this->user->getLevelString();
 	        else
-	            $this->currentTitle = self::getDatabase()->selectField("reputation-titles", Array("< req-rep" => $this->reputation), "title", "No Title", "reputation DESC");
+	            $this->currentTitle = self::getDatabase()->selectField("titles", Array("< req-rep" => $this->reputation), "title", "No Title", "reputation DESC");
 	    }
 	    return $this->currentTitle;
 	}
