@@ -71,12 +71,14 @@ class Database extends Lockable {
 	public function commit() {
 		if(!$this->activetransaction)
 			return false;
+		$this->activetransaction = false;
 		return $this->database->commit();
 	}
 	
 	public function rollBack() {
 		if(!$this->activetransaction)
 			return false;
+		$this->activetransaction = false;
 		return $this->database->rollBack();
 	}
 	
