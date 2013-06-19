@@ -10,6 +10,7 @@ abstract class UserInterface {
     private static $extensions = Array();
     private static $staticmethodcache = Array();
     private static $defaultmethodcache = Array();
+    private static $autoloadExtensions = Array();
     private static $defaultMethod = false;
     
     public function initBackends(){
