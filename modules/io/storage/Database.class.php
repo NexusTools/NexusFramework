@@ -63,6 +63,8 @@ class Database extends Lockable {
 	}
 	
 	public function beginTransaction() {
+		if(defined("ERROR_OCCURED"))
+			throw new Exception("Cannot write to database in error state");
 		if(!$this->activetransaction)
 			$this->activetransaction = $this->database->beginTransaction();
 		return $this->activetransaction;
@@ -786,9 +788,6 @@ class Database extends Lockable {
 	    
 	    $this->lock();
 	    try {
-			if(defined("ERROR_OCCURED"))
-				throw new Exception("Cannot use Database class in error state");
-				
 		    $this->instanceName = $extension;
 		    
 		    $this->dbPath = "$basePath$name.sqlite";
