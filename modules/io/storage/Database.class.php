@@ -166,16 +166,18 @@ class Database extends Lockable {
 	public function _exec($query){
 	    self::$queries++;
 		if(($ret = $this->database->exec($query)) === false) {
+			$this->lastQuery = $query;
 			$this->lastError = $this->database->errorInfo();
 			$this->lastException = new Exception("DatabaseError: " . json_encode($this->database->errorInfo()) . "\n" . $query);
-			$this->lastQuery = $query;
+			if(DEBUG_MODE)
+				throw $this->lastException;
 			return false;
 		}
 		
 		return $ret;
 	}
 	
-	public function _selectRow($table, $where, $fields=false, $orderBy=false, $assoc=true){
+	public function _selectRow($table, $where, $fields=false, $orderBy=false, $assoc=false){
 		$res = $this->_select($table, $where, $fields, 1, false, $orderBy, $assoc);
 		if($res && count($res))
 			return $res[0];
@@ -270,6 +272,8 @@ class Database extends Lockable {
 			$this->lastError = $this->database->errorInfo();
 			$this->lastQuery = $queryString;
 			$this->lastException = new Exception("DatabaseError: " . json_encode($this->database->errorInfo()));
+			if(DEBUG_MODE)
+				throw $this->lastException;
 		    return false;
 		}
 		
@@ -287,6 +291,8 @@ class Database extends Lockable {
 			$this->lastError = $this->database->errorInfo();
 			$this->lastQuery = $queryString;
 			$this->lastException = new Exception("DatabaseError: " . json_encode($this->database->errorInfo()));
+			if(DEBUG_MODE)
+				throw $this->lastException;
 		    return false;
 		}
 		
@@ -305,6 +311,8 @@ class Database extends Lockable {
 			$this->lastError = $this->database->errorInfo();
 			$this->lastQuery = $queryString;
 			$this->lastException = new Exception("DatabaseError: " . json_encode($this->database->errorInfo()));
+			if(DEBUG_MODE)
+				throw $this->lastException;
 		    return false;
 		}
 		
@@ -367,6 +375,8 @@ class Database extends Lockable {
 			$this->lastError = $this->database->errorInfo();
 			$this->lastQuery = $queryString;
 			$this->lastException = new Exception("DatabaseError: " . json_encode($this->database->errorInfo()));
+			if(DEBUG_MODE)
+				throw $this->lastException;
 		    return false;
 		}
 		
