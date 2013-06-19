@@ -7,6 +7,7 @@ class Database extends Lockable {
 	private static $knownInstances = Array();
 	private static $knownKeywords = Array("CURRENT_TIMESTAMP", "CURRENT_DATE", "CURRENT_TIME");
 	private static $queries = 0;
+	private $activetransaction = false;
 	private $databaseDefinition = false;
 	private $shutdownCommands = Array();
 	private $instanceName;
@@ -59,6 +60,24 @@ class Database extends Lockable {
 	        return $fieldDefs;
 	    } else
 	        return $this->databaseDefinition;
+	}
+	
+	public function beginTransaction() {
+		if(!$this->activetransaction)
+			$this->activetransaction = $this->database->beginTransaction();
+		return $this->activetransaction;
+	}
+	
+	public function commit() {
+		if(!$this->activetransaction)
+			return false;
+		return $this->database->commit();
+	}
+	
+	public function rollBack() {
+		if(!$this->activetransaction)
+			return false;
+		return $this->database->rollBack();
 	}
 	
 	public function lastError(){
@@ -463,6 +482,7 @@ class Database extends Lockable {
 	}
 	
 	public function _insert($table, $values) {
+		$this->beginTransaction();
 		$query = "INSERT INTO `$table` (";
 		
 		// Process defaults
@@ -567,9 +587,9 @@ class Database extends Lockable {
 				throw new Exception("Cannot commit changes in error state");
 			foreach($this->shutdownCommands as $command)
 				call_user_func_array(Array($this, array_shift($command)), $command);
-			$this->database->commit();
+			$this->commit();
 		}catch(Exception $e) {
-			$this->database->rollBack();
+			$this->rollBack();
 		}
 		
 	    try {
@@ -596,6 +616,7 @@ class Database extends Lockable {
 	}
 	
 	public function _update($table, $values, $where=false) {
+		$this->beginTransaction();
 		if(is_numeric($where)) // allow passing where as rowid
 			$where = Array("rowid" => $where);
 			
@@ -786,7 +807,6 @@ class Database extends Lockable {
 		    if($def)
 		        $this->_processDefinition($def);
             
-            $this->database->beginTransaction();
 		    register_shutdown_function(Array($this, "__shutdown"));
 		}catch(Exception $e){
 		    $this->unlock();
