@@ -1,4 +1,4 @@
-<?php
+<?php global $__framework_error_occured;
 
 $__framework_error_occured = false;
 $__framework_error_message = array_key_exists("__errMess", $_GET) ? $_GET['__errMess'] : "No Error Message Provided";
@@ -73,6 +73,8 @@ function recovery_process_exception($exception, $alwaysRedirect=false){
 	$data = false;
 	framework_store_exception($exception, $errorid, $data);
 	
+	if(!defined("ERROR_OCCURED"))
+		define("ERROR_OCCURED", true);
 	if(defined("ABORT_ERROR"))
 		return;
 		

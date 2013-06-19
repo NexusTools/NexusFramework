@@ -562,8 +562,15 @@ class Database extends Lockable {
 	}
 	
 	public function __shutdown(){
-		foreach($this->shutdownCommands as $command)
-			call_user_func_array(Array($this, array_shift($command)), $command);
+		try {
+			if(defined("ERROR_OCCURED"))
+				throw new Exception("Cannot commit changes in error state");
+			foreach($this->shutdownCommands as $command)
+				call_user_func_array(Array($this, array_shift($command)), $command);
+			$this->database->commit();
+		}catch(e) {
+			$this->database->rollBack();
+		}
 		
 	    try {
 	        $this->unlock();
@@ -756,6 +763,9 @@ class Database extends Lockable {
 	    
 	    $this->lock();
 	    try {
+			if(defined("ERROR_OCCURED"))
+				throw new Exception("Cannot use Database class in error state");
+				
 		    $this->instanceName = $extension;
 		    
 		    $this->dbPath = "$basePath$name.sqlite";
@@ -770,14 +780,13 @@ class Database extends Lockable {
 		            throw new Exception("Failed to upgrade database `$extension/$name` from legacy format");
 		        unlink(CONFIG_PATH . "$extension.definition.json");
 		        unlink(CONFIG_PATH . "$extension.sqlite");
-		        
 		    }
 		    
 		    $this->database = new PDO("sqlite:" . $this->dbPath);
 		    if($def)
 		        $this->_processDefinition($def);
             
-            $this->_exec("PRAGMA case_sensitive_like = false");
+            $this->database->beginTransaction();
 		    register_shutdown_function(Array($this, "__shutdown"));
 		}catch(Exception $e){
 		    $this->unlock();

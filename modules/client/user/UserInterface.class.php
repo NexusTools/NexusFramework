@@ -151,8 +151,10 @@ abstract class UserInterface {
 		return $this->level;
 	}
     
-    public function registerExtension($class){
-        self::$extensions[] = $class;
+    public function registerExtension($class, $autoload =false){
+        array_push(self::$extensions, $class);
+        if($autoload)
+        	array_push(self::$autoloadExtensions, $class);
     }
     
     protected function __construct($id, $email, $username, $level=0){
@@ -163,6 +165,9 @@ abstract class UserInterface {
         if($level > 4 && !$this->isSystem() && !$this->isRoot())
             $level = 4;
         $this->level = $level;
+        
+        foreach(self::$autoloadExtensions as $extension)
+        	self::__getBackend($extension);
     }
     
     public function getID(){
