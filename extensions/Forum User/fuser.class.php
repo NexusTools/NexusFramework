@@ -38,7 +38,7 @@ class ForumUser {
 	
 	public function getTitle($long=false){
 	    if(!$this->currentTitle) {
-	        if($this->user->getLevel() != 0)
+	        if($this->user->getLevel()->isStaff())
 	            $this->currentTitle = $long ? $this->user->getLongLevelString()
 	            	: $this->user->getLevelString();
 	        else

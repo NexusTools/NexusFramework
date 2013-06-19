@@ -11,7 +11,7 @@
 		    "display-name": "VARCHAR(250)",
 		    "custom-title": "VARCHAR(250)"
 		},
-		"reputation-titles": {
+		"titles": {
 		    "title": "VARCHAR(50)",
 		    "req-rep": "FLOAT",
 		    "default-values": [
