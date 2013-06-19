@@ -173,8 +173,8 @@ class Database extends Lockable {
 		return $ret;
 	}
 	
-	public function _selectRow($table, $where, $fields=false, $assoc=true){
-		$res = $this->_select($table, $where, $fields, 1, false, false, $assoc);
+	public function _selectRow($table, $where, $fields=false, $orderBy=false, $assoc=true){
+		$res = $this->_select($table, $where, $fields, 1, false, $orderBy, $assoc);
 		if($res && count($res))
 			return $res[0];
 		else
