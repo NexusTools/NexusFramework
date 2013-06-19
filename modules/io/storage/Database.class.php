@@ -568,7 +568,7 @@ class Database extends Lockable {
 			foreach($this->shutdownCommands as $command)
 				call_user_func_array(Array($this, array_shift($command)), $command);
 			$this->database->commit();
-		}catch(e) {
+		}catch(Exception $e) {
 			$this->database->rollBack();
 		}
 		
