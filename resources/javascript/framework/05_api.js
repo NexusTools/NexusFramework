@@ -1,6 +1,7 @@
 Framework.registerModule("API", {
-		requestTimeout: null,
+		minimumNextRequest: 0,
 		requestInterval: null,
+		requestTimeout: null,
 		intervalRequests: [],
 		currentRequests: [],
 		intervalTime: 0,
@@ -12,6 +13,7 @@ Framework.registerModule("API", {
 			this.minTimeout = location.protocol === 'https:' ? 250 : 100;
 			this.intervalTime = location.protocol === 'https:' ? 2000 : 750;
 			console.log("Using a " + this.minTimeout + "ms minimum API queue timeout");
+			console.log("Using a " + this.intervalTime + "ms API request interval timer");
 		},
 		
 		registerHandler: function(module, callback){
@@ -76,7 +78,7 @@ Framework.registerModule("API", {
 				return;
 			
 			var callWait = Framework.API.minimumNextRequest - (new Date().getTime());
-			if(callWait < 5)
+			if(callWait < 5 || !callWait)
 				callWait = 5;
 			
 			if(callWait > Framework.API.minTimeout)
