@@ -30,12 +30,12 @@ Framework.registerModule("API", {
 			if(!Framework.API.callbacks[module])
 				throw "Missing Handler for " + module;
 			
-			var justAdded = module in Framework.API.intervalRequests;
-			if(dontReplace && !justAdded)
+			var alreadyExists = module in Framework.API.intervalRequests;
+			if(dontReplace && alreadyExists)
 				return;
 			
 			data = {"uri": encodeURIComponent(data ? data : ""), "postVars": null};
-			if(justAdded && !(module in Framework.API.requests)) {
+			if(!alreadyExists && !(module in Framework.API.requests)) {
 				Framework.API.requests[module] = data; // Make the request right away so that the website can populate onload
 				Framework.API.queueRequests();
 			}
