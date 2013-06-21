@@ -1,12 +1,16 @@
 Framework.registerModule("API", {
 		requestTimeout: null,
-		minimumNextRequest: 0,
+		requestInterval: null,
+		intervalRequests: [],
 		currentRequests: [],
+		intervalTime: 0,
+		minTimeout: 0,
 		callbacks: {},
 		requests: {},
 		
 		initialize: function() {
-			this.minTimeout = location.protocol === 'https:' ? 2000 : 750;
+			this.minTimeout = location.protocol === 'https:' ? 250 : 100;
+			this.intervalTime = location.protocol === 'https:' ? 2000 : 750;
 			console.log("Using a " + this.minTimeout + "ms minimum API queue timeout");
 		},
 		
@@ -20,12 +24,44 @@ Framework.registerModule("API", {
 			Framework.API.callbacks[module] = undefined;
 		},
 		
-		request: function(module, data, postVars){
+		registerIntervalRequest: function(module, data, dontReplace) {
 			if(!Framework.API.callbacks[module])
 				throw "Missing Handler for " + module;
 				
 			if(!data)
 				data = "";
+			
+			if(dontReplace && module in Framework.API.intervalRequests)
+				return;
+				
+			Framework.API.intervalRequests[module] = {"uri": encodeURIComponent(data), "postVars": postVars};
+			if(Framework.API.requestInterval != null)
+				return;
+			
+			Framework.API.requestInterval = setInterval(Framework.API.intervalCallback, Framework.API.intervalTime);
+		},
+		
+		intervalCallback: function() {
+			console.log("Making interval requests");
+			for(var module in Framework.API.intervalRequests){
+				if(module in Framework.API.requests)
+					continue; // Don't replace existing data
+			
+				var data = Framework.API.intervalRequests[module];
+				Framework.API.requests[module] = data;
+			}
+			Framework.API.queueRequests();
+		},
+		
+		request: function(module, data, postVars, dontReplace){
+			if(!Framework.API.callbacks[module])
+				throw "Missing Handler for " + module;
+				
+			if(!data)
+				data = "";
+			
+			if(dontReplace && module in Framework.API.requests)
+				return;
 			
 			Framework.API.requests[module] = {"uri": encodeURIComponent(data), "postVars": postVars};
 			Framework.API.queueRequests();
@@ -38,7 +74,7 @@ Framework.registerModule("API", {
 		queueRequests: function(){
 			if(Framework.API.requestTimeout != null)
 				return;
-		
+			
 			var callWait = Framework.API.minimumNextRequest - (new Date().getTime());
 			if(callWait < 5)
 				callWait = 5;
