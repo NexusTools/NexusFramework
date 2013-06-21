@@ -29,14 +29,18 @@ Framework.registerModule("API", {
 		registerIntervalRequest: function(module, data, dontReplace) {
 			if(!Framework.API.callbacks[module])
 				throw "Missing Handler for " + module;
-				
-			if(!data)
-				data = "";
 			
-			if(dontReplace && module in Framework.API.intervalRequests)
+			var justAdded = module in Framework.API.intervalRequests;
+			if(dontReplace && !justAdded)
 				return;
-				
-			Framework.API.intervalRequests[module] = {"uri": encodeURIComponent(data), "postVars": null};
+			
+			data = {"uri": encodeURIComponent(data ? data : ""), "postVars": null};
+			if(justAdded && !(module in Framework.API.requests)) {
+				Framework.API.requests[module] = data; // Make the request right away so that the website can populate onload
+				Framework.API.queueRequests();
+			}
+			
+			Framework.API.intervalRequests[module] = data;
 			if(Framework.API.requestInterval != null)
 				return;
 			
@@ -61,14 +65,11 @@ Framework.registerModule("API", {
 		request: function(module, data, postVars, dontReplace){
 			if(!Framework.API.callbacks[module])
 				throw "Missing Handler for " + module;
-				
-			if(!data)
-				data = "";
 			
 			if(dontReplace && module in Framework.API.requests)
 				return;
 			
-			Framework.API.requests[module] = {"uri": encodeURIComponent(data), "postVars": postVars};
+			Framework.API.requests[module] = {"uri": encodeURIComponent(data ? data : ""), "postVars": postVars};
 			Framework.API.queueRequests();
 		},
 		
