@@ -40,10 +40,12 @@ Framework.registerModule("API", {
 			if(Framework.API.requestInterval != null)
 				return;
 			
-			Framework.API.requestInterval = setInterval(Framework.API.intervalCallback, Framework.API.intervalTime);
+			console.log("Creating interval timer with " + Framework.API.intervalTime + "ms delay");
+			Framework.API.requestInterval = setTimeout(Framework.API.intervalCallback, Framework.API.intervalTime);
 		},
 		
 		intervalCallback: function() {
+			clearTimeout(Framework.API.requestInterval);
 			console.log("Making interval requests");
 			for(var module in Framework.API.intervalRequests){
 				if(module in Framework.API.requests)
@@ -53,6 +55,7 @@ Framework.registerModule("API", {
 				Framework.API.requests[module] = data;
 			}
 			Framework.API.queueRequests();
+			Framework.API.requestInterval = setTimeout(Framework.API.intervalCallback, Framework.API.intervalTime);
 		},
 		
 		request: function(module, data, postVars, dontReplace){
