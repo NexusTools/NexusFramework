@@ -2,7 +2,7 @@ Framework.registerModule("API", {
 		minimumNextRequest: 0,
 		requestInterval: null,
 		requestTimeout: null,
-		intervalRequests: [],
+		intervalRequests: {},
 		currentRequests: [],
 		intervalTime: 0,
 		minTimeout: 0,
