@@ -64,9 +64,22 @@ Framework.registerModule("PageSystem", {
 				}
 			}
 			
-			var form = $$("column.pagearea contents form")[0];
-			if(form)
-				form.select("input")[0].focus();
+			if(document.body.scrollTop != 0)
+				return; // Already scrolled down a bit
+			
+			$$("column.pagearea contents form").each(function(form) {
+				if(form.hasAttribute("nofocus"))
+					return; // Continue
+				
+				form.select("input, select, textarea").each(function(element) {
+					if(element.hasAttribute("disabled"))
+						return; // Continue
+						
+					element.focus();
+					throw $break;
+				});
+				throw $break;
+			});
 		},
 		
 		PageUnloaded: function(e){
