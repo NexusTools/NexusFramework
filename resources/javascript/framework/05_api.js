@@ -34,7 +34,7 @@ Framework.registerModule("API", {
 			if(dontReplace && module in Framework.API.intervalRequests)
 				return;
 				
-			Framework.API.intervalRequests[module] = {"uri": encodeURIComponent(data), "postVars": postVars};
+			Framework.API.intervalRequests[module] = {"uri": encodeURIComponent(data), "postVars": null};
 			if(Framework.API.requestInterval != null)
 				return;
 			
