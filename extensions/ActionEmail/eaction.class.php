@@ -117,7 +117,7 @@ class ActionEmail {
 		$email->setReplyTo(self::getSettings()->getString("reply-address", "help@" . DOMAIN),
 								self::getSettings()->getString("reply-name", "$siteName Help"));
 		
-		$text = $subject . " - $siteName");
+		$text = $subject . " - $siteName";
 		$text .= "\n" . str_repeat("-", 40);
 		$text .= "\n\n" . strip_tags($body);
 		$text .= "\n\n$actionText - $actionUrl";
