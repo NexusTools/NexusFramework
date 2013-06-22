@@ -126,17 +126,24 @@ class ActionEmail {
 		$lnkStyle = self::getSettings()->getString("button-style");
 		if(!$lnkStyle) {
 			$actionBtn = fullpath("email/action-button.png");
-			$defStyle = "decoration:none;font-size: 16px";
+			if(!is_file($actionBtn))
+				$actionBtn = fullpath("email/action-button.jpg");
+			if(!is_file($actionBtn))
+				$actionBtn = fullpath("email/action-button.gif");
+				
+			$defStyle = "text-decoration:none;font-size: 16px";
 			if(is_file($actionBtn) && is_readable($actionBtn))
-				$defStyle .= ";background-image:url(" . Framework::getReferenceURL($actionBtn) . ");display:block;width:124px;color:inherit;text-min-height:36px;line-height:36px";
-			self::getSettings()->setValue("button-style", $defStyle);
+				$defStyle .= ";background-image:url(" . Framework::getReferenceURL($actionBtn) . ");display:block;width:124px;color:inherit;min-height:36px;line-height:36px";
+			self::getSettings()->setValue("button-style", $lnkStyle = $defStyle);
 		}
 		$html = file_get_contents(fullpath("email/head.htm"));
 		$html .= "<h2>$subject</h2>";
 		$html .= "<p> " . nl2br($body) . "</p>";
-		$html .= "<a style=\"$lnkStyle\" href=\"";
+		$html .= "<a style=\"";
+		$html .= htmlspecialchars($lnkStyle);
+		$html .= "\" href=\"";
 		$html .= htmlspecialchars($actionUrl);
-		$html .= "\" target=\"_blank\">$actionText</a><br />";
+		$html .= "\" target=\"_blank\">$actionText</a><br /><br />";
 		$html .= file_get_contents(fullpath("email/foot.htm"));
 		$email->setHTML($html);
 		
