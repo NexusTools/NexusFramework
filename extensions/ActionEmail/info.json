@@ -1,0 +1,13 @@
+{
+	"name": "ActionEmail",
+	"provides": "action-email",
+	"dependancies": ["mail-center"],
+	"database": {
+		"actions": {
+			"code": "BINARY(16)",
+			"callback": "VARCHAR(50)",
+			"arguments": "BINARY(2048)",
+			"expires": "TIMESTAMP"
+		}
+	}
+}
