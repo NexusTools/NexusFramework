@@ -14,6 +14,9 @@
 	"fields": {
 		"key": {},
 		"value": {},
+		"exact": {
+			"type": "yesno"
+		},
 		"domain": {
 			"help": "Leave blank to use as default."
 		}

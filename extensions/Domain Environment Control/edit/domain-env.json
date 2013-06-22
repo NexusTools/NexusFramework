@@ -5,6 +5,7 @@
 	"fields": {
 		"key": {},
 		"value": {},
+		"exact": {},
 		"domain": {}
 	},
 	"buttons": {

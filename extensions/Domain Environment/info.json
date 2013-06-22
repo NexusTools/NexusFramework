@@ -6,7 +6,11 @@
 		"environment": {
 			"domain": "VARCHAR(40)",
 			"key": "VARCHAR(40)",
-			"value": "VARCHAR(200)"
+			"value": "VARCHAR(200)",
+			"exact": {
+				"type": "BOOLEAN",
+				"default": "0"
+			}
 		}
 	}
 }
