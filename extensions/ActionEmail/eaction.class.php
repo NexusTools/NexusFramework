@@ -2,12 +2,17 @@
 class ActionEmail {
 
 	private static $database = false;
+	private static $settings = false;
+	
+	public static function getSettings() {
+		return self::$settings ? self::$settings : (self::$settings = new Settings("ActionEmail"));
+	}
 	
 	public static function getDatabase() {
 		return self::$database ? self::$database : (self::$database = Database::getInstance());
 	}
 
-	public static function request($body, $actionCallback, $params =Array(), $actionText ="Continue", $to =null, $subject ="Confirmation required", $from ="NexusTools", $expires ="+1 week") {
+	public static function request($body, $actionCallback, $params =Array(), $actionText ="Continue", $to =null, $subject ="Confirmation required", $from =false, $expires ="+1 week") {
 		if($to === null)
 			$to = User::getInstance();
 		if($to && !is_array($to)) {
@@ -58,7 +63,7 @@ class ActionEmail {
 		die();
 	}
 	
-	public static function sendUrlSessionToken($body, $redirectUrl, $sessionKey, $subject ="Check it Out", $actionText ="Check it Out", $to =null, $from ="NexusTools", $expires ="+1 week") {
+	public static function sendUrlSessionToken($body, $redirectUrl, $sessionKey, $subject ="Check it Out", $actionText ="Check it Out", $to =null, $from =false, $expires ="+1 week") {
 		$extraData = Array();
 		if(is_array($sessionKey)) {
 			$extraData = $sessionKey;
@@ -78,33 +83,58 @@ class ActionEmail {
 	}
 
 	
-	public static function sendUrl($body, $actionUrl, $subject ="Check it Out", $actionText ="Check it Out", $to =null, $from ="NexusTools") {
-		if($to === null)
+	public static function sendUrl($body, $actionUrl, $subject ="Check it Out", $actionText ="Check it Out", $to =null, $from =false) {
+		if(!$to)
 			$to = User::getInstance();
-		if($to && !is_array($to)) {
+		if($to instanceof UserInterface)
+			$to = Array($to->getEmail(), $to->getFullName());
+		else if(!is_array($to)) {
 			$to = User::fetch($to);
 			if(!$to->isValid())
 				throw new Exception("To user invalid");
 			$to = Array($to->getEmail(), $to->getFullName());
 		}
+		$siteName = self::getSettings()->getString("site-name", StringFormat::properCase(DOMAIN_SL);
+			
+		if(!$from)
+			$from = Array(self::getSettings()->getString("from-address", "no-reply@" . DOMAIN),
+										self::getSettings()->getString("from-name", $siteName));
+		else if($from instanceof UserInterface)
+			$from = Array($from->getEmail(), $from->getFullName());
+		else if(!is_array($from)) {
+			$from = User::fetch($from);
+			if(!$from->isValid())
+				throw new Exception("To user invalid");
+			$from = Array($from->getEmail(), $from->getFullName());
+		}
+		
+		
 		
 		$email = new Email();
 		$email->setSubject($subject);
 		$email->setTo($to[0], $to[1]);
-		if($from)
-			$email->setFrom("no-reply@nexustools.net", $from);
-		$email->setReplyTo("help@nexustools.net", "NexusTools Help");
+		$email->setFrom($from[0], $from[1]);
+		$email->setReplyTo(self::getSettings()->getString("reply-address", "help@" . DOMAIN),
+								self::getSettings()->getString("reply-name", "$siteName Help"));
 		
-		$text = $subject . " - NexusTools";
+		$text = $subject . " - $siteName");
 		$text .= "\n" . str_repeat("-", 40);
 		$text .= "\n\n" . strip_tags($body);
 		$text .= "\n\n$actionText - $actionUrl";
 		$email->setText($text);
 		
+		$lnkStyle = self::getSettings()->getString("button-style");
+		if(!$lnkStyle) {
+			$actionBtn = fullpath("email/action-button.png");
+			$defStyle = "decoration:none;font-size: 16px";
+			if(is_file($actionBtn) && is_readable($actionBtn))
+				$defStyle .= ";background-image:url(" . Framework::getReferenceURL($actionBtn) . ");display:block;width:124px;color:inherit;text-min-height:36px;line-height:36px";
+			self::getSettings()->setValue("button-style", $defStyle);
+		}
 		$html = file_get_contents(fullpath("email/head.htm"));
 		$html .= "<h2>$subject</h2>";
 		$html .= "<p> " . nl2br($body) . "</p>";
-		$html .= "<a style=\"background-image:url(http://next.nexustools.net/media/email/action-button.jpg);display:block;width:124px;color:inherit;text-decoration:none;min-height:36px;font-size:16px;line-height:36px\" href=\"";
+		$html .= "<a style=\"$lnkStyle\" href=\"";
 		$html .= htmlspecialchars($actionUrl);
 		$html .= "\" target=\"_blank\">$actionText</a><br />";
 		$html .= file_get_contents(fullpath("email/foot.htm"));
