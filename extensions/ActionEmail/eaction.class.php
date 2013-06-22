@@ -94,7 +94,7 @@ class ActionEmail {
 				throw new Exception("To user invalid");
 			$to = Array($to->getEmail(), $to->getFullName());
 		}
-		$siteName = self::getSettings()->getString("site-name", StringFormat::properCase(DOMAIN_SL);
+		$siteName = self::getSettings()->getString("site-name", StringFormat::properCase(DOMAIN_SL));
 			
 		if(!$from)
 			$from = Array(self::getSettings()->getString("from-address", "no-reply@" . DOMAIN),
