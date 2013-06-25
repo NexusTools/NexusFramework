@@ -9,7 +9,7 @@
 			"value": "VARCHAR(200)",
 			"exact": {
 				"type": "BOOLEAN",
-				"default": "0"
+				"default": "1"
 			}
 		}
 	}

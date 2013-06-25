@@ -60,9 +60,10 @@ class Template {
 	
 	public static function setFavicon($path, $mime=null){
 	    if($mime === false)
-	        Template::addHeaderElement("link", Array("href" => $path, "name" => "favicon", "rel" => "shortcut icon"));
+	        Template::addHeaderElement("link", Array("href" => $path, "rel" => "shortcut icon"));
 		else
-		    Template::addHeaderElement("link", Array("href" => Framework::getReferenceURI($path), "name" => "favicon", "rel" => "shortcut icon", "type" => $mime ? $mime : Framework::mimeForFile($path)));
+		    Template::addHeaderElement("link", Array("href" => Framework::getReferenceURI($path),
+		    	"rel" => "shortcut icon", "type" => $mime ? $mime : Framework::mimeForFile($path)));
 	}
 	
 	public static function setRobotsPolicy($index,  $follow=null){
@@ -161,6 +162,8 @@ class Template {
 			self::$elements[$level][$attr['id']] = $element;
 		else if(isset($attr['name']))
 			self::$elements[$level]['name:' . $attr['name']] = $element;
+		else if(isset($attr['rel']))
+			self::$elements[$level]['rel:' . $attr['rel']] = $element;
 		else
 			array_push(self::$elements[$level], $element);
 	}
@@ -185,11 +188,13 @@ class Template {
 		if(DEBUG_MODE)
 			Profiler::start("Template[Header]");
 		Triggers::broadcast("template", "pre-header");
-		echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-gb\" lang=\"en-gb\" xmlns=\"framework\"><head><base href=\"";
+		echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html lang=\"";
+		echo defined("LANGCODE") ? LANGCODE : "en";
+		echo "\"><head><base href=\"";
 		echo BASE_URL;
 		echo "\" /><title>";
 		echo interpolate(self::$titleFormat, true, Array("PAGENAME" => self::$title));
-		echo "</title><style>Framework\:Config,Framework\:AddonScript {display:none}</style>";
+		echo "</title><style type=\"text/css\">Framework\:Config,Framework\:AddonScript {display:none}</style>";
 		foreach(self::$elements[Template::Header] as $data){
 			echo "<$data[tag]";
 			foreach($data['attr'] as $key => $value) {
