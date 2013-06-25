@@ -188,7 +188,7 @@ class Template {
 		if(DEBUG_MODE)
 			Profiler::start("Template[Header]");
 		Triggers::broadcast("template", "pre-header");
-		echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html lang=\"";
+		echo "<!DOCTYPE html>\n<html lang=\"";
 		echo defined("LANGCODE") ? LANGCODE : "en";
 		echo "\"><head><base href=\"";
 		echo BASE_URL;
