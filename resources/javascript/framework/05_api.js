@@ -4,16 +4,14 @@ Framework.registerModule("API", {
 		requestTimeout: null,
 		intervalRequests: {},
 		currentRequests: [],
-		intervalTime: 0,
-		minTimeout: 0,
 		callbacks: {},
 		requests: {},
 		
 		initialize: function() {
-			this.minTimeout = location.protocol === 'https:' ? 250 : 100;
-			this.intervalTime = location.protocol === 'https:' ? 2000 : 750;
-			console.log("Using a " + this.minTimeout + "ms minimum API queue timeout");
-			console.log("Using a " + this.intervalTime + "ms API request interval timer");
+			Framework.API.minTimeout = location.protocol === 'https:' ? 250 : 100;
+			Framework.API.intervalTime = location.protocol === 'https:' ? 2000 : 750;
+			console.log("Using a " + Framework.API.minTimeout + "ms minimum API queue timeout");
+			console.log("Using a " + Framework.API.intervalTime + "ms API request interval timer");
 		},
 		
 		registerHandler: function(module, callback){
