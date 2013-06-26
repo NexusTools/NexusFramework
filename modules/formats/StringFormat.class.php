@@ -191,12 +191,10 @@ class StringFormat {
 	}
 
 	public static function displayForID($id){
-		if(preg_match("/^(\w+-)+\w+$/", $id)) // dash separated id
+		if(preg_match("/^([\w\d]+-)+[\w\d]+$/", $id)) // dash separated id
 			$id = str_replace("-", " ", $id);
-		if(preg_match("/^(\w+_)+\w+$/", $id)) // underscore separated id
+		else if(preg_match("/^([\w\d]+_)+[\w\d]+$/", $id)) // underscore separated id
 			$id = str_replace("_", " ", $id);
-		$id = preg_replace("/\d+/", " $0 ", $id);
-		$id = preg_replace("/\s+/", " ", $id);
 		$id = preg_replace_callback("/\w+/", Array(__CLASS__, "__pregCallback"), $id);
 		return $id;
 	}
