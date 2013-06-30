@@ -126,10 +126,10 @@ class API {
 				Profiler::finish("API[$key]");
 		}
 		
-		Framework::startOutputBuffer();
+		OutputFilter::resetToNative(false);
 		$encoder = isset(self::$encoders[$format]) ? self::$encoders[$format] : self::$encoders["help"];
 		call_user_func($encoder, $dataObject);
-		Framework::finalize(false);
+		exit;
 	}
 	
 	public static function _debugEncoder($dataObject){
@@ -158,7 +158,6 @@ class API {
 	
 	public static function _jsonEncoder($dataObject){
 		header("Content-Type: application/json");
-		
 		self::_ensureUTF8($dataObject);
 		
 		$data = json_encode($dataObject);
