@@ -8,13 +8,32 @@ if(!defined("PHP_MAJOR_VERSION"))
 if(ini_get('zlib.output_compression'))
     ini_set('zlib.output_compression', 'Off');
 
-header("Content-Type: text/plain");
+function ob_nexusframework($data, $phase) {
+	if(defined("OB_RAW_PUSHTHROUGH")) {
+		if(strlen($data)) { // Assume is from compression
+			header_remove("Content-Encoding");
+			header_remove("Transfer-Encoding");
+		}
+		return false;
+	}
+		
+	static $buffer = "";
+	$buffer .= $data;
+	if(($phase & PHP_OUTPUT_HANDLER_END) == PHP_OUTPUT_HANDLER_END) {
+		// TODO: IE sanitising and other features
+		return $buffer;
+	}
+	return "";
+}
+ob_start("ob_nexusframework", 0, false);
+define("BASE_OB_LEVEL", ob_get_level());
+
 if(function_exists("ob_gzhandler"))
 	if(!in_array("ob_gzhandler", ob_list_handlers())) {
 		$headers = getallheaders();
 		if(array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER))
 			define("COMPRESSED_OUTPUT", preg_match("/,?gzip,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
-													ob_end_clean() && ob_start("ob_gzhandler") ? "gzip" : false);
+													ob_start("ob_gzhandler") ? "gzip" : false);
 		else
 			define("COMPRESSED_OUTPUT", false);
 	} else
@@ -23,17 +42,14 @@ else if(function_exists("ob_deflatehandler"))
 	if(!in_array("ob_deflatehandler", ob_list_handlers())) {
 		$headers = getallheaders();
 		if(array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER))
-			define("COMPRESSED_OUTPUT", preg_match("/,?gzip,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
-													ob_end_clean() && ob_start("ob_deflatehandler") ? "deflate" : false);
+			define("COMPRESSED_OUTPUT", preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
+													ob_start("ob_deflatehandler") ? "deflate" : false);
 		else
 			define("COMPRESSED_OUTPUT", false);
 	} else
 		define("COMPRESSED_OUTPUT", true);
 else 
 	define("COMPRESSED_OUTPUT", false);
-
-if(!ob_get_level())
-	ob_start();
 
 // Setup Output Buffering
 if(!function_exists("ob_void")) {
