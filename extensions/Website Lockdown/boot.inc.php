@@ -5,18 +5,15 @@ if(defined("LOCKDOWN_PASSWORD") && !array_key_exists("lockdown-bypass", $_SESSIO
     if(!$passEntry || $passEntry != LOCKDOWN_PASSWORD) {
         if(REQUEST_URI == "/robots.txt") {
             header("Content-Type: text/plain");
-            while(ob_get_level())
-                ob_end_clean();
+			OutputFilter::resetToNative(false);
             ?>User-agent: *
 Disallow: /<?
-            die();
+            exit;
         }
         if(REQUEST_URI != "/")
             Framework::redirect("/?nextUrl=" . urlencode(REQUEST_URI));
         
-        while(ob_get_level())
-            ob_end_clean();
-            
+		OutputFilter::resetToNative(false);
         ?><!doctype html>
 <html><head><title>Private Website</title><meta name="robots" content="noindex, nofollow" /></head>
 <body><center><h1>Private Website</h1><p><?
@@ -31,7 +28,7 @@ else
     if(array_key_exists("nextUrl", $_REQUEST))
         echo "<input type='hidden' value='" . htmlspecialchars($_REQUEST['nextUrl']) . "' name='nextUrl' />";
 ?><div align="right"><input type="submit" value="Login" /></div></form></center></body></html><?
-        die();
+        exit;
     } else {
         $_SESSION['lockdown-bypass'] = true;
         if(array_key_exists("nextUrl", $_REQUEST))

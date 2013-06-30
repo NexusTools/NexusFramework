@@ -112,8 +112,7 @@ class Framework {
 				self::serveFileInternal($indexPath);
 			
 			$path = substr($file, strlen(INDEX_PATH)-1);
-			while(ob_get_level())
-				ob_end_clean();
+			OutputFilter::resetToNative(false);
 			?><!DOCTYPE html>
 <html><head><title>Directory Listing: <? echo $path; ?></title>
 <link href="<? echo BASE_URI; ?>res:dirstyle" rel="stylesheet" type="text/css" /></head>
@@ -178,8 +177,7 @@ closedir($handle);
 		} else
 			header("X-Content-Type-Options: nosniff");
 		if(headers_sent($header_file, $header_line)) {
-		    while(ob_get_level())
-		        ob_end_clean();
+			OutputFilter::resetToNative(false);
 		    die("Headers Already Sent by: $header_file:$header_line");
 		}
 		
@@ -227,9 +225,7 @@ closedir($handle);
 		        header("Content-Range: bytes $range[0]-$range[1]/$size");
 		        $length++;
 		        header("Content-Length: $length");
-		        
-		        while(ob_get_level())
-		            ob_end_clean();
+		        OutputFilter::resetToNative(false);
 		        
 		        $reader = fopen($file, "r");
 		        if($range[0])
@@ -319,8 +315,7 @@ closedir($handle);
 			else
 				self::runPage("/errordoc/404");
 		} else if(startsWith($res, "badref/") && is_file($refFile = TMP_PATH . "badref" . DIRSEP . substr($res, 7)) && $data = unserialize(file_get_contents($refFile))) {
-			while(ob_get_level())
-			    ob_end_clean();
+			OutputFilter::resetToNative(false);
 			    
 			echo "<html><head><title>Invalid Resource</title></head><body><h1>Invalid Resource</h1><p>The resource `$data[path]` is missing.";
 			if(class_exists("User", false) && User::isStaff()) {
@@ -333,8 +328,7 @@ closedir($handle);
 		
 		switch($res){
 		    case "internal-error":
-		        while(ob_get_level())
-		            ob_end_clean();
+				OutputFilter::resetToNative(false);
 		        die("<html><head><title>Internal Error Occured</title></head><body><h1>Internal Error Occured</h1><p>An internal error occured while processing your request,<br />This error has been logged and we are working to fix it.<br />Sorry for any inconvenience.</p></body></html>");
 
             case "lgpl":
@@ -344,7 +338,7 @@ closedir($handle);
                 self::serveFile(FRAMEWORK_RES_PATH . "license");
 
 			case "script":
-				OutputFilter::resetToNative();
+				OutputFilter::resetToNative(false);
 				$scmpr = new ScriptCompressor(true);
 				$path = FRAMEWORK_RES_PATH . "javascript" . DIRSEP;
 				
@@ -356,9 +350,7 @@ closedir($handle);
 				exit;
 				
 			case "dirstyle":
-				OutputFilter::resetToNative();
-				while(ob_get_level())
-		            ob_end_clean();
+				OutputFilter::resetToNative(false);
 				$style = new CompressedStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "dirlisting.css");
 				$style->dumpAsResponse();
 				exit;
@@ -373,14 +365,14 @@ closedir($handle);
 				self::serveFileInternal(FRAMEWORK_RES_PATH . "images" . DIRSEP . "lgplv3.png", "image/png");
 		    
 			case "style":
-				OutputFilter::resetToNative();
+				OutputFilter::resetToNative(false);
 				$style = new CompressedStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "widgets.css");
 				$style->dumpAsResponse();
 				exit;
 		
 			case "information":
 				header("Content-Type: text/plain");
-				OutputFilter::resetToNative();
+				OutputFilter::resetToNative(false);
 				echo "Version: " . FRAMEWORK_VERSION;
 				echo "\nInstall Path: " . FRAMEWORK_PATH;
 				echo "\nBase URL: " . BASE_URL;
@@ -405,9 +397,7 @@ User-agent: *
 Disallow: " . BASE_URI;
 				header("Content-Length: $size");
 				header("Content-Type: text/plain");
-				
-				while(ob_get_level() > NATIVE_OB_LEVEL)
-					ob_end_clean();
+				OutputFilter::resetToNative();
 					
 				echo $robotContent;
 				exit;
@@ -416,8 +406,7 @@ Disallow: " . BASE_URI;
 		
 		if(file_exists("upgrade-message")) {
 			header("Content-Type: text/plain");
-			while(ob_get_level())
-				ob_end_clean();
+			OutputFilter::resetToNative(false);
 			echo file_get_contents("upgrade-message");
 			die;
 		}
@@ -450,12 +439,12 @@ Disallow: " . BASE_URI;
 		
 		if(file_exists("$requestURI.php") && REQUEST_URI != "/index" && REQUEST_URI != "/framework.config"){
 			@chdir(dirname($requestURI));
-			OutputFilter::resetToNative();
+			OutputFilter::resetToNative(false);
 			require("$requestURI.php");
 			exit;
 		} else if(is_dir($requestURI) && file_exists("$requestURI/index.php")){
 			@chdir($requestURI);
-			OutputFilter::resetToNative();
+			OutputFilter::resetToNative(false);
 			require("index.php");
 			exit;
 		}
@@ -613,8 +602,7 @@ Disallow: " . BASE_URI;
 	
 	public static function dumpState(){
 		Profiler::start("StateDump");
-		while(ob_get_level())
-			ob_end_clean();
+		OutputFilter::resetToNative(false);
 		echo "<html><head><title>Framework State Debugger</title></head><body>";
 		
 		DebugDump::dump("-ClassLoader");

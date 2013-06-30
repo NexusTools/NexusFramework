@@ -7,10 +7,9 @@ if(defined("INAPI")) {
 	}
 } else {
 	function recovery_show_page($data) {
-		try{
-			while(ob_get_level())
-				ob_end_clean();
-		}catch(Exception $e){}
+		while(ob_get_level() > NATIVE_OB_LEVEL)
+			ob_end_clean();
+		@ob_start();
 
 		header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past

@@ -21,6 +21,8 @@ abstract class OutputFilter {
 			ob_end_flush();
 		if($attachVoid)
 			ob_start("ob_void", 512);
+		else
+			ob_start();
 	}
 	
 	public function isActive() {

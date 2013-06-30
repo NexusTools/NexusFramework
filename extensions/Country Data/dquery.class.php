@@ -28,8 +28,7 @@ class CountryDataQuery extends CachedFileBase {
 	protected function update(){
 		$data = simplexml_load_file(dirname(__FILE__) . DIRSEP . "data" . DIRSEP . "iso3166.xml");
 		header("Content-Type: text/plain");
-		while(ob_get_level())
-			ob_end_clean();
+		OutputFilter::resetToNative(false);
 		
 		$compiledData = Array();
 		foreach($data->children() as $child) {

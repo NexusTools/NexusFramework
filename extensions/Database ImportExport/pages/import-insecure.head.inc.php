@@ -1,8 +1,7 @@
 <?php
 define("INAPI", true);
 
-while(ob_get_level())
-    ob_end_clean();
+OutputFilter::resetToNative(false);
 header("Content-Type: text/plain");
 set_time_limit(0);
 

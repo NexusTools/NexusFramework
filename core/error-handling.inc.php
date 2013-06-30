@@ -61,8 +61,9 @@ function framework_store_exception(&$exception, &$errorid, &$data){
 
 function recovery_process_exception($exception, $alwaysRedirect=false){
 	global $__framework_error_occured, $__framework_embedded_errorPage_tried, $__framework_error_message;
-	while(ob_get_level())
+	while(ob_get_level() > NATIVE_OB_LEVEL)
 		ob_end_clean();
+	@ob_start();
 	if($__framework_error_occured)
 		return;
 
