@@ -5,9 +5,31 @@ define("LOADER_START_TIME", microtime(true));
 if(!defined("PHP_MAJOR_VERSION"))
 	throw new Exception("PHP version incompatible.");
 
+header("Content-Type: text/plain");
+if(function_exists("ob_gzhandler"))
+	if(!in_array("ob_gzhandler", ob_list_handlers())) {
+		while(ob_get_level())
+			ob_end_clean();
+		define("GZ_OUTPUT", ob_start("ob_gzhandler"));
+	} else
+		define("GZ_OUTPUT", true);
+else
+	define("GZ_OUTPUT", false);
+
+if(!ob_get_level())
+	ob_start();
+
 // Setup Output Buffering
+if(!function_exists("ob_void")) {
+	function ob_void($data, $phase) {
+		if(!strlen($data) &&
+				($phase & PHP_OUTPUT_HANDLER_END) == PHP_OUTPUT_HANDLER_END)
+			return false;
+		return "";
+	}
+}
 define("NATIVE_OB_LEVEL", ob_get_level());
-ob_start();
+ob_start("ob_void", 512);
     
 // Dump Early Errors
 error_reporting(E_ALL);

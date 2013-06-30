@@ -83,7 +83,6 @@ require FRAMEWORK_MODULE_PATH . "core" . DIRSEP . "cache" . DIRSEP . "CachedObje
 require FRAMEWORK_MODULE_PATH . "core" . DIRSEP . "cache" . DIRSEP . "CachedFileBase.class.php";
 require FRAMEWORK_MODULE_PATH . "core" . DIRSEP . "cache" . DIRSEP . "FrameworkClassLocation.class.php";
 require FRAMEWORK_MODULE_PATH . "core" . DIRSEP . "ClassLoader.class.php";
-OutputHandlerStack::init();
 
 session_name("S" . dechex(ClientInfo::getUniqueID()));
 if(!session_start())

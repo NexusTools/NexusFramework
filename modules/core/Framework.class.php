@@ -74,6 +74,24 @@ class Framework {
 		return eval("return $condition;");
 	}
 	
+	public static function serveData($data, $mimetype=false) {
+		OutputFilter::resetToNative(false);
+		if(!$mimetype)
+			if(preg_match("/^\s*?</", $data)) {
+				if(preg_match("/^\s*?<(html|!doctype)/i", $data))
+					$mimetype = "text/html; charset=UTF-8";
+				else
+					$mimetype = "text/xml; charset=UTF-8";
+			} else
+				$mimetype = "text/plain";
+		
+		header("Content-Type: $mimetype");
+		header("X-Content-Type-Options: nosniff");
+		
+		echo $data;
+		exit;
+	}
+	
 	public static function serveFile($file, $mimetype=false, $realName=false, $expiresAt=false){
 		self::serveFileInternal(fullpath($file), $mimetype, $realName, $expiresAt);
 	}
@@ -280,28 +298,6 @@ closedir($handle);
 	    }
 	    
 	    return "<div class=\"$matches[1]\" $matches[2]>";
-	}
-	
-	public static function finalize($cleanBuffer=true){
-		try {
-		    if($cleanBuffer)
-			    while(ob_get_level())
-		            ob_end_clean();
-			else
-			    while(ob_get_level() > NATIVE_OB_LEVEL)
-		            ob_end_flush();
-		}catch(Exception $e){}
-		if(!$cleanBuffer) {
-		    if(LEGACY_BROWSER && !defined("INAPI")) {
-		        $tagSwitch = self::legacyTagSwitch();
-	            self::$pageContent = preg_replace_callback("/<($tagSwitch)(|\s[^>]*?)>/i", "Framework::processTagClass", self::$pageContent);
-	            self::$pageContent = preg_replace("/<\\/($tagSwitch)>/i", "</div>", self::$pageContent);
-		        echo "<!-- This page has been automatically modified to support Internet Explorer -->";
-			}
-			echo self::$pageContent;
-	    }
-		define("ABORT_ERROR", true);
-		exit;
 	}
 	
 	public static function serveMediaFile($path){
@@ -578,24 +574,16 @@ Disallow: " . BASE_URI;
 		return $code;
 	}
 	
-	public static function startOutputBuffer(){
-		self::$pageContent = "";
-	    OutputHandlerStack::pushOutputHandler("Framework::pushContent");
-	}
-	
 	public static function runPage($path, $changeStatus=true){
 		ExtensionLoader::loadEnabledExtensions();
 	    ignore_user_abort(false);
 		if(NOACCESS_MODE && ($baseDomain = preg_replace("/.+\.(\w+\.\w+)/", "$1", DOMAIN)))
 			redirectDomain($baseDomain);
 		
-		header("Content-Type: text/html; charset=utf-8");
-		header("X-Content-Type-Options: nosniff");
-		
 		$module = new PageModule($path);
 		$module->initialize($changeStatus);
 		$module->getTheme()->initialize();
-		self::startOutputBuffer();
+		$outputCapture = new OutputCapture();
 		
 		if(DEBUG_MODE) {
 			if(isset($_GET['dumpstate'])){
@@ -620,7 +608,7 @@ Disallow: " . BASE_URI;
 		$module->getTheme()->runFooter();
 		echo "</framework:theme>";
 		Template::writeFooter();
-		self::finalize(false);
+		$outputCapture->serve();
 	}
 	
 	public static function splitPath($path){
