@@ -181,8 +181,14 @@ closedir($handle);
 		    die("Headers Already Sent by: $header_file:$header_line");
 		}
 		
+		if(COMPRESSED_OUTPUT) {
+			while(ob_get_level() > 0)
+				ob_end_clean();
+			header_remove("Content-Encoding");
+			header_remove("Transfer-Encoding");
+		}
+		
 		header_remove("Cache-Control");
-		header_remove("Content-Encoding");
 		header_remove("Pragma");
 		
 		header("Content-Type: $mimetype");
@@ -226,9 +232,7 @@ closedir($handle);
 		        header("Content-Range: bytes $range[0]-$range[1]/$size");
 		        $length++;
 		        header("Content-Length: $length");
-		        
-				while(ob_get_level())
-					ob_end_clean();
+		        OutputFilter::resetToNative();
 		        
 		        $reader = fopen($file, "r");
 		        if($range[0])
@@ -248,9 +252,7 @@ closedir($handle);
 		header("Content-Length: $size");
 		    
 		if(!self::isHeadRequest()) {
-			while(ob_get_level())
-				ob_end_clean();
-			
+		    OutputFilter::resetToNative();
 		    readfile($file);
 		}
 		

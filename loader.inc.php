@@ -13,14 +13,24 @@ if(function_exists("ob_gzhandler"))
 	if(!in_array("ob_gzhandler", ob_list_handlers())) {
 		$headers = getallheaders();
 		if(array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER))
-			define("GZ_OUTPUT", preg_match("/,?gzip,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
-													ob_end_clean() && ob_start("ob_gzhandler"));
+			define("COMPRESSED_OUTPUT", preg_match("/,?gzip,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
+													ob_end_clean() && ob_start("ob_gzhandler") ? "gzip" : false);
 		else
-			define("GZ_OUTPUT", false);
+			define("COMPRESSED_OUTPUT", false);
 	} else
-		define("GZ_OUTPUT", true);
-else
-	define("GZ_OUTPUT", false);
+		define("COMPRESSED_OUTPUT", true);
+else if(function_exists("ob_deflatehandler"))
+	if(!in_array("ob_deflatehandler", ob_list_handlers())) {
+		$headers = getallheaders();
+		if(array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER))
+			define("COMPRESSED_OUTPUT", preg_match("/,?gzip,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
+													ob_end_clean() && ob_start("ob_deflatehandler") ? "deflate" : false);
+		else
+			define("COMPRESSED_OUTPUT", false);
+	} else
+		define("COMPRESSED_OUTPUT", true);
+else 
+	define("COMPRESSED_OUTPUT", false);
 
 if(!ob_get_level())
 	ob_start();
