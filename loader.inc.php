@@ -5,14 +5,18 @@ define("LOADER_START_TIME", microtime(true));
 if(!defined("PHP_MAJOR_VERSION"))
 	throw new Exception("PHP version incompatible.");
 
+if(ini_get('zlib.output_compression'))
+    ini_set('zlib.output_compression', 'Off');
+
 header("Content-Type: text/plain");
 if(function_exists("ob_gzhandler"))
 	if(!in_array("ob_gzhandler", ob_list_handlers())) {
-		//while(ob_get_level())
-		//	ob_end_clean();
-		//define("GZ_OUTPUT", ob_start("ob_gzhandler"));
-		// TODO: test how we can force the gzip output buffer on
-		define("GZ_OUTPUT", false);
+		$headers = getallheaders();
+		if(array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER))
+			define("GZ_OUTPUT", preg_match("/,?gzip,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
+													ob_end_clean() && ob_start("ob_gzhandler"));
+		else
+			define("GZ_OUTPUT", false);
 	} else
 		define("GZ_OUTPUT", true);
 else

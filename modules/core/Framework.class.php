@@ -181,6 +181,10 @@ closedir($handle);
 		    die("Headers Already Sent by: $header_file:$header_line");
 		}
 		
+		header_remove("Cache-Control");
+		header_remove("Content-Encoding");
+		header_remove("Pragma");
+		
 		header("Content-Type: $mimetype");
 		header("Last-Modified: $modtime");
 		header('Accept-Ranges: bytes');
@@ -197,9 +201,6 @@ closedir($handle);
 			
 			header("X-Filename: $safeFilename");
 		}
-		
-		header_remove("Cache-Control");
-		header_remove("Pragma");
 		
 		if(!$expiresAt) // Default to expiring after between 2 and 15 minutes to try and balance update checking
 			$expiresAt = time() + rand(120, 900);
@@ -225,7 +226,9 @@ closedir($handle);
 		        header("Content-Range: bytes $range[0]-$range[1]/$size");
 		        $length++;
 		        header("Content-Length: $length");
-		        OutputFilter::resetToNative(false);
+		        
+				while(ob_get_level())
+					ob_end_clean();
 		        
 		        $reader = fopen($file, "r");
 		        if($range[0])
@@ -233,21 +236,23 @@ closedir($handle);
 		        
 		        while($length > 0){
 		            $buffer = fread($reader, $length > 5120 ? 5120 : $length);
-		            $length -= 5120;
+		            $length -= strlen($buffer);
 		            print($buffer);
 		            flush();
 		        }
 		        
-		        die();
+		        exit;
 		    }
 		}
 		
 		header("Content-Length: $size");
-		while(ob_get_level())
-			ob_end_clean();
 		    
-		if(!self::isHeadRequest())
+		if(!self::isHeadRequest()) {
+			while(ob_get_level())
+				ob_end_clean();
+			
 		    readfile($file);
+		}
 		
 		die();
 	}
@@ -433,7 +438,7 @@ Disallow: " . BASE_URI;
 				Profiler::finish("Framework");
 	        
 	        if(self::isHeadRequest())
-		        die();
+		        exit;
 			API::run();
 		}
 		
@@ -580,7 +585,7 @@ Disallow: " . BASE_URI;
 		}
 		
 		if(self::isHeadRequest())
-		    die();
+		    exit;
 		
 		Template::writeHeader();
 		echo "<framework:theme>";
