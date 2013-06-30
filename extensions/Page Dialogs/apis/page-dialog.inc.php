@@ -2,7 +2,6 @@
 
 $module = new PageModule(API::getCurrentArugment());
 $module->initialize(false);
-$module->run(true, true);
 
-return Array("html" => $module->getHTML(), "title" => Template::getTitle());
+return Array("html" => $module->getHTML(true), "title" => Template::getTitle());
 ?>

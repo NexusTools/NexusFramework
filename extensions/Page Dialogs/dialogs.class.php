@@ -7,8 +7,8 @@ class PageDialogs {
         foreach(self::$preinstalled as $page => $val) {
             echo "<popup class='preload hidden' preload-page='" . htmlspecialchars($page). "'><close onclick='closeLastPopup()'>X</close><contents>";
             $module = new PageModule($page);
-            $module->run(true, true);
-            echo $module->getHTML();
+			$module->initialize(false);
+            echo $module->getHTML(true);
             echo "</contents></popup>";
         }
     }

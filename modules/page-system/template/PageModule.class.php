@@ -26,9 +26,9 @@ class PageModule {
 	const RIGHT_SIDEBAR = 2;
 	const BOTH_SIDEBARS = 3;
 	
-	public function getHTML(){
-		if(!$this->buffer)
-			$this->run(true);
+	public function getHTML($pageAreaOnly = false){
+		if(!is_string($this->buffer))
+			$this->run(true, $pageAreaOnly);
 		return $this->buffer;
 	}
 	
@@ -416,13 +416,11 @@ class PageModule {
 		if($capture || $onlyPageArea)
 			$this->buffer = $this->buffer->finish();
 		
-	    if($onlyPageArea) {
-	        if($this->sidebarLayout === self::RAW_SIDEBAR_OUTPUT
-	                && preg_match("/<column\s.*?class=['\"].*?pagearea.*?['\"].*?>[\s\n]*?<contents.*?>((.|\n)+?)<\/contents>[\s\n]*?<\/column>/i", $this->buffer, $matches))
+	    if($onlyPageArea && $this->sidebarLayout === self::RAW_SIDEBAR_OUTPUT
+	                && preg_match("/<column\s.*?class=['\"].*?pagearea.*?['\"].*?>[\s\n]*?<contents.*?>((.|\n)*?)<\/contents>[\s\n]*?<\/column>/i", $this->buffer, $matches))
 	            $this->buffer = trim($matches[1]);
-	        if(!$capture)
-	            echo $this->buffer;
-	    }
+	    if(!$capture)
+            echo $this->buffer;
 	    
 		if(DEBUG_MODE)
 			Profiler::finish("PageModule[Script]");
