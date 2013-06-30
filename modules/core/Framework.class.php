@@ -344,8 +344,7 @@ closedir($handle);
                 self::serveFile(FRAMEWORK_RES_PATH . "license");
 
 			case "script":
-				while(ob_get_level())
-		            ob_end_clean();
+				OutputFilter::resetToNative();
 				$scmpr = new ScriptCompressor(true);
 				$path = FRAMEWORK_RES_PATH . "javascript" . DIRSEP;
 				
@@ -354,14 +353,15 @@ closedir($handle);
 			    	$scmpr->addScript($script);
 			    }
 				$scmpr->dumpAsResponse();
-				self::finalize();
+				exit;
 				
 			case "dirstyle":
+				OutputFilter::resetToNative();
 				while(ob_get_level())
 		            ob_end_clean();
 				$style = new CompressedStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "dirlisting.css");
 				$style->dumpAsResponse();
-				self::finalize();
+				exit;
 				
 			case "folder":
 				self::serveFileInternal(FRAMEWORK_RES_PATH . "images" . DIRSEP . "folder.png", "image/png");
@@ -373,20 +373,18 @@ closedir($handle);
 				self::serveFileInternal(FRAMEWORK_RES_PATH . "images" . DIRSEP . "lgplv3.png", "image/png");
 		    
 			case "style":
-				while(ob_get_level())
-		            ob_end_clean();
+				OutputFilter::resetToNative();
 				$style = new CompressedStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "widgets.css");
 				$style->dumpAsResponse();
-				self::finalize();
+				exit;
 		
 			case "information":
 				header("Content-Type: text/plain");
-				while(ob_get_level())
-		            ob_end_clean();
+				OutputFilter::resetToNative();
 				echo "Version: " . FRAMEWORK_VERSION;
 				echo "\nInstall Path: " . FRAMEWORK_PATH;
 				echo "\nBase URL: " . BASE_URL;
-				self::finalize();
+				exit;
 		}
 		
 		self::runPage("/errordoc/404");
@@ -452,16 +450,14 @@ Disallow: " . BASE_URI;
 		
 		if(file_exists("$requestURI.php") && REQUEST_URI != "/index" && REQUEST_URI != "/framework.config"){
 			@chdir(dirname($requestURI));
-			while(ob_get_level())
-			    ob_end_clean();
+			OutputFilter::resetToNative();
 			require("$requestURI.php");
-			self::finalize();
+			exit;
 		} else if(is_dir($requestURI) && file_exists("$requestURI/index.php")){
 			@chdir($requestURI);
-			while(ob_get_level())
-			    ob_end_clean();
+			OutputFilter::resetToNative();
 			require("index.php");
-			self::finalize();
+			exit;
 		}
 		
 		if(DEBUG_MODE)
