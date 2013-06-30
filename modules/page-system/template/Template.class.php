@@ -203,7 +203,7 @@ class Template {
 				echo "\"";
 			}
 			
-			if($data['content']) {
+			if(array_key_exists("content", $data)) {
 				echo ">$data[content]</$data[tag]>";
 			} else
 				echo " />";

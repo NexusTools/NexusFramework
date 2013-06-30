@@ -27,11 +27,9 @@ class PageModule {
 	const BOTH_SIDEBARS = 3;
 	
 	public function getHTML(){
-		if(!$this->html) {
-			$this->html = "";
+		if(!$this->buffer)
 			$this->run(true);
-		}
-		return $this->html;
+		return $this->buffer;
 	}
 	
 	public static function getWorkingPath(){
@@ -436,7 +434,7 @@ class PageModule {
 	
 	public function __toString(){
 		$this->run(true);
-		return $this->html;
+		return $this->buffer;
 	}
 	
 }

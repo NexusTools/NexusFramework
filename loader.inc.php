@@ -1,32 +1,16 @@
 <?php
-define("LOADER_START_TIME", microtime(true));
+// Dump Early Errors
+error_reporting(E_ALL);
+ini_set("display_errors", 0);
+ini_set("error_log", "php.err");
 
 // Test PHP Version
 if(!defined("PHP_MAJOR_VERSION"))
 	throw new Exception("PHP version incompatible.");
+define("LOADER_START_TIME", microtime(true));
 
 if(ini_get('zlib.output_compression'))
     ini_set('zlib.output_compression', 'Off');
-
-function ob_nexusframework($data, $phase) {
-	if(defined("OB_RAW_PUSHTHROUGH")) {
-		if(strlen($data)) { // Assume is from compression
-			header_remove("Content-Encoding");
-			header_remove("Transfer-Encoding");
-		}
-		return false;
-	}
-		
-	static $buffer = "";
-	$buffer .= $data;
-	if(($phase & PHP_OUTPUT_HANDLER_END) == PHP_OUTPUT_HANDLER_END) {
-		// TODO: IE sanitising and other features
-		return $buffer;
-	}
-	return "";
-}
-ob_start("ob_nexusframework", 0, false);
-define("BASE_OB_LEVEL", ob_get_level());
 
 if(function_exists("ob_gzhandler"))
 	if(!in_array("ob_gzhandler", ob_list_handlers())) {
@@ -37,7 +21,7 @@ if(function_exists("ob_gzhandler"))
 		else
 			define("COMPRESSED_OUTPUT", false);
 	} else
-		define("COMPRESSED_OUTPUT", true);
+		define("COMPRESSED_OUTPUT", "gzip");
 else if(function_exists("ob_deflatehandler"))
 	if(!in_array("ob_deflatehandler", ob_list_handlers())) {
 		$headers = getallheaders();
@@ -47,7 +31,7 @@ else if(function_exists("ob_deflatehandler"))
 		else
 			define("COMPRESSED_OUTPUT", false);
 	} else
-		define("COMPRESSED_OUTPUT", true);
+		define("COMPRESSED_OUTPUT", "deflate");
 else 
 	define("COMPRESSED_OUTPUT", false);
 
@@ -62,10 +46,6 @@ if(!function_exists("ob_void")) {
 }
 define("NATIVE_OB_LEVEL", ob_get_level());
 ob_start("ob_void", 512);
-    
-// Dump Early Errors
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
 
 // Shorter Aliases
 define("DIRSEP", DIRECTORY_SEPARATOR);
@@ -97,6 +77,7 @@ unset($fmpath_len);
 unset($stack);
 unset($pos);
 
+ini_set("error_log", INDEX_PATH . "php.err");
 define("EXT_PATH", INDEX_PATH . "extensions" . DIRSEP);
 
 require FRAMEWORK_CORE_PATH . "functions.inc.php";

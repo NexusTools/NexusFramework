@@ -126,9 +126,11 @@ class API {
 				Profiler::finish("API[$key]");
 		}
 		
-		OutputFilter::resetToNative(false);
 		$encoder = isset(self::$encoders[$format]) ? self::$encoders[$format] : self::$encoders["help"];
+		
+		$buffer = new OutputCapture();
 		call_user_func($encoder, $dataObject);
+		$buffer->serveRaw();
 		exit;
 	}
 	
@@ -157,16 +159,15 @@ class API {
 	}
 	
 	public static function _jsonEncoder($dataObject){
-		header("Content-Type: application/json");
+		header("Content-Type: text/json");
 		self::_ensureUTF8($dataObject);
 		
 		$data = json_encode($dataObject);
-		header("Content-Length: " . strlen($data));
 		echo $data;
 	}
 	
 	public static function _xmlEncoder($dataObject){
-		header("Content-Type: application/xml");
+		header("Content-Type: text/xml");
 		$xmlObject = new SimpleXMLElement('<api/>');
 		self::array_to_xml($dataObject, $xmlObject);
 		echo $xmlObject->asXML();
@@ -174,7 +175,7 @@ class API {
 	
 	public static function _textEncoder($dataObject){
 		header("Content-Type: text/plain");
-		print_r($dataObject);
+		echo print_r($dataObject, true);
 	}
 	
 	public static function _serializeEncoder($dataObject){

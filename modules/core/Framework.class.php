@@ -75,7 +75,6 @@ class Framework {
 	}
 	
 	public static function serveData($data, $mimetype=false) {
-		OutputFilter::resetToNative(false);
 		if(!$mimetype)
 			if(preg_match("/^\s*?</", $data)) {
 				if(preg_match("/^\s*?<(html|!doctype)/i", $data))
@@ -86,8 +85,12 @@ class Framework {
 				$mimetype = "text/plain";
 		
 		header("Content-Type: $mimetype");
+		Framework::serveRawData($data, $mimetype);
+	}
+	
+	public static function serveRawData($data, $mimetype=false) {
 		header("X-Content-Type-Options: nosniff");
-		
+		OutputFilter::resetToNative(false);
 		echo $data;
 		exit;
 	}
@@ -179,13 +182,6 @@ closedir($handle);
 		if(headers_sent($header_file, $header_line)) {
 			OutputFilter::resetToNative(false);
 		    die("Headers Already Sent by: $header_file:$header_line");
-		}
-		
-		
-		if(!startsWith("text", $mimetype)) {
-			define("OB_RAW_PUSHTHROUGH", true);
-		    while(ob_get_level() > BASE_OB_LEVEL)
-		    	ob_end_clean();
 		}
 		
 		header_remove("Cache-Control");

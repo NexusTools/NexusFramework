@@ -12,6 +12,10 @@ class OutputCapture extends OutputFilter {
 		Framework::serveData($this->finish(), $mimeType);
 	}
 	
+	public function serveRaw() {
+		Framework::serveRawData($this->finish());
+	}
+	
 	public function getOutput() {
 		return $this->outputBuffer;
 	}

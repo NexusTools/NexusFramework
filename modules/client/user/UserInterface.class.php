@@ -260,7 +260,10 @@ abstract class UserInterface {
             $method = self::$defaultmethodcache[$name];
         else if(array_key_exists($name, self::$staticmethodcache))
     	    $method = self::$staticmethodcache[$name];
-    	else if(!$method && array_key_exists($name, $this->methodcache)) {
+    	else
+    		$method = false;
+    	
+    	if(!$method && array_key_exists($name, $this->methodcache)) {
     	    $method = $this->methodcache[$name];
     	    $thisObject = $method[1];
     	    $method = $method[0];
