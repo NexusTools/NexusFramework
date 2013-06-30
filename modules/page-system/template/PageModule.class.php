@@ -15,7 +15,7 @@ class PageModule {
 	private $themePath;
 	private $pageTitle = false;
 	private $realUri = false;
-	private $html = false;
+	private $buffer = false;
 	private $badCond = false;
 	private $get;
 	private $post;
@@ -362,18 +362,12 @@ class PageModule {
 	    return false;
 	}
 	
-	public function addOutputBuffer($html){
-		$this->html .= $html;
-	}
-	
 	public function run($capture=false, $onlyPageArea=false){
 		if(DEBUG_MODE)
 			Profiler::start("PageModule[Script]");
 			
-		if($capture || $onlyPageArea){
-			$this->html = "";
-			OutputHandlerStack::pushOutputHandler(array($this, "addOutputBuffer"));
-		}
+		if($capture || $onlyPageArea)
+			$this->buffer = new OutputCapture();
 		
 		if(!$onlyPageArea) {
 		    if($this->sidebarLayout !== self::RAW_SIDEBAR_OUTPUT) {
@@ -422,14 +416,14 @@ class PageModule {
 		}
 		
 		if($capture || $onlyPageArea)
-			OutputHandlerStack::popOutputHandler();
+			$this->buffer = $this->buffer->finish();
 		
 	    if($onlyPageArea) {
 	        if($this->sidebarLayout === self::RAW_SIDEBAR_OUTPUT
-	                && preg_match("/<column\s.*?class=['\"].*?pagearea.*?['\"].*?>[\s\n]*?<contents.*?>((.|\n)+?)<\/contents>[\s\n]*?<\/column>/i", $this->html, $matches))
-	            $this->html = trim($matches[1]);
+	                && preg_match("/<column\s.*?class=['\"].*?pagearea.*?['\"].*?>[\s\n]*?<contents.*?>((.|\n)+?)<\/contents>[\s\n]*?<\/column>/i", $this->buffer, $matches))
+	            $this->buffer = trim($matches[1]);
 	        if(!$capture)
-	            echo $this->html;
+	            echo $this->buffer;
 	    }
 	    
 		if(DEBUG_MODE)
