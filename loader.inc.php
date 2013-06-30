@@ -8,9 +8,11 @@ if(!defined("PHP_MAJOR_VERSION"))
 header("Content-Type: text/plain");
 if(function_exists("ob_gzhandler"))
 	if(!in_array("ob_gzhandler", ob_list_handlers())) {
-		while(ob_get_level())
-			ob_end_clean();
-		define("GZ_OUTPUT", ob_start("ob_gzhandler"));
+		//while(ob_get_level())
+		//	ob_end_clean();
+		//define("GZ_OUTPUT", ob_start("ob_gzhandler"));
+		// TODO: test how we can force the gzip output buffer on
+		define("GZ_OUTPUT", false);
 	} else
 		define("GZ_OUTPUT", true);
 else
