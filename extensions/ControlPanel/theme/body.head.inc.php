@@ -4,24 +4,25 @@
 			<?
 			$banner = fullpath("cp-banner.png");
 			if(file_exists($banner)) {
-				echo "<img style='float: left; display: inline-block; margin: 0px 2px; padding: 0px;' src='";
+				echo "<a title='Return to Website' href='/'><img style='float: left; display: inline-block; margin: 0px 2px; padding: 0px;' src='";
 				echo Framework::getReferenceURI($banner);
 				echo "' alt='";
 				echo $domain;
-				echo "' height='32px' />";
+				echo "' height='32px' /></a>";
+				echo '<widget onclick="location.href=\'/control\'">Control Panel</widget>';
 			} else {
 				$logo = fullpath("logo.png");
 				if(!file_exists($logo))
 					$logo = fullpath("favicon.png");
 				$domain = StringFormat::displayForID(DOMAIN_SL);
 				if(file_exists($logo)) {
-					echo "<img style='float: left; display: inline-block; margin: 1px 5px; padding: 0px;' src='";
+					echo "<a title='Return to Website' href='/'><img style='float: left; display: inline-block; margin: 1px 5px; padding: 0px;' src='";
 					echo Framework::getReferenceURI($logo);
 					echo "' alt='";
 					echo $domain;
-					echo "' height='30px' />";
+					echo "' height='30px' /></a>";
 				}
-			?><widget><? echo $domain; ?> Control Panel</widget><? } ?>
+			?><widget onclick="location.href='/control'"><? echo $domain; ?> Control Panel</widget><? } ?>
 			<widget>1 User(s) Online</widget>
 			<widget>0 Notifications</widget>
 			<widget class="last">Logged in as <? echo User::getFullName(); ?>
