@@ -503,7 +503,7 @@ class Database extends Lockable {
 		    return false;
 		}
 		
-		Triggers::broadcast("Database", $this->getName() . ".$table", Array("delete", array_keys($where)));
+		Triggers::broadcast("Database", $this->getName() . ".$table", Array("delete", $where));
 		return true;
 	}
 	

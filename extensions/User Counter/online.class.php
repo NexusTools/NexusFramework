@@ -58,17 +58,16 @@ class UserCounter {
 		if($path == null)
 			$path = REQUEST_URI;
 			
-		// Delete any expired entries
-		self::getDatabase()->delete("tracks", Array(
-					"< expires" => Database::timeToTimestamp()
-				));
-		
 		self::getDatabase()->upsert("tracks", Array(
 					"page" => REQUEST_URI,
 					"user" => User::getID(),
 					"level" => User::getLevel(),
 					"expires" => Database::timeToTimestamp(strtotime("+5 minutes"))
 				), Array("client" => ClientInfo::getUniqueID()));
+	}
+	
+	public static function clean() {
+		self::getDatabase()->delete("tracks", "expires <= CURRENT_TIMESTAMP");
 	}
 	
 	public static function update() {
