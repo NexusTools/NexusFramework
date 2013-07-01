@@ -118,6 +118,8 @@ class Framework {
 			OutputFilter::resetToNative(false);
 			?><!DOCTYPE html>
 <html><head><title>Directory Listing: <? echo $path; ?></title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="description" content="Directory listing for <? echo $path; ?>" />
 <link href="<? echo BASE_URI; ?>res:dirstyle" rel="stylesheet" type="text/css" /></head>
 <body><h1>Directory Listing: <? echo $path; ?></h1>
 <table cellspacing="0"><tr><th colspan="2">Filename</th><th>Type</th><th>Size</th></tr>
