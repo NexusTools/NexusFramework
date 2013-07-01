@@ -62,7 +62,7 @@ class UserCounter {
 					"page" => REQUEST_URI,
 					"user" => User::getID(),
 					"level" => User::getLevel(),
-					"expires" => Database::timeToTimestamp(strtotime("+5 minutes"))
+					"expires" => Database::timeToTimestamp(strtotime("+5 minutes GMT"))
 				), Array("client" => ClientInfo::getUniqueID()));
 	}
 	
@@ -75,7 +75,7 @@ class UserCounter {
 			return;
 		
 		self::getDatabase()->update("tracks", Array(
-					"expires" => Database::timeToTimestamp(strtotime("+15 seconds"))
+					"expires" => Database::timeToTimestamp(strtotime("+15 seconds GMT"))
 				), Array("client" => ClientInfo::getUniqueID()));
 	}
 
