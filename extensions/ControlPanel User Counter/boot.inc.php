@@ -15,7 +15,7 @@ function __userCounter__countMenu() {
 			} catch(Exception $e) {
 				$avatar = "";
 			}
-			array_push($entries, $avatar . User::getFullNameByID($user) . " <small>" . User::getLevelStringByID($user) . "</small><span>$page</span>");
+			array_push($entries, $avatar . User::getFullNameByID($user) . "<span>$page</span>");
 		}
 		
 		array_push($entries, "----");
