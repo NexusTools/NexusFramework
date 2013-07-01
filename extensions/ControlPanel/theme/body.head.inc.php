@@ -5,7 +5,7 @@
 			$banner = fullpath("cp-banner.png");
 			if(file_exists($banner)) {
 				echo "<img style='float: left; display: inline-block; margin: 0px 2px; padding: 0px;' src='";
-				echo Framework::getReferenceURI($logo);
+				echo Framework::getReferenceURI($banner);
 				echo "' alt='";
 				echo $domain;
 				echo "' height='32px' />";
