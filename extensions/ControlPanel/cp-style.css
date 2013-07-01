@@ -247,8 +247,12 @@ Toolbar Widget.last Menu {
 }
 
 Toolbar Widget:hover Menu {
-	width: 150px;
+	width: 180px;
 	opacity: 1;
+}
+
+Toolbar Widget.last:hover Menu {
+	width: 120px;
 }
 
 Toolbar Widget Menu a {
