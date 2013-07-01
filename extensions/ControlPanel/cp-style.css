@@ -241,6 +241,13 @@ Toolbar Widget Menu {
 	-moz-box-sizing: border-box;
 }
 
+Toolbar Widget Menu hr {
+	background-color: #a4a4a4;
+	border: none;
+	height: 1px;
+	margin: 4px;
+}
+
 Toolbar Widget.last Menu {
 	right: -1px;
 	left: auto;
