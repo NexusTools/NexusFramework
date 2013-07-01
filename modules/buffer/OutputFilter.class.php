@@ -16,9 +16,13 @@ abstract class OutputFilter {
 		return $ret;
 	}
 	
+	/*
+		Clears all existing buffers except the required underlying ones.
+		Used to reset the entire state of the output system.
+	*/
 	public static function resetToNative($attachVoid =true) {
 		while(ob_get_level() > NATIVE_OB_LEVEL)
-			ob_end_flush();
+			ob_end_clean();
 		if($attachVoid)
 			ob_start("ob_void", 512);
 		else
@@ -42,7 +46,7 @@ abstract class OutputFilter {
 			
 		@ob_flush();
 		while($this->level > 0)
-			ob_end_flush();
+			ob_end_clean();
 		return true;
 	}
 	
