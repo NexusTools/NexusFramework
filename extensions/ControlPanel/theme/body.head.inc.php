@@ -11,6 +11,8 @@
 				echo "' height='32px' />";
 			} else {
 				$logo = fullpath("logo.png");
+				if(!file_exists($logo))
+					$logo = fullpath("favicon.png");
 				$domain = StringFormat::displayForID(DOMAIN_SL);
 				if(file_exists($logo)) {
 					echo "<img style='float: left; display: inline-block; margin: 1px 5px; padding: 0px;' src='";
