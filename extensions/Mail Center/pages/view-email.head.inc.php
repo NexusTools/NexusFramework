@@ -1,5 +1,5 @@
 <?php
-OutputHandlerStack::setBufferEnabled(false);
+OutputFilter::resetToNative(false);
 $id = PageModule::getValue("email-id");
 $rawID = urlencode(PageModule::getValue("raw-id"));
 $ffile = PageModule::getValue("ffile");
