@@ -1,0 +1,17 @@
+{
+	"name": "User Counter",
+	"provides": "user-count",
+	"description": "Provides an api for counting how many users are online, and on specific pages",
+	"database": {
+		"tracks": {
+			"client": {
+				"type": "INTEGER",
+				"primary": "1"
+			},
+			"user": "INTEGER",
+			"level": "INTEGER",
+			"page": "VARCHAR(80)",
+			"expires": "TIMESTAMP"
+		}
+	}
+}

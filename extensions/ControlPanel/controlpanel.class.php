@@ -10,10 +10,19 @@ class ControlPanel {
 	private static $currentSection;
 	private static $currentPage;
 	private static $newPage = false;
+	private static $toolbarWidgets = Array();
 	
 	const BLACKLIST_NAVIGATION = 0x0;
 	const BLACKLIST_EVERYTHING = 0x1;
 	const WHITELIST_EVERYTHING = 0x2;
+	
+	public static function getToolbarWidgets() {
+		return self::$toolbarWidgets;
+	}
+	
+	public static function registerToolbarWidget($text, $menu, $page =false) {
+		array_push(self::$toolbarWidgets, array($text, $menu, $page));
+	}
 	
 	public static function getDatabase(){
 		return self::$database ? self::$database : (self::$database = Database::getInstance());

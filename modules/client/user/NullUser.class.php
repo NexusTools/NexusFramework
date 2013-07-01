@@ -3,7 +3,7 @@ class NullUser extends BuiltinUser {
 
     private static $instance = false;
     
-    public function instance(){
+    public static function instance(){
         return self::$instance === false ? (self::$instance = new NullUser()) : self::$instance;
     }
 

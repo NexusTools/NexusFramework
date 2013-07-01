@@ -269,7 +269,7 @@ ControlPanel.HandleLink = function(e){
 ControlPanel.UnsavedChanged = false;
 ControlPanel.PanelReady = function() {
 	ControlPanel.UnsavedChanged = false;
-	var links = ControlPanel.container.select("a").each(function(link){
+	var links = ControlPanel.container.select("a[href]").each(function(link){
 		link.observe("click", ControlPanel.HandleLink);
 	});
 	
@@ -574,7 +574,7 @@ Framework.API.registerHandler("controlpanel", function(data){
         if(toolDiv)
             ControlPanel.page.whiteout.popup.insertBefore(toolDiv,ControlPanel.page.whiteout.popup.firstChild);
         
-        ControlPanel.page.whiteout.popup.select("a").each(function(link){
+        ControlPanel.page.whiteout.popup.select("a[href]").each(function(link){
 		    link.observe("click", ControlPanel.HandleLink);
 	    });
         ControlPanel.centerPopup();
@@ -736,3 +736,9 @@ do {
 ControlPanel.popupUri = false;
 Event.observe(window, 'resize', ControlPanel.centerPopup);
 ControlPanel.PanelReady();
+
+
+
+$$("Toolbar Widget[href]").each(function(widget){
+	widget.observe("click", ControlPanel.HandleLink);
+});

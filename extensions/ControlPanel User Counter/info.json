@@ -1,0 +1,17 @@
+{
+	"name": "ControlPanel User Counter",
+	"provides": "controlpanel-user-count",
+	"description": "Provides an api for counting how many users are online, and on specific pages",
+	"dependancies": ["controlpanel", "user-count"],
+	"database": {
+		"tracks": {
+			"client": {
+				"type": "INTEGER",
+				"primary": "1"
+			},
+			"user": "INTEGER",
+			"page": "VARCHAR(80)",
+			"expires": "TIMESTAMP"
+		}
+	}
+}

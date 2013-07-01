@@ -300,6 +300,30 @@ class Database extends Lockable {
 		return $ret;
 	}
 	
+	public function _countDistinct($table, $distinctField, $where=false){
+		$args = Array();	    
+	    $values = Array();
+	    $queryString = "SELECT count(DISTINCT `$distinctField`) FROM `$table`";
+	    if($where)
+	        $queryString .= self::whereClause($where, $args);
+	    $statement = $this->database->prepare($queryString);
+		if(!$statement || $statement->execute($args) === false) {
+			$this->lastError = $this->database->errorInfo();
+			$this->lastQuery = $queryString;
+			$this->lastException = new Exception("DatabaseError: " . json_encode($this->database->errorInfo()));
+			if(DEBUG_MODE)
+				throw $this->lastException;
+		    return false;
+		}
+		
+		self::$queries++;
+		$ret = $statement->fetchAll(PDO::FETCH_NUM);
+		if($ret && count($ret))
+			return $ret[0][0];
+		
+		return $values;
+	}
+	
 	public function _selectDistinctValues($table, $distinctField, $where=false){
 	    $args = Array();	    
 	    $values = Array();
@@ -468,6 +492,8 @@ class Database extends Lockable {
 	}
 	
 	public function _delete($table, $where=Array()){
+		$this->beginTransaction();
+		
 		$args = Array();
 		$deleteQuery = "DELETE FROM `$table`" . self::whereClause($where, $args);
 		$statement = $this->database->prepare($deleteQuery);

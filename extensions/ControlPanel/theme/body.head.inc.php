@@ -23,8 +23,35 @@
 					echo "' height='30px' /></a>";
 				}
 			?><widget onclick="location.href='/control'"><? echo $domain; ?> Control Panel</widget><? } ?>
-			<widget>1 User(s) Online</widget>
-			<widget>0 Notifications</widget>
+			<?
+			foreach(ControlPanel::getToolbarWidgets() as $widget) {
+				echo "<widget";
+				if($widget[2])
+					echo " href='control://$widget[2]'";
+				echo ">";
+				echo interpolate($widget[0]);
+				if(is_callable($widget[1]))
+					$widget[1] = call_user_func($widget[1]);
+				if(is_array($widget[1])) {
+					echo "<menu>";
+					foreach($widget[1] as $text => $url) {
+						if($url == "----")
+							echo "<hr />";
+						else if(is_numeric($text)) {
+							echo "<a>";
+							echo interpolate($url);
+							echo "</a>";
+						} else {
+							echo "<a href=\"$url\">";
+							echo interpolate($text);
+							echo "</a>";
+						}
+					}
+					echo "</menu>";
+				}
+				echo "</widget>";
+			}
+			?>
 			<widget class="last">Logged in as <? echo User::getFullName(); ?>
 				<menu>
 					<a href="control://Users/Profile">Edit My Profile</a>
