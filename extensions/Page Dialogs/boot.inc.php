@@ -10,9 +10,8 @@ else
 
 function preloadPopup($path){
     $module = new PageModule($path);
-    $module->run(true, true);
     echo "<div data-page-popup-preload='$path' style='display: none; width: 0px; height: 0px; position: absolute; '>";
-    echo $module->getHTML();
+    echo $module->getHTML(true);
     echo "</div>";
 }
 ?>
