@@ -14,6 +14,10 @@
 				$logo = fullpath("logo.png");
 				if(!file_exists($logo))
 					$logo = fullpath("favicon.png");
+				if(!file_exists($logo))
+					$logo = fullpath("favicon.jpg");
+				if(!file_exists($logo))
+					$logo = fullpath("favicon.gif");
 				$domain = StringFormat::displayForID(DOMAIN_SL);
 				if(file_exists($logo)) {
 					echo "<a title='Return to Website' href='/'><img style='float: left; display: inline-block; margin: 1px 5px; padding: 0px;' src='";
