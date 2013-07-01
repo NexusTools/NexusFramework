@@ -66,7 +66,7 @@ abstract class OutputFilter {
 			throw new Exception(get_class() . " received $phase phase when not started.");
 		if($data && strlen($data)) {
 			$this->__filterData($data);
-			return $data;
+			return "";
 		}
 		if(($phase & PHP_OUTPUT_HANDLER_END) == PHP_OUTPUT_HANDLER_END) {
 			$this->__stop();

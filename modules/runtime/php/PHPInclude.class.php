@@ -68,9 +68,9 @@ class PHPInclude extends CachedFile {
 		return $this->outputBuffer;
 	}
 	
-	public function run($__outputmode = self::PASS_OUTPUT, $environment=Array()){
-		if($__outputmode != self::PASS_OUTPUT)
-			if($__outputmode == self::SILENCE_OUTPUT) {
+	public function run($outputMode = self::PASS_OUTPUT, $environment=Array()){
+		if($outputMode != self::PASS_OUTPUT)
+			if($outputMode == self::SILENCE_OUTPUT) {
 				ob_start("OutputFilter::void");
 				$this->outputBuffer = "";
 			} else
@@ -78,15 +78,15 @@ class PHPInclude extends CachedFile {
 		try{
 		    extract($environment);
 			$ret = include($this->getStoragepath());
-			if($this->outputBuffer instanceof OutputCapture)
-				$this->outputBuffer = $this->outputBuffer->finish();
 		}catch(Exception $e){
 			if($this->outputBuffer instanceof OutputCapture)
 				$this->outputBuffer = $this->outputBuffer->finish();
 			$this->outputBuffer .= "<pre>$e</pre>";
 			$ret = false;
 		}
-		if($__outputmode == self::SILENCE_OUTPUT) {
+		if($this->outputBuffer instanceof OutputCapture)
+			$this->outputBuffer = $this->outputBuffer->finish();
+		if($outputMode == self::SILENCE_OUTPUT) {
 			ob_flush();
 			ob_end_clean();
 		}
