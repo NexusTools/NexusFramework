@@ -71,13 +71,10 @@ class PHPInclude extends CachedFile {
 	public function run($__outputmode = self::PASS_OUTPUT, $environment=Array()){
 		if($__outputmode != self::PASS_OUTPUT)
 			if($__outputmode == self::SILENCE_OUTPUT) {
-				OutputHandlerStack::ignoreOutput();
 				ob_start("OutputFilter::void");
 				$this->outputBuffer = "";
-			} else {
-				OutputHandlerStack::pushOutputHandler(array($this, "pushOutput"));
+			} else
 				$this->outputBuffer = new OutputCapture();
-			}
 		try{
 		    extract($environment);
 			$ret = include($this->getStoragepath());
