@@ -60,10 +60,6 @@ class PHPInclude extends CachedFile {
 		return trim($source);
 	}
 	
-	public function pushOutput($out){
-		$this->outputBuffer .= $out;
-	}
-	
 	protected function isShared(){
 		return false;
 	}
@@ -73,22 +69,30 @@ class PHPInclude extends CachedFile {
 	}
 	
 	public function run($__outputmode = self::PASS_OUTPUT, $environment=Array()){
-		if($__outputmode != self::PASS_OUTPUT){
-			$this->outputBuffer = "";
-			if($__outputmode == self::SILENCE_OUTPUT)
+		if($__outputmode != self::PASS_OUTPUT)
+			if($__outputmode == self::SILENCE_OUTPUT) {
 				OutputHandlerStack::ignoreOutput();
-			else
+				ob_start("OutputFilter::void");
+				$this->outputBuffer = "";
+			} else {
 				OutputHandlerStack::pushOutputHandler(array($this, "pushOutput"));
-		}
+				$this->outputBuffer = new OutputCapture();
+			}
 		try{
 		    extract($environment);
 			$ret = include($this->getStoragepath());
+			if($this->outputBuffer instanceof OutputCapture)
+				$this->outputBuffer = $this->outputBuffer->finish();
 		}catch(Exception $e){
+			if($this->outputBuffer instanceof OutputCapture)
+				$this->outputBuffer = $this->outputBuffer->finish();
 			$this->outputBuffer .= "<pre>$e</pre>";
 			$ret = false;
 		}
-		if($__outputmode != self::PASS_OUTPUT)
-			OutputHandlerStack::popOutputHandler();
+		if($__outputmode == self::SILENCE_OUTPUT) {
+			ob_flush();
+			ob_end_clean();
+		}
 		return $ret;
 	}
 	

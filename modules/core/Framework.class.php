@@ -205,7 +205,7 @@ closedir($handle);
 		}
 		
 		if(!$expiresAt) // Default to expiring after between 2 and 15 minutes to try and balance update checking
-			$expiresAt = time() + rand(120, 900);
+			$expiresAt = time() + rand(strtotime("+1 week", 0), strtotime("+2 weeks", 0));
 		header("Expires: " . self::formatGMTDate($expiresAt));
 		header("X-Process-Time: " . (microtime(true) - LOADER_START_TIME) * 1000);
 		
