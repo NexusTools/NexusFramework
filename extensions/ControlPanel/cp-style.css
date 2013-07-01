@@ -179,9 +179,17 @@ Framework\:Widgets WhiteOut Popup h5 {
 
 
 Toolbar {
-	height: 28px;
+	height: 32px;
 	display: block;
-	background-color: #120b00;
+	background: rgb(6,21,35); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(6,21,35,1) 0%, rgba(20,22,38,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(6,21,35,1)), color-stop(100%,rgba(20,22,38,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(6,21,35,1) 0%,rgba(20,22,38,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(6,21,35,1) 0%,rgba(20,22,38,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(6,21,35,1) 0%,rgba(20,22,38,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(6,21,35,1) 0%,rgba(20,22,38,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#061523', endColorstr='#141626',GradientType=0 ); /* IE6-9 */
+
 	font: normal 13px sans-serif;
 }
 
@@ -189,13 +197,15 @@ Toolbar Widget {
 	float: left;
 	padding-left: 7px;
 	padding-right: 7px;
-	line-height: 28px;
+	line-height: 32px;
 	color: white;
 	cursor: pointer;
 	position: relative;
-	border-left: solid 1pt #323232;
-	border-right: solid 1pt black;
 	background-color: inherit;
+	border-left: solid 1pt #21283F;
+	border-right: solid 1pt #21283F;
+	-webkit-transition: all 200ms; /* Safari */
+	transition: all 200ms;
 }
 
 Toolbar Widget.last {
@@ -203,10 +213,7 @@ Toolbar Widget.last {
 }
 
 Toolbar Widget:hover {
-	background-color: white;
-	color: #120b00;
-	border-right: solid 1pt lightGray;
-	border-left: solid 1pt lightGray;
+	background-color: #21283F;
 }
 
 Toolbar Widget Menu {
@@ -214,11 +221,15 @@ Toolbar Widget Menu {
     -moz-box-shadow:  0px 1px 1px 1px rgba(0, 0, 0, 0.25);
     box-shadow:  0px 1px 1px 1px rgba(0, 0, 0, 0.25);
 
-	width: 150px;
+	-webkit-transition: all 300ms; /* Safari */
+	transition: all 300ms;
+	
+	width: 0px;
+	opacity: 0;
 	position: absolute;
 	z-index: 300;
 	top: 15px;
-	display: none;
+	display: block;
 	left: -1px;
 	background-color: white;
 	border: solid 1pt lightGray;
@@ -236,26 +247,28 @@ Toolbar Widget.last Menu {
 }
 
 Toolbar Widget:hover Menu {
-	display: block;
+	width: 150px;
+	opacity: 1;
 }
 
-Toolbar Widget:hover Menu a {
+Toolbar Widget Menu a {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
+	-webkit-transition: all 200ms; /* Safari */
+	transition: all 200ms;
+	text-decoration: none;
 	display: block;
 	color: #222;
 	width: 100%;
-	padding-left: 10px;
-	padding-right: 10px;
+	padding-left: 8px;
+	padding-right: 8px;
 	font: inherit;
+	font-size: 90%;
 	line-height: 30px;
-	margin-top: 2px;
-	margin-bottom: 2px;
 }
 
-Toolbar Widget:hover Menu a:hover {
-	background-color: #b9f8ff;
-	font-weight: bold;
+Toolbar Widget Menu a:hover {
+	background-color: #eaeaea;
 }
 
 NavBar {
