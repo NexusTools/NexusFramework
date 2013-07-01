@@ -106,7 +106,9 @@ class Database extends Lockable {
 		return strtotime("$stamp GMT");
 	}
 	
-	public static function timeToTimestamp($time){
+	public static function timeToTimestamp($time =0){
+		if(!$time)
+			$time = time();
 		return gmdate("Y-m-d H:i:s", $time);
 	}
 	

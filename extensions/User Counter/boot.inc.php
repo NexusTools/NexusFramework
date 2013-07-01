@@ -1,4 +1,4 @@
 <?php
-Template::addFooter(array("UserCounter", "tick"));
+Template::addHeader(array("UserCounter", "tick"));
 UserCounter::clean();
 ?>
