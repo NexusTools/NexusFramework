@@ -21,7 +21,7 @@ requireAddon("eventable-object");
 requireAddon("unfinished-work");
 requireAddon("file-upload");
 
-Template::setTitleFormat("{{PAGENAME}} (NexusFramework ControlPanel)");
+Template::setTitleFormat("{{PAGENAME}} [ControlPanel]");
 Template::setTitle("Select a Section");
 
 PageModule::setThemePath($base . "theme");
