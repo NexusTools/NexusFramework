@@ -29,9 +29,9 @@
 				if($widget[2])
 					echo " href='control://$widget[2]'";
 				echo ">";
-				echo interpolate($widget[0]);
 				if(is_callable($widget[1]))
 					$widget[1] = call_user_func($widget[1]);
+				echo interpolate($widget[0]);
 				if(is_array($widget[1])) {
 					echo "<menu>";
 					foreach($widget[1] as $text => $url) {
