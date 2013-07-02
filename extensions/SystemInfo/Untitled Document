@@ -1,0 +1,17 @@
+<?php
+class SystemInfo {
+
+	const LOAD_AVERAGE_MINUTE = 1;
+	const LOAD_AVERAGE_FIVE_MINUTES = 5;
+	const LOAD_AVERAGE_FIFTEEN_MINUTES = 15;
+
+	public static function getHTMLLoad($time =self::LOAD_AVERAGE_MINUTE) {
+		return "<span>0.00</span>";
+	}
+	
+	public static function getRamUsage($raw =false) {
+		return "0%";
+	}
+
+}
+?>

@@ -1,31 +1,21 @@
-<?php
-preg_match("/^(\d+\.\d+)\s+(\d+\.\d+)\s+(\d+\.\d+)/", file_get_contents("/proc/loadavg"), $loadavg);
-array_shift($loadavg);
-
-$handle = popen('free', 'r');
-fgets($handle); // Skip Headers
-preg_match("/^Mem\:\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)/", fgets($handle), $memory);
-fgets($handle); // Skip Other
-preg_match("/^Swap\:\s+(\d+)\s+(\d+)\s+(\d+)/", fgets($handle), $swap);
-pclose($handle);
-
+<?php $mem = SystemInfo::getMemoryInfo();
 return Array(
-		"loadavg" => $loadavg,
+		"loadavg" => SystemInfo::getLoadAverages(),
 		"procinfo" => Array(
 			"running" => system("ps o state ax | grep R | wc -l"),
 			"sleeping" => system("ps o state ax | grep S | wc -l"),
 			"zombie" => system("ps o state ax | grep Z | wc -l")
 		),
 		"memory" => Array("system" => Array(
-						"total" => $memory[1],
-						"used" => $memory[2]-$memory[6],
-						"free" => $memory[3],
-						"shared" => $memory[4],
-						"buffers" => $memory[5],
-						"cache" => $memory[6]),
+						"total" => $mem[0][1],
+						"used" => $mem[0][2]-$mem[0][6],
+						"free" => $mem[0][3],
+						"shared" => $mem[0][4],
+						"buffers" => $mem[0][5],
+						"cache" => $mem[0][6]),
 								"swap" => Array(
-						"total" => $swap[1],
-						"used" => $swap[2],
-						"free" => $swap[3]
+						"total" => $mem[1][1],
+						"used" => $mem[1][2],
+						"free" => $mem[1][3]
 								)));
 ?>

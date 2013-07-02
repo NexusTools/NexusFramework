@@ -1,0 +1,6 @@
+{
+	"name": "ControlPanel SystemInfo",
+	"dependancies": ["controlpanel", "system-information"],
+	"provides": "controlpanel-system-information",
+	"description": "Provides pages and widgets in the control panel for graphing and monitoring system information such as memory usage, load, and more."
+}
