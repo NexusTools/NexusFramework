@@ -23,7 +23,8 @@ class SystemInfo {
 				
 			case self::FORMAT_BITS:
 			case self::FORMAT_BYTES:
-				return StringFormat::formatFilesize($val, $type == self::FORMAT_BITS);
+				$bits = $type == self::FORMAT_BITS;
+				return StringFormat::formatFilesize($val*1024, $bits);
 				
 			default:
 				return $val;
