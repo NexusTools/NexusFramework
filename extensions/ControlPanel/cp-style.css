@@ -199,13 +199,15 @@ Toolbar Widget {
 	padding-right: 7px;
 	line-height: 32px;
 	color: white;
-	cursor: pointer;
 	position: relative;
 	background-color: inherit;
-	border-left: solid 1pt #21283F;
-	border-right: solid 1pt #21283F;
+	border-left: solid 1pt #1c2749;
 	-webkit-transition: all 200ms; /* Safari */
 	transition: all 200ms;
+}
+
+Toolbar Widget.cap {
+	border-right: solid 1pt #1c2749;
 }
 
 Toolbar Widget.last {
@@ -213,7 +215,11 @@ Toolbar Widget.last {
 }
 
 Toolbar Widget:hover {
-	background-color: #21283F;
+	background-color: #1c2749;
+}
+
+Toolbar Widget.alive {
+	cursor: pointer;
 }
 
 Toolbar Widget Menu {
@@ -265,8 +271,8 @@ Toolbar Widget.last:hover Menu {
 Toolbar Widget Menu a {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	-webkit-transition: all 200ms; /* Safari */
-	transition: all 200ms;
+	-webkit-transition: all 300ms; /* Safari */
+	transition: all 300ms;
 	text-decoration: none;
 	display: block;
 	color: #222;
@@ -278,8 +284,16 @@ Toolbar Widget Menu a {
 	line-height: 30px;
 }
 
+Toolbar Widget Menu a.dead {
+	cursor: default;
+}
+
 Toolbar Widget Menu a:hover {
 	background-color: #eaeaea;
+}
+
+Toolbar Widget Menu a:hover.dead {
+	background-color: #f2f2f2;
 }
 
 Toolbar Widget Menu a img {

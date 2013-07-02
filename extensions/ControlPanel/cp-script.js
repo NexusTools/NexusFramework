@@ -737,8 +737,13 @@ ControlPanel.popupUri = false;
 Event.observe(window, 'resize', ControlPanel.centerPopup);
 ControlPanel.PanelReady();
 
-
-
 $$("Toolbar Widget[href]").each(function(widget){
 	widget.observe("click", ControlPanel.HandleLink);
 });
+
+$$("Toolbar Widget[href] a.dead").each(function(widget){
+	widget.observe("click", function(e) {
+		e.stopPropagation();
+	});
+});
+

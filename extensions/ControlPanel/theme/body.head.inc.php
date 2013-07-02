@@ -28,10 +28,18 @@
 				}
 			?><widget onclick="location.href='/control'"><? echo $domain; ?> Control Panel</widget><? } ?>
 			<?
-			foreach(ControlPanel::getToolbarWidgets() as $widget) {
+			$widgets = ControlPanel::getToolbarWidgets();
+			$count = count($widgets);
+			foreach($widgets as $widget) {
+				$count--;
 				echo "<widget";
-				if($widget[2])
-					echo " href='control://$widget[2]'";
+				if($widget[2]) {
+					echo " href='control://$widget[2]' class='alive";
+					if($count == 0)
+						echo " cap";
+					echo "'";
+				} else if($count == 0)
+					echo " class='cap'";
 				echo ">";
 				if(is_callable($widget[1]))
 					$widget[1] = call_user_func($widget[1]);
@@ -42,7 +50,7 @@
 						if($url == "----")
 							echo "<hr />";
 						else if(is_numeric($text)) {
-							echo "<a>";
+							echo "<a class='dead'>";
 							echo interpolate($url);
 							echo "</a>";
 						} else {
