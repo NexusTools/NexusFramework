@@ -138,19 +138,19 @@ class StringFormat {
 				$size /= 1000;
 			}
 		} else {
-			if($size >= 1024) {
+			if($size >= 1000) {
 				$suffix = "KB";
 				$size /= 1024;
 			}
-			if($size >= 1024) {
+			if($size >= 1000) {
 				$suffix = "MB";
 				$size /= 1024;
 			}
-			if($size >= 1024) {
+			if($size >= 1000) {
 				$suffix = "GB";
 				$size /= 1024;
 			}
-			if($size >= 1024) {
+			if($size >= 1000) {
 				$suffix = "TB";
 				$size /= 1024;
 			}
