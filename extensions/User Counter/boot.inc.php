@@ -1,4 +1,4 @@
 <?php
 Template::addHeader(array("UserCounter", "tick"));
-UserCounter::clean();
+register_shutdown_function(array("UserCounter", "clean"));
 ?>

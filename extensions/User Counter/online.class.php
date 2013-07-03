@@ -2,6 +2,7 @@
 class UserCounter {
 
 	private static $database;
+	private static $updated = false;
 	
 	public static function getDatabase() {
 		return self::$database ? self::$database : (self::$database = Database::getInstance());
@@ -52,12 +53,16 @@ class UserCounter {
 	}
 	
 	public static function tick($path =null) {
+		if(PageModule::hasError() || self::$updated)
+			return self::update();
+	
 		if(defined("ERROR_OCCURED"))
 			return;
 	
 		if($path == null)
 			$path = REQUEST_URI;
 			
+		self::$updated = true;
 		self::getDatabase()->upsert("tracks", Array(
 					"page" => REQUEST_URI,
 					"user" => User::getID(),
@@ -71,12 +76,19 @@ class UserCounter {
 	}
 	
 	public static function update() {
-		if(defined("ERROR_OCCURED"))
+		if(defined("ERROR_OCCURED") || self::$updated)
 			return;
 		
-		self::getDatabase()->update("tracks", Array(
-					"expires" => Database::timeToTimestamp(strtotime("+30 seconds"))
-				), Array("client" => ClientInfo::getUniqueID()));
+		self::$updated = true;
+		if(!self::getDatabase()->update("tracks", Array(
+					"expires" => Database::timeToTimestamp(strtotime("+5 seconds"))
+				), Array("client" => ClientInfo::getUniqueID())))
+			self::getDatabase()->upsert("tracks", Array(
+						"page" => "[unknown]",
+						"user" => User::getID(),
+						"level" => User::getLevel(),
+						"expires" => Database::timeToTimestamp(strtotime("+5 minutes"))
+					), Array("client" => ClientInfo::getUniqueID()));
 	}
 
 }
