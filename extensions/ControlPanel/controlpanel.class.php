@@ -20,8 +20,8 @@ class ControlPanel {
 		return self::$toolbarWidgets;
 	}
 	
-	public static function registerToolbarWidget($text, $menu, $page =false) {
-		array_push(self::$toolbarWidgets, array($text, $menu, $page));
+	public static function registerToolbarWidget($text, $menu, $page =false, $name =false) {
+		array_push(self::$toolbarWidgets, array($text, $menu, $page, $name));
 	}
 	
 	public static function getDatabase(){

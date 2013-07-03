@@ -40,10 +40,13 @@
 					echo "'";
 				} else if($count == 0)
 					echo " class='cap'";
-				echo ">";
+				if($widget[3])
+					echo " name='$widget[3]'";
+				echo "><span>";
 				if(is_callable($widget[1]))
 					$widget[1] = call_user_func($widget[1]);
 				echo interpolate($widget[0]);
+				echo "</span>";
 				if(is_array($widget[1])) {
 					echo "<menu>";
 					foreach($widget[1] as $text => $url) {
