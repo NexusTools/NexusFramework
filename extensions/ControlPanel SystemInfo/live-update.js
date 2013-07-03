@@ -11,7 +11,7 @@
 	var load = menu[3];
 	
 	var loadColors = [];
-	loadColors.push([52, 61, 72]);
+	loadColors.push([127, 127, 127]);
 	loadColors.push([232, 185, 0]);
 	loadColors.push([244, 0, 0]);
 	loadColors.push([150, 30, 190]);
