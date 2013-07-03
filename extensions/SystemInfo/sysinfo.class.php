@@ -80,12 +80,11 @@ class SystemInfo {
 				$color = self::fromColor(1, ($load-1)/2);
 		} else
 			$color = self::fromColor(0, $load/1);
-		
-		if($lighten)
-			$color = array($color[0]*1.5, $color[1]*1.5, $color[2]*1.5);
 			
 		$code = "#";
 		foreach($color as $c) {
+			if($lighten)
+				$c *= 1.5;
 			if($c > 255)
 				$c = 255;
 			if($c < 0)

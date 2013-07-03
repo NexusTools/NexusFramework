@@ -9,7 +9,7 @@ Framework.registerModule("API", {
 		
 		initialize: function() {
 			this.minTimeout = location.protocol === 'https:' ? 250 : 100;
-			this.intervalTime = location.protocol === 'https:' ? 2000 : 750;
+			this.intervalTime = location.protocol === 'https:' ? 6000 : 3000;
 			console.log("Using a " + this.minTimeout + "ms minimum API queue timeout");
 			console.log("Using a " + this.intervalTime + "ms API request interval timer");
 		},
