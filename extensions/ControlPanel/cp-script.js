@@ -741,7 +741,7 @@ $$("Toolbar Widget[href]").each(function(widget){
 	widget.observe("click", ControlPanel.HandleLink);
 });
 
-$$("Toolbar Widget[href] a.dead").each(function(widget){
+$$("Toolbar Widget[href] a").each(function(widget){
 	widget.observe("click", function(e) {
 		e.stopPropagation();
 	});

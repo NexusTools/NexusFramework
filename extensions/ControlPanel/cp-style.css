@@ -232,6 +232,7 @@ Toolbar Widget Menu {
 	
 	width: 0px;
 	opacity: 0;
+	cursor: default;
 	position: absolute;
 	z-index: 300;
 	top: 15px;
@@ -282,10 +283,6 @@ Toolbar Widget Menu a {
 	font: inherit;
 	font-size: 90%;
 	line-height: 30px;
-}
-
-Toolbar Widget Menu a.dead {
-	cursor: default;
 }
 
 Toolbar Widget Menu a:hover {

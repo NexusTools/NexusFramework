@@ -10,6 +10,9 @@
 	function newLink(html) {
 		var link = document.createElement("a");
 		link.innerHTML = html;
+		link.on("click", function(e) {
+			e.stopPropagation();
+		});
 		return link;
 	}
 
