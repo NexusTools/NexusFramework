@@ -67,7 +67,7 @@ class UserCounter {
 					"page" => REQUEST_URI,
 					"user" => User::getID(),
 					"level" => User::getLevel(),
-					"expires" => Database::timeToTimestamp(strtotime("+5 minutes"))
+					"expires" => Database::timeToTimestamp(strtotime("+1 minutes"))
 				), Array("client" => ClientInfo::getUniqueID()));
 	}
 	
@@ -80,15 +80,9 @@ class UserCounter {
 			return;
 		
 		self::$updated = true;
-		if(!self::getDatabase()->update("tracks", Array(
-					"expires" => Database::timeToTimestamp(strtotime("+5 seconds"))
-				), Array("client" => ClientInfo::getUniqueID())))
-			self::getDatabase()->upsert("tracks", Array(
-						"page" => "[unknown]",
-						"user" => User::getID(),
-						"level" => User::getLevel(),
-						"expires" => Database::timeToTimestamp(strtotime("+5 minutes"))
-					), Array("client" => ClientInfo::getUniqueID()));
+		self::getDatabase()->update("tracks", Array(
+					"expires" => Database::timeToTimestamp(strtotime("+1 seconds"))
+				), Array("client" => ClientInfo::getUniqueID()));
 	}
 
 }
