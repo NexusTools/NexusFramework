@@ -82,7 +82,7 @@ class UserCounter {
 		
 		self::$updated = true;
 		if(self::getDatabase()->update("tracks", Array(
-					"expires" => Database::timeToTimestamp(strtotime("+1 seconds"))
+					"expires" => Database::timeToTimestamp(strtotime("+1 minutes"))
 				), Array("client" => ClientInfo::getUniqueID())) === 0)
 			self::getDatabase()->upsert("tracks", Array(
 					"page" => "[unknown]",
