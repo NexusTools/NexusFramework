@@ -246,6 +246,8 @@ Toolbar Widget Menu {
 	white-space: nowrap;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
+	
+	pointer-events: none;
 }
 
 Toolbar Widget Menu hr {
@@ -261,6 +263,7 @@ Toolbar Widget.last Menu {
 }
 
 Toolbar Widget:hover Menu {
+	pointer-events: auto;
 	width: 180px;
 	opacity: 1;
 }
