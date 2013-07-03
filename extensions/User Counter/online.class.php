@@ -53,11 +53,11 @@ class UserCounter {
 	}
 	
 	public static function tick($path =null) {
-		if(PageModule::hasError() || self::$updated)
-			return self::update();
-	
-		if(defined("ERROR_OCCURED"))
+		if(defined("ERROR_OCCURED") || self::$updated)
 			return;
+			
+		if(PageModule::hasError())
+			return self::update();
 	
 		if($path == null)
 			$path = REQUEST_URI;
@@ -72,6 +72,7 @@ class UserCounter {
 	}
 	
 	public static function clean() {
+		self::update();
 		self::getDatabase()->delete("tracks", "expires <= CURRENT_TIMESTAMP");
 	}
 	
@@ -80,8 +81,14 @@ class UserCounter {
 			return;
 		
 		self::$updated = true;
-		self::getDatabase()->update("tracks", Array(
+		if(self::getDatabase()->update("tracks", Array(
 					"expires" => Database::timeToTimestamp(strtotime("+1 seconds"))
+				), Array("client" => ClientInfo::getUniqueID())) === 0)
+			self::getDatabase()->upsert("tracks", Array(
+					"page" => "[unknown]",
+					"user" => User::getID(),
+					"level" => User::getLevel(),
+					"expires" => Database::timeToTimestamp(strtotime("+1 minutes"))
 				), Array("client" => ClientInfo::getUniqueID()));
 	}
 
