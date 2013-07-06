@@ -4,7 +4,12 @@ $sort = ControlPanel::getPreference('s', -1);
 $desc = ControlPanel::getPreference('r', 0);
 $page = ControlPanel::getPreference('p', 0);
 $filter = preg_replace('/[^\d\w\s\.@\:\'"><=]/i', '', ControlPanel::getPreference('f', ""));
-$paramStart = "p=$page&f=$filter";
+$urlFilter = preg_replace('/[^\d\w\s\.@\:\'"><=]/i', '', $_GET['z']);
+$paramStart = "p=$page";
+if($filter)
+	$paramStart .= "&f=" . urlencode($filter);
+if($urlFilter)
+	$paramStart .= "&z=" . urlencode($urlFilter);
 
 if(isset($_GET['s'])) {
 	$sortJSON = ", s: " . $_GET['s'];
@@ -159,11 +164,16 @@ $where = Triggers::broadcast("ControlPanel", "Database Query Filter",
                               ControlPanel::getActivePage(),
                               $database->getName(),
                               $table));
-if(strlen($filter) > 0) {
+                              
+function importFilter(&$where, $filter) {
+	if(!$filter)
+		return;
+	
+	echo "Parsing $filter\n";
 	preg_match_all("/(\w+)([:><]=?)(\"[^\"]|'[^']|[\w\d]+)/", $filter, $advFilter);
 	$filter = preg_replace("/\s*(\w+)([:><]=?)(\"[^\"]\"|'[^']'|[\w\d]+)\s*/", "", $filter);
 	if($filter)
-    	$where["LIKE $sortField"] = "%$filter%";
+    	$where["LIKE"] = "%$filter%";
     
     $i = 0;
     foreach($advFilter[1] as $key) {
@@ -173,7 +183,14 @@ if(strlen($filter) > 0) {
     	if($compareType != ":")
     		$key = "$compareType $key";
     	$where[$key] = $val;
+    	$i++;
     }
+}
+importFilter($where, $filter);
+importFilter($where, $urlFilter);
+if(array_key_exists("LIKE", $where)) {
+	$where["LIKE $sortField"] = $where["LIKE"];
+	unset($where["LIKE"]);
 }
 
 $actionPage = false;
