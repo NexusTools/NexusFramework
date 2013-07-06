@@ -3,8 +3,8 @@
 $sort = ControlPanel::getPreference('s', -1);
 $desc = ControlPanel::getPreference('r', 0);
 $page = ControlPanel::getPreference('p', 0);
-$filter = preg_replace('/[^\d\w\s\.@\:\'"><=]/i', '', ControlPanel::getPreference('f', ""));
-$urlFilter = preg_replace('/[^\d\w\s\.@\:\'"><=]/i', '', $_GET['z']);
+$filter = preg_replace('/[^\d\w\s\.@\:\'"><=\-]/i', '', ControlPanel::getPreference('f', ""));
+$urlFilter = preg_replace('/[^\d\w\s\.@\:\'"><=\-]/i', '', $_GET['z']);
 $paramStart = "p=$page";
 if($filter)
 	$paramStart .= "&f=" . urlencode($filter);
