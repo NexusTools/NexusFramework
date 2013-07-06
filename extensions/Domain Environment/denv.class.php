@@ -34,6 +34,4 @@ class DomainEnvironment {
 	}
 
 }
-
-User::setLoggedUser(RootUser::instance());
 ?>
