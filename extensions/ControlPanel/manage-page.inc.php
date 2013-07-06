@@ -169,7 +169,6 @@ function importFilter(&$where, $filter) {
 	if(!$filter)
 		return;
 	
-	echo "Parsing $filter\n";
 	preg_match_all("/(\w+)([:><]=?)(\"[^\"]|'[^']|[\w\d]+)/", $filter, $advFilter);
 	$filter = preg_replace("/\s*(\w+)([:><]=?)(\"[^\"]\"|'[^']'|[\w\d]+)\s*/", "", $filter);
 	if($filter)
