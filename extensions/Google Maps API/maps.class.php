@@ -1,10 +1,19 @@
 <?php
 class MapsAPI {
 
-    private static $cache = Array();
+	private static $cachePath = false;
 
     public static function getData($url) {
-        if(!isset(self::$cache[$url])) {
+    	if(!self::$cachePath) {
+    		self::$cachePath = SHARED_TMP_PATH . "maps" . DIRSEP;
+    		if(!is_dir(self::$cachePath) && !mkdir(self::$cachePath))
+    			throw new Exception("Failed to create cache directory");
+    	}
+    	
+    	$tempFile = self::$cachePath . Framework::uniqueHash($url);
+    	$data = is_file($tempFile) ? json_decode(file_get_contents($tempFile)) : false;
+    	
+        if(!is_array($data)) {
             $ch = curl_init();
             $timeout = 15;
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -17,10 +26,10 @@ class MapsAPI {
             $data = json_decode(trim($data), true);
             if($data['status'] != "OK")
                 throw new Exception("Query Failed: " . $data['status']);
-            self::$cache[$url] = $data;
+            file_put_contents($tempFile, json_encode($data));
         }
         
-        return self::$cache[$url];
+        return $data;
     }
 
     // meters
