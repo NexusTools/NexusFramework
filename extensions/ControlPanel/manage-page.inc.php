@@ -3,7 +3,7 @@
 $sort = ControlPanel::getPreference('s', -1);
 $desc = ControlPanel::getPreference('r', 0);
 $page = ControlPanel::getPreference('p', 0);
-$filter = preg_replace('/[^a-z0-9\.@]/i', '', ControlPanel::getPreference('f', ""));
+$filter = preg_replace('/[^\d\w\s\.@\:\'"><=]/i', '', ControlPanel::getPreference('f', ""));
 $paramStart = "p=$page&f=$filter";
 
 if(isset($_GET['s'])) {
@@ -159,8 +159,22 @@ $where = Triggers::broadcast("ControlPanel", "Database Query Filter",
                               ControlPanel::getActivePage(),
                               $database->getName(),
                               $table));
-if(strlen($filter) > 0)
-    $where["LIKE $sortField"] = "%$filter%";
+if(strlen($filter) > 0) {
+	preg_match_all("/(\w+)([:><]=?)(\"[^\"]|'[^']|[\w\d]+)/", $filter, $advFilter);
+	$filter = preg_replace("/\s*(\w+)([:><]=?)(\"[^\"]\"|'[^']'|[\w\d]+)\s*/", "", $filter);
+	if($filter)
+    	$where["LIKE $sortField"] = "%$filter%";
+    
+    $i = 0;
+    foreach($advFilter[1] as $key) {
+    	$val = $advFilter[3][$i];
+    	$compareType = $advFilter[2][$i];
+    	$val = preg_replace("/^['\"]/", "", $val);
+    	if($compareType != ":")
+    		$key = "$compareType $key";
+    	$where[$key] = $val;
+    }
+}
 
 $actionPage = false;
 if(is_array($actions)) {
