@@ -11,7 +11,7 @@ class MapsAPI {
     	}
     	
     	$tempFile = self::$cachePath . Framework::uniqueHash($url);
-    	$data = is_file($tempFile) ? json_decode(file_get_contents($tempFile)) : false;
+    	$data = is_file($tempFile) ? json_decode(file_get_contents($tempFile), true) : false;
     	
         if(!is_array($data)) {
             $ch = curl_init();
