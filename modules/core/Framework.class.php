@@ -169,7 +169,8 @@ closedir($handle);
 			
 			exit;
 		}
-		if(!is_file($file) || !($size = filesize($file)))
+		$reader = fopen($file, "r");
+		if(!is_file($file) || !($size = filesize($file)) || !$reader)
 		    self::runPage("/errordoc/404");
 	
 		$etag = self::fileETag($file);
@@ -233,7 +234,6 @@ closedir($handle);
 			    while(ob_get_level() > NATIVE_OB_LEVEL)
 			    	ob_end_clean();
 		        
-		        $reader = fopen($file, "r");
 		        if($range[0])
 		            fseek($reader, $range[0]);
 		        
@@ -241,7 +241,8 @@ closedir($handle);
 		            $buffer = fread($reader, $length > 5120 ? 5120 : $length);
 		            $length -= strlen($buffer);
 		            print($buffer);
-		            flush();
+		            @ob_flush();
+		            @flush();
 		        }
 		        
 		        exit;
@@ -253,10 +254,15 @@ closedir($handle);
 		if(!self::isHeadRequest()) {
 	        while(ob_get_level() > NATIVE_OB_LEVEL)
 	        	ob_end_clean();
-		    readfile($file);
+	        	
+	        while($data = fread($reader, 5120)) {
+	            print($reader);
+	            @ob_flush();
+	            @flush();
+		    }
 		}
 		
-		die();
+		exit;
 	}
 	
 	public static function registerCustomTag($name){
