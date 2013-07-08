@@ -231,7 +231,7 @@ closedir($handle);
 		        header("Content-Range: bytes $range[0]-$range[1]/$size");
 		        $length++;
 		        header("Content-Length: $length");
-			    while(ob_get_level() > BASE_OB_LEVEL && ob_end_clean());
+			    while(ob_end_clean());
 		        
 		        if($range[0])
 		            fseek($reader, $range[0]);
@@ -251,7 +251,7 @@ closedir($handle);
 		header("Content-Length: $size");
 		    
 		if(!self::isHeadRequest()) {
-	        while(ob_get_level() > BASE_OB_LEVEL && ob_end_clean());
+	        while(ob_end_clean());
 	        	
 	        while($data = fread($reader, 5120)) {
 	            print($data);
