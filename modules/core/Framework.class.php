@@ -256,7 +256,7 @@ closedir($handle);
 	        	ob_end_clean();
 	        	
 	        while($data = fread($reader, 5120)) {
-	            print($reader);
+	            print($data);
 	            @ob_flush();
 	            @flush();
 		    }
