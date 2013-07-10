@@ -531,7 +531,7 @@ class Database extends Lockable {
 		$tblDef = $this->getDefinition($table);
 		foreach($tblDef as $field => $def)
 		    if(is_array($def) && array_key_exists('default', $def)
-		            && startsWith($def['default'], "{{")
+		            && preg_match("/^{{.+}}$/", $def['default'])
 		            && !array_key_exists($field, $values))
 		        $values[$field] = interpolate($def['default'], true);
 		
@@ -770,7 +770,7 @@ class Database extends Lockable {
 					$default = $keyDef['default'];
 					if(is_bool($default))
 						$default = $default ? "TRUE" : "FALSE";
-					else if(startsWith($default, "{{"))
+					else if(preg_match("/^{{.+}}$/", $default))
 					    $default = false;
 					else if(!is_numeric($default) && !in_array($default, self::$knownKeywords))
 					        $default = "\"" . addslashes($default) . "\"";
@@ -778,6 +778,9 @@ class Database extends Lockable {
 					if($default)
 					    $createQuery .= " DEFAULT $default";
 				}
+				
+				if(!isset($keyDef['allow-null']))
+					$createQuery .= " NOT NULL";
 				
 				if(isset($keyDef['case-insensative']))
 				    $createQuery .= " COLLATE NOCASE";
