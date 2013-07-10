@@ -779,10 +779,14 @@ class Database extends Lockable {
                     
 					if($default)
 					    $createQuery .= " DEFAULT $default";
+				} else {
+					$default = "\"\"";
+					if($keyDef['type'] == "INTEGER" || $keyDef['type'] == "BOOLEAN"
+						|| $keyDef['type'] == "TINYINT" || $keyDef['type'] == "SMALLINT"
+						|| $keyDef['type'] == "LARGEINT")
+						$default = 0;
+					$createQuery .= " DEFAULT $default";
 				}
-				
-				if(!isset($keyDef['allow-null']))
-					$createQuery .= " NOT NULL";
 				
 				if(isset($keyDef['case-insensative']))
 				    $createQuery .= " COLLATE NOCASE";
