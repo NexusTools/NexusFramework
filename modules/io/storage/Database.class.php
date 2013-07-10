@@ -75,7 +75,7 @@ class Database extends Lockable {
 		if(!$this->activetransaction)
 			return false;
 		$this->activetransaction = false;
-		return $this->database->commit();
+		$ret = $this->database->commit();
 	}
 	
 	public function rollBack() {
@@ -758,45 +758,47 @@ class Database extends Lockable {
 			else
 				$createQuery .= ",";
 				
-			if(is_array($keyDef)) {
-				if(isset($keyDef['primary']))
-					array_push($unique, $key);
+			if(!is_array($keyDef))
+				$keyDef = Array("type" => $keyDef);
+			
+			if($primary = array_key_exists('primary', $keyDef))
+				array_push($unique, $key);
+            
+            if(!array_key_exists('type', $keyDef))
+            	throw new Exception("Type property must exist for all columns");
+            
+            if(startsWith($keyDef['type'], ":")) {
+                $keyDef['type'] = self::resolvePrototype(substr($keyDef['type'], 1));
+                $keyDef['type'] = call_user_func(Array($keyDef['type'], "preferredType"));
+            }
                 
-                if(startsWith($keyDef['type'], ":")) {
-                    $keyDef['type'] = self::resolvePrototype(substr($keyDef['type'], 1));
-                    $keyDef['type'] = call_user_func(Array($keyDef['type'], "preferredType"));
-                }
-                    
-                $createQuery .= "\"$key\" $keyDef[type]";
-				if(isset($keyDef['default'])) {
-					$default = $keyDef['default'];
-					if(is_bool($default))
-						$default = $default ? "TRUE" : "FALSE";
-					else if(preg_match("/^{{.+}}$/", $default))
-					    $default = false;
-					else if(!is_numeric($default) && !in_array($default, self::$knownKeywords))
-					        $default = "\"" . addslashes($default) . "\"";
-                    
-					if($default)
-					    $createQuery .= " DEFAULT $default";
-				} else {
-					$default = "\"\"";
-					if($keyDef['type'] == "INTEGER" || $keyDef['type'] == "BOOLEAN"
-						|| $keyDef['type'] == "TINYINT" || $keyDef['type'] == "SMALLINT"
-						|| $keyDef['type'] == "LARGEINT")
-						$default = 0;
-					$createQuery .= " DEFAULT $default";
-				}
-				
-				if(isset($keyDef['case-insensative']))
-				    $createQuery .= " COLLATE NOCASE";
-			} else {
-			    if(startsWith($keyDef, ":")) {
-			        self::resolvePrototype($keyDef = substr($keyDef, 1));
-                    $keyDef = call_user_func(Array($keyDef, "preferredType"));
-                }
-				$createQuery .= "\"$key\" $keyDef";
+            $numericType = $keyDef['type'] == "INTEGER" || $keyDef['type'] == "BOOLEAN"
+					|| $keyDef['type'] == "TINYINT" || $keyDef['type'] == "SMALLINT"
+					|| $keyDef['type'] == "LARGEINT";
+            $createQuery .= "\"$key\" $keyDef[type]";
+			if(array_key_exists('default', $keyDef)) {
+				$default = $keyDef['default'];
+				if(is_bool($default))
+					$default = $default ? "TRUE" : "FALSE";
+				else if(preg_match("/^{{.+}}$/", $default))
+				    $default = false;
+				else if(!is_numeric($default) && !in_array($default, self::$knownKeywords))
+				        $default = "\"" . addslashes($default) . "\"";
+                
+				if($default)
+				    $createQuery .= " DEFAULT $default";
+			} else if(!$primary) {
+				$default = $numericType ? 0 : "\"\"";
+				$createQuery .= " DEFAULT $default";
 			}
+			
+			if(!array_key_exists("allow-null", $keyDef))
+				$createQuery .= " NOT NULL";
+			else if($primary)
+				throw new Exception("Primary columns cannot have null values");
+			
+			if(array_key_exists("case-insensative", $keyDef) || (!$numericType && $primary))
+			    $createQuery .= " COLLATE NOCASE";
 		}
 		
 		if(count($unique)){
