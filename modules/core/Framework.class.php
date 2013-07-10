@@ -253,7 +253,7 @@ closedir($handle);
 		
 		if(!self::isHeadRequest()) {
 	        while(ob_end_clean());
-	        ob_clean();
+	        	ob_clean();
 	        
 	        while($data = fread($reader, 5120)) {
 	            print($data);
