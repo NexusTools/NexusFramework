@@ -90,7 +90,7 @@ class Framework {
 	
 	public static function serveRawData($data, $mimetype=false) {
 		header("X-Content-Type-Options: nosniff");
-		OutputFilter::resetToNative(false);
+		OutputFilter::startCompression();
 		echo $data;
 		exit;
 	}

@@ -9,28 +9,19 @@ if(!defined("PHP_MAJOR_VERSION"))
 	throw new Exception("PHP version incompatible.");
 define("LOADER_START_TIME", microtime(true));
 
-if(ini_get('zlib.output_compression'))
-    ini_set('zlib.output_compression', 'Off');
+ob_start(null, 5016, false); // Prevent destruction of built-in ob stack
 
-if(function_exists("ob_gzhandler"))
-	if(!in_array("ob_gzhandler", ob_list_handlers())) {
-		$headers = getallheaders();
-		if(array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER))
-			define("COMPRESSED_OUTPUT", preg_match("/,?gzip,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
-													ob_start("ob_gzhandler", 5120) ? "gzip" : false);
-		else
+if(ini_get('zlib.output_compression'))
+	define("COMPRESSED_OUTPUT", true);
+else if(function_exists("ob_gzhandler"))
+	if(!in_array("ob_gzhandler", ob_list_handlers()))
 			define("COMPRESSED_OUTPUT", false);
-	} else
+	else
 		define("COMPRESSED_OUTPUT", "gzip");
 else if(function_exists("ob_deflatehandler"))
-	if(!in_array("ob_deflatehandler", ob_list_handlers())) {
-		$headers = getallheaders();
-		if(array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER))
-			define("COMPRESSED_OUTPUT", preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
-													ob_start("ob_deflatehandler", 5120) ? "deflate" : false);
-		else
-			define("COMPRESSED_OUTPUT", false);
-	} else
+	if(!in_array("ob_deflatehandler", ob_list_handlers()))
+		define("COMPRESSED_OUTPUT", false);
+	else
 		define("COMPRESSED_OUTPUT", "deflate");
 else 
 	define("COMPRESSED_OUTPUT", false);

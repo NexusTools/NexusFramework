@@ -16,13 +16,30 @@ abstract class OutputFilter {
 		return $ret;
 	}
 	
+	public static function startCompression() {
+		while(ob_get_level() > NATIVE_OB_LEVEL && ob_end_clean());
+		
+		if(COMPRESSED_OUTPUT)
+			return;
+	
+		if(function_exists("ob_gzhandler"))
+			return array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
+					preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
+															ob_start("ob_gzhandler", 5120);
+		else if(function_exists("ob_deflatehandler"))
+			return array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
+					preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
+															ob_start("ob_deflatehandler", 5120);
+			
+	}
+	
 	/*
 		Clears all existing buffers except the required underlying ones.
 		Used to reset the entire state of the output system.
 	*/
 	public static function resetToNative($attachVoid =true) {
-		while(ob_get_level() > NATIVE_OB_LEVEL)
-			ob_end_clean();
+		while(ob_get_level() > NATIVE_OB_LEVEL && ob_end_clean());
+		
 		if($attachVoid)
 			ob_start("ob_void", 512);
 		else
