@@ -65,6 +65,7 @@ class Database extends Lockable {
 	public function beginTransaction() {
 		if(defined("ERROR_OCCURED"))
 			throw new Exception("Cannot write to database in error state");
+		set_time_limit(0); // Ensure nothing can break;
 		if(!$this->activetransaction)
 			$this->activetransaction = $this->database->beginTransaction();
 		return $this->activetransaction;
@@ -718,6 +719,7 @@ class Database extends Lockable {
 	}
 	
 	protected function _createOrUpgradeTable($name, $def){
+		self::beginTransaction();
 		$tableFields = isset($def['fields']) ? $def['fields'] : $def;
 		$dataToAdd = false;
 		try {
