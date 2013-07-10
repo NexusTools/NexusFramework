@@ -218,7 +218,6 @@ closedir($handle);
 			header("HTTP/1.1 304 Not Modified");
 			exit;
 		}
-		
 		if (isset($_SERVER['HTTP_RANGE']) && preg_match('/bytes=(\d*)-(\d*)/', $_SERVER['HTTP_RANGE'], $range)) {
 		    $range = Array(intval($range[1]), intval($range[2]));
 		    if($range[1] < 1)
@@ -231,7 +230,8 @@ closedir($handle);
 		        header("Content-Range: bytes $range[0]-$range[1]/$size");
 		        $length++;
 		        header("Content-Length: $length");
-			    while(ob_end_clean());
+		        while(ob_end_clean());
+	        	ob_clean();
 		        
 		        if($range[0])
 		            fseek($reader, $range[0]);
@@ -248,11 +248,13 @@ closedir($handle);
 		    }
 		}
 		
+		
 		header("Content-Length: $size");
-		    
+		
 		if(!self::isHeadRequest()) {
 	        while(ob_end_clean());
-	        	
+	        ob_clean();
+	        
 	        while($data = fread($reader, 5120)) {
 	            print($data);
 	            @ob_flush();
