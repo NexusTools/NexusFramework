@@ -179,7 +179,7 @@ function is_assoc($array) {
 if(!function_exists("getallheaders")) {
 	function getallheaders() {
 		foreach($_SERVER as $h=>$v)
-			if(ereg('HTTP_(.+)',$h,$hp)) {
+			if(preg_match('/HTTP_(.+)/i',$h,$hp)) {
 				$key = "";
 				$upper = true;
 				foreach(str_split($hp[1]) as $char){
