@@ -190,7 +190,8 @@ closedir($handle);
 		header_remove("Cache-Control");
 		header_remove("Pragma");
 		
-		header('Connection: close');
+		if($size > 1048510)
+			header('Connection: close');
 		header("Content-Type: $mimetype");
 		header("Last-Modified: $modtime");
 		header('Accept-Ranges: bytes');
