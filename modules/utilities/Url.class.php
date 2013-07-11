@@ -72,10 +72,9 @@ class Url {
 		return $this->path;
 	}
 	
-	public function query() {
-		if(!is_array($this->query))
-			$this->query = self::parseQuery($this->query);
-		return $this->query;
+	public function query($asArray =true) {
+		$this->query = UrlQuery::instance($this->query);
+		return $asArray ? $this->query->getData() : $this->query;
 	}
 	
 	public function fragment() {
@@ -83,14 +82,12 @@ class Url {
 	}
 	
 	public function queryValue($key) {
-		if(!is_array($this->query))
-			$this->query = self::parseQuery($query->query);
+		$this->query = UrlQuery::instance($this->query);
 		return $this->query[$key];
 	}
 	
 	public function setQueryValue($key, $val) {
-		if(!is_array($this->query))
-			$this->query = self::parseQuery($query->query);
+		$this->query = UrlQuery::instance($this->query);
 		if($val == null)
 			unset($this->query[$key]);
 		else
@@ -98,8 +95,6 @@ class Url {
 	}
 	
 	public function setQuery($query) {
-		if(!is_array($query))
-			$query = self::parseQuery($query);
 		$this->query = $query;
 	}
 	
@@ -143,8 +138,8 @@ class Url {
 	}
 	
 	public static function queryToString($query) {
-		if(!is_array($query))
-			return "$query";
+		if(is_string($query))
+			return $query;
 		
 		$string = "";
 		foreach($query as $key => $val) {
