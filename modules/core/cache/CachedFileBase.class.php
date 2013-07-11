@@ -64,7 +64,6 @@ abstract class CachedFileBase extends CachedObject {
 		header("ETag: " . $this->etag);
 		
 		header_remove("Cache-Control");
-		header_remove("Expires");
 		header_remove("Pragma");
 		
 		$headers = getallheaders();
