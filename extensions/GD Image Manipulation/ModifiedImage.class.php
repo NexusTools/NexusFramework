@@ -186,7 +186,7 @@ class ModifiedImage extends CachedFileBase {
             		break;
             		
             	case "image/png":
-            		imagepng($outputImage, $this->getStoragePath(), 9);
+            		imagepng($outputImage, $this->getStoragePath(), 9, PNG_ALL_FILTERS);
             		break;
             		
             	default:
