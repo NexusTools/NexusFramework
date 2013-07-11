@@ -271,15 +271,14 @@ closedir($handle);
 		    }
 		}
 		
-		
-		header("Content-Length: $size");
-		
 		if(!self::isHeadRequest()) {
-			if($size < 1048510)
+			if(startsWith($mimetype, "text/") && $size < 1048510)
 				OutputFilter::startCompression();
-			else
+			else {
+				header("Content-Length: $size");
 				while(ob_end_clean());
 					ob_clean();
+			}
 	        
 	        while($data = fread($reader, 1024))
 	            echo $data;
@@ -426,9 +425,8 @@ closedir($handle);
 				$robotContent = "# Automatically Generated
 User-agent: *
 Disallow: " . BASE_URI;
-				header("Content-Length: $size");
 				header("Content-Type: text/plain");
-				OutputFilter::resetToNative();
+				OutputFilter::startCompression();
 					
 				echo $robotContent;
 				exit;
@@ -437,7 +435,7 @@ Disallow: " . BASE_URI;
 		
 		if(file_exists("upgrade-message")) {
 			header("Content-Type: text/plain");
-			OutputFilter::resetToNative(false);
+			OutputFilter::startCompression();
 			echo file_get_contents("upgrade-message");
 			die;
 		}
