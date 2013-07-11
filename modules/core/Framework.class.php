@@ -124,7 +124,7 @@ class Framework {
 <meta name="description" content="Directory listing for <? echo $path; ?>" />
 <link href="<? echo BASE_URI; ?>res:dirstyle" rel="stylesheet" type="text/css" /></head>
 <body><h1>Directory Listing: <? echo $path; ?></h1>
-<table cellspacing="0"><tr><th colspan="2">Filename</th><th>Type</th><th>Size</th></tr>
+<table cellspacing="0" cellpadding="0"><tr><th colspan="2">Filename</th><th>Type</th><th>Size</th></tr>
 <?
 
 chdir($file);
@@ -140,7 +140,7 @@ while (false !== ($entry = readdir($handle))) {
 	}
 	
 	?><tr><td><?
-	?><img src="<? echo BASE_URI . "res:folder"; ?>" width="22" height="22" /></td><td><a href="<?
+	?><img src="<? echo BASE_URI . "res:icon/folder"; ?>" width="22" height="22" /></td><td><a href="<?
 	echo cleanpath(BASE_URI . REQUEST_URI . DIRSEP . $entry);
 	?>"><? echo $entry; ?></a></td><td>directory</td><td><?
 	echo StringFormat::formatFilesize(filesize($entry));
@@ -149,18 +149,33 @@ while (false !== ($entry = readdir($handle))) {
 
 foreach($files as $entry) {
 	?><tr><td><?
+	$size = filesize($entry);
 	$mime = self::mimeForFile($entry);
-	if(startsWith($mime, "image/") && filesize($entry) < 5242880) {
-		$icon = false;
+	if(startsWith($mime, "image/")) {
+		$icon = BASE_URI . "res:icon/image";
 		try {
-			if(class_exists("ModifiedImage"))
+			if($size < 5242880 && class_exists("ModifiedImage"))
 				$icon = ModifiedImage::scaledTransparentURI($entry, 22, 22, ModifiedImage::KeepAspectRatio);
-			
 		}catch(Exception $e) {}
-		if(!$icon)
-			$icon = Framework::getReferenceURI($entry);
-	} else
-		$icon = BASE_URI . "res:file";
+	} else {
+		if($size > 0) {
+			if(startsWith($mime, "video/"))
+				$icon = BASE_URI . "res:icon/video";
+			else if(startsWith($mime, "audio/"))
+				$icon = BASE_URI . "res:icon/audio";
+			else if(preg_match("#^(text|application)/.*(xml|html?).*$#i", $mime))
+				$icon = BASE_URI . "res:icon/xml";
+			else if(preg_match("#^(application)/.*(pdf).*$#i", $mime))
+				$icon = BASE_URI . "res:icon/pdf";
+			else if(preg_match("/compressed|zip|archive/", $mime))
+				$icon = BASE_URI . "res:icon/archive";
+			else if(startsWith($mime, "text/"))
+				$icon = BASE_URI . "res:icon/text";
+			else 
+				$icon = BASE_URI . "res:icon/unknown";
+		} else
+			$icon = BASE_URI . "res:icon/empty";
+	}
 	
 	?><img src="<? echo $icon; ?>" width="22" height="22" /></td><td><a href="<?
 	echo cleanpath(BASE_URI . REQUEST_URI . DIRSEP . $entry);
@@ -348,7 +363,9 @@ closedir($handle);
 				echo "</pre>";
 			}
 			die("</p></body></html>");
-		}
+		} else if(startsWith($res, "icon/"))
+			self::serveFileInternal(FRAMEWORK_RES_PATH . "icons" . DIRSEP . (array_key_exists("s", $_GET)
+										? $_GET['s'] : 22) . DIRSEP . substr($res, 5) . ".png", "image/png");
 		
 		switch($res){
 		    case "internal-error":
@@ -378,12 +395,6 @@ closedir($handle);
 				$style = new CompressedStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "dirlisting.css");
 				$style->dumpAsResponse();
 				exit;
-				
-			case "folder":
-				self::serveFileInternal(FRAMEWORK_RES_PATH . "images" . DIRSEP . "folder.png", "image/png");
-				
-			case "file":
-				self::serveFileInternal(FRAMEWORK_RES_PATH . "images" . DIRSEP . "file.png", "image/png");
 				
 			case "lgpl-logo":
 				self::serveFileInternal(FRAMEWORK_RES_PATH . "images" . DIRSEP . "lgplv3.png", "image/png");
