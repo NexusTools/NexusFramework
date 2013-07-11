@@ -279,11 +279,8 @@ closedir($handle);
 		header("Content-Length: $size");
 		
 		if(!self::isHeadRequest()) {
-	         if(startsWith($mimetype, "text/") && $size < 1048510)
-	        	OutputFilter::startCompression();
-	        else
-			    while(ob_end_clean());
-		    		ob_clean();
+		    while(ob_end_clean());
+	    		ob_clean();
 	        
 	        while($data = fread($reader, 5120)) {
 	            print($data);
