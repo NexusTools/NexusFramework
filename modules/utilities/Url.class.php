@@ -21,7 +21,7 @@ class Url {
 		$this->user = array_key_exists("user", $parts) ? urlencode($parts['user']) : "";
 		$this->pass = array_key_exists("pass", $parts) ? urlencode($parts['pass']) : "";
 		$this->path = array_key_exists("path", $parts) ? $parts['path'] : "";
-		$this->query = array_key_exists("query", $parts) ? self::parseQuery($parts['query']) : "";
+		$this->query = array_key_exists("query", $parts) ? $parts['query'] : "";
 		$this->fragment = array_key_exists("fragment", $parts) ? urldecode($parts['fragment']) : "";
 	}
 	
@@ -73,6 +73,8 @@ class Url {
 	}
 	
 	public function query() {
+		if(!is_array($this->query))
+			$this->query = self::parseQuery($query->query);
 		return $this->query;
 	}
 	
@@ -81,10 +83,14 @@ class Url {
 	}
 	
 	public function queryValue($key) {
+		if(!is_array($this->query))
+			$this->query = self::parseQuery($query->query);
 		return $this->query[$key];
 	}
 	
 	public function setQueryValue($key, $val) {
+		if(!is_array($this->query))
+			$this->query = self::parseQuery($query->query);
 		if($val == null)
 			unset($this->query[$key]);
 		else
@@ -137,6 +143,9 @@ class Url {
 	}
 	
 	public static function queryToString($query) {
+		if(!is_array($query))
+			return "$query";
+		
 		$string = "";
 		foreach($query as $key => $val) {
 			if($string)
