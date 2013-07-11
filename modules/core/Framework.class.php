@@ -194,6 +194,7 @@ closedir($handle);
 			exit;
 		}
 		$reader = fopen($file, "r");
+		flock($reader, LOCK_SH);
 		if(!is_file($file) || !($size = filesize($file)) || !$reader)
 		    self::runPage("/errordoc/404");
 	
@@ -263,13 +264,8 @@ closedir($handle);
 		        if($range[0])
 		            fseek($reader, $range[0]);
 		        
-		        while($length > 0){
-		            $buffer = fread($reader, $length > 5120 ? 5120 : $length);
-		            $length -= strlen($buffer);
-		            print($buffer);
-		            @ob_flush();
-		            @flush();
-		        }
+		        while($data = fread($reader, 1024))
+	            	echo $data;
 		        
 		        exit;
 		    }
@@ -279,14 +275,14 @@ closedir($handle);
 		header("Content-Length: $size");
 		
 		if(!self::isHeadRequest()) {
-		    while(ob_end_clean());
-	    		ob_clean();
+			if($size < 1048510)
+				OutputFilter::startCompression();
+			else
+				while(ob_end_clean());
+					ob_clean();
 	        
-	        while($data = fread($reader, 5120)) {
-	            print($data);
-	            @ob_flush();
-	            @flush();
-		    }
+	        while($data = fread($reader, 1024))
+	            echo $data;
 		}
 		
 		exit;
