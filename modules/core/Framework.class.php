@@ -351,6 +351,8 @@ closedir($handle);
 			else
 				self::runPage("/errordoc/404");
 		} else if(startsWith($res, "badref/") && is_file($refFile = TMP_PATH . "badref" . DIRSEP . substr($res, 7)) && $data = unserialize(file_get_contents($refFile))) {
+			$expiresAt = time() + rand(strtotime("+1 month", 0), strtotime("+2 month", 0));
+			header("Expires: " . self::formatGMTDate($expiresAt));
 			OutputFilter::startCompression();
 			    
 			echo "<html><head><title>Invalid Resource</title></head><body><h1>Invalid Resource</h1><p>The resource `$data[path]` is missing.";
@@ -366,6 +368,8 @@ closedir($handle);
 		
 		switch($res){
 		    case "internal-error":
+				$expiresAt = time() + rand(strtotime("+1 month", 0), strtotime("+2 month", 0));
+				header("Expires: " . self::formatGMTDate($expiresAt));
 				OutputFilter::startCompression();
 		        die("<html><head><title>Internal Error Occured</title></head><body><h1>Internal Error Occured</h1><p>An internal error occured while processing your request,<br />This error has been logged and we are working to fix it.<br />Sorry for any inconvenience.</p></body></html>");
 
@@ -376,6 +380,8 @@ closedir($handle);
                 self::serveFile(FRAMEWORK_RES_PATH . "license");
 
 			case "script":
+				$expiresAt = time() + rand(strtotime("+1 month", 0), strtotime("+2 month", 0));
+				header("Expires: " . self::formatGMTDate($expiresAt));
 				OutputFilter::startCompression();
 				$scmpr = new ScriptCompressor(true);
 				$path = FRAMEWORK_RES_PATH . "javascript" . DIRSEP;
@@ -388,6 +394,8 @@ closedir($handle);
 				exit;
 				
 			case "dirstyle":
+				$expiresAt = time() + rand(strtotime("+1 month", 0), strtotime("+2 month", 0));
+				header("Expires: " . self::formatGMTDate($expiresAt));
 				OutputFilter::startCompression();
 				$style = new CompressedStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "dirlisting.css");
 				$style->dumpAsResponse();
@@ -397,6 +405,8 @@ closedir($handle);
 				self::serveFileInternal(FRAMEWORK_RES_PATH . "images" . DIRSEP . "lgplv3.png", "image/png");
 		    
 			case "style":
+				$expiresAt = time() + rand(strtotime("+1 month", 0), strtotime("+2 month", 0));
+				header("Expires: " . self::formatGMTDate($expiresAt));
 				OutputFilter::startCompression();
 				$style = new CompressedStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "widgets.css");
 				$style->dumpAsResponse();
