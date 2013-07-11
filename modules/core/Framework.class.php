@@ -116,6 +116,7 @@ class Framework {
 			
 			$path = substr($file, strlen(INDEX_PATH)-1);
 			header("Content-Type: text/html; charset=UTF-8");
+			ExtensionLoader::loadEnabledExtensions();
 			OutputFilter::resetToNative(false);
 			?><!DOCTYPE html>
 <html><head><title>Directory Listing: <? echo $path; ?></title>
@@ -149,9 +150,16 @@ while (false !== ($entry = readdir($handle))) {
 foreach($files as $entry) {
 	?><tr><td><?
 	$mime = self::mimeForFile($entry);
-	if(startsWith($mime, "image/") && filesize($entry) < 5242880)
-		$icon = Framework::getReferenceURI($entry);
-	else
+	if(startsWith($mime, "image/") && filesize($entry) < 5242880) {
+		$icon = false;
+		try {
+			if(class_exists("ModifiedImage"))
+				$icon = ModifiedImage::scaledTransparentURI($entry, 22, 22, ModifiedImage::KeepAspectRatio);
+			
+		}catch(Exception $e) {}
+		if(!$icon)
+			$icon = Framework::getReferenceURI($entry);
+	} else
 		$icon = BASE_URI . "res:file";
 	
 	?><img src="<? echo $icon; ?>" width="22" height="22" /></td><td><a href="<?
