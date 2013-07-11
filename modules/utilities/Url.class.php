@@ -10,7 +10,14 @@ class Url {
 	private $query;
 	private $fragment;
 
-	public function __construct($string) {
+	public function __construct($string ="") {
+		if(!$string)
+			return;
+			
+		$this->parse($string);
+	}
+	
+	public function parse($string) {
 		$parts = parse_url($string);
 		if(!$parts)
 			throw new InvalidArgumentException("Expected a valid Url");
@@ -36,7 +43,7 @@ class Url {
 	public function port($resolveSchemeDefault =false) {
 		if($this->port)
 			return $this->port;
-		if($resolveSchemeDefault) {
+		if($resolveSchemeDefault)
 			switch($this->scheme) {
 				case "ftp":
 					return 21;
@@ -56,7 +63,7 @@ class Url {
 				case "https":
 					return 443;
 			}
-		}
+		
 		return -1;
 	}
 	
@@ -122,6 +129,10 @@ class Url {
 	
 	public function setPath($path) {
 		$this->path = $path;
+	}
+	
+	public function relative() {
+		throw new Exception();
 	}
 	
 	public function setFragment($fragment) {

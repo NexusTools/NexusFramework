@@ -53,20 +53,25 @@ define("FRAMEWORK_RES_PATH", FRAMEWORK_PATH . "resources" . DIRSEP);
 define("FRAMEWORK_MODULE_PATH", FRAMEWORK_PATH . "modules" . DIRSEP);
 
 // Find Website Root
-$pos = 0;
-$stack = debug_backtrace(0);
-$fmpath_len = strlen(FRAMEWORK_PATH);
-while($pos < count($stack)) {
-	if(substr_compare($stack[$pos]['file'], FRAMEWORK_PATH, 0, $fmpath_len) !== 0) {
-		define("INDEX_FILE", $stack[$pos]['file']);
-		define("INDEX_PATH", dirname(INDEX_FILE) . DIRSEP);
-		break;
-	} else
-		$pos++;
+if(array_key_exists("SCRIPT_FILENAME", $_SERVER)) {
+	define("INDEX_FILE", $_SERVER["SCRIPT_FILENAME"]);
+	define("INDEX_PATH", dirname(INDEX_FILE) . DIRSEP);
+} else {	
+	$pos = 0;
+	$stack = debug_backtrace(0);
+	$fmpath_len = strlen(FRAMEWORK_PATH);
+	while($pos < count($stack)) {
+		if(substr_compare($stack[$pos]['file'], FRAMEWORK_PATH, 0, $fmpath_len) !== 0) {
+			define("INDEX_FILE", $stack[$pos]['file']);
+			define("INDEX_PATH", dirname(INDEX_FILE) . DIRSEP);
+			break;
+		} else
+			$pos++;
+	}
+	unset($fmpath_len);
+	unset($stack);
+	unset($pos);
 }
-unset($fmpath_len);
-unset($stack);
-unset($pos);
 
 ini_set("error_log", INDEX_PATH . "php.err");
 define("EXT_PATH", INDEX_PATH . "extensions" . DIRSEP);
