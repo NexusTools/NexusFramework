@@ -271,14 +271,15 @@ closedir($handle);
 		    }
 		}
 		
+		header("Content-Length: $size");
+		
 		if(!self::isHeadRequest()) {
 			if(startsWith($mimetype, "text/") && $size < 1048510)
 				OutputFilter::startCompression();
-			else {
-				header("Content-Length: $size");
+			else
 				while(ob_end_clean());
 					ob_clean();
-			}
+			
 	        
 	        while($data = fread($reader, 1024))
 	            echo $data;
@@ -350,7 +351,7 @@ closedir($handle);
 			else
 				self::runPage("/errordoc/404");
 		} else if(startsWith($res, "badref/") && is_file($refFile = TMP_PATH . "badref" . DIRSEP . substr($res, 7)) && $data = unserialize(file_get_contents($refFile))) {
-			OutputFilter::resetToNative(false);
+			OutputFilter::startCompression();
 			    
 			echo "<html><head><title>Invalid Resource</title></head><body><h1>Invalid Resource</h1><p>The resource `$data[path]` is missing.";
 			if(class_exists("User", false) && User::isStaff()) {
@@ -365,7 +366,7 @@ closedir($handle);
 		
 		switch($res){
 		    case "internal-error":
-				OutputFilter::resetToNative(false);
+				OutputFilter::startCompression();
 		        die("<html><head><title>Internal Error Occured</title></head><body><h1>Internal Error Occured</h1><p>An internal error occured while processing your request,<br />This error has been logged and we are working to fix it.<br />Sorry for any inconvenience.</p></body></html>");
 
             case "lgpl":
@@ -375,7 +376,7 @@ closedir($handle);
                 self::serveFile(FRAMEWORK_RES_PATH . "license");
 
 			case "script":
-				OutputFilter::resetToNative(false);
+				OutputFilter::startCompression();
 				$scmpr = new ScriptCompressor(true);
 				$path = FRAMEWORK_RES_PATH . "javascript" . DIRSEP;
 				
@@ -387,7 +388,7 @@ closedir($handle);
 				exit;
 				
 			case "dirstyle":
-				OutputFilter::resetToNative(false);
+				OutputFilter::startCompression();
 				$style = new CompressedStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "dirlisting.css");
 				$style->dumpAsResponse();
 				exit;
@@ -396,14 +397,14 @@ closedir($handle);
 				self::serveFileInternal(FRAMEWORK_RES_PATH . "images" . DIRSEP . "lgplv3.png", "image/png");
 		    
 			case "style":
-				OutputFilter::resetToNative(false);
+				OutputFilter::startCompression();
 				$style = new CompressedStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "widgets.css");
 				$style->dumpAsResponse();
 				exit;
 		
 			case "information":
 				header("Content-Type: text/plain");
-				OutputFilter::resetToNative(false);
+				OutputFilter::startCompression();
 				echo "Version: " . FRAMEWORK_VERSION;
 				echo "\nInstall Path: " . FRAMEWORK_PATH;
 				echo "\nBase URL: " . BASE_URL;

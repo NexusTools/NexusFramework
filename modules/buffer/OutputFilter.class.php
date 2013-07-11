@@ -20,17 +20,22 @@ abstract class OutputFilter {
 		while(ob_get_level() > NATIVE_OB_LEVEL && ob_end_clean());
 		
 		if(COMPRESSED_OUTPUT)
-			return;
+			return true;
 	
 		if(function_exists("ob_gzhandler"))
-			return array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
+			$ret = array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
 					preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
 															ob_start("ob_gzhandler", 5120);
 		else if(function_exists("ob_deflatehandler"))
-			return array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
+			$ret = array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
 					preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
 															ob_start("ob_deflatehandler", 5120);
-			
+		else
+			return false;
+		
+		if($ret)
+			header_remove("Content-Length");
+		return $ret;
 	}
 	
 	/*
