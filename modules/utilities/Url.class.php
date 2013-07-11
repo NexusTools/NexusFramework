@@ -74,7 +74,7 @@ class Url {
 	
 	public function query() {
 		if(!is_array($this->query))
-			$this->query = self::parseQuery($query->query);
+			$this->query = self::parseQuery($this->query);
 		return $this->query;
 	}
 	
