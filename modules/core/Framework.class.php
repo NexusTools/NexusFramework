@@ -117,7 +117,7 @@ class Framework {
 			$path = substr($file, strlen(INDEX_PATH)-1);
 			header("Content-Type: text/html; charset=UTF-8");
 			ExtensionLoader::loadEnabledExtensions();
-			OutputFilter::resetToNative(false);
+			OutputFilter::startCompression();
 			?><!DOCTYPE html>
 <html><head><title>Directory Listing: <? echo $path; ?></title>
 <meta name="robots" content="noindex, nofollow" />
@@ -256,8 +256,9 @@ closedir($handle);
 		        header("Content-Range: bytes $range[0]-$range[1]/$size");
 		        $length++;
 		        header("Content-Length: $length");
-		        while(ob_end_clean());
-	        	ob_clean();
+		        
+			    while(ob_end_clean());
+		    		ob_clean();
 		        
 		        if($range[0])
 		            fseek($reader, $range[0]);
@@ -278,8 +279,11 @@ closedir($handle);
 		header("Content-Length: $size");
 		
 		if(!self::isHeadRequest()) {
-	        while(ob_end_clean());
-	        	ob_clean();
+	         if(startsWith($mimetype, "text/") && $size < 1048510)
+	        	OutputFilter::startCompression();
+	        else
+			    while(ob_end_clean());
+		    		ob_clean();
 	        
 	        while($data = fread($reader, 5120)) {
 	            print($data);
