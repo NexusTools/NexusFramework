@@ -1,27 +1,6 @@
 <?php
 
-if(function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc()) {
-    $strip_slashes_deep = function ($value) use (&$strip_slashes_deep) {
-        return is_array($value) ? array_map($strip_slashes_deep, $value) : stripslashes($value);
-    };
-    $_GET = array_map($strip_slashes_deep, $_GET);
-    $_COOKIE = array_map($strip_slashes_deep, $_COOKIE);
-}
-if($_SERVER['REQUEST_METHOD'] == "POST" && !count($_FILES)) {
-    $_POST = Array();
-    foreach (explode("&", file_get_contents("php://input")) as $pair) {
-        $nv = explode("=", $pair);
-        $name = urldecode($nv[0]);
-        $value = urldecode($nv[1]);
-        if(isset($_POST[$name])) {
-            if(!is_array($_POST[$name]))
-                $_POST[$name] = Array($_POST[$name], $value);
-            else
-                array_push($_POST[$name], $value);
-        } else
-            $_POST[$name] = $value;
-    }
-}
+// Detect Browser
 
 if(strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false)
     if(strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.') !== FALSE
@@ -84,6 +63,21 @@ require FRAMEWORK_MODULE_PATH . "core" . DIRSEP . "cache" . DIRSEP . "CachedFile
 require FRAMEWORK_MODULE_PATH . "core" . DIRSEP . "cache" . DIRSEP . "FrameworkClassLocation.class.php";
 require FRAMEWORK_MODULE_PATH . "core" . DIRSEP . "ClassLoader.class.php";
 
+// Request Queries
+if(!function_exists("runkit_function_redefine") ||
+		!runkit_function_redefine("array_key_exists", '$array, $key', 'return isset($array[$key]);')) {
+	//$_GET = Url::parseQuery($_SERVER['QUERY_STRING']);
+	//$_COOKIE = Url::parseQuery($_SERVER['HTTP_COOKIE']);
+	if($_SERVER['REQUEST_METHOD'] == "POST" && !count($_FILES))
+		$_POST = Url::parseQuery(file_get_contents("php://input"));
+} else {
+	//$_GET = UrlQuery::instance($_SERVER['QUERY_STRING']);
+	//$_COOKIE = UrlQuery::instance($_SERVER['HTTP_COOKIE']);
+	if($_SERVER['REQUEST_METHOD'] == "POST" && !count($_FILES))
+		$_POST = UrlQuery::instance(file_get_contents("php://input"));
+}
+	
+// Custom Session
 session_name("S" . dechex(ClientInfo::getUniqueID()));
 if(!session_start())
     throw new Exception("Failed to start session...");

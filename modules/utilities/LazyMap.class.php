@@ -1,5 +1,5 @@
 <?php
-abstract class LazyMap implements Countable, ArrayAccess, Iterator {
+abstract class LazyMap implements Countable, ArrayAccess, SeekableIterator {
 
 	protected $data = false;
 	private $keys = false;
@@ -27,8 +27,12 @@ abstract class LazyMap implements Countable, ArrayAccess, Iterator {
 		return $this->keys[$this->pos];
 	}
 	
-	public function next (){
+	public function next(){
 		$this->pos++;
+	}
+	
+	public function seek($pos) {
+		$this->pos = $pos;
 	}
 	
 	public function rewind() {

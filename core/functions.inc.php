@@ -173,7 +173,13 @@ function redirect($newPath){
 }
 
 function is_assoc($array) {
-    return (is_array($array) && (count($array)==0 || 0 !== count(array_diff_key($array, array_keys(array_keys($array))) )));
+    return ($object instanceof Traversable) || 
+    			(is_array($array) && (count($array)==0 ||
+    				0 !== count(array_diff_key($array, array_keys(array_keys($array))) )));
+}
+
+function is_iterable($object) {
+	return ($object instanceof Traversable) || is_array($object);
 }
 
 if(!function_exists("getallheaders")) {

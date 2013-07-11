@@ -131,10 +131,6 @@ class Url {
 		$this->path = $path;
 	}
 	
-	public function relative() {
-		throw new Exception();
-	}
-	
 	public function setFragment($fragment) {
 		$this->fragment = $fragment;
 	}
