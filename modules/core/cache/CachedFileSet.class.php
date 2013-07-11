@@ -89,11 +89,14 @@ abstract class CachedFileSet extends CachedObject {
 	    return Framework::uniqueHash($combinedID);
 	}
 	
-	public function dumpAsResponse(){
+	public function dumpAsResponse($expiresAt =false){
 		if($this->etag === false)
 			$this->etag = md5($this->combinedtag);
 			
 		$modtime = Framework::formatGMTDate($this->latestModify);
+		if(!$expiresAt) // Default to expiring after between 2 and 15 minutes to try and balance update checking
+			$expiresAt = time() + rand(strtotime("+1 week", 0), strtotime("+2 weeks", 0));
+		header("Expires: " . self::formatGMTDate($expiresAt));
 		header("Content-Type: " . $this->getMimeType());
 		header("Last-Modified: " . $modtime);
 		header("ETag: " . $this->etag);
