@@ -5,6 +5,7 @@ class Database extends Lockable {
     private static $logFile = false;
 	private static $instances = Array();
 	private static $knownInstances = Array();
+	private static $dirtyInstances = Array();
 	private static $knownKeywords = Array("CURRENT_TIMESTAMP", "CURRENT_DATE", "CURRENT_TIME");
 	private static $queries = 0;
 	private $activetransaction = false;
@@ -66,8 +67,11 @@ class Database extends Lockable {
 		if(defined("ERROR_OCCURED"))
 			throw new Exception("Cannot write to database in error state");
 		set_time_limit(0); // Ensure nothing can break;
+		ignore_user_abort(true);
 		if(!$this->activetransaction)
 			$this->activetransaction = $this->database->beginTransaction();
+		if($this->activetransaction)
+			array_push(self::$dirtyInstances, $this);
 		return $this->activetransaction;
 	}
 	
@@ -75,7 +79,29 @@ class Database extends Lockable {
 		if(!$this->activetransaction)
 			return false;
 		$this->activetransaction = false;
-		$ret = $this->database->commit();
+		
+		$key = array_search($this, self::$dirtyInstances);
+		if($key) {
+			unset(self::$dirtyInstances[$key]);
+			if(!count(self::$dirtyInstances)) {
+				set_time_limit(30); // Reset the time limit
+				ignore_user_abort(false);
+			}
+		}
+		
+		return $this->database->commit();
+	}
+	
+	public static function commitAll() {
+		$count = 0;
+		foreach(self::$dirtyInstances as $instance) {
+			if($instance->database->commit())
+				$count ++;
+		}
+		set_time_limit(30); // Reset the time limit
+		ignore_user_abort(false);
+		self::$dirtyInstances = Array();
+		return $count;
 	}
 	
 	public function rollBack() {

@@ -82,7 +82,7 @@ class Framework {
 				else
 					$mimetype = "text/xml; charset=UTF-8";
 			} else
-				$mimetype = "text/plain";
+				$mimetype = "text/plain; charset=UTF-8";
 		
 		header("Content-Type: $mimetype");
 		Framework::serveRawData($data, $mimetype);
@@ -115,6 +115,7 @@ class Framework {
 				self::serveFileInternal($indexPath);
 			
 			$path = substr($file, strlen(INDEX_PATH)-1);
+			header("Content-Type: text/html; charset=UTF-8");
 			OutputFilter::resetToNative(false);
 			?><!DOCTYPE html>
 <html><head><title>Directory Listing: <? echo $path; ?></title>
@@ -399,7 +400,6 @@ closedir($handle);
 	
 	public static function run($requestURI, $basePath){
 		Profiler::start("Framework");
-	    ignore_user_abort(true);
 	    chdir($basePath);
 		
 		$requestURI = relativepath($requestURI);
@@ -576,7 +576,8 @@ Disallow: " . BASE_URI;
 	
 	public static function runPage($path, $changeStatus=true){
 		ExtensionLoader::loadEnabledExtensions();
-	    ignore_user_abort(false);
+		Database::commitAll();
+		
 		if(NOACCESS_MODE && ($baseDomain = preg_replace("/.+\.(\w+\.\w+)/", "$1", DOMAIN)))
 			redirectDomain($baseDomain);
 		
