@@ -23,19 +23,16 @@ abstract class OutputFilter {
 			return true;
 	
 		if(function_exists("ob_gzhandler"))
-			$ret = array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
+			return array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
 					preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
 															ob_start("ob_gzhandler", 5120);
 		else if(function_exists("ob_deflatehandler"))
-			$ret = array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
+			return array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
 					preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
 															ob_start("ob_deflatehandler", 5120);
 		else
 			return false;
 		
-		if($ret)
-			header_remove("Content-Length");
-		return $ret;
 	}
 	
 	/*
