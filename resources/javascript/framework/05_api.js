@@ -48,15 +48,17 @@ Framework.registerModule("API", {
 		
 		intervalCallback: function() {
 			clearTimeout(Framework.API.requestInterval);
-			console.log("Making interval requests");
-			for(var module in Framework.API.intervalRequests){
-				if(module in Framework.API.requests)
-					continue; // Don't replace existing data
+			if(!("Idle" in Framework) || !Framework.Idle.isIdle) {
+				console.log("Making interval requests");
+				for(var module in Framework.API.intervalRequests){
+					if(module in Framework.API.requests)
+						continue; // Don't replace existing data
 			
-				var data = Framework.API.intervalRequests[module];
-				Framework.API.requests[module] = data;
+					var data = Framework.API.intervalRequests[module];
+					Framework.API.requests[module] = data;
+				}
+				Framework.API.queueRequests();
 			}
-			Framework.API.queueRequests();
 			Framework.API.requestInterval = setTimeout(Framework.API.intervalCallback, Framework.API.intervalTime);
 		},
 		
