@@ -127,7 +127,7 @@ class Template {
 		self::addScript("resources/javascript/addons/" . StringFormat::idForDisplay($script) . ".js");
 	}
 	
-	public static function addExternalStyle($style, $media="screen"){
+	public static function addExternalStyle($style, $media=false){
 		$id = Framework::uniqueHash($style);
 		if(!isset(self::$styles[$id]))
 			self::$styles[$id] = $style;
@@ -135,7 +135,7 @@ class Template {
 	        self::$styleMedia[$id] = $media;
 	}
 	
-	public static function addStyle($style, $media="screen"){
+	public static function addStyle($style, $media=false){
 		$style = fullpath($style);
 		$id = Framework::uniqueHash($style);
 		if(!isset(self::$styles[$id]))
@@ -144,7 +144,7 @@ class Template {
 	        self::$styleMedia[$id] = $media;
 	}
 	
-	public static function addStyles($styles, $media="screen"){
+	public static function addStyles($styles, $media=false){
 		$compressedStyles = new StyleCompressor();
 		foreach($styles as $style)
 			$compressedStyles->addStyle(fullpath($style));

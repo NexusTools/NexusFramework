@@ -14,6 +14,8 @@ class PageModule {
 	private $leftSidebarScript;
 	private $themePath;
 	private $pageTitle = false;
+	private $pageDescription = false;
+	private $pageKeywords = false;
 	private $realUri = false;
 	private $buffer = false;
 	private $badCond = false;
@@ -215,6 +217,10 @@ class PageModule {
 		$_POST = $this->post;
 		if($this->pageTitle)
 			Template::setTitle($this->pageTitle);
+		if($this->pageDescription)
+			Template::setMetaTag("description", $this->pageDescription);
+		if($this->pageKeywords)
+			Template::setMetaTag("keywords", $this->pageKeywords);
 		
 		self::$instance = $this;
 		if($this->headscript)
@@ -264,6 +270,16 @@ class PageModule {
 		    $this->leftSidebarScript = $basepath . "root.sidebar.left.inc.php";
 		if(is_file($basepath . "root.sidebar.right.inc.php"))
 		    $this->rightSidebarScript = $basepath . "root.sidebar.right.inc.php";
+		    
+		if(is_file($basepath . "root.desc"))
+			$this->pageDescription = trim(file_get_contents($basepath . "root.desc"));
+		else if(is_file($basepath . "root.description"))
+			$this->pageDescription = trim(file_get_contents($basepath . "root.description"));
+		
+		if(is_file($basepath . "root.tags"))
+			$this->pageKeywords = trim(file_get_contents($basepath . "root.tags"));
+		else if(is_file($basepath . "root.keywords"))
+			$this->pageKeywords = trim(file_get_contents($basepath . "root.keywords"));
 		
 		$dirExists = null;
 		if(count($parts)) {
@@ -303,6 +319,18 @@ class PageModule {
 				        $this->badCond = true;
 				        return false;
 			        }
+			        
+			        
+				
+					if(is_file("$basepath$mname.desc"))
+						$this->pageDescription = trim(file_get_contents("$basepath$mname.desc"));
+					else if(is_file("$basepath$mname.description"))
+						$this->pageDescription = trim(file_get_contents("$basepath$mname.description"));
+				
+					if(is_file("$basepath$mname.tags"))
+						$this->pageKeywords = trim(file_get_contents("$basepath$mname.tags"));
+					else if(is_file("$basepath$mname.keywords"))
+						$this->pageKeywords = trim(file_get_contents("$basepath$mname.keywords"));
 			    }
 				
 			    if(is_file("$basepath$mname.title"))

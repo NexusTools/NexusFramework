@@ -1,9 +1,0 @@
-{
-	"name": "Template",
-	"provides": "Page and Theme rendering utilities.",
-	"registry": {
-		"page-system": {
-			"serve-paths": ["{{INDEX_PATH}}media"]
-		}
-	}
-}
