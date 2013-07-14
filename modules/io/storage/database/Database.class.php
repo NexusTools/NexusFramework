@@ -8,7 +8,6 @@ class Database extends Lockable {
 	private static $dirtyInstances = Array();
 	private static $knownKeywords = Array("CURRENT_TIMESTAMP", "CURRENT_DATE", "CURRENT_TIME");
 	private static $queries = 0;
-	private $activetransaction = false;
 	private $databaseDefinition = false;
 	private $shutdownCommands = Array();
 	private $instanceName;
@@ -66,19 +65,24 @@ class Database extends Lockable {
 	public function beginTransaction() {
 		if(defined("ERROR_OCCURED"))
 			throw new Exception("Cannot write to database in error state");
-		set_time_limit(0); // Ensure nothing can break;
-		ignore_user_abort(true);
-		if(!$this->activetransaction)
-			$this->activetransaction = $this->database->beginTransaction();
-		if($this->activetransaction)
+			
+		if($this->database->inTransaction())
+			return 2;
+		
+		if($this->database->beginTransaction()) {
+			set_time_limit(0); // Ensure nothing can break;
+			ignore_user_abort(true);
 			array_push(self::$dirtyInstances, $this);
-		return $this->activetransaction;
+			return true;
+		}
 	}
 	
 	public function commit() {
-		if(!$this->activetransaction)
-			return false;
-		$this->activetransaction = false;
+		if(defined("ERROR_OCCURED"))
+			throw new Exception("Cannot write to database in error state");
+		
+		if(!$this->database->inTransaction())
+			return -1;
 		
 		$key = array_search($this, self::$dirtyInstances);
 		if($key) {
@@ -105,9 +109,9 @@ class Database extends Lockable {
 	}
 	
 	public function rollBack() {
-		if(!$this->activetransaction)
-			return false;
-		$this->activetransaction = false;
+		if(!$this->database->inTransaction())
+			return -1;
+		
 		return $this->database->rollBack();
 	}
 	
