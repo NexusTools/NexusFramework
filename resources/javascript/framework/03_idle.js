@@ -4,7 +4,6 @@ Framework.registerModule("Idle", {
 	idleTimeout: false,
 	
 	initialize: function() {
-		console.log(this);
 		Event.on(window, "blur", this.goIdle);
 		Event.on(window, "focus", this.interaction);
 		Event.on(document.body, "mousemove", this.interaction);
@@ -17,18 +16,15 @@ Framework.registerModule("Idle", {
 	interaction: function() {
 		try{clearTimeout(Framework.Idle.goIdle);}catch(e){}
 		Framework.Idle.idleTimeout = setTimeout(Framework.Idle.goIdle, 60000);
-		if(Framework.Idle.isIdle) {
-			console.log("User is alive.");
+		if(Framework.Idle.isIdle) // TODO: Add event
 			Framework.Idle.isIdle = false;
-		}
+		
 	},
 	
 	goIdle: function() {
 		try{clearTimeout(Framework.Idle.goIdle);}catch(e){}
-		if(!Framework.Idle.isIdle){
-			console.log("User is asleep.");
+		if(!Framework.Idle.isIdle) // TODO: Add event
 			Framework.Idle.isIdle = true;
-		}
 		
 	}
 
