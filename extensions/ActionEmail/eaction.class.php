@@ -104,7 +104,7 @@ class ActionEmail {
 		else if(!is_array($from)) {
 			$from = User::fetch($from);
 			if(!$from->isValid())
-				throw new Exception("To user invalid");
+				throw new Exception("From user invalid");
 			$from = Array($from->getEmail(), $from->getFullName());
 		}
 		

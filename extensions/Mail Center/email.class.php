@@ -124,7 +124,7 @@ class Email {
 		}
 		self::$activeID = MailCenter::getDatabase()->insert("emails", $data);
 		if(!self::$activeID)
-			throw new Exception("Failed to Create Email Entry");
+			throw new Exception("Failed to Create Email Entry", 0, MailCenter::getDatabase()->lastException());
 		$emailID = urlencode(base64_encode(self::$activeID));
 		//if($html && !$text)
 		//	$text = "To view this email visit this address:\n" . $interpolate_vars['EMAIL_VIEW_URL'] . (isset($interpolate_vars['OPT_OUT_URL']) ? "\n\nTo Opt-Out of this mailing list visit:\n" . $interpolate_vars['OPT_OUT_URL'] : "");
