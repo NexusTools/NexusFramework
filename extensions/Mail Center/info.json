@@ -17,26 +17,11 @@
 			"to": "VARCHAR(120)",
 			"from": "VARCHAR(120)",
 			"subject": "VARCHAR(40)",
-			"mailing-list": {
-				"type": "INTEGER",
-				"default": 0
-			},
-			"campaign": {
-				"type": "INTEGER",
-				"default": 0
-			},
-			"views": {
-				"type": "INTEGER",
-				"default": 0
-			},
-			"interactions": {
-				"type": "INTEGER",
-				"default": 0
-			},
-			"drop-offs":  {
-				"type": "INTEGER",
-				"default": 0
-			},
+			"mailing-list": "INTEGER",
+			"campaign": "INTEGER",
+			"views": "INTEGER",
+			"interactions": "INTEGER",
+			"drop-offs":  "INTEGER",
 			"expires": {
 				"type": "TIMESTAMP",
 				"default": "1970-01-01 00:00:00"
@@ -48,22 +33,10 @@
 			"subject": "VARCHAR(40)",
 			"mailing-list": "INTEGER",
 			"template": "INTEGER",
-			"sent":  {
-				"type": "INTEGER",
-				"default": 0
-			},
-			"views": {
-				"type": "INTEGER",
-				"default": 0
-			},
-			"interactions":  {
-				"type": "INTEGER",
-				"default": 0
-			},
-			"drop-offs":  {
-				"type": "INTEGER",
-				"default": 0
-			},
+			"sent":  "INTEGER",
+			"views": "INTEGER",
+			"interactions": "INTEGER",
+			"drop-offs": "INTEGER",
 			"expires": {
 				"type": "TIMESTAMP",
 				"default": "1970-01-01 00:00:00"
@@ -71,18 +44,12 @@
 		},
 		"email-links": {
 			"url": "VARCHAR(200)",
-			"interactions": {
-				"type": "INTEGER",
-				"default": 0
-			},
+			"interactions": "INTEGER",
 			"email": "INTEGER"
 		},
 		"campaign-links": {
 			"url": "VARCHAR(200)",
-			"interactions": {
-				"type": "INTEGER",
-				"default": 0
-			},
+			"interactions": "INTEGER",
 			"campaign": "INTEGER"
 		},
 		
@@ -96,10 +63,7 @@
 		"mailing-list-users": {
 			"user": "INTEGER",
 			"list": "INTEGER",
-			"opt-out": {
-				"type": "BOOLEAN",
-				"default": 0
-			}
+			"opt-out": "BOOLEAN"
 		},
 		"mailing-list-fields": {
 			"list": "INTEGER",
