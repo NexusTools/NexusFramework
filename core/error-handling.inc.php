@@ -1,8 +1,12 @@
 <?php global $__framework_error_occured;
+global $__framework_embedded_errorPage_tried;
+global $__framework_error_message;
+global $__framework_error_details;
 
 $__framework_error_occured = false;
 $__framework_error_message = array_key_exists("__errMess", $_GET) ? $_GET['__errMess'] : "No Error Message Provided";
 $__framework_embedded_errorPage_tried = false;
+$__framework_error_details = false;
 
 class Error extends Exception {
 	public function __construct($errno, $errstr, $errfile, $errline){
@@ -13,18 +17,39 @@ class Error extends Exception {
 	}
 }
 
-function __convertExtensionToArray($exception, $includeTrace=true){
+function __convertExceptionToArray($exception, $includeTrace=true){
     if(!($exception instanceof Exception))
         return $exception;
 
+	$details = Array();
+	if(method_exists($exception, "getDetails"))
+		$details = $exception->getDetails();
+	
+	if(method_exists($exception, "getMessage"))
+		$message = $exception->getMessage();
+	else
+		$message = "$exception";
+	
+	if(method_exists($exception, "getPrevious"))
+		$previous = __convertExceptionToArray($exception->getPrevious(), false);
+	else
+		$previous = false;
+	
+	if($includeTrace && method_exists($exception, "getTrace"))
+		$trace = $exception->getTrace();
+	else
+		$trace = Array();
+	
     return Array(
+                "details" => $details,
+                "message" => $message,
     			"type" => get_class($exception),
-                "message" => $exception->getMessage(),
                 "file" => $exception->getFile(),
                 "line" => $exception->getLine(),
                 "code" => $exception->getCode(),
-                "trace" => $includeTrace ? $exception->getTrace() : Array(),
-                "previous" => __convertExtensionToArray($exception->getPrevious(), false)
+                "message" => $message,
+                "trace" => $trace,
+                "previous" => $previous
             );
 }
 
@@ -33,9 +58,14 @@ function framework_get_error_message(){
 	return $__framework_error_message;
 }
 
+function framework_get_error_details(){
+	global $__framework_error_details;
+	return $__framework_error_details;
+}
+
 function framework_store_exception(&$exception, &$errorid, &$data){
     $data = Array("date" => time(),
-                    "exception" => ($exception = __convertExtensionToArray($exception)));
+                    "exception" => ($exception = __convertExceptionToArray($exception)));
     
     try{ 
 		if(!is_dir(INDEX_PATH . "exceptions") && !mkdir(INDEX_PATH . "exceptions"))
@@ -60,7 +90,7 @@ function framework_store_exception(&$exception, &$errorid, &$data){
 }
 
 function recovery_process_exception($exception, $alwaysRedirect=false){
-	global $__framework_error_occured, $__framework_embedded_errorPage_tried, $__framework_error_message;
+	global $__framework_error_occured, $__framework_embedded_errorPage_tried, $__framework_error_message, $__framework_error_details;
 	while(ob_get_level() > NATIVE_OB_LEVEL)
 		ob_end_clean();
 	@ob_start();
@@ -84,6 +114,11 @@ function recovery_process_exception($exception, $alwaysRedirect=false){
 		$__framework_error_message = $exception['message'];
 	else
 		$__framework_error_message = "No Error Information Provided";
+		
+	if(array_key_exists("details", $exception) && $exception['details'])
+		$__framework_error_details = $exception['details'];
+	else
+		$__framework_error_details = false;
 		
 	// Inject redirection if headers already sent
 	if($__framework_embedded_errorPage_tried || $alwaysRedirect || headers_sent()) {

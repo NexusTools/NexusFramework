@@ -189,9 +189,18 @@ else
 <h3>Error Message</h3><p>
 <?
 
-if(array_key_exists("message", $exception))
+if(array_key_exists("message", $exception)) {
 	echo $exception['message'];
-else
+	if(array_key_exists("details", $exception) && $exception['details']) {
+		echo "<br /><pre style='text-align: left; margin-left: 8px'>";
+		print_r($exception['details']);
+		echo "</pre>";
+	}
+} else if(array_key_exists("details", $exception) && $exception['details']) {
+	echo "<pre style='text-align: left; margin-left: 8px'>";
+	print_r($exception['details']);
+	echo "</pre>";
+} else
 	echo "No message was associated with this error";
 ?></p>
 <?
