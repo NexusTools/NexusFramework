@@ -8,6 +8,9 @@
 		        "type": "FLOAT",
 		        "default": "0"
 		    },
+		    "about-me": "BINARY(500)",
+		    "location": "VARCHAR(20)",
+		    "signature": "BINARY(400)",
 		    "display-name": "VARCHAR(250)",
 		    "custom-title": "VARCHAR(250)"
 		},

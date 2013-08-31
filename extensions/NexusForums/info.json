@@ -1,0 +1,7 @@
+{
+	"name": "NexusForums",
+	"dependancies": ["forum-user", "forum-backend", "user-avatars"],
+	"description": "Forums coded for NexusTools",
+	"page-root": "/forum",
+	"provides": "forums"
+}

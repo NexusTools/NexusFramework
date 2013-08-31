@@ -4,6 +4,9 @@ class ForumUser {
 	private static $database;
 	private $displayName;
 	private $currentTitle;
+	private $signature;
+	private $location;
+	private $aboutMe;
 	private $user;
 	
 	public static function getDatabase(){
@@ -34,6 +37,20 @@ class ForumUser {
 	    }
 	    $this->displayName = $forumUser['display-name'];
 	    $this->currentTitle = $forumUser['custom-title'];
+	    $this->location = $forumUser['location'];
+	    $this->aboutMe = $forumUser['about-me'];
+	}
+	
+	public function getAboutMe() {
+		return $this->aboutMe;
+	}
+	
+	public function getSignature() {
+		return $this->signature;
+	}
+	
+	public function getLocation() {
+		return $this->location;
 	}
 	
 	public function getTitle($long=false){

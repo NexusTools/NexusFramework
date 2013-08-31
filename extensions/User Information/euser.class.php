@@ -23,6 +23,7 @@ class ExtendedUser {
 	private $email2;
 	private $email3;
 	private $website;
+	private $occupation;
 	private $birth;
 	private $live;
 	private $skype;
@@ -121,6 +122,10 @@ class ExtendedUser {
 		return $this->website;
 	}
 	
+	public function getOccupation(){
+		return $this->occupation;
+	}
+	
 	public function hasWebsite(){
 		return strlen($this->website);
 	}
@@ -190,6 +195,7 @@ class ExtendedUser {
 			$this->email2 = $data['email2'];
 			$this->email3 = $data['email3'];
 			$this->website = $data['website'];
+			$this->occupation = $data['occupation'];
 			$this->birth = $data['birth'];
 			$this->live = $data['live'];
 			$this->skype = $data['skype'];

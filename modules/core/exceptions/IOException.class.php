@@ -46,6 +46,10 @@ class IOException extends Exception {
 		return $this->path;
 	}
 	
+	public function getDetails() {
+		return Array("Path" => $this->path);
+	}
+	
 	public static function throwNotFound($path){
 		throw new IOException($path, self::NotFound);
 	}

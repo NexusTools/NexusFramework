@@ -24,6 +24,7 @@
 		        "email2": "VARCHAR(100)",
 		        "email3": "VARCHAR(100)",
 		        "website": "VARCHAR(100)",
+		    	"occupation": "VARCHAR(40)",
 		        "birth": "DATE",
 		        "live": "VARCHAR(100)",
 		        "skype": "VARCHAR(100)",
