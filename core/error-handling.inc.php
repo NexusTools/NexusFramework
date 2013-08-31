@@ -2,6 +2,7 @@
 global $__framework_embedded_errorPage_tried;
 global $__framework_error_message;
 global $__framework_error_details;
+global $__framework_error_hash;
 global $__framework_error_type;
 
 $__framework_error_occured = false;
@@ -69,10 +70,16 @@ function framework_get_error_details(){
 	return $__framework_error_details;
 }
 
+function framework_get_error_hash(){
+	global $__framework_error_hash;
+	return $__framework_error_hash;
+}
+
 function framework_store_exception(&$exception, &$errorid, &$data){
     $data = Array("date" => time(),
                     "exception" => ($exception = __convertExceptionToArray($exception)));
     
+    $errorid = false;
     try{ 
 		if(!is_dir(INDEX_PATH . "exceptions") && !mkdir(INDEX_PATH . "exceptions"))
 			throw new Exception("Failed to Create Exceptions Directory");
@@ -93,10 +100,12 @@ function framework_store_exception(&$exception, &$errorid, &$data){
 			die("--><h2 style=\"margin: 0px; padding: 10px; color: red; background-color: white; position: absolute; left: 0px; top: 0px\">A Internal Error Occured but could not be Processed</h2>");
 		}
 	}
+	
+	return $errorid;
 }
 
 function recovery_process_exception($exception, $alwaysRedirect=false){
-	global $__framework_error_occured, $__framework_embedded_errorPage_tried, $__framework_error_message, $__framework_error_details, $__framework_error_type;
+	global $__framework_error_occured, $__framework_embedded_errorPage_tried, $__framework_error_message, $__framework_error_details, $__framework_error_type, $__framework_error_hash;
 	while(ob_get_level() > NATIVE_OB_LEVEL)
 		ob_end_clean();
 	@ob_start();
@@ -108,7 +117,7 @@ function recovery_process_exception($exception, $alwaysRedirect=false){
 	
 	$errorid = 0;
 	$data = false;
-	framework_store_exception($exception, $errorid, $data);
+	$__framework_error_hash = framework_store_exception($exception, $errorid, $data);
 	
 	if(!defined("ERROR_OCCURED"))
 		define("ERROR_OCCURED", true);
