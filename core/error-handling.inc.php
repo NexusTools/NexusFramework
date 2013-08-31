@@ -2,6 +2,7 @@
 global $__framework_embedded_errorPage_tried;
 global $__framework_error_message;
 global $__framework_error_details;
+global $__framework_error_type;
 
 $__framework_error_occured = false;
 $__framework_error_message = array_key_exists("__errMess", $_GET) ? $_GET['__errMess'] : "No Error Message Provided";
@@ -53,6 +54,11 @@ function __convertExceptionToArray($exception, $includeTrace=true){
             );
 }
 
+function framework_get_error_type(){
+	global $__framework_error_type;
+	return $__framework_error_type;
+}
+
 function framework_get_error_message(){
 	global $__framework_error_message;
 	return $__framework_error_message;
@@ -90,7 +96,7 @@ function framework_store_exception(&$exception, &$errorid, &$data){
 }
 
 function recovery_process_exception($exception, $alwaysRedirect=false){
-	global $__framework_error_occured, $__framework_embedded_errorPage_tried, $__framework_error_message, $__framework_error_details;
+	global $__framework_error_occured, $__framework_embedded_errorPage_tried, $__framework_error_message, $__framework_error_details, $__framework_error_type;
 	while(ob_get_level() > NATIVE_OB_LEVEL)
 		ob_end_clean();
 	@ob_start();
@@ -114,6 +120,11 @@ function recovery_process_exception($exception, $alwaysRedirect=false){
 		$__framework_error_message = $exception['message'];
 	else
 		$__framework_error_message = "No Error Information Provided";
+		
+	if(array_key_exists("type", $exception) && $exception['type'] && !is_numeric($exception['type']))
+		$__framework_error_type = $exception['type'];
+	else
+		$__framework_error_type = "Error";
 		
 	if(array_key_exists("details", $exception) && $exception['details'])
 		$__framework_error_details = $exception['details'];

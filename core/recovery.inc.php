@@ -179,7 +179,7 @@ if(false){ ?>
 ?>
 <h1><?
 $exception = $data['exception'];
-if(array_key_exists("type", $exception))
+if(array_key_exists("type", $exception) && $exception['type'] && !is_numeric($exception['type']))
 	echo "Uncaught $exception[type] Occured";
 else
 	echo "Unrecoverable Error Occured";

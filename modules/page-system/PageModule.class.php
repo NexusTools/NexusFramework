@@ -97,10 +97,11 @@ class PageModule {
 					$details = '<br /><br /><a onclick="$(this).hide();$(this).next(\'div\').show();" style="cursor: pointer; font-size: 95%">Show More Details</a><div style="display: none"><pre style="margin: 0 auto; width: auto; display: table; text-align: left;">' . print_r($details, true) . '</pre></div>';
 				} else
 					$details = false;
-			
+					
+				$errorType = framework_get_error_type();
 				$this->error = Array("code" => 500,
 								 "message" => "Internal Error",
-								 "body" => "<p>An error occured while processing your request.<br />It is not possible to recover from this error.<br /><br />Our technicians have been notified and will look into it as soon as possible.<br />Sorry for any Inconvenience.</p><pre style='font-size: 85%'><b>Error Message</b><br />" . framework_get_error_message() . "$details</pre>");
+								 "body" => "<p>An error occured while processing your request.<br />It is not possible to recover from this error.<br /><br />Our technicians have been notified and will look into it as soon as possible.<br />Sorry for any Inconvenience.</p><pre style='margin-top: 34px; font-size: 75%'><b>Unhandled $errorType Thrown</b><br />" . framework_get_error_message() . "$details</pre>");
 				break;
 				
 			default:
