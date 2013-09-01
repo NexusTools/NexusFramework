@@ -13,18 +13,14 @@ ob_start(null, 5016, false); // Prevent destruction of built-in ob stack
 
 if(ini_get('zlib.output_compression'))
 	define("COMPRESSED_OUTPUT", true);
-else if(function_exists("ob_gzhandler"))
-	if(!in_array("ob_gzhandler", ob_list_handlers()))
-			define("COMPRESSED_OUTPUT", false);
-	else
-		define("COMPRESSED_OUTPUT", "gzip");
-else if(function_exists("ob_deflatehandler"))
-	if(!in_array("ob_deflatehandler", ob_list_handlers()))
-		define("COMPRESSED_OUTPUT", false);
-	else
-		define("COMPRESSED_OUTPUT", "deflate");
-else 
-	define("COMPRESSED_OUTPUT", false);
+if(function_exists("ob_gzhandler") &&
+		in_array("ob_gzhandler", ob_list_handlers()))
+	define("COMPRESSED_OUTPUT", "gzip");
+if(function_exists("ob_deflatehandler") &&
+		in_array("ob_deflatehandler", ob_list_handlers()))
+	define("COMPRESSED_OUTPUT", "deflate");
+if(!defined("COMPRESSED_OUTPUT"))
+	while(ob_get_level() && ob_end_clean());
 
 // Setup Output Buffering
 if(!function_exists("ob_void")) {

@@ -19,18 +19,29 @@ abstract class OutputFilter {
 	public static function startCompression() {
 		while(ob_get_level() > NATIVE_OB_LEVEL && ob_end_clean());
 		
-		if(COMPRESSED_OUTPUT)
+		if(defined("COMPRESSED_OUTPUT"))
 			return true;
+		
+		if(defined("NO_COMPRESSED_OUTPUT")) {
+			ob_start(null, 5120);
+			return true;
+		}
 	
-		if(function_exists("ob_gzhandler"))
-			return array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
+		if(function_exists("ob_gzhandler") &&
+				array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
 					preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
-															ob_start("ob_gzhandler", 5120);
-		else if(function_exists("ob_deflatehandler"))
-			return array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
+												ob_start("ob_gzhandler", 5120)) {
+												
+			define("COMPRESSED_OUTPUT", "gzip");
+			return true;
+		} else if(function_exists("ob_deflatehandler") &&
+				array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) &&
 					preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) &&
-															ob_start("ob_deflatehandler", 5120);
-		else
+												ob_start("ob_deflatehandler", 5120)) {
+												
+			define("COMPRESSED_OUTPUT", "deflate");
+			return true;
+		} else
 			return false;
 		
 	}
