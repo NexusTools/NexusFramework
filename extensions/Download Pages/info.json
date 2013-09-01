@@ -1,0 +1,16 @@
+{
+	"name": "Download Pages",
+	"description": "Provides pages when serving files, and conditions for controlling file and directory access.",
+	"provides": "download-pages",
+	"page-root": "/downloads/",
+	"database": {
+		"downloads": {
+			"file": "VARCHAR(250)",
+			"client": "VARCHAR(50)"
+		},
+		"conditions": {
+			"file": "VARCHAR(250)",
+			"condition": "VARCHAR(50)"
+		}
+	}
+}
