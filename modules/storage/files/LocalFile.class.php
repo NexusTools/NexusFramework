@@ -11,20 +11,33 @@ class LocalFile extends FileLocker {
 			$this->open($autoOpen);
 	}
 	
-	public function setContent(/* String */ $content) {
-		$this->reopen(self::ReadWrite);
+	public function setContent(/* String */ $content, $autoClose =true, $encode =true) {
+		if(!$this->reopen(self::ReadWrite))
+			IOException::throwWriteError($this->getFileName());
+			
+		if($encode)
+			$content = json_encode($content);
 		$this->write($content);
-		$this->close();
+		
+		if($autoClose)
+			$this->close();
 	}
 	
-	public function getContent($default =false) {
+	public function getContent($decode =true, $autoClose =true, $default =false) {
 		if(!$this->exists())
 			return $default;
 			
-		$this->reopen(self::ReadOnly);
-		$ret = fread($this->getResource(), $this->size());
-		$this->close();
-		return $ret;
+		if(!$this->reopen(self::ReadOnly))
+			IOException::throwReadError($this->getFileName());
+			
+		$content = fread($this->getResource(), $this->size());
+		if($decode)
+			$content = json_decode($content, true);
+			
+		if($autoClose)
+			$this->close();
+			
+		return $content;
 	}
 
     public static function __callStatic($name, $arguments)
@@ -110,12 +123,28 @@ class LocalFile extends FileLocker {
 		return is_link($this->getFileName());
 	}
 	
+	public function isOpen() {
+		return $this->isLocked();
+	}
+	
 	public function size() {
+		if($this->isOpen()) {
+			$pos = $this->pos();
+			$this->seek(0, SEEK_END);
+			$size = $this->pos();
+			$this->seek($pos);
+			return $size;
+		}
+		
 		return filesize($this->getFileName());
 	}
 	
-	public function seek($to) {
-		return ftell($this->getResource());
+	public function remaining() {
+		return $this->isOpen() ? $this->size() - $this->pos() : false;
+	}
+	
+	public function seek($pos, $whence = SEEK_SET) {
+		return fseek($this->getResource(), $pos, $whence);
 	}
 	
 	public function pos() {

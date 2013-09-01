@@ -5,6 +5,7 @@ class FileLocker implements Locker {
 
 	private $fileName;
 	private $fileRes = false;
+	private $exclusive = false;
 	
 	public function __construct($fileName) {
 		$this->fileName = fullpath($fileName);
@@ -32,8 +33,10 @@ class FileLocker implements Locker {
 		if(!$this->fileRes)
 			throw new IOException($this->fileName, IOException::WriteAccess);
 		
-		if(flock($this->fileRes, $exclusive ? LOCK_EX : LOCK_SH))
+		if(flock($this->fileRes, $exclusive ? LOCK_EX : LOCK_SH)) {
+			$this->exclusive = $exclusive;
 			return true;
+		}
 			
 		fclose($this->fileRes);
 		$this->fileRes = false;
@@ -41,16 +44,15 @@ class FileLocker implements Locker {
 	}
 
 	public function relock($exclusive) {
-		if($this->fileRes) {
-			flock($this->fileRes, LOCK_UN);
-			if(flock($this->fileRes, $exclusive ? LOCK_EX : LOCK_SH))
+		if($this->isLocked()) {
+			if($this->exclusive == $exclusive)
 				return true;
-		} else
-			return $this->lock($exclusive);
 			
-		fclose($this->fileRes);
-		$this->fileRes = false;
-		return false;
+			if(!$this->unlock())
+				return false;
+		}
+		
+		return $this->lock($exclusive);
 	}
 
 	public function tryLock($exclusive) {
@@ -68,8 +70,10 @@ class FileLocker implements Locker {
 			throw new IOException($this->fileName, IOException::WriteAccess);
 		
 		if(flock($this->fileRes, LOCK_NB | ($exclusive ?
-							LOCK_EX : LOCK_SH), $wouldBlock))
+							LOCK_EX : LOCK_SH), $wouldBlock)) {
+			$this->exclusive = $exclusive;
 			return true;
+		}
 		
 		if($wouldBlock)
 			return self::WOULD_BLOCK;
