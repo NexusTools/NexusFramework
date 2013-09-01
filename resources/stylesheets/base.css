@@ -1,9 +1,17 @@
+html, body {
+	height: 100%;
+}
+
 body {
 	margin: 0px;
 }
 
 * {
 	outline: none;
+}
+
+Framework\:Config {
+	display: none;
 }
 
 Framework\:Theme,
@@ -16,9 +24,25 @@ clear {
 	display: block;
 }
 
+footer ul {
+	float: right;
+	display: block;
+	margin-left: 4px;
+}
+
+footer ul li {
+	list-style-type: none;
+	margin-left: 0px;
+}
+
+Framework\:Theme {
+	min-height: 100%;
+	padding: 0px 24px;
+}
+
 Framework\:Page,
-header content,
-fiiter content {
+header,
+footer {
 	width: 800px;
 	display: table;
 	margin: 0 auto;
@@ -29,8 +53,9 @@ Framework\:Page column {
 }
 
 Framework\:Page column.sidebar {
+	text-align: left;
 	display: table;
-	width: 200px;
+	width: 140px;
 }
 
 Framework\:Page column.sidebar.left {
@@ -39,6 +64,10 @@ Framework\:Page column.sidebar.left {
 
 Framework\:Page column.sidebar.right {
 	float: right;
+}
+
+Framework\:Page column.sidebar widget {
+	margin-bottom: 20px;
 }
 
 Framework\:Page column.sidebar h1 {

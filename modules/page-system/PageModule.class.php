@@ -142,6 +142,10 @@ class PageModule {
 		return self::$instance->error !== false;
 	}
 	
+	public static function getPageTitle() {
+		return self::$instance->pageTitle;
+	}
+	
 	public function __construct($path, $pureVirtualPaths=false, $ignorePrepend=false){
 		global $__framework_activePath;
 		if(DEBUG_MODE) {

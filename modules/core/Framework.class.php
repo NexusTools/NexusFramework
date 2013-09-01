@@ -630,15 +630,15 @@ Disallow: " . BASE_URI;
 		    exit;
 		
 		Template::writeHeader();
-		echo "<framework:theme>";
+		echo "<framework:theme><header>";
 		$module->getTheme()->runHeader();
-		echo "<framework:page>";
+		echo "</header><framework:page>";
 		Triggers::broadcast("template", "page-header");
 		$module->run();
 		Triggers::broadcast("template", "page-footer");
-		echo "</framework:page>";
+		echo "</framework:page><footer>";
 		$module->getTheme()->runFooter();
-		echo "</framework:theme>";
+		echo "</footer></framework:theme>";
 		Template::writeFooter();
 		$outputCapture->serve();
 	}
