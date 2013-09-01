@@ -11,21 +11,33 @@ class LocalFile extends FileLocker {
 			$this->open($autoOpen);
 	}
 	
-	public function setContent(/* String */ $content, $autoClose =true, $encode =true) {
-		if(!$this->reopen(self::ReadWrite))
-			IOException::throwWriteError($this->getFileName());
+	public function setContent(/* String */ $content, $autoClose =true, $encode =true, $unsafe =false) {
+		if($unsafe) {
+			if(!$this->reopen(self::ReadWrite))
+				IOException::throwWriteError($this->getFileName());
 			
-		if($encode)
-			$content = json_encode($content);
-		$this->write($content);
-		
-		if($autoClose)
+			if($encode)
+				$content = json_encode($content);
+			$this->write($content);
+			
+			if($autoClose)
+				$this->close();
+		} else {
 			$this->close();
+			
+			$tempFile = new LocalFile($this->getFileName() . ".tmp");
+			$tempFile->setContent($content, true, $encode, true);
+			if(!$tempFile->move($this->getFileName(), true))
+				IOException::throwWriteError($this->getFileName());
+		}
+		
+			
 	}
 	
-	public function getContent($decode =true, $autoClose =true, $default =false) {
+	public function getContent($decode =true, $autoClose =true, $default =false, $checkFallback =true) {
 		if(!$this->exists())
-			return $default;
+			return $checkFallback ? LocalFile::getContentFor($this->getFileName()
+								. ".tmp", $decode, true, $default, false) : $default;
 			
 		if(!$this->reopen(self::ReadOnly))
 			IOException::throwReadError($this->getFileName());
@@ -77,6 +89,26 @@ class LocalFile extends FileLocker {
 	
 	public function reopen(/* self::OpenMode */ $mode) {
 		return $this->relock($mode == self::ReadWrite);
+	}
+	
+	public function move($newpath, $overwrite =false) {
+		$newpath = fullpath($newpath);
+		if(file_exists($newpath)) {
+			if(!$overwrite)
+				throw new IOException($newpath, false, "Cannot move file, destination exists");
+				
+			if(!unlink($newpath))
+				throw new IOException($newpath, false, "Cannot move file, destination won't delete");
+		}
+		
+		$this->close();
+		if(!rename($this->getFileName(), $newpath))
+			return false;
+			
+		clearstatcache(false, $this->getFileName());
+		$this->setFileName($newpath);
+		clearstatcache(false, $this->getFileName());
+		return true;
 	}
 	
 	public function refresh() {

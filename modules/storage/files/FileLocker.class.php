@@ -11,6 +11,11 @@ class FileLocker implements Locker {
 		$this->fileName = fullpath($fileName);
 	}
 	
+	public function setFileName($fileName) {
+		$this->unlock();
+		$this->fileName = $fileName;
+	}
+	
 	public function getFileName() {
 		return $this->fileName;
 	}
