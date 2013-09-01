@@ -1,0 +1,21 @@
+body {
+	background-color: #f0f0f0;
+}
+
+Framework\:Theme {
+	width: auto;
+	margin: 40px auto;
+	border-radius: 10px;
+	text-align: center;
+	display: table;
+	height: default;
+	min-height: 200px;
+	background-color: white;
+}
+
+p {
+	text-align: left;
+	display: inline-block;
+	margin: 24px 4px;
+	width: auto;
+}
