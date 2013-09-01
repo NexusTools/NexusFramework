@@ -11,11 +11,11 @@ function require_chdir($file, $path=false){
 	chdir($path);
 	if(!is_file($file)) {
 		chdir($owd);
-		throw new IOException($file, IOException::NotFound);
+		throw new IOException($path . $file, IOException::NotFound);
 	}
 	if(!is_readable($file)) {
 		chdir($owd);
-		throw new IOException($file, IOException::ReadAccess);
+		throw new IOException($path . $file, IOException::ReadAccess);
 	}
 
 	$ret = include($file);
@@ -125,6 +125,8 @@ function shortpath($path){
 }
 
 function fullpath($path){
+	global $__framework_activePath;
+
 	if(startsWith($path, INDEX_PATH) || startsWith($path, BASE_TMP_PATH)
 	    	|| startsWith($path, MEDIA_PATH) || startsWith($path, FRAMEWORK_PATH)
 	    	|| startsWith($path, Theme::getPath()))
@@ -147,7 +149,8 @@ function fullpath($path){
     if(file_exists($rpath = Theme::getPath() . DIRSEP. $path))
 	    return properpath($rpath);
 		
-    if(file_exists($rpath = INDEX_PATH . DIRSEP . $path))
+    if(isset($__framework_activePath) &&
+    		file_exists($rpath = $__framework_activePath . DIRSEP . $path))
 		return properpath($rpath);
 		
 	if(file_exists($rpath = FRAMEWORK_PATH . DIRSEP . $path))

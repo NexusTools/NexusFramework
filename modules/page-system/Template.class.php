@@ -21,6 +21,8 @@ class Template {
 	private static $headerScripts = Array();
 	private static $footerScripts = Array();
 	private static $titleFormat = TITLE_FORMAT;
+	private static $systemStyleMedia = Array();
+	private static $systemStyles = Array();
 	
 	public static function reset(){
 		self::$title = DEFAULT_PAGE_NAME;
@@ -30,6 +32,8 @@ class Template {
 		self::$elements = Array(Array(), Array(), Array());
 		self::$headerScripts = Array();
 		self::$footerScripts = Array();
+		self::$systemStyleMedia = Array();
+		self::$systemStyles = Array();
 		self::init();
 	}
 	
@@ -45,6 +49,8 @@ class Template {
 
 		Template::setMetaTag("generator", "NexusFramework " . FRAMEWORK_VERSION . " - OpenSource WebFramework");
 		self::setRobotsPolicy(!defined("NO_ROBOTS"));
+		
+		self::addSystemStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "base.css");
 
 		if(is_file($favicon = fullpath("favicon.ico")))
 			self::setFavicon($favicon);
@@ -135,6 +141,15 @@ class Template {
 	        self::$styleMedia[$id] = $media;
 	}
 	
+	public static function addSystemStyle($style, $media=false){
+		$style = fullpath($style);
+		$id = Framework::uniqueHash($style);
+		if(!isset(self::$systemStyles[$id]))
+			self::$systemStyles[$id] = new CompressedStyle($style);
+	    if($media)
+	        self::$systemStyleMedia[$id] = $media;
+	}
+	
 	public static function addStyle($style, $media=false){
 		$style = fullpath($style);
 		$id = Framework::uniqueHash($style);
@@ -207,6 +222,19 @@ class Template {
 				echo ">$data[content]</$data[tag]>";
 			} else
 				echo " />";
+		}
+		
+		foreach(self::$systemStyles as $id => $style){
+		    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
+		    if($style instanceof StyleCompressor) {
+				echo $style->getReferenceURI("text/css");
+				if(DEBUG_MODE)
+					echo "\" storage=\"" . $style->getStoragePath();
+			} else
+				echo "$style";
+			if(isset(self::$systemStyleMedia[$id]))
+			    echo "\" media=\"" . self::$systemStyleMedia[$id];
+		    echo "\" resource-id=\"$id\" />";
 		}
 		foreach(self::$styles as $id => $style){
 		    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";

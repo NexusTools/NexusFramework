@@ -143,6 +143,7 @@ class PageModule {
 	}
 	
 	public function __construct($path, $pureVirtualPaths=false, $ignorePrepend=false){
+		global $__framework_activePath;
 		if(DEBUG_MODE) {
 			Profiler::start("PageModule");
 			Profiler::start("PageModule[Constructor]");
@@ -174,7 +175,10 @@ class PageModule {
 					&& is_numeric(self::$arguments[1]))
 				$this->setError(intval(self::$arguments[1]));
 			else {
-				if(!$this->findModule(INDEX_PATH . "pages/", self::$arguments)) {
+				if(!isset($__framework_activePath))
+					$__framework_activePath = INDEX_PATH;
+			
+				if(!$this->findModule($__framework_activePath . "pages/", self::$arguments)) {
 					if($pureVirtualPaths === false)
 						$pureVirtualPaths = ExtensionLoader::getVirtualPaths();
 					$this->exploreVirtualPaths(self::$arguments, $pureVirtualPaths);

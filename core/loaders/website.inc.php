@@ -13,13 +13,11 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false)
         header("X-UA-Compatible: IE=Edge,chrome=1");
 
 if(is_file(INDEX_PATH . "framework.config.php"))
-	require INDEX_PATH . "framework.config.php";
-else {
-	while(ob_get_level() > NATIVE_OB_LEVEL)
-		ob_end_clean();
-	require FRAMEWORK_CORE_PATH . "installer.inc.php";
-	return;
-}
+	$runPath = INDEX_PATH;
+else
+	$runPath = FRAMEWORK_PATH . "installer" . DIRSEP;
+
+require $runPath . "framework.config.php";
 
 if(!defined("BASE_TMP_PATH")) {
 	$tmpPath = cleanpath(sys_get_temp_dir() . DIRSEP . "NexusFramework");
@@ -96,5 +94,5 @@ else if($_SESSION['NextUpdate'] < time()) {
 }
 
 Profiler::finish("Loader");
-Framework::run(REQUEST_URI, INDEX_PATH);
+Framework::run(REQUEST_URI, $runPath);
 ?>

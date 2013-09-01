@@ -429,7 +429,9 @@ closedir($handle);
 	}
 	
 	public static function run($requestURI, $basePath){
+		global $__framework_activePath;
 		Profiler::start("Framework");
+		$__framework_activePath = $basePath;
 	    chdir($basePath);
 		
 		$requestURI = relativepath($requestURI);

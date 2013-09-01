@@ -1,0 +1,73 @@
+body {
+	margin: 0px;
+}
+
+* {
+	outline: none;
+}
+
+Framework\:Theme,
+Framework\:Page,
+content,
+header,
+footer,
+widget,
+clear {
+	display: block;
+}
+
+Framework\:Page,
+header content,
+fiiter content {
+	width: 800px;
+	display: table;
+	margin: 0 auto;
+}
+
+Framework\:Page column {
+	display: inline-block;
+}
+
+Framework\:Page column.sidebar {
+	display: table;
+	width: 200px;
+}
+
+Framework\:Page column.sidebar.left {
+	float: left;
+}
+
+Framework\:Page column.sidebar.right {
+	float: right;
+}
+
+Framework\:Page column.sidebar h1 {
+	font-size: 130%;
+}
+
+Framework\:Page column.sidebar h2 {
+	font-size: 120%;
+}
+
+Framework\:Page column.sidebar h3 {
+	font-size: 110%;
+}
+
+right,
+left {
+	display: inline-block;
+}
+
+clear {
+	clear: both;
+}
+
+right,
+.float-right {
+	float: right;
+}
+
+left,
+.float-left {
+	float: left;
+}
