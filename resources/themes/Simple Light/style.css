@@ -1,10 +1,13 @@
 body {
 	background-color: #f0f0f0;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 40px;
 }
 
 Framework\:Theme {
 	width: auto;
-	margin: 40px auto;
+	margin: 0px auto;
 	border-radius: 10px;
 	text-align: center;
 	display: table;

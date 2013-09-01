@@ -7,6 +7,5 @@ define("META_DESCRIPTION", "");
 define("THEME", "Simple Dark");
 define("DATABASE_WRAPPER", "sqlite-pdo");
 
-define("DEBUG_MODE", true);
 define("NO_ROBOTS", true);
 ?>
