@@ -1,5 +1,4 @@
 <?php
-
 class Framework {
 
     const RawHash = 0;
@@ -9,7 +8,6 @@ class Framework {
     const URLSafeHash = 4;
     
     static $customTags = Array();
-    
     private static $pageContent = "";
     
     public static function isHeadRequest(){
@@ -100,11 +98,14 @@ class Framework {
 	}
 	
 	private static function serveFileInternal($file, $mimetype=false, $realName=false, $expiresAt=false){
+		OutputFilter::resetToNative(false);
+	
 		if(is_dir($file)) {
 			$file = fullpath($file);
 			if(!is_readable($file))
 				self::runPage("/errordoc/403");
-			if(!startsWith($file, INDEX_PATH))
+			if(!startsWith($file, INDEX_PATH) &&
+					!startsWith($file, FRAMEWORK_RES_PATH))
 				self::runPage("/errordoc/404");
 			if(!($handle = opendir($file)))
 				self::runPage("/errordoc/500");
@@ -140,9 +141,12 @@ while (false !== ($entry = readdir($handle))) {
 		continue;
 	}
 	
-	?><tr><td><?
-	?><img src="<? echo BASE_URI . "res:icon/folder"; ?>" width="22" height="22" /></td><td><a href="<?
-	echo cleanpath(BASE_URI . REQUEST_URI . DIRSEP . $entry);
+	$path = BASE_URI . REQUEST_URI;
+	if(!endsWith($path, RES_CONNECTOR) && !endsWith($path, DIRSEP))
+		$path .= DIRSEP;
+	
+	?><tr><td><img src="<? echo BASE_URI . "res:icon/folder"; ?>" width="22" height="22" /></td><td><a href="<?
+	echo cleanpath($path . $entry);
 	?>"><? echo $entry; ?></a></td><td>directory</td><td><?
 	echo StringFormat::formatFilesize(filesize($entry));
 	?></td></tr><?
@@ -178,8 +182,12 @@ foreach($files as $entry) {
 			$icon = BASE_URI . "res:icon/empty";
 	}
 	
+	$path = BASE_URI . REQUEST_URI;
+	if(!endsWith($path, RES_CONNECTOR) && !endsWith($path, DIRSEP))
+		$path .= DIRSEP;
+	
 	?><img src="<? echo $icon; ?>" width="22" height="22" /></td><td><a href="<?
-	echo cleanpath(BASE_URI . REQUEST_URI . DIRSEP . $entry);
+	echo cleanpath($path . $entry);
 	?>"><? echo $entry; ?></a></td><td><?
 	echo $mime;
 	?></td><td><?
@@ -379,9 +387,6 @@ closedir($handle);
 
             case "lgpl":
                 self::serveFile(FRAMEWORK_RES_PATH . "LGPL3.0.html");
-                
-            case "license":
-                self::serveFile(FRAMEWORK_RES_PATH . "license");
 
 			case "script":
 				$expiresAt = time() + rand(strtotime("+1 month", 0), strtotime("+2 month", 0));
@@ -423,9 +428,11 @@ closedir($handle);
 				echo "\nInstall Path: " . FRAMEWORK_PATH;
 				echo "\nBase URL: " . BASE_URL;
 				exit;
+				
+			
 		}
 		
-		self::runPage("/errordoc/404");
+		self::serveFileInternal(FRAMEWORK_RES_PATH . $res);
 	}
 	
 	public static function run($requestURI, $basePath){
@@ -561,6 +568,9 @@ Disallow: " . BASE_URI;
 
 		if(startsWith($path, MEDIA_PATH))
 			return ($relative ? MEDIA_URI : MEDIA_URL) . substr($path, strlen(MEDIA_PATH));
+
+		if(startsWith($path, FRAMEWORK_RES_PATH))
+			return ($relative ? "/res:" : BASE_URL . "res:") . substr($path, strlen(FRAMEWORK_RES_PATH));
 
 		if($shared && startsWith($rawPath, TMP_PATH))
 			$shared = false;
