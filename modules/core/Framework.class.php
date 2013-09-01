@@ -104,9 +104,14 @@ class Framework {
 			$file = fullpath($file);
 			if(!is_readable($file))
 				self::runPage("/errordoc/403");
-			if(!startsWith($file, INDEX_PATH) &&
-					!startsWith($file, FRAMEWORK_RES_PATH))
-				self::runPage("/errordoc/404");
+				
+			if(startsWith($file, FRAMEWORK_RES_PATH))
+				$path = "/res:" . substr($file, strlen(FRAMEWORK_RES_PATH));
+			else {
+				if(!startsWith($file, INDEX_PATH))
+					self::runPage("/errordoc/404");
+				$path = substr($file, strlen(INDEX_PATH)-1);
+			}
 			if(!($handle = opendir($file)))
 				self::runPage("/errordoc/500");
 				
@@ -115,7 +120,6 @@ class Framework {
 			if(is_file($indexPath = $file . "index.html") && is_readable($indexPath))
 				self::serveFileInternal($indexPath);
 			
-			$path = substr($file, strlen(INDEX_PATH)-1);
 			header("Content-Type: text/html; charset=UTF-8");
 			ExtensionLoader::loadEnabledExtensions();
 			Triggers::broadcast("FileServer", "ServeDirectory", $path);
