@@ -142,6 +142,10 @@ function fullpath($path){
 	
 	if(file_exists($rpath = getcwd() . DIRSEP . $path))
 		return properpath($rpath);
+		
+    if(isset($__framework_activePath) &&
+    		file_exists($rpath = $__framework_activePath . DIRSEP . $path))
+		return properpath($rpath);
 	
 	if(file_exists($rpath = MEDIA_PATH . DIRSEP . $path))
 		return properpath($rpath);
@@ -149,8 +153,7 @@ function fullpath($path){
     if(file_exists($rpath = Theme::getPath() . DIRSEP. $path))
 	    return properpath($rpath);
 		
-    if(isset($__framework_activePath) &&
-    		file_exists($rpath = $__framework_activePath . DIRSEP . $path))
+	if(file_exists($rpath = FRAMEWORK_RES_PATH . DIRSEP . $path))
 		return properpath($rpath);
 		
 	if(file_exists($rpath = FRAMEWORK_PATH . DIRSEP . $path))
