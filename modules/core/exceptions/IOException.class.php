@@ -7,6 +7,7 @@ class IOException extends Exception {
 	const WriteAccess = 0x03;
 	const ListAccess = 0x04;
 	const Corrupt = 0x05;
+	const EOF = 0x06;
 	
 	private $path;
 	
@@ -31,6 +32,10 @@ class IOException extends Exception {
 					
 				case self::Corrupt:
 					$mess = "Contents Corrupt";
+					break;
+					
+				case self::EOF:
+					$mess = "Unexpected End of File";
 					break;
 				
 				default:
@@ -64,6 +69,10 @@ class IOException extends Exception {
 	
 	public static function throwListError($path){
 		throw new IOException($path, self::ListAccess);
+	}
+	
+	public static function throwEOFError($path){
+		throw new IOException($path, self::EOF);
 	}
 	
 }

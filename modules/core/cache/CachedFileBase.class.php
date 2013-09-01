@@ -7,9 +7,9 @@ abstract class CachedFileBase extends CachedObject {
 	protected function __construct($path){
 		$this->filepath = fullpath($path);
 		if(!file_exists($this->getFilepath()))
-			throw new Exception("No Such File `". $this->filepath . "`");
+			IOException::throwNotFound($this->filepath);
 	    if(!is_readable($this->getFilePath()))
-	        throw new Exception("Cannot Read File `". $this->filepath . "`");
+			IOException::throwReadError($this->filepath);
 	}
 	
 	public function getFilepath(){

@@ -14,6 +14,10 @@ class FileLocker implements Locker {
 		return $this->fileName;
 	}
 	
+	protected function getResource() {
+		return $this->fileRes;
+	}
+	
 	public function lock($exclusive) {
 		if($this->fileRes)
 			return true;
