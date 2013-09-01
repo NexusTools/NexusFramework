@@ -99,11 +99,14 @@ class Framework {
 	
 	private static function serveFileInternal($file, $mimetype=false, $realName=false, $expiresAt=false){
 		OutputFilter::resetToNative(false);
+		
+		if(!file_exists($file))
+			self::runPage("/errordoc/404");
+		if(!is_readable($file))
+			self::runPage("/errordoc/403");
 	
 		if(is_dir($file)) {
-			$file = fullpath($file);
-			if(!is_readable($file))
-				self::runPage("/errordoc/403");
+			$file = cleanpath($file);
 				
 			if(startsWith($file, FRAMEWORK_RES_PATH))
 				$path = "/res:" . substr($file, strlen(FRAMEWORK_RES_PATH));
@@ -208,9 +211,9 @@ closedir($handle);
 		}
 		if(endsWith($file, ".php"))
 		    self::runPage("/errordoc/403");
-		    
-		if(!is_file($file) || !($size = filesize($file)))
-		    self::runPage("/errordoc/404");
+		
+		if(!($size = filesize($file)))
+			self::runPage("/errordoc/204");
 		    
 		Triggers::broadcast("FileServer", "ServeFile", $file);
 		$reader = fopen($file, "r");
@@ -578,7 +581,7 @@ Disallow: " . BASE_URI;
 			return ($relative ? MEDIA_URI : MEDIA_URL) . substr($path, strlen(MEDIA_PATH));
 
 		if(startsWith($path, FRAMEWORK_RES_PATH))
-			return ($relative ? "/res:" : BASE_URL . "res:") . substr($path, strlen(FRAMEWORK_RES_PATH));
+			return ($relative ? BASE_URI . "res:" : BASE_URL . "res:") . substr($path, strlen(FRAMEWORK_RES_PATH));
 
 		if($shared && startsWith($rawPath, TMP_PATH))
 			$shared = false;
