@@ -1,4 +1,5 @@
 {
 	"name": "Simple Dark",
-	"description": "A simple dark theme."
+	"description": "A simple dark theme.",
+	"parent": "Basic"
 }
