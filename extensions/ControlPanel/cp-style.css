@@ -1,8 +1,11 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
+
 html, body {
     width: 100%;
     height: 100%;
     margin: 0px;
     overflow: hidden;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 Framework\:Theme {
@@ -494,7 +497,7 @@ Framework\:Page BreadCrumb {
 	z-index: 200;
 	width: 100%;
 	padding: 10px;
-	height: 20px;
+	min-height: 20px;
 }
 
 Framework\:Page BreadCrumb img,
@@ -590,6 +593,11 @@ Framework\:Page Content {
 	overflow: auto;
 }
 
+Framework\:Page Content Center {
+	margin-top: 15px;
+	font-size: 80%;
+}
+
 Framework\:Page Content PageButtons {
     display: none;
 }
@@ -616,6 +624,7 @@ Framework\:Page Content Table TR TD {
     -moz-transition: background-color 200ms; /* Firefox 4 */
     -webkit-transition: background-color 200ms; /* Safari and Chrome */
     -o-transition: background-color 200ms; /* Opera */
+    padding: 8px;
 }
 
 Framework\:Page Content Table TR TD a {
