@@ -13,6 +13,20 @@ body {
 	box-sizing: border-box;
 }
 
+a {
+	opacity: 0.9;
+	transition: opacity 200ms;
+	-webkit-transition: opacity 200ms; /* Safari */
+}
+
+a:hover {
+	opacity: 1;
+}
+
+a img {
+	border: none;
+}
+
 Framework\:Config,
 .hidden {
 	display: none;
