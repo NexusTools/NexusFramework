@@ -83,10 +83,18 @@ Framework\:Page column.pagearea {
 }
 
 Framework\:Page column.sidebar {
+	padding: 0px;
 	text-align: left;
-	padding: 0px 13px;
 	min-width: 140px;
 	width: 140px;
+}
+
+Framework\:Page column.sidebar.right {
+	padding-left: 13px;
+}
+
+Framework\:Page column.sidebar.left {
+	padding-right: 13px;
 }
 
 Framework\:Page column.sidebar widget {
