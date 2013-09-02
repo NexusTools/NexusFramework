@@ -84,9 +84,7 @@ You didn't receive this email through a mailing list.
 <h2>Opt Out of our Mailing List</h2>
 <table><tr><td>
 <label>Email</label><br /><input type="text" class="text" name="email" /></td></tr>
-<tr><td align="right"><input value="Opt Out" class="button" type="submit"></td></tr></table></form></center>
-</contents></column>
-<column class="sidebar right"><contents>
+<tr><td align="right"><input value="Opt Out" class="button" type="submit"></td></tr></table></form></center></column>
+<column class="sidebar right">
 <? PageCategories::runCategoryWidgets($productCatID, false, VirtualPages::RIGHTCOLUMN);
-PageCategories::runCategoryWidgets($productCatID, true, VirtualPages::RIGHTCOLUMN); ?>
-</contents></column>
+PageCategories::runCategoryWidgets($productCatID, true, VirtualPages::RIGHTCOLUMN); ?></column>

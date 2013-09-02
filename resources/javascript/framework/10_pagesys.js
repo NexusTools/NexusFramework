@@ -68,7 +68,7 @@ Framework.registerModule("PageSystem", {
 				if(document.viewport.getScrollOffsets().top != 0)
 					return; // Already scrolled down a bit
 			
-				$$("column.pagearea contents form").each(function(form) {
+				$$("column.pagearea form").each(function(form) {
 					if(form.hasAttribute("nofocus"))
 						return; // Continue
 				

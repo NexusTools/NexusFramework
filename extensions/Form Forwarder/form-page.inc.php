@@ -195,7 +195,7 @@ echo htmlspecialchars($data['content']);
 		
 		switch($layout){
 			case 0: // Single Column
-				echo "<Column class=\"pagearea large\"><Contents align=\"align\">";
+				echo "<Column class=\"pagearea large\">";
 				try {
 					require_chdir("pagearea.inc.php", Theme::getPath());
 				} catch(Exception $e) {}
@@ -205,11 +205,11 @@ echo htmlspecialchars($data['content']);
 				echo interpolate($article['content'], true, Triggers::broadcast("template", "page-data"));
 				if($article['inherit-footers'])
 					Articles::runInheritedWidgets($page['rowid'], 1);
-				echo "</Contents></Column>";
+				echo "</Column>";
 				break;
 				
 			case 1: // Right Sidebar
-				echo "<Column class=\"pagearea medium\"><Contents>";
+				echo "<Column class=\"pagearea medium\">";
 				try {
 					require_chdir("pagearea.inc.php", Theme::getPath());
 				} catch(Exception $e) {}
@@ -219,8 +219,7 @@ echo htmlspecialchars($data['content']);
 				echo interpolate($article['content'], true, Triggers::broadcast("template", "page-data"));
 				if($article['inherit-footers'])
 					Articles::runInheritedWidgets($page['rowid'], 1);
-				echo "</Contents></Column>";
-				echo "<Column class=\"sidebar right\"><Contents>";
+				echo "</Column><Column class=\"sidebar right\">";
 				try {
 					require_chdir("right.inc.php", Theme::getPath());
 				} catch(Exception $e) {}
@@ -229,11 +228,11 @@ echo htmlspecialchars($data['content']);
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::RIGHTCOLUMN);
 				if($article['inherit-footers'])
 					Articles::runInheritedWidgets($page['rowid'], 1, VirtualPages::RIGHTCOLUMN);
-				echo "</Contents></Column>";
+				echo "</Column>";
 				break;
 				
 			case 2: // Left Sidebar
-				echo "<Column class=\"sidebar left\"><Contents>";
+				echo "<Column class=\"sidebar left\">";
 				echo "<pre>";
 				print_r(Triggers::broadcast("template", "page-data"));
 				echo "</pre>";
@@ -246,32 +245,7 @@ echo htmlspecialchars($data['content']);
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::LEFTCOLUMN);
 				if($article['inherit-footers'])
 					Articles::runInheritedWidgets($page['rowid'], 1, VirtualPages::LEFTCOLUMN);
-				echo "</Contents></Column>";
-				echo "<Column class=\"pagearea medium\"><Contents>";
-				try {
-					require_chdir("pagearea.inc.php", Theme::getPath());
-				} catch(Exception $e) {}
-				if($article['inherit-headers'])
-					Articles::runInheritedWidgets($page['rowid'], 0); // Header Widgets
-				VirtualPages::runWidgets($page['rowid']);
-				echo interpolate($article['content'], true, Triggers::broadcast("template", "page-data"));
-				if($article['inherit-footers'])
-				Articles::runInheritedWidgets($page['rowid'], 1); // Footer Widgets
-					echo "</Contents></Column>";
-				break;
-				
-			case 3: // Dual Sidebars
-				echo "<Column class=\"sidebar left\"><Contents>";
-				try {
-					require_chdir("left.inc.php", Theme::getPath());
-				} catch(Exception $e) {}
-				if($article['inherit-headers'])
-					Articles::runInheritedWidgets($page['rowid'], 0, VirtualPages::LEFTCOLUMN);
-				VirtualPages::runWidgets($page['rowid'], VirtualPages::LEFTCOLUMN);
-				if($article['inherit-footers'])
-					Articles::runInheritedWidgets($page['rowid'], 1, VirtualPages::LEFTCOLUMN);
-				echo "</Contents></Column>";
-				echo "<Column class=\"pagearea small\"><Contents>";
+				echo "</Column><Column class=\"pagearea medium\">";
 				try {
 					require_chdir("pagearea.inc.php", Theme::getPath());
 				} catch(Exception $e) {}
@@ -281,8 +255,30 @@ echo htmlspecialchars($data['content']);
 				echo interpolate($article['content'], true, Triggers::broadcast("template", "page-data"));
 				if($article['inherit-footers'])
 					Articles::runInheritedWidgets($page['rowid'], 1); // Footer Widgets
-				echo "</Contents></Column>";
-				echo "<Column class=\"sidebar right\"><Contents>";
+				echo "</Column>";
+				break;
+				
+			case 3: // Dual Sidebars
+				echo "<Column class=\"sidebar left\">";
+				try {
+					require_chdir("left.inc.php", Theme::getPath());
+				} catch(Exception $e) {}
+				if($article['inherit-headers'])
+					Articles::runInheritedWidgets($page['rowid'], 0, VirtualPages::LEFTCOLUMN);
+				VirtualPages::runWidgets($page['rowid'], VirtualPages::LEFTCOLUMN);
+				if($article['inherit-footers'])
+					Articles::runInheritedWidgets($page['rowid'], 1, VirtualPages::LEFTCOLUMN);
+				echo "</Column><Column class=\"pagearea small\">";
+				try {
+					require_chdir("pagearea.inc.php", Theme::getPath());
+				} catch(Exception $e) {}
+				if($article['inherit-headers'])
+					Articles::runInheritedWidgets($page['rowid'], 0); // Header Widgets
+				VirtualPages::runWidgets($page['rowid']);
+				echo interpolate($article['content'], true, Triggers::broadcast("template", "page-data"));
+				if($article['inherit-footers'])
+					Articles::runInheritedWidgets($page['rowid'], 1); // Footer Widgets
+				echo "</Column><Column class=\"sidebar right\">";
 				try {
 					require_chdir("right.inc.php", Theme::getPath());
 				} catch(Exception $e) {}
@@ -291,7 +287,7 @@ echo htmlspecialchars($data['content']);
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::RIGHTCOLUMN);
 				if($article['inherit-footers'])
 					Articles::runInheritedWidgets($page['rowid'], 1, VirtualPages::RIGHTCOLUMN);
-				echo "</Contents></Column>";
+				echo "</Column>";
 				break;
 		}
 		

@@ -14,9 +14,10 @@ body {
 }
 
 a {
-	opacity: 0.9;
+	opacity: 0.85;
 	transition: opacity 200ms;
 	-webkit-transition: opacity 200ms; /* Safari */
+	color: inherit;
 }
 
 a:hover {
@@ -66,12 +67,14 @@ Framework\:Page,
 header,
 footer {
 	width: 800px;
+	table-layout: fixed;
 	display: table;
 	margin: 0 auto;
 }
 
 Framework\:Page column {
 	display: table-cell;
+	vertical-align: top;
 	height: 100%;
 }
 
@@ -82,6 +85,7 @@ Framework\:Page column.pagearea {
 Framework\:Page column.sidebar {
 	text-align: left;
 	padding: 0px 13px;
+	min-width: 140px;
 	width: 140px;
 }
 

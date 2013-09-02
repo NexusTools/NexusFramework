@@ -26,39 +26,35 @@ switch(VirtualPages::getMode()) {
 		$layout = VirtualPages::getDatabase()->selectField("basic-pages", Array("id" => $page['rowid']), "layout");
 		switch($layout){
 			case 0: // Single column
-				echo "<column class=\"pagearea large\"><contents align=\"align\">";
+				echo "<column class=\"pagearea large\">";
 				VirtualPages::runWidgets($page['rowid']);
-				echo "</contents></column>";
+				echo "</column>";
 				break;
 				
 			case 1: // Right Sidebar
-				echo "<column class=\"pagearea medium\"><contents>";
+				echo "<column class=\"pagearea medium\">";
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::PAGEAREA);
-				echo "</contents></column>";
-				echo "<column class=\"sidebar right\"><contents>";
+				echo "</column><column class=\"sidebar right\">";
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::RIGHTCOLUMN);
-				echo "</contents></column>";
+				echo "</column>";
 				break;
 				
 			case 2: // Left Sidebar
-				echo "<column class=\"sidebar left\"><contents>";
+				echo "<column class=\"sidebar left\">";
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::LEFTCOLUMN);
-				echo "</contents></column>";
-				echo "<column class=\"pagearea medium\"><contents>";
+				echo "</column><column class=\"pagearea medium\">";
 				VirtualPages::runWidgets($page['rowid']);
-				echo "</contents></column>";
+				echo "</column>";
 				break;
 				
 			case 3: // Dual Sidebars
-				echo "<column class=\"sidebar left\"><contents>";
+				echo "<column class=\"sidebar left\">";
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::LEFTCOLUMN);
-				echo "</contents></column>";
-				echo "<column class=\"pagearea small\"><contents>";
+				echo "</column><column class=\"pagearea small\">";
 				VirtualPages::runWidgets($page['rowid']);
-				echo "</contents></column>";
-				echo "<column class=\"sidebar right\"><contents>";
+				echo "</column><column class=\"sidebar right\">";
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::RIGHTCOLUMN);
-				echo "</contents></column>";
+				echo "</column>";
 				break;
 		}
 		break;

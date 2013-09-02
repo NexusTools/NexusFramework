@@ -419,9 +419,9 @@ class PageModule {
 		    if($this->sidebarLayout !== self::RAW_SIDEBAR_OUTPUT) {
 		        if($this->sidebarLayout == self::LEFT_SIDEBAR
 		                || $this->sidebarLayout == self::BOTH_SIDEBARS) {
-		            echo "<column class='sidebar left'><contents>";
+		            echo "<column class='sidebar left'>";
 		            require $this->leftSidebarScript;
-		            echo "</contents></column>";
+		            echo "</column>";
 		        }
 		        echo "<column class='pagearea";
 		        switch($this->sidebarLayout) {
@@ -436,7 +436,7 @@ class PageModule {
 		                echo " small";
 		                break;
 		        }
-		        echo "'><contents>";
+		        echo "'>";
 		    }
 		}
 		if($this->script)
@@ -451,13 +451,13 @@ class PageModule {
 			echo "</p></widget>";
 		}
 		if(!$onlyPageArea && $this->sidebarLayout !== self::RAW_SIDEBAR_OUTPUT) {
-		    echo "</contents></column>";
+		    echo "</column>";
 		    
 		    if($this->sidebarLayout == self::RIGHT_SIDEBAR
 		            || $this->sidebarLayout == self::BOTH_SIDEBARS) {
-		        echo "<column class='sidebar right'><contents>";
+		        echo "<column class='sidebar right'>";
 		        require $this->rightSidebarScript;
-		        echo "</contents></column>";
+		        echo "</column>";
 		    }
 		}
 		
@@ -466,7 +466,7 @@ class PageModule {
 		
 	    if($onlyPageArea) {
 	    	if($this->sidebarLayout === self::RAW_SIDEBAR_OUTPUT
-	                && preg_match("/<column\s.*?class=['\"].*?pagearea.*?['\"].*?>[\s\n]*?<contents.*?>((.|\n)*?)<\/contents>[\s\n]*?<\/column>/i", $this->buffer, $matches))
+	                && preg_match("/<column\s.*?class=['\"].*?pagearea.*?['\"].*?>((.|\n)*?)<\/column>/i", $this->buffer, $matches))
 	        	$this->buffer = trim($matches[1]);
 			if(!$capture)
 		        echo $this->buffer;

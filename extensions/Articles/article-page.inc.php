@@ -166,7 +166,7 @@ echo htmlspecialchars($data['content']);
 		
 		switch($layout){
 			case 0: // Single Column
-				echo "<column class=\"pagearea large\"><contents align=\"align\">";
+				echo "<column class=\"pagearea large\">";
 				if($article['inherit-headers'])
 					Articles::runInheritedWidgets($page['rowid'], 0);
 				VirtualPages::runWidgets($page['rowid']);
@@ -178,11 +178,11 @@ echo htmlspecialchars($data['content']);
 				echo "</widget>";
 				if($article['inherit-footers'])
 					Articles::runInheritedWidgets($page['rowid'], 1);
-				echo "</contents></column>";
+				echo "</column>";
 				break;
 				
 			case 1: // Right Sidebar
-				echo "<column class=\"pagearea medium\"><contents>";
+				echo "<column class=\"pagearea medium\">";
 				if($article['inherit-headers'])
 					Articles::runInheritedWidgets($page['rowid'], 0);
 				VirtualPages::runWidgets($page['rowid']);
@@ -194,48 +194,24 @@ echo htmlspecialchars($data['content']);
 				echo "</widget>";
 				if($article['inherit-footers'])
 					Articles::runInheritedWidgets($page['rowid'], 1);
-				echo "</contents></column>";
-				echo "<column class=\"sidebar right\"><contents>";
+				echo "</column>";
+				echo "<column class=\"sidebar right\">";
 				if($article['inherit-headers'])
 					Articles::runInheritedWidgets($page['rowid'], 0, VirtualPages::RIGHTCOLUMN);
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::RIGHTCOLUMN);
 				if($article['inherit-footers'])
 					Articles::runInheritedWidgets($page['rowid'], 1, VirtualPages::RIGHTCOLUMN);
-				echo "</contents></column>";
+				echo "</column>";
 				break;
 				
 			case 2: // Left Sidebar
-				echo "<column class=\"sidebar left\"><contents>";
+				echo "<column class=\"sidebar left\">";
 				if($article['inherit-headers'])
 					Articles::runInheritedWidgets($page['rowid'], 0, VirtualPages::LEFTCOLUMN);
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::LEFTCOLUMN);
 				if($article['inherit-footers'])
 					Articles::runInheritedWidgets($page['rowid'], 1, VirtualPages::LEFTCOLUMN);
-				echo "</contents></column>";
-				echo "<column class=\"pagearea medium\"><contents>";
-				if($article['inherit-headers'])
-					Articles::runInheritedWidgets($page['rowid'], 0); // Header Widgets
-				VirtualPages::runWidgets($page['rowid']);
-				echo "<widget edit-title='Edit Article' class='html'";
-				if(User::isStaff())
-					echo " control-page='Pages/Edit?id=" . $page['rowid'] . "'";
-				echo ">";
-				echo interpolate($article['content'], true, Triggers::broadcast("template", "page-data"));
-				echo "</widget>";
-				if($article['inherit-footers'])
-				Articles::runInheritedWidgets($page['rowid'], 1); // Footer Widgets
-					echo "</contents></column>";
-				break;
-				
-			case 3: // Dual Sidebars
-				echo "<column class=\"sidebar left\"><contents>";
-				if($article['inherit-headers'])
-					Articles::runInheritedWidgets($page['rowid'], 0, VirtualPages::LEFTCOLUMN);
-				VirtualPages::runWidgets($page['rowid'], VirtualPages::LEFTCOLUMN);
-				if($article['inherit-footers'])
-					Articles::runInheritedWidgets($page['rowid'], 1, VirtualPages::LEFTCOLUMN);
-				echo "</contents></column>";
-				echo "<column class=\"pagearea small\"><contents>";
+				echo "</column><column class=\"pagearea medium\">";
 				if($article['inherit-headers'])
 					Articles::runInheritedWidgets($page['rowid'], 0); // Header Widgets
 				VirtualPages::runWidgets($page['rowid']);
@@ -247,14 +223,35 @@ echo htmlspecialchars($data['content']);
 				echo "</widget>";
 				if($article['inherit-footers'])
 					Articles::runInheritedWidgets($page['rowid'], 1); // Footer Widgets
-				echo "</contents></column>";
-				echo "<column class=\"sidebar right\"><contents>";
+				echo "</column>";
+				break;
+				
+			case 3: // Dual Sidebars
+				echo "<column class=\"sidebar left\">";
+				if($article['inherit-headers'])
+					Articles::runInheritedWidgets($page['rowid'], 0, VirtualPages::LEFTCOLUMN);
+				VirtualPages::runWidgets($page['rowid'], VirtualPages::LEFTCOLUMN);
+				if($article['inherit-footers'])
+					Articles::runInheritedWidgets($page['rowid'], 1, VirtualPages::LEFTCOLUMN);
+				echo "</column><column class=\"pagearea small\">";
+				if($article['inherit-headers'])
+					Articles::runInheritedWidgets($page['rowid'], 0); // Header Widgets
+				VirtualPages::runWidgets($page['rowid']);
+				echo "<widget edit-title='Edit Article' class='html'";
+				if(User::isStaff())
+					echo " control-page='Pages/Edit?id=" . $page['rowid'] . "'";
+				echo ">";
+				echo interpolate($article['content'], true, Triggers::broadcast("template", "page-data"));
+				echo "</widget>";
+				if($article['inherit-footers'])
+					Articles::runInheritedWidgets($page['rowid'], 1); // Footer Widgets
+				echo "</column><column class=\"sidebar right\">";
 				if($article['inherit-headers'])
 					Articles::runInheritedWidgets($page['rowid'], 0, VirtualPages::RIGHTCOLUMN);
 				VirtualPages::runWidgets($page['rowid'], VirtualPages::RIGHTCOLUMN);
 				if($article['inherit-footers'])
 					Articles::runInheritedWidgets($page['rowid'], 1, VirtualPages::RIGHTCOLUMN);
-				echo "</contents></column>";
+				echo "</column>";
 				break;
 		}
 		
