@@ -651,15 +651,15 @@ Disallow: " . BASE_URI;
 		    exit;
 		
 		Template::writeHeader();
-		echo "<framework:theme><header>";
+		echo "<framework:theme>";
 		$module->getTheme()->runHeader();
-		echo "</header><framework:page>";
-		Triggers::broadcast("template", "page-header");
+		echo "<framework:page>";
+		Triggers::broadcast("Template", "ServePage", "header");
 		$module->run();
-		Triggers::broadcast("template", "page-footer");
-		echo "</framework:page><footer>";
+		Triggers::broadcast("Template", "ServePage", "footer");
+		echo "</framework:page>";
 		$module->getTheme()->runFooter();
-		echo "</footer></framework:theme>";
+		echo "</framework:theme>";
 		Template::writeFooter();
 		$outputCapture->serve();
 	}

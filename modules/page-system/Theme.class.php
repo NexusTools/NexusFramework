@@ -51,9 +51,13 @@ class Theme extends CachedFile {
 		if(file_exists($this->getFilepath() . "head.inc.php"))
 			$data['hs'] = "head.inc.php";
 		
+		if(file_exists($this->getFilepath() . "tmpl.head.inc.php"))
+			$data['ths'] = "tmpl.head.inc.php";
 		if(file_exists($this->getFilepath() . "body.head.inc.php"))
 			$data['bhs'] = "body.head.inc.php";
 		
+		if(file_exists($this->getFilepath() . "tmpl.foot.inc.php"))
+			$data['tfs'] = "tmpl.foot.inc.php";
 		if(file_exists($this->getFilepath() . "body.foot.inc.php"))
 			$data['bfs'] = "body.foot.inc.php";
 			
@@ -109,21 +113,27 @@ class Theme extends CachedFile {
 	}
 	
 	public function runHeader(){
-		if($this->hasKey("bhs"))
+		if($this->hasKey("ths"))
+			require_chdir($this->getValue('ths'), $this->getFilepath());
+			
+		if($this->hasKey("bhs")) {
+			echo "<header>";
 			require_chdir($this->getValue('bhs'), $this->getFilepath());
-		else if($this->parent)
+			echo "</header>";
+		} else if($this->parent)
 			$this->parent->runHeader();
-		else
-			throw new Exception("Theme has no header file.");
 	}
 	
 	public function runFooter(){
-		if($this->hasKey("bfs"))
+		if($this->hasKey("bfs")) {
+			echo "<footer>";
 			require_chdir($this->getValue('bfs'), $this->getFilepath());
-		else if($this->parent)
+			echo "</footer>";
+		} else if($this->parent)
 			$this->parent->runFooter();
-		else
-			throw new Exception("Theme has no footer file.");
+			
+		if($this->hasKey("tfs"))
+			require_chdir($this->getValue('tfs'), $this->getFilepath());
 	}
 
 } Theme::initActivePath();

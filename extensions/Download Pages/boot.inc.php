@@ -34,9 +34,9 @@ function __downloadPages_fileServerEvent($module, $event, $arguments) {
 					echo "<framework:theme>";
 					$module->getTheme()->runHeader();
 					echo "<framework:page>";
-					Triggers::broadcast("template", "page-header");
+					Triggers::broadcast("Template", "ServePage", "header");
 					$module->run();
-					Triggers::broadcast("template", "page-footer");
+					Triggers::broadcast("Template", "ServePage", "footer");
 					echo "</framework:page>";
 					$module->getTheme()->runFooter();
 					echo "</framework:theme>";
