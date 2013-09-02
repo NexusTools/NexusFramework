@@ -4,12 +4,14 @@
 			<?
 			$banner = fullpath("cp-banner.png");
 			if(file_exists($banner)) {
-				echo "<a title='Return to Website' href='/'><img style='float: left; display: inline-block; margin: 0px 2px; padding: 0px;' src='";
+				echo "<a title='Return to Website' href='";
+				echo BASE_URI;
+				echo "'><img style='float: left; display: inline-block; margin: 0px 2px; padding: 0px;' src='";
 				echo Framework::getReferenceURI($banner);
 				echo "' alt='";
 				echo $domain;
 				echo "' height='32px' /></a>";
-				echo '<widget onclick="location.href=\'/control\'">Control Panel</widget>';
+				echo '<widget style="cursor: pointer" onclick="location.href=\'' . BASE_URI . 'control\'">Control Panel</widget>';
 			} else {
 				$logo = fullpath("logo.png");
 				if(!file_exists($logo))
@@ -20,13 +22,15 @@
 					$logo = fullpath("favicon.gif");
 				$domain = StringFormat::displayForID(DOMAIN_SL);
 				if(file_exists($logo)) {
-					echo "<a title='Return to Website' href='/'><img style='float: left; display: inline-block; margin: 1px 5px; padding: 0px;' src='";
+					echo "<a title='Return to Website' href='";
+					echo BASE_URI;
+					echo "'><img style='float: left; display: inline-block; margin: 1px 5px; padding: 0px;' src='";
 					echo Framework::getReferenceURI($logo);
 					echo "' alt='";
 					echo $domain;
 					echo "' height='30px' /></a>";
 				}
-			?><widget onclick="location.href='/control'"><? echo $domain; ?> Control Panel</widget><? } ?>
+			?><widget style="cursor: pointer" onclick="location.href='<? echo BASE_URI; ?>control'"><? echo $domain; ?> Control Panel</widget><? } ?>
 			<?
 			$widgets = ControlPanel::getToolbarWidgets();
 			$count = count($widgets);

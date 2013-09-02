@@ -219,6 +219,8 @@ Toolbar Widget {
 	padding-left: 7px;
 	padding-right: 7px;
 	line-height: 32px;
+	display: inline-block;
+	width: auto;
 	color: white;
 	position: relative;
 	background-color: inherit;
