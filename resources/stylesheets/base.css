@@ -4,13 +4,17 @@ html, body {
 
 body {
 	margin: 0px;
+	cursor: default;
 }
 
 * {
 	outline: none;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
-Framework\:Config {
+Framework\:Config,
+.hidden {
 	display: none;
 }
 
