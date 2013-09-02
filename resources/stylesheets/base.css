@@ -33,13 +33,17 @@ Framework\:Config,
 }
 
 Framework\:Theme,
-Framework\:Page,
-content,
 header,
 footer,
-widget,
 clear {
 	display: block;
+}
+
+Framework\:Page,
+content,
+widget {
+	width: 100%;
+	display: table;
 }
 
 footer ul {
@@ -67,21 +71,18 @@ footer {
 }
 
 Framework\:Page column {
-	display: inline-block;
+	display: table-cell;
+	height: 100%;
+}
+
+Framework\:Page column.pagearea {
+	width: 100%;
 }
 
 Framework\:Page column.sidebar {
 	text-align: left;
-	display: table;
+	padding: 0px 13px;
 	width: 140px;
-}
-
-Framework\:Page column.sidebar.left {
-	float: left;
-}
-
-Framework\:Page column.sidebar.right {
-	float: right;
 }
 
 Framework\:Page column.sidebar widget {

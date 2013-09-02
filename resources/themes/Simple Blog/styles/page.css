@@ -1,0 +1,128 @@
+framework\:page {
+	padding-bottom: 1px;
+}
+
+framework\:page a {
+	position: relative;
+	background-image: url("/media/loading.png");
+	overflow: hidden;
+	display: block;
+	height: 160px;
+	width: 305px;
+	opacity: 0.9;
+	margin-top: 1px;
+	margin-left: 1px;
+	float: left;
+}
+
+framework\:page column a {
+	background-image: none;
+	display: inline;
+	height: auto;
+	width: auto;
+	float: none;
+}
+
+framework\:page a.center {
+	width: 306px;
+}
+
+framework\:page div a {
+	position: static;
+	background-image: none;
+	overflow: hidden;
+	display: inline;
+	opacity: 0.9;
+	margin-top: 0px;
+	margin-left: 0px;
+	height: auto;
+	width: auto;
+	float: none;
+}
+
+popup contents iframe {
+	background-image: url("/media/loading.png");
+}
+
+framework\:page a * {
+	-moz-transition: all 200ms;
+    -webkit-transition: all 200ms;
+    -o-transition: all 200ms;
+    transition: all 200ms;
+}
+
+framework\:page a div {
+	position: absolute;
+	color: white;
+	left: 0px;
+	top: 0px;
+}
+
+framework\:page a div.title {
+	padding: 5px;
+	border-bottom-right-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	background-color: rgba(0, 0, 0, 0.65);
+	opacity: 0.5;
+}
+
+framework\:page a div.banner {
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.65);
+	height: 26px;
+	line-height: 26px;
+	width: 100%;
+	top: 160px;
+}
+
+
+framework\:page a:hover div.banner {
+	top: 134px;
+}
+
+framework\:page a:hover div.title {
+	opacity: 1;
+}
+
+framework\:page a div.play-container {
+	text-align: center;
+	width: 918px;
+	height: 250px;
+	line-height: 250px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+
+framework\:page a div.play-container div.play {
+	-webkit-border-radius: 5px;
+	-moz-border-radius- 5px;
+	border-radius: 5px;
+	position: relative;
+	padding: 4px;
+	padding-right: 8px;
+	padding-left: 8px;
+	width: auto;
+	top: 100px;
+	line-height: normal;
+	display: inline-block;
+	background-color: rgba(0, 0, 0, 0.65);
+	-webkit-transform: scale(0.75); /* Safari and Chrome */
+	-ms-transform: scale(0.75); /* IE 9 */
+	transform: scale(0.75);
+	font-size: 24px;
+	margin: 0 auto;
+	opacity: 0.5;
+}
+
+framework\:page a:hover div.play-container div.play {
+	-webkit-transform: scale(1); /* Safari and Chrome */
+	-ms-transform: scale(1); /* IE 9 */
+	transform: scale(1);
+	opacity: 1;
+}
+
+framework\:page div.clear {
+	clear: both;
+}

@@ -1,4 +1,4 @@
 <?php
-Template::addStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "widgets.css");
-Template::addStyle("style.css");
+Template::addExternalStyle("http://fonts.googleapis.com/css?family=Open+Sans");
+Template::addStyles(Array("styles/layout.css", "styles/page.css"));
 ?>
