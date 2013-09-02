@@ -6,6 +6,7 @@ html, body {
     margin: 0px;
     overflow: hidden;
     font-family: 'Source Sans Pro', sans-serif;
+	font-size: 80%;
 }
 
 Framework\:Theme {
@@ -595,7 +596,6 @@ Framework\:Page Content {
 
 Framework\:Page Content Center {
 	margin-top: 15px;
-	font-size: 80%;
 }
 
 Framework\:Page Content PageButtons {
