@@ -141,6 +141,11 @@ class Template {
 	        self::$styleMedia[$id] = $media;
 	}
 	
+	public static function clearSystemStyles() {
+		 self::$systemStyles = Array();
+		 self::$systemStyleMedia = Array();
+	}
+	
 	public static function addSystemStyle($style, $media=false){
 		$style = fullpath($style);
 		$id = Framework::uniqueHash($style);
