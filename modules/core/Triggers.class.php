@@ -18,7 +18,7 @@ class Triggers {
 	public static function broadcast($module, $event, $arguments=false){
 		$data = Array();
 		foreach(self::$watchers as $watcher) {
-			$moreData = $watcher($module, $event, $arguments);
+			$moreData = call_user_func($watcher, $module, $event, $arguments);
 			if($moreData) {
 				if(is_array($moreData))
 					$data = array_merge($data, $moreData);
@@ -29,7 +29,7 @@ class Triggers {
 		
 		if(isset(self::$moduleWatchers[$module]))
 			foreach(self::$moduleWatchers[$module] as $watcher) {
-				$moreData = $watcher($module, $event, $arguments);
+				$moreData = call_user_func($watcher, $module, $event, $arguments);
 				if($moreData) {
 					if(is_array($moreData))
 						$data = array_merge($data, $moreData);
