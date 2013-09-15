@@ -1,0 +1,23 @@
+{
+	"name": "Logger",
+	"database": {
+		"logs": {
+			"user": "INTEGER",
+			"level": "TINYINT",
+			"section": {
+				"type": "VARCHAR(200)",
+				"case-insensative": 1
+			},
+			"subsection": {
+				"type": "VARCHAR(200)",
+				"case-insensative": 1,
+				"allow-null": 1
+			},
+			"desc": "VARCHAR(200)",
+			"details": {
+				"type": "BLOB",
+				"allow-null": 1
+			}
+		}
+	}
+}

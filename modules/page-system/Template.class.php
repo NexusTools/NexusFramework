@@ -51,6 +51,7 @@ class Template {
 		self::setRobotsPolicy(!defined("NO_ROBOTS"));
 		
 		self::addSystemStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "base.css");
+		self::addSystemStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "basic-widgets.css");
 
 		if(is_file($favicon = fullpath("favicon.ico")))
 			self::setFavicon($favicon);

@@ -400,6 +400,7 @@ ControlPanel.alertDialog = function(text, title){
         content.appendChild(pageButtons);
         ControlPanel.page.whiteout.popup.appendChild(content);
         ControlPanel.centerPopup();
+        Framework.Components.setupContainer(content);
         ControlPanel.page.whiteout.popup.addClassName("open");
     });
 }
@@ -463,6 +464,7 @@ Framework.API.registerHandler("controlpanel", function(data){
         ControlPanel.popupOpen = true;
         console.log("Popup Data Loaded");
         ControlPanel.page.whiteout.popup.innerHTML = data.html;
+        Framework.Components.setupContainer(ControlPanel.page.whiteout.popup);
         
         var dialogButtons = [];
         
@@ -680,8 +682,9 @@ Framework.API.registerHandler("controlpanel", function(data){
 	        ControlPanel.page.breadcrum.appendChild(item);
         }
 	
-	
+
 	ControlPanel.PanelReady();
+    Framework.Components.setupContainer(ControlPanel.page.content);
 });
 
 function hookSubMenuItem(cat, item){

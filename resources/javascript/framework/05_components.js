@@ -2,23 +2,19 @@ Framework.registerModule("Components", {
 
 		registered: $H(),
 		
-		registerComponent: function(expression, structure){
+		registerComponent: function(expression, structure, raw){
 			console.log("Registered Component for `" + expression + "`");
 		
 			var claz = Class.create(Framework.Components.baseClass, structure);
+			if(!raw && Framework.Config.LEGACY_BROWSER)
+				expression = "div." + expression;
 			Framework.Components.registered.set(expression, claz);
 			console.log(claz);
 		},
 		
 		registerWidgetType: function(type, structure){
 			type = Framework.StringFormat.idForDisplay(type);
-		
-			if(Framework.Config.LEGACY_BROWSER)
-				type = "div." + type.replace(/\-/, "_");
-			else
-				type = "widget." + type;
-				
-			Framework.Components.registerComponent(type, structure);
+			Framework.Components.registerComponent("widget." + type, structure);
 		},
 		
 		setupContainer: function(container){
@@ -50,19 +46,17 @@ Framework.registerModule("Components", {
 				
 				initialize: function(element) {
 					this.element = element;
-					this.setup();
+					this.setup(this.element);
 				},
 				
 				getElement: function(){
 					return this.element;
 				},
 				
-				setup: function(){
-					throw "Create Not Implemented";
+				setup: function(el){
 				},
 				
-				destroy: function(){
-					throw "Destroy Not Implemented";
+				destroy: function(el){
 				}
 				
 			})
