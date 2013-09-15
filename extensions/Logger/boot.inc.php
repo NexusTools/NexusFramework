@@ -1,3 +1,3 @@
 <?php
-Triggers::watchModule("User", Array("Logger", "trigger"));
+Triggers::watchModule("User", "Logger::trigger");
 ?>
