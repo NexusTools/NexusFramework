@@ -65,6 +65,10 @@ class Logger {
 	public function critical($description, $details =false, $section =false, $subsection =false) {
 		self::log(self::CRITICAL_LEVEL, $description, $details, $section, $subsection);
 	}
+	
+	public function queryEntries($start =0, $limit =10, $orderBy =false) {
+		return self::$db->queryRows("logs", false, $start, $limit, $orderBy);
+	}
 
 	public function trigger($module, $section, $subsection, $arguments){
 		switch($module) {
