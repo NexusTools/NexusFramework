@@ -13,8 +13,13 @@
 				"case-insensative": 1,
 				"allow-null": 1
 			},
-			"desc": "VARCHAR(200)",
+			"description": "VARCHAR(200)",
+			"address": "VARCHAR(32)",
 			"details": {
+				"type": "BLOB",
+				"allow-null": 1
+			},
+			"stack": {
 				"type": "BLOB",
 				"allow-null": 1
 			}

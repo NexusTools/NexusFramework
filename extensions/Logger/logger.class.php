@@ -12,63 +12,71 @@ class Logger {
 		self::$db = Database::getInstance();
 	}
 
-	public log($level, $description, $details =null, $section =false, $subsection =false, $user =false) {
-		if($user === false)
-			$user = User::getUser();
+	public function log($level, $description, $details =null, $section =false, $subsection =false) {
 		if($section === false)
 			$section = "Unknown";
-		
-		self::$db->insert("logs", array("user" => $user->getID(),
-			"level" => $level,
-			"section" => $section,
-			"subsection" => $subsection,
-			"description" => $description,
-			"details" => is_string($details) ? json_encode($details) : null));
+			
+		$stack = null;
+		try {
+			$stack = serialize(debug_backtrace());
+		}catch(Exception $e) {}
+			
+		$data = array("user" => User::getLoggedUserID(),
+					"stack" => $stack,
+					"level" => $level,
+					"section" => $section,
+					"subsection" => $subsection,
+					"description" => $description,
+					"address" => ClientInfo::getRemoteAddress(),
+					"details" => is_string($details) ?
+					json_encode($details) : null);
+			
+		self::$db->insert("logs", $data);
 	}
 	
-	public function info($description, $details =false, $section =false, $subsection =false, $user =false) }
-		self::put(self::INFORMATION_LEVEL, $description, $details, $section, $subsection, $user);
+	public function info($description, $details =false, $section =false, $subsection =false) {
+		self::log(self::INFORMATION_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function information($description, $details =false, $section =false, $subsection =false, $user =false) }
-		self::put(self::INFORMATION_LEVEL, $description, $details, $section, $subsection, $user);
+	public function information($description, $details =false, $section =false, $subsection =false) {
+		self::log(self::INFORMATION_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function warn($description, $details =false, $section =false, $subsection =false, $user =false) }
-		self::put(self::WARNING_LEVEL, $description, $details, $section, $subsection, $user);
+	public function warn($description, $details =false, $section =false, $subsection =false) {
+		self::log(self::WARNING_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function warning($description, $details =false, $section =false, $subsection =false, $user =false) }
-		self::put(self::WARNING_LEVEL, $description, $details, $section, $subsection, $user);
+	public function warning($description, $details =false, $section =false, $subsection =false) {
+		self::log(self::WARNING_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function err($description, $details =false, $section =false, $subsection =false, $user =false) }
-		self::put(self::ERROR_LEVEL, $description, $details, $section, $subsection, $user);
+	public function err($description, $details =false, $section =false, $subsection =false) {
+		self::log(self::ERROR_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function error($description, $details =false, $section =false, $subsection =false, $user =false) }
-		self::put(self::ERROR_LEVEL, $description, $details, $section, $subsection, $user);
+	public function error($description, $details =false, $section =false, $subsection =false) {
+		self::log(self::ERROR_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function crit($description, $details =false, $section =false, $subsection =false, $user =false) }
-		self::put(self::CRITICAL_LEVEL, $description, $details, $section, $subsection, $user);
+	public function crit($description, $details =false, $section =false, $subsection =false) {
+		self::log(self::CRITICAL_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function critical($description, $details =false, $section =false, $subsection =false, $user =false) }
-		self::put(self::CRITICAL_LEVEL, $description, $details, $section, $subsection, $user);
+	public function critical($description, $details =false, $section =false, $subsection =false) {
+		self::log(self::CRITICAL_LEVEL, $description, $details, $section, $subsection);
 	}
 
-	public trigger($module, $section, $subsection, $arguments){
+	public function trigger($module, $section, $subsection, $arguments){
 		switch($module) {
 			case "User":
 				switch($section) {
 					case "Timeout":
 					case "Logout":
-						self::info($section, "{{User::getFullNameFor()}} - Session lasted {{TimeFormat::elapsed()}}");
+						self::info("{{User::getFullNameFor({user})}} - Session lasted {{TimeFormat::elapsed({duration})}}", $arguments, "User Session", $section);
 						break;
 						
 					case "Login":
-						self::info($section, "{{user}} from {{ClientInfo()}}");
+						self::info("{{User::getFullNameFor({user})}} from {{ClientInfo::htmlIPInfo({ip})}}", $arguments, "User Session", $section);
 						break;
 				}
 				break;

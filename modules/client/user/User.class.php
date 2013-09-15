@@ -170,15 +170,28 @@ class User {
         return self::resolveUserID($identifier) != -1;
     }
     
+    public static function getLoggedUserID() {
+    	return isset($_SESSION['user']) ? $_SESSION['user'] : -1;
+    }
+    
     public static function setLoggedUser($user){
         $user = self::fetch($user);
 		
 		if($user->isVerified()) {
 		    self::setActiveUser($user);
+			$_SESSION['user-time'] = time();
 			$_SESSION['user'] = $user->getID();
+        	Triggers::broadcast("User", "Login");
 			return true;
-		} elseif(isset($_SESSION['user']))
+		}
+		
+		if(isset($_SESSION['user'])) {
+			if(isset($_SESSION['user-time'])) {
+		    	Triggers::broadcast("User", "Logout");
+				unset($_SESSION['user-time']);
+			}
 			unset($_SESSION['user']);
+		}
 		
 		return false;
 	}
@@ -189,7 +202,9 @@ class User {
     
     public static function login($id, $pass, $allowRoot=true){
         $user = self::checkLogin($id, $pass, $allowRoot);
-        return $user ? self::setLoggedUser($user) : false;
+        if($user && self::setLoggedUser($user))
+        	return true;
+        return false;
 	}
 	
 	public static function register($user, $pass, $email, $requireVerification=true){
