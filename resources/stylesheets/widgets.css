@@ -2,21 +2,10 @@ groupbox Table TD input.button {
 	width: 162px;
 }
 
-select {
-	color: #555;
-	min-width: 162px;
-	border: solid 1pt #aaa;
-	background: white;
-	padding: 3px;
-	
-	transition: all 200ms ease;
-	-moz-transition: all 200ms ease; /* Firefox 4 */
-	-webkit-transition: all 200ms ease; /* Safari and Chrome */
-	-o-transition: all 200ms ease; /* Opera */
-}
-
 select:focus,
-select:hover {
+select:hover,
+widget.options:focus,
+widget.options:hover {
 	color: #333;
 	border: solid 1pt #444;
 }
@@ -116,7 +105,10 @@ input.text.disabled:hover,
 input.text.disabled:focus,
 select.disabled,
 select.disabled:hover,
-select.disabled:focus {
+select.disabled:focus,
+widget.options.disabled,
+widget.options.disabled:hover,
+widget.options.disabled:focus {
 	cursor: default;
 	border: solid 1pt #ccc;
 	color: #aaa;
@@ -174,14 +166,18 @@ help {
 	cursor: help;
 }
 
+select,
+widget.options,
 textarea,
 input.text {
 	border: solid 1pt #aaa;
 	border-top: solid 1pt #777;
+	font-size: 13px;
 	color: #555;
 	padding: 4px;
-	width: 150px;
+	width: 350px;
 	background-color: white;
+	margin-bottom: 6px;
 	
 	transition: all 200ms ease;
 	-moz-transition: all 200ms ease; /* Firefox 4 */
@@ -207,13 +203,13 @@ input.text:focus {
 input,
 select,
 textarea,
-buttons {
+buttons,
+widget.options {
 	margin-top: -1px;
 }
 
 bubble,
 groupbox label {
-	
 	margin-left: 5px;
 	margin-bottom: 5px;
 	display: table;

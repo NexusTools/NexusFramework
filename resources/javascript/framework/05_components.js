@@ -30,6 +30,7 @@ Framework.registerModule("Components", {
 									element.components = [];
 								element.components.push(new component.value(element));
 							} catch(e) {
+								console.log("" + e);
 								console.trace(e);
 							}
 						});
