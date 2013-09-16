@@ -10,14 +10,14 @@ class Runtime {
 				$length = strpos($argString, $result[0], $result[1]+1) - $start;
 				$next = StringTemplate::indexOfPreg("/([,]|$)/", $argString, $start + $length + 1);
 				
-				array_push($arguments, interpolate(substr($argString, $start, $length)));
+				array_push($arguments, substr($argString, $start, $length));
 				$next = $next[1]+1;
 			} else {
 				$next = $result[1];
 				$length = $next - $start;
 				$next++;
 				
-				array_push($arguments, interpolate(trim(substr($argString, $start, $length))));
+				array_push($arguments, trim(substr($argString, $start, $length)));
 			}
 			
 			$start = $next;
@@ -81,8 +81,7 @@ class Runtime {
 		}catch(Exception $e){
 			if($suppressExceptions)
 				return Array("Message" => $e->getMessage(), "Original" => $string);
-			else
-				throw $e;
+			throw $e;
 		}
 	}
 

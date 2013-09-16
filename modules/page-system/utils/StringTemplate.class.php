@@ -13,8 +13,7 @@ class StringTemplate {
 	}
 	
 	public static function __processInputPart($matches){
-		return self::__processInputPart0(preg_replace_callback("/\{\s*([^}]+)\s*\}/", Array(__CLASS__, "__processInputPart0"), trim($matches[1])));
-		//return self::__processInputPart0(trim($matches[1]));
+		return self::__processInputPart0(preg_replace_callback("/\{\s*(.+?)\s*\}/", Array(__CLASS__, "__processInputPart0"), trim($matches[1])));
 	}
 	
 	public static function __processInputPart0($match){
@@ -30,12 +29,12 @@ class StringTemplate {
 			$value = constant($match);
 		else if(isset($_SERVER[$match]))
 			$value = $_SERVER[$match];
-		else if(self::$allowEval && preg_match("/^\w+(::\w+)?+\s*\(/", $match))
+		else if(self::$allowEval && preg_match("/^\w+(::\w+)?\s*\(/", $match))
 			$value = Runtime::evaluate($match);
-		else if(preg_match("/^(\w+)\[([\w|\d]+)\]/", $match, $matches)) {
+		else if(preg_match("/^(\w+)\[(.+?)\]/", $match, $matches)) {
 			$value = self::$globals[$matches[1]][$matches[2]];
 			$start = strlen($matches[0]);
-			while(preg_match("/\[([\w|\d|\-]+)\]/", $match, $matches, PREG_OFFSET_CAPTURE, $start)) {
+			while(preg_match("/\[(.+?)\]/", $match, $matches, PREG_OFFSET_CAPTURE, $start)) {
 				if($matches[0][1] != $start)
 					break;
 
