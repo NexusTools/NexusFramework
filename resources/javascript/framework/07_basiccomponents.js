@@ -1,17 +1,38 @@
-Framework.Components.registerComponent("select", {
+/*Framework.Components.registerComponent("select", {
 		setup: function(el) {
 			var first = true;
 			el.style.display = "none";
-			var optionsWidget = $(document.createElement("widget"));
-			optionsWidget.addClassName("component");
-			optionsWidget.addClassName("options");
-			el.parentNode.insertBefore(optionsWidget, el);
+			this.widget = $(document.createElement("widget"));
+			this.widget.addClassName("component");
+			this.widget.addClassName("options");
+			el.parentNode.insertBefore(this.widget, el);
 			console.log(el.options);
 			$A(el.options).each(function(option) {
-				if(option.value == el.value || first)
-					optionsWidget.innerHTML = option.innerHTML;
+				if(option.value == el.value || first) {
+					this.widget.innerHTML = option.innerHTML;
+					this.widget.value = option.value;
+				}
 				first = false;
 			});
+			
+			el.on("click", function() {
+			});
+		},
+		
+		destroy: function(el) {
+			this.widget.parentNode.removeChild(this.widget);
+		},
+		
+		getValue: function() {
+			return this.widget.value;
+		}
+	}, true);
+	
+Framework.Components.registerComponent("form", {
+		setup: function(el) {
+			el.getFormData = function() {
+				
+			}
 		}
 	}, true);
 
@@ -20,4 +41,4 @@ if(!("max" in document.createElement('progress')))
 			setup: function(el) {
 			
 			}
-		});
+		});*/

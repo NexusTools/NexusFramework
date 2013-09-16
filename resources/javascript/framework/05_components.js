@@ -27,6 +27,32 @@ Framework.registerModule("Components", {
 							console.log(element);
 							try {
 								if(!element.components)
+									element.components = {};
+								if(component.key in element.components)
+									element.components[component.key].setup();
+								element.components[component.key] = new component.value(element);
+							} catch(e) {
+								console.log("" + e);
+								console.trace(e);
+							}
+						});
+				});
+		},
+		
+		destroyContainer: function(container){
+			if(container.element instanceof Function)
+				container = container.element();
+				
+			Framework.Components.registered.each(function(component){
+					console.log(component.key);
+					container.select(component.key).each(function(element){
+							console.log(element);
+							try {
+								element.components.each(function(component) {
+									component.destroy();
+								});
+								
+								if(!element.components)
 									element.components = [];
 								element.components.push(new component.value(element));
 							} catch(e) {
@@ -45,13 +71,17 @@ Framework.registerModule("Components", {
 				
 				element: false,
 				
-				initialize: function(element) {
-					this.element = element;
-					this.setup(this.element);
+				initialize: function(el) {
+					this.element = el;
+					this.setup(el);
 				},
 				
 				getElement: function(){
 					return this.element;
+				},
+		
+				getValue: function() {
+					return null;
 				},
 				
 				setup: function(el){
