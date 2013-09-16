@@ -67,7 +67,7 @@ class Logger {
 	}
 	
 	public static function queryEntries($start =0, $limit =5, $orderBy ="created DESC") {
-		return self::$db->queryRows("logs", false, $start, $limit, $orderBy);
+		return self::$db->queryRows("logs", array("user" => User::getLoggedUserID()), $start, $limit, $orderBy);
 	}
 
 	public static function trigger($module, $section, $arguments){
