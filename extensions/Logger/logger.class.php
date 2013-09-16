@@ -66,7 +66,7 @@ class Logger {
 		self::log(self::CRITICAL_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public static function queryEntries($start =0, $limit =10, $orderBy ="created DESC") {
+	public static function queryEntries($start =0, $limit =5, $orderBy ="created DESC") {
 		return self::$db->queryRows("logs", false, $start, $limit, $orderBy);
 	}
 
