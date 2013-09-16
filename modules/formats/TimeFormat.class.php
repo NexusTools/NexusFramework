@@ -1,8 +1,9 @@
 <?php
 class TimeFormat {
 	
-	public function elapsed($time =false) {
-		if(!$time)
+	public static function elapsed($time =false) {
+		$time = $time * 1;
+		if(!is_numeric($time))
 			$time = time();
 			
 		$timeStr = "";
@@ -15,30 +16,48 @@ class TimeFormat {
 		$hours = $hours % 24;
 		$days = $days % 30;
 		
-		if($months > 0)
-			$timeStr = "$months months";
+		if($months > 0) {
+			$timeStr = "$months month";
+			if($months > 1)
+				$timeStr .= "s";
+		}
 		if($days > 0) {
 			if(strlen($timeStr))
 				$timeStr .= ", ";
-			$timeStr .= "$days days";
+			$timeStr .= "$days day";
+			if($days > 1)
+				$timeStr .= "s";
 		}
 		if($hours > 0) {
 			if(strlen($timeStr))
 				$timeStr .= ", ";
-			$timeStr .= "$hours hours";
+			$timeStr .= "$hours hour";
+			if($hours > 1)
+				$timeStr .= "s";
 		}
 		if($mins > 0) {
 			if(strlen($timeStr))
 				$timeStr .= ", ";
-			$timeStr .= "$mins minutes";
+			$timeStr .= "$mins minute";
+			if($mins > 1)
+				$timeStr .= "s";
 		}
 		if($time > 0) {
 			if(strlen($timeStr))
 				$timeStr .= ", ";
-			$timeStr .= "$time seconds";
+			$timeStr .= "$time second";
+			if($time > 1)
+				$timeStr .= "s";
 		}
 		
-		return $timeStr;
+		if($timeStr) {
+			if(($pos = stripos($timeStr, ",")) !== -1)
+				$timeStr = substr($timeStr, 0, $pos) . " and" . substr($timeStr, $pos+1);
+			
+			return $timeStr;
+		}
+		
+		return "Now";
 	}	
 	
 }
