@@ -187,7 +187,7 @@ class User {
 		
 		if(isset($_SESSION['user'])) {
 			if(isset($_SESSION['user-time'])) {
-		    	Triggers::broadcast("User", "Logout");
+		    	Triggers::broadcast("User", "Logout", array("duration" => time() - $_SESSION['user-time']));
 				unset($_SESSION['user-time']);
 			}
 			unset($_SESSION['user']);
