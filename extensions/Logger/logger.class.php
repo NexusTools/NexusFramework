@@ -12,7 +12,7 @@ class Logger {
 		self::$db = Database::getInstance();
 	}
 
-	public function log($level, $description, $details =null, $section =false, $subsection =false) {
+	public static function log($level, $description, $details =null, $section =false, $subsection =false) {
 		if($section === false)
 			$section = "Unknown";
 			
@@ -34,43 +34,43 @@ class Logger {
 		self::$db->insert("logs", $data);
 	}
 	
-	public function info($description, $details =false, $section =false, $subsection =false) {
+	public static function info($description, $details =false, $section =false, $subsection =false) {
 		self::log(self::INFORMATION_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function information($description, $details =false, $section =false, $subsection =false) {
+	public static function information($description, $details =false, $section =false, $subsection =false) {
 		self::log(self::INFORMATION_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function warn($description, $details =false, $section =false, $subsection =false) {
+	public static function warn($description, $details =false, $section =false, $subsection =false) {
 		self::log(self::WARNING_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function warning($description, $details =false, $section =false, $subsection =false) {
+	public static function warning($description, $details =false, $section =false, $subsection =false) {
 		self::log(self::WARNING_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function err($description, $details =false, $section =false, $subsection =false) {
+	public static function err($description, $details =false, $section =false, $subsection =false) {
 		self::log(self::ERROR_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function error($description, $details =false, $section =false, $subsection =false) {
+	public static function error($description, $details =false, $section =false, $subsection =false) {
 		self::log(self::ERROR_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function crit($description, $details =false, $section =false, $subsection =false) {
+	public static function crit($description, $details =false, $section =false, $subsection =false) {
 		self::log(self::CRITICAL_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function critical($description, $details =false, $section =false, $subsection =false) {
+	public static function critical($description, $details =false, $section =false, $subsection =false) {
 		self::log(self::CRITICAL_LEVEL, $description, $details, $section, $subsection);
 	}
 	
-	public function queryEntries($start =0, $limit =10, $orderBy ="created DESC") {
+	public static function queryEntries($start =0, $limit =10, $orderBy ="created DESC") {
 		return self::$db->queryRows("logs", false, $start, $limit, $orderBy);
 	}
 
-	public function trigger($module, $section, $subsection, $arguments){
+	public static function trigger($module, $section, $arguments){
 		switch($module) {
 			case "User":
 				switch($section) {
