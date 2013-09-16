@@ -12,8 +12,14 @@ class StringTemplate {
 			return false;
 	}
 	
-	public static function __pregReplaceCallback($matches){
-		$match = trim($matches[1]);
+	public static function __processInputPart($matches){
+		return self::__processInputPart0(preg_replace_callback("/\{\s*([^}]+)\s*\}/", Array(__CLASS__, "__processInputPart0"), trim($matches[1])));
+		//return self::__processInputPart0(trim($matches[1]));
+	}
+	
+	public static function __processInputPart0($match){
+		if(is_array($match))
+			$match = $match[1];
 		$value = "";
 	
 		if(startsWith($match, "/"))
@@ -73,7 +79,7 @@ class StringTemplate {
     }
 	
 	private static function interpolate0($string){
-		return preg_replace_callback("/\{\{\s*([^}]+)\s*\}\}/", Array(__CLASS__, "__pregReplaceCallback"), $string);
+		return preg_replace_callback("/\{\{\s*([^}]+(\s*\(.+?\))?)\s*\}\}/", Array(__CLASS__, "__processInputPart"), $string);
 	}
 	
 	public static function interpolate($string, $allowEval=false, $globals=Array()){
