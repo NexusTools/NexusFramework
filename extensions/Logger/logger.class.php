@@ -28,7 +28,7 @@ class Logger {
 					"subsection" => $subsection,
 					"description" => $description,
 					"address" => ClientInfo::getRemoteAddress(),
-					"details" => is_string($details) ?
+					"details" => $details ?
 					json_encode($details) : null);
 			
 		self::$db->insert("logs", $data);
