@@ -76,11 +76,11 @@ class Logger {
 				switch($section) {
 					case "Timeout":
 					case "Logout":
-						self::info("{{User::getFullNameFor({user})}} - Session lasted {{TimeFormat::elapsed({duration})}}", $arguments, "User Session", $section);
+						self::info("{{User::getFullnameByID({user})}} - Session lasted {{TimeFormat::elapsed({duration})}}", $arguments, "User Session", $section);
 						break;
 						
 					case "Login":
-						self::info("{{User::getFullNameFor({user})}} from {{ClientInfo::htmlIPInfo({address})}}", $arguments, "User Session", $section);
+						self::info("{{User::getFullnameByID({user})}} from {{ClientInfo::htmlIPInfo({address})}}", $arguments, "User Session", $section);
 						break;
 				}
 				break;

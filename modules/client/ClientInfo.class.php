@@ -69,6 +69,13 @@ class ClientInfo {
 	    
 	    return stripos($ua, 'mac') ? true : false;
 	}
+	
+	public static function htmlAddressInfo($addr =false) {
+		if(!$addr)
+			$addr = self::getRemoteAddress();
+			
+		return "<a title='IP $addr' href='http://www.infobyip.com/ip-$addr.html'>" . gethostbyaddr($addr) . "</a>";
+	}
 
 }
 ?>
