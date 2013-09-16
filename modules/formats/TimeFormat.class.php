@@ -2,7 +2,6 @@
 class TimeFormat {
 	
 	public static function elapsed($time =false) {
-		$time = $time * 1;
 		if(!is_numeric($time))
 			$time = time();
 			
