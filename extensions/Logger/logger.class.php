@@ -80,7 +80,7 @@ class Logger {
 						break;
 						
 					case "Login":
-						self::info("{{User::getFullnameByID({user})}} from {{ClientInfo::htmlIPInfo({address})}}", $arguments, "User Session", $section);
+						self::info("{{User::getFullnameByID({user})}} from {{ClientInfo::htmlAddressInfo({address})}}", $arguments, "User Session", $section);
 						break;
 				}
 				break;
