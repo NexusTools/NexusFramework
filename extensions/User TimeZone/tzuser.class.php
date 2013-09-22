@@ -20,7 +20,12 @@ class TimeZoneUser {
     		self::$defaultTZ = date_default_timezone_get();
     	if(!$tz)
     		$tz = self::$defaultTZ;
-    	return $tz
+    	return $tz;
+    }
+    
+    public function setTimeZone($tz){
+    	$db = self::getDatabase();
+    	return $db->upsert("timezone", array("timezone" => $tz), array("user" => $this->uid));
     }
 
 }

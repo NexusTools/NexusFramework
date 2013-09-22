@@ -9,7 +9,7 @@
 	            "type": "INTEGER",
 	            "primary": true
 	        },
-	        "timezone": "VARCHAR(200)
+	        "timezone": "VARCHAR(200)"
 	    }
 	}
 }
