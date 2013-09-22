@@ -1,0 +1,15 @@
+{
+	"name": "User TimeZone",
+	"provides": "user-timezone",
+	"dependancies": ["user-backend"],
+	"description": "Provides a way to set a timezone for a user, and updates the system timezone when the active user is changed.",
+	"database": {
+	    "timezone": {
+	        "user": {
+	            "type": "INTEGER",
+	            "primary": true
+	        },
+	        "timezone": "VARCHAR(200)
+	    }
+	}
+}
