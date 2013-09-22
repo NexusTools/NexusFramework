@@ -45,6 +45,7 @@ class User {
     
     public static function setActiveUser($identifier, $allowSystemUsers=false){
         self::$instance = self::fetch($identifier, !$allowSystemUsers);
+        Triggers::broadcast("User", "Changed");
     }
     
     public static function setBackend($backend){
