@@ -30,7 +30,7 @@ class UserAvatar {
         if(!$path)
             self::getDatabase()->delete("avatars", Array("rowid" => $this->uid));
         else
-            return self::getDatabase()->insert("avatars", Array("rowid" => $this->uid, "avatar" => $path), true);
+            return self::getDatabase()->upsert("avatars", array("avatar" => $path), array("rowid" => $this->uid));
         
         return true; // Assume deletions work.
     }
