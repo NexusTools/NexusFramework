@@ -118,8 +118,8 @@ if(strncasecmp(PHP_OS, 'WIN', 3) == 0) {
 	define("RES_CONNECTOR", ":");
 }
 
-define("LEGACY_BROWSER", isset($_SERVER['HTTP_USER_AGENT']) && 
-        preg_match('/(?i)msie [1-9]/',$_SERVER['HTTP_USER_AGENT']));
+define("LEGACY_BROWSER", false/*isset($_SERVER['HTTP_USER_AGENT']) && 
+        preg_match('/(?i)msie [1-9]/',$_SERVER['HTTP_USER_AGENT'])*/);
 
 // Setup Custom REQUEST
 $_REQUEST = array_merge($_GET, $_POST);
