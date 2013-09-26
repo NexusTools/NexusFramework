@@ -1,4 +1,5 @@
 {
-    "name": "Search Core",
-    "provides": "search-core"
+	"name": "Search Core",
+	"description": "Provides a unified core for responding to search queries",
+	"provides": "search-core"
 }
