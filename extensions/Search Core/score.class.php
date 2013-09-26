@@ -19,16 +19,60 @@ class SearchCore {
 		self::$handlers[$name] = array("template" => $template, "handlers" => array());
 	}
 	
+	public static function checkSuggestions($query, $suggestions, &$activeNotify = NULL) {
+		$data = array();
+		$activeNotify = false;
+		foreach($suggestions as $suggest => $sQuery) {
+			$notify = false;
+			if(is_array($sQuery)) {
+				$notify = $sQuery[1];
+				$sQuery = $sQuery[0];
+			}
+			
+			if(is_numeric($suggest)) {
+				$suggest = "... $sQuery";
+				$sQuery = " $sQuery ";
+			}
+			$firstBreak = true;
+			$check = $sQuery;
+			
+			while(($len = strlen($check)) > 0) {
+				if(substr_compare($query, $check, -$len, $len, true) === 0) {
+					if($firstBreak) {
+						if($notify)
+							$activeNotify = $notify;
+						
+						break; // Ends with a space, so already entered
+					}
+					
+					array_push($data, array("suggest" => $suggest,
+							"query" => $query . substr($sQuery, $len)));
+					break;
+				}
+				$firstBreak = false;
+				
+				$check = substr($check, 0, $len-1);
+			}
+		}
+		
+		if(!count($data) && $activeNotify)
+			array_push($data, array("notify" => $activeNotify));
+		return $data;
+	}
+	
 	public static function search($query, $start=0, $limit=10, $filters=null) {
 		$total = 0;
 		$errors = array();
 		$results = array();
+		$templates = array();
+		$suggestions = array();
+		$notification = false;
 		foreach(self::$handlers as $section => $subsections) {
 			$sectionData = array();
 			foreach($subsections['handlers'] as $subsection => $handler) {
 				foreach($handler as $expr => $callback) {
 					try {
-						$ret = preg_match("#^$expr$#i", $query, $matches);
+						$ret = preg_match("#^$expr\\s*$#i", $query, $matches);
 						if($ret === false)
 							throw new Exception("$section:$subsection provided bad expression format.");
 							
@@ -40,6 +84,17 @@ class SearchCore {
 							continue; // No results
 						
 						foreach($res as $entry) {
+							if(array_key_exists("notify", $entry)) {
+								$notification = $entry['notify'];
+								continue;
+							}
+							if(array_key_exists("suggest", $entry)) {
+								if(!array_key_exists("query", $entry))
+									throw new Exception("Entry has suggest attribute but no query attribute");
+								
+								array_push($suggestions, $entry);
+								continue;
+							}
 							if(!array_key_exists("ref", $entry))
 								throw new Exception("Entry missing ref attribute");
 							if(!array_key_exists("match", $entry))
@@ -86,11 +141,26 @@ class SearchCore {
 				foreach($sortedData as $key => $entryArray)
 					$sectionData = array_merge($sectionData, $entryArray);
 				
+				$templates[$section] = $subsections['template'];
 				$results[$section] = array_slice($sectionData, $start, $limit);
 			}
 		}
 		
-		return array("results" => $results, "errors" => $errors);
+		$data = array();
+		if(count($suggestions) > 0)
+			$data["suggestions"] = $suggestions;
+		else if($notification)
+			$data['notification'] = $notification;
+			
+		if(count($results) > 0) {
+			$data["results"] = $results;
+			$data["templates"] = $templates;
+		}
+		
+		if(count($errors) > 0)
+			$data["errors"] = $errors;
+		
+		return $data;
 	}
 
 }
