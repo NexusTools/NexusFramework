@@ -46,6 +46,14 @@ abstract class OutputFilter {
 		
 	}
 	
+	public static function startRawOutput($type =false) {
+		if(is_bool($type))
+			$type = $type ? "text/html" : "text/text";
+	
+		header("Content-Type: $type");
+		self::resetToNative(false);
+	}
+	
 	/*
 		Clears all existing buffers except the required underlying ones.
 		Used to reset the entire state of the output system.
