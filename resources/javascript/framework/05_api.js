@@ -120,7 +120,7 @@ Framework.registerModule("API", {
 				transport.setRequestHeader("Content-length", postData.length);
 				transport.setRequestHeader("Connection", "close");
 			} else {
-				transport.open("GET", requestURL, false);
+				transport.open("GET", requestURL, true);
 				postData = null;
 			}
 			
