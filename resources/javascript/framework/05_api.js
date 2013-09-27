@@ -4,6 +4,7 @@ Framework.registerModule("API", {
 		requestTimeout: null,
 		intervalRequests: {},
 		currentRequests: [],
+		isPending: false,
 		callbacks: {},
 		requests: {},
 		
@@ -72,6 +73,7 @@ Framework.registerModule("API", {
 			}
 			
 			Framework.API.requests[module] = {"uri": data ? encodeURIComponent(data) : "", "postVars": postVars};
+			Framework.API.isPending = true;
 			Framework.API.queueRequests();
 		},
 		
@@ -80,7 +82,8 @@ Framework.registerModule("API", {
 		},
 		
 		queueRequests: function(){
-			if(Framework.API.requestTimeout != null)
+			if(Framework.API.requestTimeout != null
+						|| !Framework.API.isPending)
 				return;
 			
 			var callWait = Framework.API.minimumNextRequest - (new Date().getTime());
@@ -108,6 +111,7 @@ Framework.registerModule("API", {
 					postData[req] = Object.toQueryString(data['postVars']);
 			}
 			
+			Framework.API.isPending = false;
 			Framework.API.currentRequests = [];
 			for(var module in Framework.API.requests)
 				Framework.API.currentRequests.push(module);
@@ -134,8 +138,7 @@ Framework.registerModule("API", {
 			if(e.target.readyState == 4){
 				Framework.API.resetTimer();
 				Framework.API.requestTimeout = null;
-				if(Framework.API.requests.length > 0)
-					Framework.API.queueRequests();
+				Framework.API.queueRequests();
 					
 				var responseData = {"error": "Missing from response..."};
 				try {
