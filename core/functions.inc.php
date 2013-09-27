@@ -23,19 +23,19 @@ function require_chdir($file, $path=false){
 	return $ret;
 }
 
-function endswith($string, $test){
+function endswith($string, $test, $caseInsensative=false){
     $strlen = strlen($string);
     $testlen = strlen($test);
     if ($testlen > $strlen) return false;
-    return substr_compare($string, $test, -$testlen) === 0;
+    return substr_compare($string, $test, -$testlen, $testlen, $caseInsensative) === 0;
 }
 
-function startswith($string, $test)
+function startswith($string, $test, $caseInsensative=false)
 {
     $strlen = strlen($string);
     $testlen = strlen($test);
     if ($testlen > $strlen) return false;
-    return substr_compare($string, $test, 0, $testlen) === 0;
+    return substr_compare($string, $test, 0, $testlen, $caseInsensative) === 0;
 }
 
 function to_php($object, $padding=""){
