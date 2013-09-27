@@ -66,10 +66,12 @@ Framework.registerModule("API", {
 			if(!Framework.API.callbacks[module])
 				throw "Missing Handler for " + module;
 			
-			if(dontReplace && module in Framework.API.requests)
+			if(dontReplace && module in Framework.API.requests) {
+				console.log("Discarded replacement for", module);
 				return;
+			}
 			
-			Framework.API.requests[module] = {"uri": encodeURIComponent(data ? data : ""), "postVars": postVars};
+			Framework.API.requests[module] = {"uri": data ? encodeURIComponent(data) : "", "postVars": postVars};
 			Framework.API.queueRequests();
 		},
 		
