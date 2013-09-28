@@ -9,8 +9,8 @@ Framework.registerModule("API", {
 		requests: {},
 		
 		initialize: function() {
-			this.minTimeout = location.protocol === 'https:' ? 250 : 100;
-			this.intervalTime = location.protocol === 'https:' ? 6000 : 3000;
+			this.minTimeout = location.protocol === 'https:' ? 500 : 250;
+			this.intervalTime = location.protocol === 'https:' ? 8000 : 4000;
 			console.log("Using a " + this.minTimeout + "ms minimum API queue timeout");
 			console.log("Using a " + this.intervalTime + "ms API request interval timer");
 		},
@@ -36,6 +36,7 @@ Framework.registerModule("API", {
 			data = {"uri": encodeURIComponent(data ? data : ""), "postVars": null};
 			if(!alreadyExists && !(module in Framework.API.requests)) {
 				Framework.API.requests[module] = data; // Make the request right away so that the website can populate onload
+				Framework.API.isPending = true;
 				Framework.API.queueRequests();
 			}
 			
@@ -57,6 +58,7 @@ Framework.registerModule("API", {
 			
 					var data = Framework.API.intervalRequests[module];
 					Framework.API.requests[module] = data;
+					Framework.API.isPending = true;
 				}
 				Framework.API.queueRequests();
 			}
@@ -126,7 +128,7 @@ Framework.registerModule("API", {
 				transport.setRequestHeader("Content-length", postData.length);
 				transport.setRequestHeader("Connection", "close");
 			} else {
-				transport.open("GET", requestURL, true);
+				transport.open("GET", requestURL, false);
 				postData = null;
 			}
 			
