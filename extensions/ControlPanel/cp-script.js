@@ -447,13 +447,13 @@ Framework.API.registerHandler("controlpanel", function(data){
 	if(!data['error'] && !data['html'])
 		data.error = "HTML missing from response.";
 	
-    if((ControlPanel.popupUri && !ControlPanel.popupLoading && data.uri == ControlPanel.popupUri) || data['error']) {
+    if((ControlPanel.popupUri && !ControlPanel.popupLoading &&
+    		data.uri == ControlPanel.popupUri) || data['error']) {
     	if(data['error']) {
     		data.uri = "errorhandler";
     		data.html = "<h1>Error Occured</h1><pre>";
     		data.html += Object.toJSON(data.error);
     		data.html += "</pre>";
-    		//delete data.error;
     	}
     	
         ControlPanel.popupLoading = true;
@@ -467,9 +467,12 @@ Framework.API.registerHandler("controlpanel", function(data){
         Framework.Components.setupContainer(ControlPanel.page.whiteout.popup);
         
         var dialogButtons = [];
+        var defButton = false;
         
         ControlPanel.page.whiteout.popup.select("pagebuttons").each(function(pageButtons){
             pageButtons.remove();
+            
+            
             pageButtons.select("button").each(function(e){
                 var val = e.readAttribute("value");
                 switch(val){
@@ -486,11 +489,13 @@ Framework.API.registerHandler("controlpanel", function(data){
                         } else
                             e.textContent = text;
                         
+                        defButton = e;
                         dialogButtons.push(e);
                         break;
                         
                     case "new":
                     case "create":
+                    	defButton = e;
                         dialogButtons.push(e);
                         break;
 
@@ -514,8 +519,20 @@ Framework.API.registerHandler("controlpanel", function(data){
                         break;
                 }
                 
+                
+           
+                
                 e.remove();
             });
+        });
+        
+        ControlPanel.page.whiteout.popup.select("form").each(function(form) {
+        	var formButton = defButton;
+        	form.on("beforesubmit", function(e) {
+        		if(formButton)
+        			formButton.click();
+        		e.stop();
+        	});
         });
         
         if(dialogButtons.length){
