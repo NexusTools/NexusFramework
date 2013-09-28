@@ -35,7 +35,9 @@ Framework.registerModule("API", {
 			
 			data = {"uri": encodeURIComponent(data ? data : ""), "postVars": null};
 			if(!alreadyExists && !(module in Framework.API.requests)) {
-				Framework.API.requests[module] = data; // Make the request right away so that the website can populate onload
+				console.log("Making initial request", module);
+				
+				Framework.API.requests[module] = data;
 				Framework.API.isPending = true;
 				Framework.API.queueRequests();
 			}

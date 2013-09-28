@@ -20,7 +20,7 @@ if(function_exists("ob_deflatehandler") &&
 		in_array("ob_deflatehandler", ob_list_handlers()))
 	define("COMPRESSED_OUTPUT", "deflate");
 if(!defined("COMPRESSED_OUTPUT"))
-	while(ob_get_level() && ob_end_clean());
+	while(ob_get_level() && @ob_end_clean());
 
 // Setup Output Buffering
 if(!function_exists("ob_void")) {
@@ -76,7 +76,7 @@ require FRAMEWORK_CORE_PATH . "functions.inc.php";
 set_include_path(FRAMEWORK_PATH . PATHSEP . INDEX_PATH);
 
 // Request Defines
-$dmn = $_SERVER['HTTP_HOST'] ? $_SERVER['HTTP_HOST'] : "localhost";
+$dmn = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : "unknown";
 if(isset($_SERVER['HTTP_PORT']))
 	define("DOMAIN", $dmn
 		. ($_SERVER['HTTP_PORT'] != 80 ? ":" . $_SERVER['HTTP_PORT'] : ""));
