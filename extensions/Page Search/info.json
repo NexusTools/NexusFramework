@@ -1,0 +1,6 @@
+{
+	"name": "Page Search",
+	"provides": "page-search",
+	"dependancies": ["search-core"],
+	"description": "Provides a Search Core handler which scans the page module virtual paths and uses .title files to display results."
+}

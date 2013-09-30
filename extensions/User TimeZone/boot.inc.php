@@ -7,4 +7,5 @@ function __tzUser_userChangeTriggerCallback($module, $event, $arguments) {
 }
 
 Triggers::watchModule("User", "__tzUser_userChangeTriggerCallback");
+date_default_timezone_set(User::getTimeZone());
 ?>

@@ -1,0 +1,6 @@
+{
+	"name": "Site Search",
+	"provides": "site-search",
+	"dependancies": ["search-core"],
+	"description": "A script that turns input boxes with the 'search' type into a site search with suggestions."
+}
