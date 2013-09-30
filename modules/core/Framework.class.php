@@ -98,8 +98,6 @@ class Framework {
 	}
 	
 	private static function serveFileInternal($file, $mimetype=false, $realName=false, $expiresAt=false){
-		OutputFilter::resetToNative(false);
-		
 		if(!file_exists($file))
 			self::runPage("/errordoc/404");
 		if(!is_readable($file))
@@ -107,7 +105,7 @@ class Framework {
 	
 		if(is_dir($file)) {
 			$file = cleanpath($file);
-				
+			
 			if(startsWith($file, FRAMEWORK_RES_PATH))
 				$path = "/res:" . substr($file, strlen(FRAMEWORK_RES_PATH));
 			else {
@@ -485,7 +483,7 @@ Disallow: " . BASE_URI;
 
 		if(startsWith($requestURI, "media")) {
 			if(file_exists($requestURI))
-				self::serveFileInternal($requestURI);
+				self::serveFileInternal(INDEX_PATH . $requestURI);
 			else
 				self::runPage("/errordoc/404");
 		}
