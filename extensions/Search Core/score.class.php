@@ -19,6 +19,28 @@ class SearchCore {
 		self::$handlers[$name] = array("template" => $template, "handlers" => array());
 	}
 	
+	public static function isTyping($query, $check) {
+		$firstBreak = true;
+		
+		while(($len = strlen($check)) > 0) {
+			if(substr_compare($query, $check, -$len, $len, true) === 0) {
+				if($firstBreak) {
+					if($notify)
+						$activeNotify = $notify;
+					
+					return -1; // Ends with a space, so already entered
+				}
+				
+				return $len;
+			}
+			$firstBreak = false;
+			
+			$check = substr($check, 0, $len-1);
+		}
+		
+		return false;
+	}
+	
 	public static function checkSuggestions($query, $suggestions, &$activeNotify = NULL) {
 		$data = array();
 		$activeNotify = false;
@@ -33,31 +55,50 @@ class SearchCore {
 				$suggest = "... $sQuery";
 				$sQuery = " $sQuery ";
 			}
-			$firstBreak = true;
-			$check = $sQuery;
 			
-			while(($len = strlen($check)) > 0) {
-				if(substr_compare($query, $check, -$len, $len, true) === 0) {
-					if($firstBreak) {
-						if($notify)
-							$activeNotify = $notify;
-						
-						break; // Ends with a space, so already entered
-					}
-					
+			if(($pos = self::isTyping($query, $sQuery)) !== false) {
+				if($pos === -1)
+					$activeNotify = $notify;
+				else
 					array_push($data, array("suggest" => $suggest,
-							"query" => $query . substr($sQuery, $len)));
-					break;
-				}
-				$firstBreak = false;
-				
-				$check = substr($check, 0, $len-1);
+							"query" => $query . substr($sQuery, $pos)));
 			}
 		}
 		
 		if(!count($data) && $activeNotify)
 			array_push($data, array("notify" => $activeNotify));
 		return $data;
+	}
+	
+	public static function sortAndProcessResults($results) {
+		
+			
+		$sortedData = array();
+		foreach($results as $entry) {
+			$match = $entry['match'];
+			if(is_array($match)) {
+				$avgMatch = 0;
+				foreach($match as $m)
+					$avgMatch += $m;
+				$match = round($avgMatch / count($match));
+			} else
+				$match = round($match);
+			$entry['match'] = $match / 100; // Prefer to use Floats Client Side
+			$match = (string)$match;
+			if(!array_key_exists($match, $sortedData))
+				$sortedData[$match] = array($entry);
+			else
+				array_push($sortedData[$match], $entry);
+		}
+		krsort($sortedData);
+		
+		$results2 = array();
+		foreach($sortedData as $key => $entryArray)
+			$results2 = array_merge($results2, $entryArray);
+			
+		if(count($results2) != count($results))
+			OutputFilter::startRawOutput();
+		return $results2;
 	}
 	
 	public static function search($query, $start=0, $limit=10, $filters=null) {
@@ -80,7 +121,7 @@ class SearchCore {
 							continue; // No match
 						
 						$res = call_user_func($callback, $matches, $filters);
-						if(!count($res))
+						if(!is_array($res) || !count($res))
 							continue; // No results
 						
 						foreach($res as $entry) {
@@ -109,7 +150,7 @@ class SearchCore {
 								$sectionData[$entry['ref']] = $entry;
 						}
 					} catch(Exception $e) {
-						array_push($errors, "$section:$subsection:$e");
+						array_push($errors, $e->getMessage());
 					}
 				}
 			}
@@ -117,32 +158,8 @@ class SearchCore {
 			$count = count($sectionData);
 			if($count > 0) {
 				$total += $count;
-				
-				$sortedData = array();
-				foreach($sectionData as $entry) {
-					$match = $entry['match'];
-					if(is_array($match)) {
-						$avgMatch = 0;
-						foreach($match as $m)
-							$avgMatch += $m;
-						$match = round($avgMatch / count($match));
-					} else
-						$match = round($match);
-					$entry['match'] = $match / 100; // Prefer to use Floats Client Side
-					
-					if(!array_key_exists($match, $sortedData))
-						$sortedData[$match] = array($entry);
-					else
-						array_push($sortedData[$match], $entry);
-				}
-				krsort($sortedData);
-				
-				$sectionData = array();
-				foreach($sortedData as $key => $entryArray)
-					$sectionData = array_merge($sectionData, $entryArray);
-				
 				$templates[$section] = $subsections['template'];
-				$results[$section] = array_slice($sectionData, $start, $limit);
+				$results[$section] = array_slice(self::sortAndProcessResults($sectionData), $start, $limit);
 			}
 		}
 		
