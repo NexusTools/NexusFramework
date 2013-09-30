@@ -121,6 +121,9 @@ class ModifiedImage extends CachedFileBase {
         if($this->transparent) {
         	imagesavealpha( $outputImage, true );
         	imagealphablending( $outputImage, false );
+			imagefilledrectangle($outputImage, 0, 0,
+				$this->canvasSize[0], $this->canvasSize[1],
+				imagecolorallocatealpha($outputImage,255,255,255,0));
 			imagecolortransparent($outputImage, imagecolorallocate($outputImage, 0, 0, 0));
 		}
         
