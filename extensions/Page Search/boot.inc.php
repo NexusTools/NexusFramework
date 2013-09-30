@@ -41,10 +41,13 @@ function __pageSearch_explorePageFolder(&$results, $root, $folder, $query) {
 				}
 				
 				$title = trim(file_get_contents($file));
-				if($pageFile == "root")
+				if($pageFile == "root") {
+					$url = substr($root, 0, strlen($root)-1);
 					$pageFile = "";
+				} else
+					$url = "$root$pageFile";
 					
-				$url = "$root$pageFile";
+				
 				$reg = "/" . preg_quote($query, '/') . "/i";
 				if(preg_match($reg, $title, $matches)) {
 					similar_text($query, $title, $match);
