@@ -137,6 +137,7 @@ Framework.Components.registerComponent("input[type=search]", {
 		if(this.lastSearch == value)
 			return;
 	
+		this.updateResults("<p>Searching...</p>");
 		console.log("Scheduling Search Update");
 		try{clearTimeout(this.updateTimer);}catch(e){}
 		this.updateTimer = setTimeout(this.update.bind(this), 200);
