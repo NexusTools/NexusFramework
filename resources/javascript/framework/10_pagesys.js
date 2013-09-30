@@ -171,7 +171,9 @@ Framework.registerModule("PageSystem", {
 			Framework.PageElement.fire("pagesys:loaded");
 			Framework.PageElement.fire("pagesys:ready");
 			
-			Framework.PageElement.observe("pagesys:ready", Framework.Components.setupContainer);
+			Framework.PageElement.observe("pagesys:loaded", function() {
+				Framework.Components.setupContainer(Framework.PageElement);
+			});
 		}
 		
 	}, ["API", "Components"]);

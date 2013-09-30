@@ -20,7 +20,8 @@ Framework.registerModule("Components", {
 		setupContainer: function(container){
 			if(container.element instanceof Function)
 				container = container.element();
-				
+			
+			console.log("Setting up Container", container);
 			Framework.Components.registered.each(function(component){
 					console.log(component.key);
 					container.select(component.key).each(function(element){
@@ -81,7 +82,7 @@ Framework.registerModule("Components", {
 				},
 		
 				getValue: function() {
-					return null;
+					return this.getElement().value;
 				},
 				
 				setup: function(el){

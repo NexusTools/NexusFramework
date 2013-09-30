@@ -18,7 +18,7 @@ function __pageSearch_explorePageFolder(&$results, $root, $folder, $query) {
 			} else {
 				if(!preg_match("/(.+)\\.title/i", $entry, $pageFile))
 					continue;
-				$pageFile = $pageFile[0];
+				$pageFile = $pageFile[1];
 				
 				if(file_exists("$folder$pageFile.exists.inc.php") ||
 						file_exists("$folder$pageFile.cond.inc.php"))
@@ -32,7 +32,7 @@ function __pageSearch_explorePageFolder(&$results, $root, $folder, $query) {
 					similar_text($query, $title, $match);
 					array_push($results, array("ref" =>"page:" .
 							Framework::uniqueHash("$root$entry"),
-							"url" => "$root$entry", "title" => $title,
+							"url" => "$root$pageFile", "title" => $title,
 							"match" => $match));
 				}
 		    }
