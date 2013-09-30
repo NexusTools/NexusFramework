@@ -121,13 +121,11 @@ class Framework {
 			if(is_file($indexPath = $file . "index.html") && is_readable($indexPath))
 				self::serveFileInternal($indexPath);
 			
+			ExtensionLoader::loadEnabledExtensions();
 			if(defined("NO_DIRECTORY_LISTINGS") && !User::isSuperAdmin())
 				self::runPage("/errordoc/403");
-				
-			
 			
 			header("Content-Type: text/html; charset=UTF-8");
-			ExtensionLoader::loadEnabledExtensions();
 			Triggers::broadcast("FileServer", "ServeDirectory", $path);
 			OutputFilter::startCompression();
 			?><!DOCTYPE html>
