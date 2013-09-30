@@ -115,7 +115,7 @@ class Framework {
 			}
 			if(!($handle = opendir($file)))
 				self::runPage("/errordoc/500");
-				
+			
 			if(is_file($indexPath = $file . "index.htm") && is_readable($indexPath))
 				self::serveFileInternal($indexPath);
 			if(is_file($indexPath = $file . "index.html") && is_readable($indexPath))
@@ -214,7 +214,7 @@ closedir($handle);
 			self::runPage("/errordoc/204");
 		    
 		Triggers::broadcast("FileServer", "ServeFile", $file);
-		$reader = fopen($file, "r");
+		$reader = fopen($file, "rb");
 		if(!$reader || !flock($reader, LOCK_SH))
 			self::runPage("/errordoc/500");
 		
@@ -229,7 +229,7 @@ closedir($handle);
 		} else
 			header("X-Content-Type-Options: nosniff");
 		if(headers_sent($header_file, $header_line)) {
-			OutputFilter::resetToNative(false);
+			OutputFilter::startRawOutput();
 		    die("Headers Already Sent by: $header_file:$header_line");
 		}
 		
@@ -246,8 +246,8 @@ closedir($handle);
 		if(is_string($realName) || !startsWith($file, BASE_TMP_PATH)) {
 			$safeFilename = urlencode(is_string($realName) ? $realName : basename($file));
 			if(!startsWith($mimetype, "text/") && !startsWith($mimetype, "image/")
-					 && !startsWith($mimetype, "video/")  && !startsWith($mimetype, "audio/")
-			          && !startsWith($mimetype, "application/"))
+					 && !startsWith($mimetype, "video/") &&
+					 	!startsWith($mimetype, "audio/"))
 				header("Content-Disposition: attachment; filename=\"$safeFilename\"");
 			else
 				header("Content-Disposition: inline; filename=\"$safeFilename\"");
@@ -266,7 +266,8 @@ closedir($handle);
 			header("HTTP/1.1 304 Not Modified");
 			exit;
 		}
-		if (isset($_SERVER['HTTP_RANGE']) && preg_match('/bytes=(\d*)-(\d*)/', $_SERVER['HTTP_RANGE'], $range)) {
+		if (isset($_SERVER['HTTP_RANGE']) && preg_match('/bytes=(\d*)-(\d*)/',
+												$_SERVER['HTTP_RANGE'], $range)) {
 		    $range = Array(intval($range[1]), intval($range[2]));
 		    if($range[1] < 1)
 		        $range[1] = $size - 1;
@@ -278,9 +279,7 @@ closedir($handle);
 		        header("Content-Range: bytes $range[0]-$range[1]/$size");
 		        $length++;
 		        header("Content-Length: $length");
-		        
-			    while(ob_end_clean());
-		    		ob_clean();
+		        OutputFilter::resetToNative(false);
 		        
 		        if($range[0])
 		            fseek($reader, $range[0]);
@@ -297,11 +296,9 @@ closedir($handle);
 				OutputFilter::startCompression();
 			else {
 				header("Content-Length: $size");
-				while(ob_end_clean());
-					ob_clean();
+				OutputFilter::resetToNative(false);
 			}
 			
-	        
 	        while($data = fread($reader, 1024))
 	            echo $data;
 		}
