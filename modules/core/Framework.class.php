@@ -242,14 +242,22 @@ closedir($handle);
 		header("Last-Modified: $modtime");
 		header("ETag: $etag");
 		
-		if(is_string($realName)) {
-			$safeFilename = urlencode(is_string($realName) ? $realName : basename($file));
+		if(($android = ClientInfo::isAndroid()) || is_string($realName)) {
+			$safeFilename = urlencode(is_string($realName) ?
+								$realName : basename($file));
+			
+			if($android && preg_match("/^(.+)\\.(.+)/i", $safeFilename, $matches))
+				$safeFilename = $matches[1] . "." . strtoupper($matches[2]);
+			
 			if(!startsWith($mimetype, "text/") && !startsWith($mimetype, "image/")
 					 && !startsWith($mimetype, "video/") &&
 					 	!startsWith($mimetype, "audio/"))
 				header("Content-Disposition: attachment; filename=\"$safeFilename\"");
-			else
+			else {
 				header("Content-Disposition: inline; filename=\"$safeFilename\"");
+				if($android)
+					header("Content-Type: application/octet-stream");
+			}
 			
 			header("X-Filename: $safeFilename");
 		}

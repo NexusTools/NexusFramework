@@ -70,6 +70,12 @@ class ClientInfo {
 	    return stripos($ua, 'mac') ? true : false;
 	}
 	
+	public static function isAndroid(){
+	    $ua = $_SERVER["HTTP_USER_AGENT"];
+	    
+	    return stripos($ua, 'android') ? true : false;
+	}
+	
 	public static function htmlAddressInfo($addr =false) {
 		if(!$addr)
 			$addr = self::getRemoteAddress();
