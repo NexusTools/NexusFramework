@@ -243,7 +243,7 @@ closedir($handle);
 		header('Accept-Ranges: bytes');
 		header("ETag: $etag");
 		
-		if(is_string($realName) || !startsWith($file, BASE_TMP_PATH)) {
+		if(is_string($realName)) {
 			$safeFilename = urlencode(is_string($realName) ? $realName : basename($file));
 			if(!startsWith($mimetype, "text/") && !startsWith($mimetype, "image/")
 					 && !startsWith($mimetype, "video/") &&
