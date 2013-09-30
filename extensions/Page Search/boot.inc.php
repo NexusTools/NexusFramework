@@ -28,11 +28,20 @@ function __pageSearch_explorePageFolder(&$results, $root, $folder, $query) {
 				if($pageFile == "root")
 					$pageFile = "";
 					
-				if(preg_match("/" . preg_quote($query) . "/i", $title, $matches)) {
+				$url = "$root$pageFile";
+				$reg = "/" . preg_quote($query, '/') . "/i";
+				if(preg_match($reg, $title, $matches)) {
 					similar_text($query, $title, $match);
 					array_push($results, array("ref" =>"page:" .
 							Framework::uniqueHash("$root$entry"),
-							"url" => "$root$pageFile", "title" => $title,
+							"url" => $url, "title" => $title,
+							"match" => $match));
+				}
+				if(preg_match($reg, $url, $matches)) {
+					similar_text($query, $url, $match);
+					array_push($results, array("ref" =>"page:" .
+							Framework::uniqueHash("$root$entry"),
+							"url" => $url, "title" => $title,
 							"match" => $match));
 				}
 		    }
