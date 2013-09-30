@@ -9,8 +9,12 @@ function __pageSearch_explorePageFolder(&$results, $root, $folder, $query) {
 				
 			$file = "$folder$entry";
 			if(is_dir("$file/")) {
-				if(file_exists("$file/root.exists.inc.php") ||
-						file_exists("$file/root.cond.inc.php"))
+				if(file_exists("$file/root.exists.inc.php") &&
+						!include("$file/root.exists.inc.php"))
+					continue;
+				
+				if(file_exists("$file/root.cond.inc.php") &&
+						!include("$file/root.cond.inc.php"))
 					continue;
 				
 				__pageSearch_explorePageFolder($results,
@@ -20,8 +24,12 @@ function __pageSearch_explorePageFolder(&$results, $root, $folder, $query) {
 					continue;
 				$pageFile = $pageFile[1];
 				
-				if(file_exists("$folder$pageFile.exists.inc.php") ||
-						file_exists("$folder$pageFile.cond.inc.php"))
+				if(file_exists("$folder$pageFile.exists.inc.php") &&
+						!include("$folder$pageFile.exists.inc.php"))
+					continue;
+				
+				if(file_exists("$folder$pageFile.cond.inc.php") &&
+						!include("$folder$pageFile.cond.inc.php"))
 					continue;
 				
 				$title = trim(file_get_contents($file));
