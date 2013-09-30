@@ -83,9 +83,11 @@ function __pageSearch_exploreVirtualPaths(&$results, $virtualPaths, $root="/", $
 
 function __pageSearch_Callback($matches, $filters) {
 	$results = array();
+	Framework::suppressRedirects(true);
 	__pageSearch_explorePageFolder($results, "/", INDEX_PATH . "pages/", $matches[0]);
 	__pageSearch_exploreVirtualPaths($results, ExtensionLoader::getVirtualPaths(),
 																'/', $matches[0]);
+	Framework::suppressRedirects(false);
 	return $results;
 }
 

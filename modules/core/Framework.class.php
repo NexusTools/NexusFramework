@@ -7,8 +7,14 @@ class Framework {
     const FilenameSafeHash = 3;
     const URLSafeHash = 4;
     
+    
     static $customTags = Array();
     private static $pageContent = "";
+    private static $suppressRedirects = false;
+    
+    public static function suppressRedirects($on =true) {
+    	self::$suppressRedirects = $on;
+    }
     
     public static function isHeadRequest(){
         return $_SERVER['REQUEST_METHOD'] == "HEAD";
@@ -41,6 +47,9 @@ class Framework {
 	public static function redirect($path, $seeOther=false, $rawUri=false){
 		if(defined("INAPI"))
 			return;
+		
+		if(self::$suppressRedirects)
+			throw new Exception("Redirects Supressed: $path");
 			
 		if(headers_sent())
 			throw new Exception("Cannot Redirect: Headers Already Sent");
