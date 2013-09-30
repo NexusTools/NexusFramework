@@ -240,7 +240,6 @@ closedir($handle);
 			header('Connection: close');
 		header("Content-Type: $mimetype");
 		header("Last-Modified: $modtime");
-		header('Accept-Ranges: bytes');
 		header("ETag: $etag");
 		
 		if(is_string($realName)) {
@@ -275,17 +274,24 @@ closedir($handle);
 		    $length = $range[1] - $range[0];
 		    
 		    if($length > 0 && $length < $size) {
+		        header('Accept-Ranges: bytes');
 		        header('HTTP/1.1 206 Partial Content');
 		        header("Content-Range: bytes $range[0]-$range[1]/$size");
 		        $length++;
 		        header("Content-Length: $length");
-		        OutputFilter::resetToNative(false);
 		        
-		        if($range[0])
-		            fseek($reader, $range[0]);
-		        
-		        while($data = fread($reader, 1024))
-	            	echo $data;
+		        if(!self::isHeadRequest()) {
+				    OutputFilter::resetToNative(false);
+				    
+				    if($range[0])
+				        fseek($reader, $range[0]);
+				    
+				    $left = $length;
+				    while($data = fread($reader, $left > 1024 ? 1024 : $left)) {
+				    	$left -= strlen($data);
+			        	echo $data;
+			        }
+	            }
 		        
 		        exit;
 		    }
