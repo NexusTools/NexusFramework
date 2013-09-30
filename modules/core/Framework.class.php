@@ -45,12 +45,12 @@ class Framework {
 	}
 	
 	public static function redirect($path, $seeOther=false, $rawUri=false){
+		if(self::$suppressRedirects)
+			throw new Exception("Redirects Supressed: $path");
+		
 		if(defined("INAPI"))
 			return;
 		
-		if(self::$suppressRedirects)
-			throw new Exception("Redirects Supressed: $path");
-			
 		if(headers_sent())
 			throw new Exception("Cannot Redirect: Headers Already Sent");
 		
