@@ -4,7 +4,7 @@ Framework.Components.registerComponent("input[type=search]", {
 	growTimer: false,
 	updateTimer: false,
 	searchResults: false,
-	lastSearch: "",
+	activeSearch: "",
 	
 	focus: function() {
 		this.getElement().focus();
@@ -116,30 +116,20 @@ Framework.Components.registerComponent("input[type=search]", {
 	},
 	
 	update: function() {
-		console.log("Updating Search Update");
-		var value = this.getValue().trim().replace(/\s+/g, " ");
-		if(this.lastSearch == value)
-			return;
-		this.lastSearch = value;
-		
-		console.log(value);
-		if(!value) {
-			this.updateResults("");
-			return;
-		}
-	
 		activeSearchComponent = this;
-		Framework.API.request("search-core", value);
+		Framework.API.request("search-core", this.activeSearch);
 	},
 	
 	scheduleUpdate: function() {
 		var value = this.getValue().trim().replace(/\s+/g, " ");
-		if(this.lastSearch == value)
+		if(this.activeSearch == value)
 			return;
-	
 		try{clearTimeout(this.updateTimer);}catch(e){}
+		this.activeSearch = value;
+	
 		if(!value) {
 			this.updateResults("");
+			this.activeSearch = value;
 			return;
 		}
 	
