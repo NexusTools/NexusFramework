@@ -42,7 +42,7 @@ function __pageSearch_explorePageFolder(&$results, $root, $folder, $query) {
 				
 				$title = trim(file_get_contents($file));
 				if($pageFile == "root") {
-					$url = substr($root, 0, strlen($root)-1);
+					$url = substr($root, 0, max(1, strlen($root)-1));
 					$pageFile = "";
 				} else
 					$url = "$root$pageFile";
