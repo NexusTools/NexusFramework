@@ -1,10 +1,11 @@
 <?php
 class Email {
 
-	public static $activeID;
-	public $html = false;
-	public $text = false;
-	public $headers = Array();
+	private static $activeID;
+	private $html = false;
+	private $text = false;
+	private $headers = Array();
+	private $tracking = false;
 	
 	public function __construct($headers=Array()){
 		foreach($headers as $key => $val)
@@ -21,6 +22,10 @@ class Email {
 	
 	public function setTo($to, $name=false){
 		$this->headers["to"] = $name ? "$name <$to>" : $to;
+	}
+	
+	public function enableTracking($on =true){
+		$this->tracking = $on;
 	}
 	
 	public function captureHTML($more){
@@ -130,8 +135,13 @@ class Email {
 		//	$text = "To view this email visit this address:\n" . $interpolate_vars['EMAIL_VIEW_URL'] . (isset($interpolate_vars['OPT_OUT_URL']) ? "\n\nTo Opt-Out of this mailing list visit:\n" . $interpolate_vars['OPT_OUT_URL'] : "");
 			
 		if($html) {
+			if($this->tracking)
+				$tracking = "<img width=\"1\" height=\"1\" src=\"" . BASE_URL . "mail-center/track?$emailID\" />";
+			else
+				$tracking = "";
+			
 			$htmlcharset = "utf-8";
-			$html = utf8_encode("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=$htmlcharset\"></head><body>" . interpolate($html, true, $interpolate_vars) . "<img width=\"1\" height=\"1\" src=\"" . BASE_URL . "mail-center/track?$emailID\" /></body></html>");
+			$html = utf8_encode("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=$htmlcharset\"></head><body>" . interpolate($html, true, $interpolate_vars) . "$tracking</body></html>");
 		}
 		$text = utf8_encode(str_replace("\r\n.\r\n", "\n. \n", interpolate($text, true, $interpolate_vars)));
 		
