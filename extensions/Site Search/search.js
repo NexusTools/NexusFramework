@@ -4,6 +4,7 @@ Framework.Components.registerComponent("input[type=search]", {
 	growTimer: false,
 	updateTimer: false,
 	searchResults: false,
+	slowSearchTimer: undefined,
 	activeSearch: "",
 	
 	focus: function() {
@@ -12,12 +13,21 @@ Framework.Components.registerComponent("input[type=search]", {
 	
 	updateResults: function(html) {
 		console.log("Updating search results");
-	
+		
+		try {clearTimeout(this.slowSearchTimer);}catch(e){}
+		this.slowSearchTimer = undefined;
+		
+		this.updateResultsRaw(html);
 		try {
-			this.searchResults.innerHTML = html;
 			var first = this.searchResults.down("a");
 			if(first)
 				first.addClassName("active");
+		} catch(e) {}
+	},
+	
+	updateResultsRaw: function(html) {
+		try {
+			this.searchResults.innerHTML = html;
 		} catch(e) {}
 		this.showResults(true);
 	},
@@ -139,10 +149,17 @@ Framework.Components.registerComponent("input[type=search]", {
 			this.activeSearch = value;
 			return;
 		}
-	
-		this.updateResults("<p>Searching...</p>");
+		
 		console.log("Scheduling Search Update");
 		this.updateTimer = setTimeout(this.update.bind(this), 200);
+		if(this.slowSearchTimer === undefined) {
+			var thisComponent = this;
+			try {clearTimeout(this.slowSearchTimer);}catch(e) {}
+			this.slowSearchTimer = setTimeout(function() {
+				thisComponent.updateResultsRaw("<p>Searching...</p>");
+			}, 400);
+			console.log("Scheduling slow search message", this.slowSearchTimer);
+		}
 	},
 	
 	keyHandler: function(e) {
@@ -151,39 +168,46 @@ Framework.Components.registerComponent("input[type=search]", {
 		switch(e.keyCode) {
 			case 13: // Enter
 				var cur = this.searchResults.down("a.active");
-				if(cur)
-					cur.simulate("click");
+				if(!cur)
+					return;
+				cur.simulate("click");
+				e.stop();
 				break;
 			
-			case 37: // Left
 			case 38: // Up
 				var cur = this.searchResults.down("a.active");
 				if(cur) {
 					cur.removeClassName("active");
-					cur.previous("a").addClassName("active");
+					cur = cur.previous("a");
+					if(!cur) {
+						cur = this.searchResults.lastChild;
+						if(cur.nodeName.toLowerCase() != "a")
+							cur = cur.previous("a");
+					}
+					cur.addClassName("active");
 				}
 				break;
 			
-			case 39: // Right
 			case 40: // Down
 				var cur = this.searchResults.down("a.active");
 				if(cur) {
 					cur.removeClassName("active");
-					cur.next("a").addClassName("active");
+					cur = cur.next("a");
+					if(!cur)
+						cur = this.searchResults.down("a");
+					cur.addClassName("active");
 				}
 				break;
 			
 			default:
 				return;
 		}
-		
-		e.stop();
 	},
 
 	setup: function(el){
 		console.log("Initializing new search box");
 		
-		el.on("keyup", this.keyHandler.bind(this));
+		el.on("keydown", this.keyHandler.bind(this));
 		el.on("input", this.scheduleUpdate.bind(this));
 		el.on("propertychange", this.scheduleUpdate.bind(this));
 		el.on("speechchange", this.scheduleUpdate.bind(this));
