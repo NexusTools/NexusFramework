@@ -1,3 +1,3 @@
 <?php
-Template::addStyle("dark.css");
+Template::addStyle("styles/dark.css");
 ?>
