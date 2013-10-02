@@ -171,7 +171,6 @@ Framework.Components.registerComponent("input[type=search]", {
 				if(!cur)
 					return;
 				cur.simulate("click");
-				e.stop();
 				break;
 			
 			case 38: // Up
@@ -202,6 +201,8 @@ Framework.Components.registerComponent("input[type=search]", {
 			default:
 				return;
 		}
+		
+		e.stop();
 	},
 
 	setup: function(el){
