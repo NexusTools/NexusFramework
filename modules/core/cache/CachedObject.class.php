@@ -77,10 +77,17 @@ abstract class CachedObject {
 	
 		if(!self::$blacklist) {
 			self::$blacklist = Array();
-			if(array_key_exists("__nocache__", $_GET)) {
+			
+			$cacheControl = false;
+			if(array_key_exists("__nocache__", $_GET))
+				$cacheControl = $_GET['__nocache__'];
+			else if(array_key_exists("cache-filter", $_SESSION))
+				$cacheControl = $_SESSION['cache-filter'];
+			
+			if($cacheControl) {
 				$wildcard = preg_quote(preg_quote("*"));
 				
-				foreach(explode(",", $_GET['__nocache__']) as $filter) {
+				foreach(explode(",", $cacheControl) as $filter) {
 					$filter = preg_quote($filter);
 					$filter = preg_replace("/" . $wildcard . "/", ".*", $filter);
 					array_push(self::$blacklist, "/^$filter$/");

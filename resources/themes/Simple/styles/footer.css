@@ -1,0 +1,28 @@
+Framework\:Theme footer ul {
+	float: none;
+	margin: 0px auto;
+	display: table;
+	padding: 0px;
+	width: auto;
+}
+
+Framework\:Theme footer ul li {
+	float: left;
+	text-align: left;
+	display: inline-block;
+	min-width: 100px;
+	margin: 6px;
+}
+
+Framework\:Theme footer ul li a {
+	text-decoration: none;
+}
+
+Framework\:Theme footer ul li span {
+	cursor: pointer;
+}
+
+Framework\:Theme footer ul li ul li {
+	display: block;
+	float: none;
+}

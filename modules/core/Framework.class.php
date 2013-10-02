@@ -648,8 +648,13 @@ Disallow: " . BASE_URI;
 	}
 	
 	public static function runPage($path, $changeStatus=true){
+		if(array_key_exists("__nocache__", $_GET))
+			$_SESSION['cache-filter'] = $_GET['__nocache__'];
+		else if(array_key_exists("cache-filter", $_SESSION))
+			unset($_SESSION['cache-filter']);
+		
 		ExtensionLoader::loadEnabledExtensions();
-		Database::commitAll();
+		Database::commitAll(); // Dump changes first
 		
 		if(NOACCESS_MODE && ($baseDomain = preg_replace("/.+\.(\w+\.\w+)/", "$1", DOMAIN)))
 			redirectDomain($baseDomain);

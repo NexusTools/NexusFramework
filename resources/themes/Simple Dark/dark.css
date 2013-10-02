@@ -1,0 +1,30 @@
+body {
+	background-color: #343434;
+}
+
+Framework\:Page {
+	background-color: #eaeaea;
+}
+
+input.text,
+textarea,
+select {
+	border-color: #444;
+	background-color: white;
+}
+
+Framework\:Theme footer ul li ul {
+	border-left: solid 1pt #4a4a4a;
+}
+
+input.text:focus,
+textarea:focus,
+select:focus {
+	background-color: #fafafa;
+	border-color: #aaa;
+}
+
+Framework\:Theme footer ul li span,
+Framework\:Theme footer ul li a {
+	color: #898989;
+}
