@@ -59,7 +59,20 @@ class Template {
 		self::addSystemStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "base.css");
 		self::addSystemStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "basic-widgets.css");
 		self::addNameSpace("framework", "http://framework.nexustools.net/ns#");
-		self::setHTMLAttr("lang", defined("LANGCODE") ? LANGCODE : "en");
+		
+		try {
+			if(defined("LANGCODE"))
+				$lang = LANGCODE;
+			else {
+				$locale = Locale::parseLocale(Locale::getDefault());
+				$lang = $locale['language'];
+				if($locale['region'])
+					$lang .= "_" . $locale['region'];
+			}
+		} catch(Exception $e) {
+			$lang = "en";
+		}
+		self::setHTMLAttr("lang", $lang);
 
 		if(is_file($favicon = fullpath("favicon.ico")))
 			self::setFavicon($favicon);
