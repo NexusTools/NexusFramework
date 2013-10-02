@@ -64,6 +64,9 @@ class Template {
 			if(defined("LANGCODE"))
 				$lang = LANGCODE;
 			else {
+				if(!class_exists("Locale", false))
+					throw new Exception("Locale class not found");
+			
 				$locale = Locale::parseLocale(Locale::getDefault());
 				$lang = $locale['language'];
 				if($locale['region'])
