@@ -22,3 +22,9 @@ div.searchResults p {
 div.searchResults a:hover {
 	background-color: #eaeaea;
 }
+
+div.searchResults a.active {
+	background-color: #cdcdcd;
+	text-shadow: none;
+	color: #222;
+}

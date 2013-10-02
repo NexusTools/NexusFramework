@@ -13,7 +13,12 @@ Framework.Components.registerComponent("input[type=search]", {
 	updateResults: function(html) {
 		console.log("Updating search results");
 	
-		this.searchResults.innerHTML = html;
+		try {
+			this.searchResults.innerHTML = html;
+			var first = this.searchResults.down("a");
+			if(first)
+				first.addClassName("active");
+		} catch(e) {}
 		this.showResults(true);
 	},
 	
@@ -22,13 +27,15 @@ Framework.Components.registerComponent("input[type=search]", {
 		var size = this.getElement().getLayout();
 		size = [size.get("border-box-width"),
 				size.get("border-box-height")];
-				
-		this.searchResults.style.display = "block";
-		this.searchResults.style.width = size[0] + "px";
-		this.searchResults.style.height = this.searchResults.currentHeight + "px";
-		this.searchResults.style.top = (offset.top + size[1]) + "px";
-		this.searchResults.style.left = offset.left + "px";
-		this.searchResults.setStyle({"opacity": this.searchResults.currentOpacity});
+		
+		try {
+			this.searchResults.style.display = "block";
+			this.searchResults.style.width = size[0] + "px";
+			this.searchResults.style.height = this.searchResults.currentHeight + "px";
+			this.searchResults.style.top = (offset.top + size[1]) + "px";
+			this.searchResults.style.left = offset.left + "px";
+			this.searchResults.setStyle({"opacity": this.searchResults.currentOpacity});
+		} catch(e) {}
 	},
 	
 	showResults: function(remeasure) {
@@ -137,10 +144,46 @@ Framework.Components.registerComponent("input[type=search]", {
 		console.log("Scheduling Search Update");
 		this.updateTimer = setTimeout(this.update.bind(this), 200);
 	},
+	
+	keyHandler: function(e) {
+		console.log(e.keyCode);
+		
+		switch(e.keyCode) {
+			case 13: // Enter
+				var cur = this.searchResults.down("a.active");
+				if(cur)
+					cur.simulate("click");
+				break;
+			
+			case 37: // Left
+			case 38: // Up
+				var cur = this.searchResults.down("a.active");
+				if(cur) {
+					cur.removeClassName("active");
+					cur.previous("a").addClassName("active");
+				}
+				break;
+			
+			case 39: // Right
+			case 40: // Down
+				var cur = this.searchResults.down("a.active");
+				if(cur) {
+					cur.removeClassName("active");
+					cur.next("a").addClassName("active");
+				}
+				break;
+			
+			default:
+				return;
+		}
+		
+		e.stop();
+	},
 
 	setup: function(el){
 		console.log("Initializing new search box");
 		
+		el.on("keyup", this.keyHandler.bind(this));
 		el.on("input", this.scheduleUpdate.bind(this));
 		el.on("propertychange", this.scheduleUpdate.bind(this));
 		el.on("speechchange", this.scheduleUpdate.bind(this));
@@ -150,7 +193,7 @@ Framework.Components.registerComponent("input[type=search]", {
 		el.on("focus", this.showResults.bind(this));
 		el.on("blur", this.hideResults.bind(this));
 		
-		this.update();
+		this.scheduleUpdate();
 	},
 	
 	destroy: function(el){
