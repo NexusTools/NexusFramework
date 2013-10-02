@@ -23,6 +23,9 @@ class Template {
 	private static $titleFormat = TITLE_FORMAT;
 	private static $systemStyleMedia = Array();
 	private static $systemStyles = Array();
+	private static $nameSpaces = Array();
+	private static $htmlAttrs = Array();
+	private static $bodyAttrs = Array();
 	
 	public static function reset(){
 		self::$title = DEFAULT_PAGE_NAME;
@@ -34,6 +37,9 @@ class Template {
 		self::$footerScripts = Array();
 		self::$systemStyleMedia = Array();
 		self::$systemStyles = Array();
+		self::$nameSpaces = Array();
+		self::$htmlAttrs = Array();
+		self::$bodyAttrs = Array();
 		self::init();
 	}
 	
@@ -52,6 +58,8 @@ class Template {
 		
 		self::addSystemStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "base.css");
 		self::addSystemStyle(FRAMEWORK_RES_PATH . "stylesheets" . DIRSEP . "basic-widgets.css");
+		self::addNameSpace("framework", "http://framework.nexustools.net/ns#");
+		self::setHTMLAttr("lang", defined("LANGCODE") ? LANGCODE : "en");
 
 		if(is_file($favicon = fullpath("favicon.ico")))
 			self::setFavicon($favicon);
@@ -63,6 +71,26 @@ class Template {
 			self::setFavicon($favicon);
 		else if(is_file($favicon = fullpath("favicon.gif")))
 			self::setFavicon($favicon);
+	}
+	
+	public static function addNameSpace($name, $url) {
+		self::$nameSpaces[$name] = $url;
+	}
+	
+	public static function setHTMLAttr($attr, $value) {
+		self::$htmlAttrs[$attr] = $value;
+	}
+	
+	public static function removeHTMLAttr($attr) {
+		unset(self::$htmlAttrs[$attr]);
+	}
+	
+	public static function setBodyAttr($attr, $value) {
+		self::$bodyAttrs[$attr] = $value;
+	}
+	
+	public static function removeBodyAttr($attr) {
+		unset(self::$bodyAttrs[$attr]);
 	}
 	
 	public static function setFavicon($path, $mime=null){
@@ -209,9 +237,12 @@ class Template {
 		if(DEBUG_MODE)
 			Profiler::start("Template[Header]");
 		Triggers::broadcast("template", "pre-header");
-		echo "<!DOCTYPE html>\n<html lang=\"";
-		echo defined("LANGCODE") ? LANGCODE : "en";
-		echo "\"><head><base href=\"";
+		echo "<!DOCTYPE html>\n<html";
+		foreach(self::$nameSpaces as $name => $url)
+			echo " prefix=\"$name: $url\"";
+		foreach(self::$htmlAttrs as $key => $val)
+			echo " $key=\"" . htmlspecialchars($val) . "\"";
+		echo "><head><base href=\"";
 		echo BASE_URL;
 		echo "\" /><title>";
 		echo interpolate(self::$titleFormat, true, Array("PAGENAME" => self::$title));
@@ -255,7 +286,10 @@ class Template {
 		    echo "\" resource-id=\"$id\" />";
 		}
 		Triggers::broadcast("template", "header");
-		echo "</head><body>";
+		echo "</head><body";
+		foreach(self::$bodyAttrs as $key => $val)
+			echo " $key=\"" . htmlspecialchars($val) . "\"";
+		echo ">";
 		Triggers::broadcast("template", "body-header");
 		foreach(self::$headerScripts as $script)
 			call_user_func($script);
