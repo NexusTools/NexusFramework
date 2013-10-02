@@ -1,3 +1,3 @@
 <?php
-Template::addStyle("light.css");
+Template::addStyle("styles/light.css");
 ?>

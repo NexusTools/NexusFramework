@@ -4,6 +4,8 @@ body {
 
 Framework\:Page {
 	background-color: white;
+	-webkit-box-shadow:  0px 0px 6px 0px rgba(0, 0, 0, 0.7);
+    box-shadow:  0px 0px 6px 0px rgba(0, 0, 0, 0.7);
 }
 
 Framework\:Theme footer ul li ul {
