@@ -116,7 +116,7 @@ class Framework {
 			$file = cleanpath($file);
 			
 			if(startsWith($file, FRAMEWORK_RES_PATH))
-				$path = "/res:" . substr($file, strlen(FRAMEWORK_RES_PATH));
+				$path = "/res" . RES_CONNECTOR . substr($file, strlen(FRAMEWORK_RES_PATH));
 			else {
 				if(!startsWith($file, INDEX_PATH))
 					self::runPage("/errordoc/404");
@@ -141,7 +141,7 @@ class Framework {
 <html><head><title>Directory Listing: <? echo $path; ?></title>
 <meta name="robots" content="noindex, nofollow" />
 <meta name="description" content="Directory listing for <? echo $path; ?>" />
-<link href="<? echo BASE_URI; ?>res:dirstyle" rel="stylesheet" type="text/css" /></head>
+<link href="<? echo BASE_URI; ?>res<? echo RES_CONNECTOR; ?>dirstyle" rel="stylesheet" type="text/css" /></head>
 <body><h1>Directory Listing: <? echo $path; ?></h1>
 <table cellspacing="0" cellpadding="0"><tr><th colspan="2">Filename</th><th>Type</th><th>Size</th></tr>
 <?
@@ -163,7 +163,7 @@ while (false !== ($entry = readdir($handle))) {
 	if(!endsWith($path, RES_CONNECTOR) && !endsWith($path, DIRSEP))
 		$path .= DIRSEP;
 	
-	?><tr><td><img src="<? echo BASE_URI . "res:icon/folder"; ?>" width="22" height="22" /></td><td><a href="<?
+	?><tr><td><img src="<? echo BASE_URI . "res" . RES_CONNECTOR . "icon/folder"; ?>" width="22" height="22" /></td><td><a href="<?
 	echo cleanpath($path . $entry);
 	?>"><? echo $entry; ?></a></td><td>directory</td><td><?
 	echo StringFormat::formatFilesize(filesize($entry));
@@ -175,7 +175,7 @@ foreach($files as $entry) {
 	$size = filesize($entry);
 	$mime = self::mimeForFile($entry);
 	if(startsWith($mime, "image/")) {
-		$icon = BASE_URI . "res:icon/image";
+		$icon = BASE_URI . "res" . RES_CONNECTOR . "icon/image";
 		try {
 			if($size < 5242880 && class_exists("ModifiedImage"))
 				$icon = ModifiedImage::scaledTransparentURI($entry, 22, 22, ModifiedImage::KeepAspectRatio);
@@ -183,21 +183,21 @@ foreach($files as $entry) {
 	} else {
 		if($size > 0) {
 			if(startsWith($mime, "video/"))
-				$icon = BASE_URI . "res:icon/video";
+				$icon = BASE_URI . "res" . RES_CONNECTOR . "icon/video";
 			else if(startsWith($mime, "audio/"))
-				$icon = BASE_URI . "res:icon/audio";
+				$icon = BASE_URI . "res" . RES_CONNECTOR . "icon/audio";
 			else if(preg_match("#^(text|application)/.*(xml|html?).*$#i", $mime))
-				$icon = BASE_URI . "res:icon/xml";
+				$icon = BASE_URI . "res" . RES_CONNECTOR . "icon/xml";
 			else if(preg_match("#^(application)/.*(pdf).*$#i", $mime))
-				$icon = BASE_URI . "res:icon/pdf";
+				$icon = BASE_URI . "res" . RES_CONNECTOR . "icon/pdf";
 			else if(preg_match("/compressed|zip|archive/", $mime))
-				$icon = BASE_URI . "res:icon/archive";
+				$icon = BASE_URI . "res" . RES_CONNECTOR . "icon/archive";
 			else if(startsWith($mime, "text/"))
-				$icon = BASE_URI . "res:icon/text";
+				$icon = BASE_URI . "res" . RES_CONNECTOR . "icon/text";
 			else 
-				$icon = BASE_URI . "res:icon/unknown";
+				$icon = BASE_URI . "res" . RES_CONNECTOR . "icon/unknown";
 		} else
-			$icon = BASE_URI . "res:icon/empty";
+			$icon = BASE_URI . "res" . RES_CONNECTOR . "icon/empty";
 	}
 	
 	$path = BASE_URI . REQUEST_URI;
@@ -602,7 +602,7 @@ Disallow: " . BASE_URI;
 			return ($relative ? MEDIA_URI : MEDIA_URL) . substr($path, strlen(MEDIA_PATH));
 
 		if(startsWith($path, FRAMEWORK_RES_PATH))
-			return ($relative ? BASE_URI . "res:" : BASE_URL . "res:") . substr($path, strlen(FRAMEWORK_RES_PATH));
+			return ($relative ? BASE_URI . "res" . RES_CONNECTOR : BASE_URL . "res" . RES_CONNECTOR) . substr($path, strlen(FRAMEWORK_RES_PATH));
 
 		if($shared && startsWith($rawPath, TMP_PATH))
 			$shared = false;
