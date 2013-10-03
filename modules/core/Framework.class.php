@@ -243,8 +243,10 @@ closedir($handle);
 		$modtime = self::formatGMTDate(filemtime($file));
 		if(!is_string($mimetype) || !strlen($mimetype = trim($mimetype))) {
 			$mimetype = self::mimeForFile($file);
-			if($mimetype && !startsWith($mimetype, "text/") && !startsWith($mimetype, "application/")
-					&& !endsWith($mimetype, "+xml"))
+			
+			if($mimetype && !startsWith($mimetype, "text/") &&
+					!startsWith($mimetype, "application/") &&
+					!endsWith($mimetype, "+xml"))
 				header("X-Content-Type-Options: nosniff");
 		} else
 			header("X-Content-Type-Options: nosniff");

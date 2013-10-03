@@ -29,14 +29,24 @@ class FileMime extends CachedFile {
 	}
 	
 	protected function update(){
+		$mime_type = "text/plain";
+		
 		if(function_exists("mime_content_type"))
-		    return mime_content_type($this->getFilepath());
+		    $mime_type = mime_content_type($this->getFilepath());
 	    else {
 		    $finfo = finfo_open(FILEINFO_MIME, "/usr/share/misc/magic.mgc");
 		    $mime_type = finfo_file($finfo, $this->getFilepath());
 		    finfo_close($finfo);
-		    return $mime_type;
 	    }
+	    
+	    if($mime_type == "text/plain") { // Fix bad css/js detection
+			if(endsWith($this->getFilepath(), ".js"))
+				$mime_type = "text/javascript";
+			else if(endsWith($this->getFilepath(), ".css"))
+				$mime_type = "text/css";
+		}
+	    
+	    return $mime_type;
 	}
 	
 	public function getPrefix(){
