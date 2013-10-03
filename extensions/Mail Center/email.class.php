@@ -141,14 +141,20 @@ class Email {
 				$tracking = "";
 			
 			$htmlcharset = "utf-8";
-			$html = utf8_encode("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=$htmlcharset\"></head><body>" . interpolate($html, true, $interpolate_vars) . "$tracking</body></html>");
+			$html = utf8_encode("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"><html><head><META http-equiv=\"Content-Type\" content=\"text/html; charset=$htmlcharset\"></head><body style=\"margin: 0px\">" . interpolate($html, true, $interpolate_vars) . "$tracking</body></html>");
 		}
-		$text = utf8_encode(str_replace("\r\n.\r\n", "\n. \n", interpolate($text, true, $interpolate_vars)));
+		
+		if(!$text)
+			$text = strip_tags($html);
+		else
+			$text = utf8_encode(str_replace("\r\n.\r\n", "\n. \n", interpolate($text, true, $interpolate_vars)));
 		
 		if($text && !$html) {
 			$payload = $text;
 			$headers['content-type'] = "text/plain; charset=utf-8";
 		} else {
+			
+		
 			$payload = "";
 			$headers['mime-version'] = "1.0";
 			srand(time());
