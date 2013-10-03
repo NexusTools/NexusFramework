@@ -51,14 +51,14 @@ class User {
     public static function setBackend($backend){
         if(self::$backend)
             throw new Exception("User Backend Already Set");
-            
+        
         try {
             $refClass = new ReflectionClass($backend);
             if($refClass->isSubclassOf("UserBackend"))
                 self::$backend = $backend;
             else
                 throw new Exception("Not a subclass of UserBackend");
-                
+            
             self::verifyLoggedUser();
         } catch(Exception $e){
             throw new Exception("$backend is not a valid UserBackend implementation", 0, $e);
