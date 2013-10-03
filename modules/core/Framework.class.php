@@ -10,7 +10,15 @@ class Framework {
     
     static $customTags = Array();
     private static $pageContent = "";
+    private static $boundResourcePaths = array();
     private static $suppressRedirects = false;
+    
+    public static function addResourcePath($key, $path =false) {
+    	$path = fullpath($path ? $path : $key);
+    	if(!endsWith($path, "/"))
+    		$path .= "/";
+    	self::$boundResourcePaths[$key] = $path;
+    }
     
     public static function suppressRedirects($on =true) {
     	self::$suppressRedirects = $on;
@@ -407,8 +415,7 @@ closedir($handle);
 			}
 			die("</p></body></html>");
 		} else if(startsWith($res, "icon/"))
-			self::serveFileInternal(FRAMEWORK_RES_PATH . "icons" . DIRSEP . (array_key_exists("s", $_GET)
-										? $_GET['s'] : 22) . DIRSEP . substr($res, 5) . ".png", "image/png");
+			self::serveFileInternal(FRAMEWORK_RES_PATH . "icons" . DIRSEP . (array_key_exists("s", $_GET) ? $_GET['s'] : 22) . DIRSEP . substr($res, 5) . ".png", "image/png");
 		
 		switch($res){
 		    case "internal-error":
@@ -460,8 +467,13 @@ closedir($handle);
 				echo "\nInstall Path: " . FRAMEWORK_PATH;
 				echo "\nBase URL: " . BASE_URL;
 				exit;
-				
 			
+		}
+		
+		ExtensionLoader::loadEnabledExtensions();
+		foreach(self::$boundResourcePaths as $key => $path) {
+			if(startsWith($res, "$key/") || $key == $res)
+				self::serveFileInternal($path . substr($res, strlen($key) + 1));
 		}
 		
 		self::serveFileInternal(FRAMEWORK_RES_PATH . $res);
