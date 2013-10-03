@@ -131,19 +131,20 @@ class ActionEmail {
 			if(!is_file($actionBtn))
 				$actionBtn = fullpath("email/action-button.gif");
 				
-			$defStyle = "text-decoration:none;font-size: 16px";
+			$defStyle = "color:inherit;text-decoration:none;font-size: 16px";
 			if(is_file($actionBtn) && is_readable($actionBtn))
-				$defStyle .= ";background-image:url(" . Framework::getReferenceURL($actionBtn) . ");display:block;width:124px;color:inherit;min-height:36px;line-height:36px";
+				$defStyle .= ";background-image:url(" . Framework::getReferenceURL($actionBtn) . ");display:block;width:124px;min-height:36px;line-height:36px";
+			
 			self::getSettings()->setValue("button-style", $lnkStyle = $defStyle);
 		}
 		$html = file_get_contents(fullpath("email/head.htm"));
 		$html .= "<h2>$subject</h2>";
 		$html .= "<p> " . nl2br($body) . "</p>";
-		$html .= "<a style=\"";
+		$html .= "<br /><a style=\"";
 		$html .= htmlspecialchars($lnkStyle);
 		$html .= "\" href=\"";
 		$html .= htmlspecialchars($actionUrl);
-		$html .= "\" target=\"_blank\">$actionText</a><br /><br />";
+		$html .= "\" target=\"_blank\">$actionText</a>";
 		$html .= file_get_contents(fullpath("email/foot.htm"));
 		$email->setHTML($html);
 		
