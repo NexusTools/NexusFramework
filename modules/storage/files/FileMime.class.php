@@ -29,22 +29,27 @@ class FileMime extends CachedFile {
 	}
 	
 	protected function update(){
-		$mime_type = "text/plain";
+		$mime_type = false;
 		
-		if(function_exists("mime_content_type"))
-		    $mime_type = mime_content_type($this->getFilepath());
-	    else {
-		    $finfo = finfo_open(FILEINFO_MIME, "/usr/share/misc/magic.mgc");
-		    $mime_type = finfo_file($finfo, $this->getFilepath());
-		    finfo_close($finfo);
+		if(endsWith($this->getFilepath(), ".js"))
+			$mime_type = "text/javascript";
+		else if(endsWith($this->getFilepath(), ".css"))
+			$mime_type = "text/css";
+		else if(endsWith($this->getFilepath(), ".htm") ||
+				endsWith($this->getFilepath(), ".html"))
+			$mime_type = "text/html";
+		else {
+			if(function_exists("mime_content_type"))
+				$mime_type = mime_content_type($this->getFilepath());
+			else {
+				$finfo = finfo_open(FILEINFO_MIME, "/usr/share/misc/magic.mgc");
+				$mime_type = finfo_file($finfo, $this->getFilepath());
+				finfo_close($finfo);
+			}
 	    }
 	    
-	    if($mime_type == "text/plain") { // Fix bad css/js detection
-			if(endsWith($this->getFilepath(), ".js"))
-				$mime_type = "text/javascript";
-			else if(endsWith($this->getFilepath(), ".css"))
-				$mime_type = "text/css";
-		}
+	    if(!$mime_type)
+	    	$mime_type = "text/plain";
 	    
 	    return $mime_type;
 	}

@@ -29,9 +29,11 @@ Framework.registerModule("Components", {
 							try {
 								if(!element.components)
 									element.components = {};
+								
 								if(component.key in element.components)
 									element.components[component.key].setup();
-								element.components[component.key] = new component.value(element);
+								else
+									element.components[component.key] = new component.value(element);
 							} catch(e) {
 								console.log("" + e);
 								console.trace(e);
