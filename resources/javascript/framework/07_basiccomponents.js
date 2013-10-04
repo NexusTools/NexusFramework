@@ -44,13 +44,13 @@ if(!("max" in document.createElement('progress')))
 		});*/
 		
 Framework.Components.registerComponent("form input[type=submit]", {
-			setup: function(el) {
-				console.log("Connecting Form");
+			hook: function(el) {
+				console.log("Hooking Form");
 				
+				var form = el.up("form");
 				el.on("click", function(e) {
 					console.log("Destroying Form Container");
-					Framework.Components.destroyContainer(el.up("form"));
-					e.stop();
+					Framework.Components.destroyContainer(form);
 				});
 			}
 		});

@@ -26,8 +26,18 @@ Framework.registerModule("TinyMCE", {
 });
 
 Framework.Components.registerComponent("textarea[code=html]", {
-
+	
+	hook: function(el) {
+		el.on("invalid", (function() {
+			setTimeout((function() {
+				this.setup(el);
+			}).bind(this), 500);
+		}).bind(this));
+	},
+	
 	setup: function(el) {
+		this.destroyed = false;
+		
 		if(!Framework.TinyMCE.loaded) {
 			Framework.TinyMCE.pendingInstances.push(this);
 			return;
@@ -48,10 +58,19 @@ Framework.Components.registerComponent("textarea[code=html]", {
 		var el = this.getElement();
 		console.log("Initializing TinyMCE Instance", el);
 		
+		var thisComponent = this;
 		this.options = {
 			mode: "exact",
 			elements: el.identify(),
-			plugins: this.plugins
+			plugins: this.plugins,
+			init_instance_callback: function(inst) {
+				console.log("TinyMCE Instance Initialized");
+				thisComponent.tinyMCE = inst || tinyMCE.get(el.identify());
+				if(thisComponent.destroyed) {
+					thisComponent.tinyMCE.destroy();
+					thisComponent.tinyMCE = undefined;
+				}
+			}
 		};
 		
 		if(el.hasAttribute("plugins"))
@@ -79,7 +98,16 @@ Framework.Components.registerComponent("textarea[code=html]", {
 	},
 	
 	destroy: function(el) {
-		tinyMCE.execCommand('mceRemoveControl', false, el.identify());
+		this.destroyed = true;
+		
+		if(!this.tinyMCE)
+			return;
+	
+		console.log("Removing TinyMCE Instance");
+		this.getElement().value = this.tinyMCE.getContent();
+		this.tinyMCE.destroy();
+		
+		this.tinyMCE = undefined;
 	}
 
 }, true);
