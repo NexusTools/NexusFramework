@@ -30,10 +30,20 @@ Framework.registerModule("Components", {
 						if(!element.components)
 							element.components = {};
 						
-						if(component.key in element.components)
-							element.components[component.key].setup();
-						else
-							element.components[component.key] = new component.value(element);
+						var cComponent;
+						if(component.key in element.components) {
+							cComponent = element.components[component.key];
+							if(cComponent.isSetup) {
+								console.log("Component already setup");
+								return;
+							}
+						
+							cComponent.setup();
+						} else {
+							cComponent = new component.value(element);
+							element.components[component.key] = cComponent;
+						}
+						cComponent.isSetup = true;
 					} catch(e) {
 						console.log("" + e);
 						console.trace(e);
@@ -54,8 +64,14 @@ Framework.registerModule("Components", {
 					try {
 						console.log(element.components);
 						$H(element.components).each(function(pair) {
+							if(!pair.value.isSetup) {
+								console.log("Component not setup, can't destroy");
+								return; // Not setup, skip
+							}
+						
 							console.log(pair);
 							pair.value.destroy(pair.value.getElement());
+							pair.value.isSetup = false;
 						});
 					} catch(e) {
 						console.log("" + e);
@@ -72,6 +88,7 @@ Framework.registerModule("Components", {
 		baseClass: Class.create({
 				
 			element: false,
+			isSetup: false,
 			
 			initialize: function(el) {
 				this.element = el;

@@ -54,3 +54,17 @@ Framework.Components.registerComponent("form input[type=submit]", {
 				});
 			}
 		});
+		
+Framework.Components.registerComponent("form input, form submit, form textarea", {
+			hook: function(el) {
+				console.log("Hooking Form");
+				
+				var form = el.up("form");
+				el.on("invalid", function(e) {
+					console.log("Form Invalid, Reinitializing Form Container");
+					setTimeout(function() {
+						Framework.Components.setupContainer(form);
+					}, 500);
+				});
+			}
+		});

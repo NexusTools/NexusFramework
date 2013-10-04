@@ -27,14 +27,6 @@ Framework.registerModule("TinyMCE", {
 
 Framework.Components.registerComponent("textarea[code=html]", {
 	
-	hook: function(el) {
-		el.on("invalid", (function() {
-			setTimeout((function() {
-				this.setup(el);
-			}).bind(this), 500);
-		}).bind(this));
-	},
-	
 	setup: function(el) {
 		this.destroyed = false;
 		
@@ -105,7 +97,7 @@ Framework.Components.registerComponent("textarea[code=html]", {
 	
 		console.log("Removing TinyMCE Instance");
 		this.getElement().value = this.tinyMCE.getContent();
-		this.tinyMCE.destroy();
+		this.tinyMCE.remove();
 		
 		this.tinyMCE = undefined;
 	}
