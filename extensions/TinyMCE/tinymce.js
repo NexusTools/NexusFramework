@@ -36,13 +36,20 @@ Framework.Components.registerComponent("textarea[code=html]", {
 		this.initMCE();
 	},
 	
+	getOptions: function() {
+		return this.options;
+	},
+	
+	getOption: function(key) {
+		return this.option[key];
+	},
+	
 	initMCE: function() {
 		var el = this.getElement();
 		console.log("Initializing TinyMCE Instance", el);
 		
 		this.options = {
 			mode: "exact",
-            theme: "modern",
 			elements: el.identify(),
 			plugins: this.plugins
 		};
@@ -52,11 +59,16 @@ Framework.Components.registerComponent("textarea[code=html]", {
 		else
 			this.options.plugins = "advlist autolink lists link image charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table contextmenu directionality emoticons template paste textcolor";
 		
-		if(!el.hasAttribute("paragraphs")) {
+		if(!el.hasAttribute("paragraph")) {
 			this.options.forced_root_block = false;
 		    this.options.force_br_newlines = true;
 		    this.options.force_p_newlines = false;
 		}
+		
+		if(el.hasAttribute("theme"))
+			this.options.theme = el.readAttribute("theme");
+		else
+			this.options.theme = "modern";
 		
 		tinyMCE.init(this.options);
 	},

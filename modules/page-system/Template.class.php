@@ -22,6 +22,7 @@ class Template {
 	private static $footerScripts = Array();
 	private static $titleFormat = TITLE_FORMAT;
 	private static $systemStyleMedia = Array();
+	private static $globalScripts = Array();
 	private static $systemStyles = Array();
 	private static $nameSpaces = Array();
 	private static $htmlAttrs = Array();
@@ -163,6 +164,18 @@ class Template {
 		if(!isset(self::$scripts[$id])) {
 			self::$scripts[$id] = new CompressedScript($script);
 			self::$scripts[$id] = self::$scripts[$id]->getReferenceURI();
+	    }
+	}
+	
+	public static function addGlobalScript($script){
+		$script = fullpath($script);
+		if(!is_file($script))
+		    throw new Exception("Reference to Invalid File");
+		$id = Framework::uniqueHash($script);
+		if(!isset(self::$globalScripts[$id])) {
+			self::$globalScripts[$id] = new CompressedScript($script);
+			self::$globalScripts[$id] =
+					self::$globalScripts[$id]->getReferenceURI();
 	    }
 	}
 	
@@ -332,6 +345,18 @@ class Template {
 		echo Framework::uniqueHash($fm_config, Framework::URLSafeHash);
 		echo "\"><!-- ($fm_config) --></framework:config>";
 		echo "<script resource-id=\"__framework-base__\" src=\"" . SHARED_RESOURCE_URL . "script\" language=\"javascript\"></script>";
+		
+		foreach(self::$globalScripts as $id => $script) {
+			echo "<script resource-id=\"$id\" src=\"";
+		    if($script instanceof ScriptCompressor) {
+				echo $script->getReferenceURI("text/javascript");
+				if(DEBUG_MODE)
+					echo "\" storage=\"" . $script->getStoragePath();
+			} else
+				echo "$script";
+			echo "\" language=\"javascript\"></script>";
+	    }
+		
 		foreach(self::$scripts as $id => $script) {
 			echo "<script resource-id=\"$id\" src=\"";
 		    if($script instanceof ScriptCompressor) {
