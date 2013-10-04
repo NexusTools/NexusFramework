@@ -65,6 +65,11 @@ Framework.Components.registerComponent("textarea[code=html]", {
 		    this.options.force_p_newlines = false;
 		}
 		
+		if(el.hasAttribute("menubar"))
+			this.options.menubar = el.readAttribute("menubar");
+		else if(el.hasAttribute("nomenubar"))
+			this.options.menubar = false;
+		
 		if(el.hasAttribute("theme"))
 			this.options.theme = el.readAttribute("theme");
 		else
