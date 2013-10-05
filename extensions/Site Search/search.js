@@ -97,7 +97,7 @@ Framework.Components.registerComponent("input[type=search]", {
 		
 		try{clearTimeout(this.growTimer);}catch(e){}
 		if(this.searchResults.currentHeight != this.searchResults.realHeight)
-			this.growTimer = setTimeout(this.showResults.bind(this), 30);
+			this.growTimer = setTimeout(this.showResults.bind(this), 20);
 	},
 	
 	hideResults: function(now) {
@@ -127,7 +127,7 @@ Framework.Components.registerComponent("input[type=search]", {
 		if(this.searchResults.currentHeight > 0)
 			this.growTimer = setTimeout(function() {
 				thisComponent.hideResults(true);
-			}, 30);
+			}, 20);
 		else
 			this.searchResults.style.display = "none";
 	},
@@ -204,10 +204,8 @@ Framework.Components.registerComponent("input[type=search]", {
 		
 		e.stop();
 	},
-
-	setup: function(el){
-		console.log("Initializing new search box");
-		
+	
+	hook: function(el) {
 		el.on("keydown", this.keyHandler.bind(this));
 		el.on("input", this.scheduleUpdate.bind(this));
 		el.on("propertychange", this.scheduleUpdate.bind(this));
@@ -218,6 +216,11 @@ Framework.Components.registerComponent("input[type=search]", {
 		el.on("focus", this.showResults.bind(this));
 		el.on("blur", this.hideResults.bind(this));
 		
+		Event.on(window, "resize", this.updateResultsStyle.bind(this));
+		Event.on(window, "scroll", this.updateResultsStyle.bind(this));
+	},
+
+	setup: function(el){
 		this.scheduleUpdate();
 	},
 	
