@@ -37,14 +37,27 @@ Framework.Components.registerComponent("input[type=search]", {
 		var size = this.getElement().getLayout();
 		size = [size.get("border-box-width"),
 				size.get("border-box-height")];
+		var position = "absolute";
+		var el = this.getElement();
+		while(el = el.parentNode) {
+			if(el == document.body)
+				break;
+			
+			if(el.getStyle("position") == "fixed") {
+				position = "fixed";
+				break;
+			}
+		}
 		
 		try {
-			this.searchResults.style.display = "block";
-			this.searchResults.style.width = size[0] + "px";
-			this.searchResults.style.height = this.searchResults.currentHeight + "px";
-			this.searchResults.style.top = (offset.top + size[1]) + "px";
-			this.searchResults.style.left = offset.left + "px";
-			this.searchResults.setStyle({"opacity": this.searchResults.currentOpacity});
+			this.searchResults.setStyle({
+				"opacity": this.searchResults.currentOpacity,
+				"left": offset.left + "px",
+				"display": "block",
+				"width": size[0] + "px",
+				"height": this.searchResults.currentHeight + "px",
+				"top": (offset.top + size[1]) + "px",
+				"position": position});
 		} catch(e) {}
 	},
 	
