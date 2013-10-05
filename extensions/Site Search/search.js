@@ -58,6 +58,7 @@ Framework.Components.registerComponent("input[type=search]", {
 				"height": this.searchResults.currentHeight + "px",
 				"top": (offset.top + size[1]) + "px",
 				"position": position});
+			this.searchResults.scrollTop = this.searchResults.scrollHeight;
 		} catch(e) {}
 	},
 	
