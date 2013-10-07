@@ -5,6 +5,8 @@ html, body {
 body {
 	margin: 0px;
 	cursor: default;
+	display: table;
+	width: 100%;
 }
 
 * {
@@ -61,6 +63,7 @@ footer ul li {
 Framework\:Theme {
 	min-height: 100%;
 	padding: 0px 24px;
+	width: 100%;
 }
 
 Framework\:Page,
