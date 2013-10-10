@@ -31,7 +31,7 @@ class ActionEmail {
 			throw new Exception("Failed to create action token");
 		$created = Database::timestampToTime(self::getDatabase()->selectField("actions", Array("rowid" => $id), "created"));
 		
-		return self::sendUrl($body, BASE_URL . "?continue&token=" . urlencode(base64_encode($unique)) . "&created=$created&id=$id", $subject, $actionText, $to, $from);
+		return self::sendUrl($body, BASE_URL . "action-email/continue?token=" . urlencode(base64_encode($unique)) . "&created=$created&id=$id", $subject, $actionText, $to, $from);
 	}
 	
 	public static function __sessionCallback($url, $sessionKey, $sessionData) {

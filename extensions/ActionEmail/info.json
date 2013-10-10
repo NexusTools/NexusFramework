@@ -2,6 +2,7 @@
 	"name": "ActionEmail",
 	"provides": "action-email",
 	"dependancies": ["mail-center"],
+	"page-root": "/action-email/",
 	"database": {
 		"actions": {
 			"code": "BINARY(16)",
