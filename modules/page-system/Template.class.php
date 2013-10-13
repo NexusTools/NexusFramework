@@ -302,6 +302,16 @@ class Template {
 				echo " />";
 		}
 		
+		foreach(self::$globalStyles as $id => $style){
+		    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
+		    if($style instanceof StyleCompressor) {
+				echo $style->getReferenceURI("text/css");
+				if(DEBUG_MODE)
+					echo "\" storage=\"" . $style->getStoragePath();
+			} else
+				echo "$style";
+		    echo "\" resource-id=\"$id\" />";
+		}
 		foreach(self::$systemStyles as $id => $style){
 		    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
 		    if($style instanceof StyleCompressor) {

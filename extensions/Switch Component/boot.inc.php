@@ -1,5 +1,6 @@
 <?php
 
-Template::registerGlobalScript("component.js");
+Template::addGlobalScript("component.js");
+Template::addGlobalStyle("component.css");
 
 ?>
