@@ -1,7 +1,7 @@
 <?php
 switch($mode){
 	case EditCore::RENDER:
-		?><widget class="component" style="line-height: 26px; margin-bottom: 6px">
+		?><widget class="component switch" style="line-height: 26px; margin-bottom: 6px">
 <input type="radio" value="1" name="<? echo $name; ?>" id="__cp_<? echo $name; ?>_inNavbarYes"<?
 if($value || $value == "Yes")
 	echo " checked";

@@ -21,34 +21,39 @@ Framework.registerModule("Components", {
 			if(container.element instanceof Function)
 				container = container.element();
 			
-			console.log("Setting up Container", container);
+			console.log("Setting up Container", container, Framework.Components.registered.keys());
 			Framework.Components.registered.each(function(component){
-				console.log(component.key);
-				container.select(component.key).each(function(element){
-					console.log(element);
-					try {
-						if(!element.components)
-							element.components = {};
+				try {
+					console.log(component);
+					Element.select(container, component.key).each(function(element){
+						console.log(element);
+						try {
+							if(!element.components)
+								element.components = {};
 						
-						var cComponent;
-						if(component.key in element.components) {
-							cComponent = element.components[component.key];
-							if(cComponent.isSetup) {
-								console.log("Component already setup");
-								return;
+							var cComponent;
+							if(component.key in element.components) {
+								cComponent = element.components[component.key];
+								if(cComponent.isSetup) {
+									console.log("Component already setup");
+									return;
+								}
+						
+								cComponent.setup();
+							} else {
+								cComponent = new component.value(element);
+								element.components[component.key] = cComponent;
 							}
-						
-							cComponent.setup();
-						} else {
-							cComponent = new component.value(element);
-							element.components[component.key] = cComponent;
+							cComponent.isSetup = true;
+						} catch(e) {
+							console.log("" + e);
+							console.log(e.stack);
 						}
-						cComponent.isSetup = true;
-					} catch(e) {
-						console.log("" + e);
-						console.trace(e);
-					}
-				});
+					});
+				} catch(e) {
+					console.log("" + e);
+					console.log(e.stack);
+				}
 			});
 		},
 		

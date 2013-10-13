@@ -23,6 +23,7 @@ class Template {
 	private static $titleFormat = TITLE_FORMAT;
 	private static $systemStyleMedia = Array();
 	private static $globalScripts = Array();
+	private static $globalStyles = Array();
 	private static $systemStyles = Array();
 	private static $nameSpaces = Array();
 	private static $htmlAttrs = Array();
@@ -176,6 +177,17 @@ class Template {
 			self::$globalScripts[$id] = new CompressedScript($script);
 			self::$globalScripts[$id] =
 					self::$globalScripts[$id]->getReferenceURI();
+	    }
+	}
+	
+	public static function addGlobalStyle($style){
+		$style = fullpath($style);
+		if(!is_file($style))
+		    throw new Exception("Reference to Invalid File");
+		$id = Framework::uniqueHash($style);
+		if(!isset(self::$globalStyles[$id])) {
+			self::$globalStyles[$id] = new CompressedStyle($style);
+			self::$globalStyles[$id] = self::$globalStyles[$id]->getReferenceURI();
 	    }
 	}
 	

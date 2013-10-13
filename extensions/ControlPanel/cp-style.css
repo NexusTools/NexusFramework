@@ -7,15 +7,18 @@ html, body {
     overflow: hidden;
     font-family: 'Source Sans Pro', sans-serif;
 	font-size: 80%;
+	display: block;
 }
 
 Framework\:Theme {
 	padding: 0px;
 	height: 100%;
+	display: block;
 }
 
 Framework\:Page {
 	position: relative;
+	display: block;
 	z-index: 0;
 }
 

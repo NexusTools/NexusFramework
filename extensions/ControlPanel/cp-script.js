@@ -178,6 +178,8 @@ ControlPanel.submitForm = function(button, getVars){
 	    var form = ControlPanel.page.whiteout.popup.select("form")[0];
 	else
 	    var form = Element.select(ControlPanel.page.content, "form")[0];
+	Framework.Components.destroyContainer(form);
+	
 	var badBrowser = false;
 	form.select("input[name], textarea[name], select[name]").each(function(input){
 		if(badBrowser)
