@@ -660,3 +660,8 @@ Framework\:Page Content a {
 Framework\:Page Content a:hover {
 	color: #00aaaa;
 }
+
+Framework\:Page Content button center {
+	margin: 0px;
+	padding: 0px;
+}

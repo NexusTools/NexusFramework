@@ -35,7 +35,7 @@ $types = VirtualPages::getPageTypes();
 Title<br />
 <input <? if(isset($_POST['condition'])) echo "value=\"" .htmlspecialchars($_POST['title']). "\" ";?>name="title" type="text" class="text large"><br />
 Condition<br />
-<input <? if(isset($_POST['condition'])) echo "value=\"" .htmlspecialchars($_POST['condition']). "\" ";?>name="condition" style="width: 350px" type="text" class="text"><br />
+<input <? if(isset($_POST['condition'])) echo "value=\"" .htmlspecialchars($_POST['condition']). "\" ";?>name="condition" style="width: 350px" type="condition" class="text"><br />
 Type<br />
 <select value="<? echo $activeType; ?>" onchange="if(!this.oldType){this.oldType='<? echo $types[0]; ?>'} $('__cp_page_' + this.oldType).hide(); this.oldType = this.value; $('__cp_page_' + this.value).show();" name="type" style="width: 350px">
 <?

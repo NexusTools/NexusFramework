@@ -20,7 +20,7 @@ ControlPanel::renderStockButton("discard", "ControlPanel.loadPage('Pages', 'Mana
 Title<br />
 <input name="title" type="text" class="text large" value="<? echo $page['title']; ?>"><br />
 Condition<br />
-<input name="condition" style="width: 350px" type="text" class="text" value="<? echo htmlentities($page['condition']); ?>"><br />
+<input name="condition" style="width: 350px" type="condition" class="text" value="<? echo htmlentities($page['condition']); ?>"><br />
 Type<br />
 <input style="width: 350px" type="text" class="text" value="<? echo htmlentities(StringFormat::displayForID($page['type'])); ?>" readonly><br />
 <?

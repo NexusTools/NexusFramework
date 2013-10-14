@@ -407,6 +407,39 @@ ControlPanel.alertDialog = function(text, title){
     });
 }
 
+ControlPanel.customDialog = function(contentHTML, buttons, callback){
+    ControlPanel.setBlur(true);
+    ControlPanel.popupLoading = false;
+    ControlPanel.popupOpen = true;
+    ControlPanel.page.whiteout.popup.innerHTML = "";
+    
+    setTimeout(function(){
+        var content = document.createElement("center");
+        content.innerHTML = contentHTML;
+        var pageButtons = document.createElement("pagebuttons");
+        if(buttons)
+        	buttons.each(function(btn) {
+        		pageButtons.appendChild(btn);
+        	});
+        else {
+		    var btn = $(document.createElement("input"));
+		    btn.className = "button";
+		    btn.writeAttribute("type", "button");
+		    btn.writeAttribute("value", "Close");
+		    btn.on("click", ControlPanel.closePopup);
+		    pageButtons.appendChild(btn);
+        }
+        content.appendChild(pageButtons);
+        ControlPanel.page.whiteout.popup.appendChild(content);
+        ControlPanel.centerPopup();
+        Framework.Components.setupContainer(content);
+        ControlPanel.page.whiteout.popup.addClassName("open");
+        
+        if(callback instanceof Funtion)
+        	callback(content, pageButtons);
+    });
+}
+
 ControlPanel.confirmDiscardChanges = function(){
     var callbackArgs = Array.prototype.slice.call(arguments);
     var callback = callbackArgs.shift();

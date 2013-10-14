@@ -1,0 +1,6 @@
+{
+	"name": "Conditions Component",
+	"description": "A Component that Allows Visual Editing of Conditions",
+	"provides": "component-condition-editor",
+	"dependancies": ["controlpanel"]
+}

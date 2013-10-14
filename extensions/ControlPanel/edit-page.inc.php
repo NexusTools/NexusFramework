@@ -42,6 +42,10 @@ foreach($fields as $field => $data){
 			case "Email":
 				$type = "email";
 				break;
+			
+			case "Condition":
+				$type = "condition";
+				break;
 				
 			default:
 				$type = "line";
@@ -239,11 +243,6 @@ echo "\">";
 
 $first = true;
 foreach($fields as $field => $meta){
-	$type = false;
-	$help = false;
-	
-	$name = $field;
-	
 	if($first)
 		$first = false;
 	else
@@ -262,10 +261,8 @@ foreach($fields as $field => $meta){
 	echo "<br />";
 	if(isset($errors[$field]))
 		echo "<span style=\"color:red; font-size: 10px;\">" . $errors[$field] . "</span><br />";
-		
 	
-	EditCore::render($meta['type'], $field, isset($values[$field]) ? (isset($meta['decode']) ? call_user_func($meta['decode'], $values[$field]) : $values[$field]) : 
-						(isset($meta['default']) ? $meta['default'] : null), $meta);
+	EditCore::render($meta['type'], $field, isset($values[$field]) ? (isset($meta['decode']) ? call_user_func($meta['decode'], $values[$field]) : $values[$field]) : (isset($meta['default']) ? $meta['default'] : null), $meta);
 }
 
 ?>
