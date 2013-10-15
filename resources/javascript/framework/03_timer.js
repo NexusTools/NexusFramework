@@ -3,31 +3,18 @@ Framework.registerModule("Timers", {
 	initialize: function(){
 
 		this.AccurateTimer = Class.create({
-			initialize: function(callback, frequency) {
+			initialize: function(callback, frequency, autostart) {
 				this.callback = callback;
-				this.frequency = frequency;
-
-				this.start();
-			},
-
-			calculateSlowness: function() {
-				return ((this.nextTimeout - (new Date().getTime()))
-						+ this.frequency) / this.frequency;
+				this.frequency = frequency*1 || 20; // Default 50fps
+				
+				if(autostart)
+					this.start();
 			},
 
 			start: function(){
-				this.nextTimeout = (new Date().getTime()) + this.frequency;
-				this.registerCallback();
-			},
-
-			registerCallback: function() {
-				var timeout = this.frequency/this.calculateSlowness();
-				if(timeout < 10)
-					timeout = 10;
-
-				this.timer = setTimeout(this.onTimerEvent.bind(this), timeout);
-
-				this.nextTimeout = (new Date().getTime()) + this.frequency;
+				console.log("Starting Timer", this);
+				this.nextTimeout = (new Date()).getTime();
+				this.onTimerEvent();
 			},
 
 			execute: function(step) {
@@ -36,37 +23,32 @@ Framework.registerModule("Timers", {
 
 			stop: function() {
 				if (!this.timer) return;
+				console.log("Stopping Timer", this);
 				clearTimeout(this.timer);
-				this.timer = null;
+				this.timer = undefined;
 			},
 
 			onTimerEvent: function() {
-				if (!this.currentlyExecuting) {
-					try {
-						this.currentlyExecuting = true;
-
-						this.calculateSlowness();
-						this.execute(this.calculateSlowness());
-						this.registerCallback();
-
-						this.currentlyExecuting = false;
-						return;
-					} catch(e) {
-						this.currentlyExecuting = false;
-						throw e;
+				try{clearTimeout(this.timer);}catch(e){}
+				try {
+					var timeout;
+					while((timeout = (this.nextTimeout - (new Date()).getTime())) <= 0) {
+						this.nextTimeout += this.frequency;
+						this.execute();
 					}
+					this.timer = setTimeout(this.onTimerEvent.bind(this), timeout);
+					return;
+				} catch(e) {
+					console.log(this, "" + e);
+					console.log(e.stack);
 				}
-
-				this.timer = false;
+				this.timer = undefined;
 			}
-		}),
+		});
 
 		this.EventQueue = Class.create(this.AccurateTimer, {
 			initialize: function($super, frequency) {
-				$super(null, frequency);
-				this.frequency = frequency;
-
-				this.registerCallback();
+				$super(null, frequency, true);
 			},
 
 			execute: function(step) {
@@ -85,14 +67,14 @@ Framework.registerModule("Timers", {
 			queue: [],
 			addCallback: function(callback){
 				if(this.contains(callback))
-				return;
+					return;
 				this.queue.push(callback);
 			},
 		
 			removeCallback: function(callback){
 				var pos = this.indexOf(callback);
 				if(pos > -1)
-				this.queue.splice(pos, 1);
+					this.queue.splice(pos, 1);
 			},
 		
 			indexOf: function(callback){
@@ -103,7 +85,9 @@ Framework.registerModule("Timers", {
 				return this.indexOf(callback) != -1;
 			}
 
-		})
+		});
+		
+		this.SystemQueue = new this.EventQueue();
 	}
 
 });
