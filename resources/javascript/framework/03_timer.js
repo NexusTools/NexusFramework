@@ -12,29 +12,34 @@ Framework.registerModule("Timers", {
 			},
 
 			start: function(){
+				if (this.timer !== undefined) return;
 				console.log("Starting Timer", this);
 				this.nextTimeout = (new Date()).getTime();
 				this.onTimerEvent();
 			},
 
-			execute: function(step) {
-				return this.callback(step, this);
+			execute: function() {
+				return this.callback(this);
 			},
 
 			stop: function() {
-				if (!this.timer) return;
+				if (this.timer === undefined) return;
 				console.log("Stopping Timer", this);
-				clearTimeout(this.timer);
+				try{clearTimeout(this.timer);}catch(e){}
 				this.timer = undefined;
 			},
 
 			onTimerEvent: function() {
 				try{clearTimeout(this.timer);}catch(e){}
+				this.timer = true;
+				
 				try {
 					var timeout;
 					while((timeout = (this.nextTimeout - (new Date()).getTime())) <= 0) {
-						this.nextTimeout += this.frequency;
 						this.execute();
+						if(this.timer === undefined)
+							throw "Stopped While Executing";
+						this.nextTimeout += this.frequency;
 					}
 					this.timer = setTimeout(this.onTimerEvent.bind(this), timeout);
 					return;
@@ -48,20 +53,23 @@ Framework.registerModule("Timers", {
 
 		this.EventQueue = Class.create(this.AccurateTimer, {
 			initialize: function($super, frequency) {
-				$super(null, frequency, true);
+				$super(null, frequency);
 			},
 
-			execute: function(step) {
+			execute: function() {
 				var activeQueue = this.queue;
 				this.queue = [];
 
 				while(activeQueue.length > 0){
-				var event = activeQueue.shift();
-				try{
-					if(event(step) !== false)
-					this.queue.push(event);
-				}catch(e){}
+					var event = activeQueue.shift();
+					try{
+						if(event() !== false)
+							this.queue.push(event);
+					}catch(e){}
 				}
+				
+				if(this.queue.length <= 0)
+					this.stop();
 			},
 
 			queue: [],
@@ -69,12 +77,16 @@ Framework.registerModule("Timers", {
 				if(this.contains(callback))
 					return;
 				this.queue.push(callback);
+				this.start();
 			},
 		
 			removeCallback: function(callback){
 				var pos = this.indexOf(callback);
-				if(pos > -1)
+				if(pos > -1) {
 					this.queue.splice(pos, 1);
+					if(this.queue.length <= 0)
+						this.stop();
+				}
 			},
 		
 			indexOf: function(callback){
