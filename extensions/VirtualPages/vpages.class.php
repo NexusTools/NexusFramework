@@ -181,13 +181,11 @@ class VirtualPages {
 													   ));
 		foreach($widgets as $widget)
 			self::runWidget($widget['type'], VirtualPages::HEADER, unserialize($widget['config']));
-	
 	}
 	
-	public static function runWidgets($location, $slot=self::PAGEAREA, $section="pages"){
+	public static function runWidgets($location, $slot=self::PAGEAREA, $section="pages", $customClass=false){
 		foreach(self::fetchWidgets($location, $slot, 0, $section) as $widget) 
-			self::runWidget($widget['type'], self::RENDER,
-								unserialize($widget['config']), $widget['rowid']);
+			self::runWidget($widget['type'], self::RENDER, unserialize($widget['config']), $widget['rowid'], $customClass);
 	}
 	
 	public static function fetchWidgets($location, $slot=self::PAGEAREA, $parent=0, $section="pages"){
@@ -224,7 +222,7 @@ class VirtualPages {
 			return false;
 	}
 	
-	public static function runWidget($type, $mode, $args=false, $widgetID=false){
+	public static function runWidget($type, $mode, $args=false, $widgetID=false, $customClass=false){
 		try{
 			if(!isset(self::$widgets[$type]))
 				throw new Exception("No provider registered for Widget");
@@ -246,8 +244,9 @@ class VirtualPages {
 		        if($widgetID && User::isStaff()) {
 		            echo " vpages-widget='$widgetID' vpages-name='" . htmlspecialchars($customName ? $customName : StringFormat::displayForId($type)) . "'";
 		        }
+		        $customClass = $customClass ? " " . StringFormat::idForDisplay($customClass) : "";
 		        $customName = $customName ? " " . StringFormat::idForDisplay("Title $customName") : "";
-		        echo " class='$type$customName'>";
+		        echo " class='$type$customName$customClass'>";
 		    }
 			$ret = require_chdir($handler['script'], $handler['path']);
 			if($mode == self::RENDER)
