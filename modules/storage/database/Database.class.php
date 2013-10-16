@@ -674,18 +674,17 @@ class Database extends Lockable {
 	    $this->_update($table, Array($field => "NOT `$field`"), $where, $now);
 	}
 	
-	public function _upsert($table, $values, $where=false) {
+	public function _upsert($table, $values, $where) {
 		if(is_numeric($where)) // allow passing where as rowid
 			$where = Array("rowid" => $where);
 		
-		$count = $this->update($table, $values, $where);
-		if($count === false)
+		if($this->countRows($table, $where)) {
+			$count = $this->update($table, $values, $where);
+			if($count > 0)
+				return true;
 			return false;
-		if($count > 0)
-			return true;
-		if($where)
-			$values = array_merge($values, $where);
-		return $this->insert($table, $values);
+		}
+		return $this->insert($table, array_merge($values, $where));
 	}
 	
 	public function _update($table, $values, $where=false) {
