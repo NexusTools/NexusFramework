@@ -1,6 +1,24 @@
 Framework.registerModule("Timers", {
 
 	initialize: function(){
+		if("performance" in window) {
+			this.now = performance.now ||
+				performance.mozNow ||
+				performance.msNow ||
+				performance.oNow ||
+				performance.webkitNow;
+			if(this.now)
+				this.now = this.now.bind(performance);
+		}
+		
+		if(!this.now)
+			this.now = Date.now.bind(Date);
+		
+		if(!this.now)
+			this.now = function() {
+				return (new Date()).getTime();
+			};
+		
 
 		this.AccurateTimer = Class.create({
 			initialize: function(callback, frequency, autostart) {
@@ -14,7 +32,7 @@ Framework.registerModule("Timers", {
 			start: function(){
 				if (this.timer !== undefined) return;
 				console.log("Starting Timer", this);
-				this.nextTimeout = (new Date()).getTime();
+				this.nextTimeout = Framework.Timers.now();
 				this.onTimerEvent();
 			},
 
@@ -35,7 +53,7 @@ Framework.registerModule("Timers", {
 				
 				try {
 					var timeout;
-					while((timeout = (this.nextTimeout - (new Date()).getTime())) <= 0) {
+					while((timeout = (this.nextTimeout - Framework.Timers.now())) <= 0) {
 						this.execute();
 						if(this.timer === undefined)
 							throw "Stopped While Executing";
