@@ -1,4 +1,9 @@
 <?php
+class CachedObjectExtensionType {
+	const JSON = 0;
+	const RAW = 1;
+	const SERIALIZED = 2;
+}
 abstract class CachedObject {
 	private static $instanceCount = 0;
 	private static $blacklist = false;
@@ -44,6 +49,10 @@ abstract class CachedObject {
 		When an object becomes invalid, the cronjob can remove it.
 	*/
 	public abstract function isValid();
+
+	/*
+		
+	*/
 	
 	public function getMetaValue($key){
 		return $this->metaObject[$key];
@@ -135,20 +144,22 @@ abstract class CachedObject {
 			}
 			
 			if($this->storageObject){
-				if(is_array($this->storageObject)) {
-					$this->metaObject['ext'] = "json";
-					$this->storagePath .= ".json";
-					file_put_contents($this->storagePath, json_encode($this->storageObject));
-				} else if(is_string($this->storageObject)) {
-					$this->metaObject['ext'] = "raw";
-					$this->storagePath .= ".raw";
-					file_put_contents($this->storagePath, $this->storageObject);
-				} else {
-					try {
+				switch($this->getExtensionType()) {
+					case CachedObjectExtensionType::JSON:
+						$this->metaObject['ext'] = "json";
+						$this->storagePath .= ".json";
+						file_put_contents($this->storagePath, json_encode($this->storageObject));
+					break;
+					case CachedObjectExtensionType::RAW:
+						$this->metaObject['ext'] = "raw";
+						$this->storagePath .= ".raw";
+						file_put_contents($this->storagePath, $this->storageObject);
+					break;
+					case CachedObjectExtensionType::SERIALIZED:
 						$this->storagePath .= ".php-serialized";
 						$this->metaObject['ext'] = "php-serialized";
 						file_put_contents($this->storagePath, serialize($this->storageObject));
-					} catch(Exception $e){}
+					break;
 				}
 			}
 			
@@ -194,7 +205,21 @@ abstract class CachedObject {
 				$this->storageObject = file_get_contents($this->storagePath);
 				break;
 		}
-		
+	}
+
+
+
+	/*
+		Detect what extension the cached object should store as
+	*/
+	public function getExtensionType() {
+		if(is_array($this->storageObject)) {
+			return CachedObjectExtensionType::JSON;
+		} else if(is_string($this->storageObject)) {
+			return CachedObjectExtensionType::RAW;
+		} else {
+			return CachedObjectExtensionType::SERIALIZED;
+		}
 	}
 	
 	public function nextUpdate(){
@@ -253,7 +278,5 @@ abstract class CachedObject {
 		$this->loadMeta();
 		return $this->storagePath;
 	}
-
 }
 ?>
-
