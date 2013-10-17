@@ -17,30 +17,43 @@ class GitHubAPIClassConstructor extends GitHubAPIClassConstructorCachedObject {
 			return;
 		$this->classes = $this->getData();
 		foreach($this->classes as $class)
-			$this->constructClass($class);
+			$this->constructClass($class[0], $class[1]);
 	}
 
-	public function constructClass($class, $varNames=null, $varValues=null) {
-		$className = 'GitHub' . $class;
+	public function constructClass($type, $varNames=null, $varValues=null) {
+		$className = 'GitHub' . $type;
 		if(!class_exists($className))
 			eval("class $className {}");
 		$classNameObj = new $className;
 
-		if($varNames && $varValues) {
+		if(is_array($varValues)) {
 			for($i = 0; $i < count($varNames); $i++) {
 				$varName = $varNames[$i];
 				$classNameObj->$varName = $varValues[$i];
 			}
-		}
 
-		if(in_array($class, $this->classes, true)) {
-			return $classNameObj;
-		} else {
-			array_push($this->classes, $class);
-			$this->invalidate();
-			$this->getData();
-			return $classNameObj;
+			$idx = -1;
+			for($i = 0; $i < count($this->classes); $i++) {
+				if($this->classes[$i][0] == $type) {
+					$idx = $i;
+					break;
+				}
+			}
+
+			if($idx != -1) {
+				$diff = $this->classes[$idx][1] != $varNames;
+				if($diff)
+					$this->classes[$idx] = array($type, $varNames);
+			} else {
+				array_push($this->classes, array($type, $varNames));
+				$diff = true;
+			}
+			if($diff) {
+				$this->invalidate();
+				$this->getData();
+			}
 		}
+		return $classNameObj;
 	}
 
 	public function update() {

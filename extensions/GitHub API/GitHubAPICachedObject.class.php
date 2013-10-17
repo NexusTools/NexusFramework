@@ -32,6 +32,10 @@ abstract class GitHubAPICachedObject extends CachedObject {
 		return rand(60*30/*30 minutes*/, 60*60*2/*2 hours*/);
 	}
 
+	public function getExtensionType() {
+		return CachedObjectExtensionType::SERIALIZED;
+	}
+
 	public function getData() {
 		GitHubAPIClassConstructor::getInstance()->loadClasses();
 		return parent::getData();
