@@ -1,0 +1,5 @@
+{
+	"name": "GitHub API",
+	"description": "Easily access the GitHub API.",
+	"provides": "github-api"
+}

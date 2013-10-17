@@ -1,0 +1,6 @@
+{
+	"name": "GitHub User",
+	"description": "Obtains data about the user(s) from GitHub.",
+	"provides": "github-user",
+	"dependancies": "github-api"
+}
