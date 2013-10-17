@@ -1,6 +1,5 @@
 <?php
 abstract class CachedObject {
-
 	private static $instanceCount = 0;
 	private static $blacklist = false;
 	protected $storageObject = false;
@@ -124,7 +123,7 @@ abstract class CachedObject {
 			
 		if($updateNow) {
 			$this->metaObject = Array("u" => time(), "n" => time() + $this->getLifetime(),
-									  "pv" => method_exists($this, "getProvider") ? $this->getProvider() : get_class($this));
+						"pv" => method_exists($this, "getProvider") ? $this->getProvider() : get_class($this));
 			
 			if($oldStorageExists)
 				@unlink($oldStoragePath);
@@ -166,15 +165,15 @@ abstract class CachedObject {
 	}
 	
 	public function getReferenceURI($mime_type=false, $realFilename=false){
-	    if(!$mime_type && method_exists($this, "getMimeType"))
-	        $mime_type = $this->getMimeType();
-	    return Framework::getReferenceURI($this->getStoragePath(), $mime_type, $realFilename, $this->isShared());
+		if(!$mime_type && method_exists($this, "getMimeType"))
+			$mime_type = $this->getMimeType();
+		return Framework::getReferenceURI($this->getStoragePath(), $mime_type, $realFilename, $this->isShared());
 	}
 	
 	public function getReferenceURL($mime_type=false, $realFilename=false){
-	    if(!$mime_type && method_exists($this, "getMimeType"))
-	        $mime_type = $this->getMimeType();
-	    return Framework::getReferenceURL($this->getStoragePath(), $mime_type, $realFilename, $this->isShared());
+		if(!$mime_type && method_exists($this, "getMimeType"))
+			$mime_type = $this->getMimeType();
+		return Framework::getReferenceURL($this->getStoragePath(), $mime_type, $realFilename, $this->isShared());
 	}
 	
 	private function load(){
@@ -188,14 +187,12 @@ abstract class CachedObject {
 				break;
 				
 			case "php-serialized":
-				$this->storageObject = unserialize(file_get_contents($this->storagePath), true);
+				$this->storageObject = unserialize(file_get_contents($this->storagePath));
 				break;
 				
 			case "raw":
 				$this->storageObject = file_get_contents($this->storagePath);
 				break;
-				
-			
 		}
 		
 	}
@@ -217,6 +214,8 @@ abstract class CachedObject {
 	}
 	
 	public function invalidate(){
+		unset($this->metaObject);
+		unset($this->storageObject);
 		unlink($this->metaPath);
 		unlink($this->storagePath);
 	}
@@ -257,3 +256,4 @@ abstract class CachedObject {
 
 }
 ?>
+
