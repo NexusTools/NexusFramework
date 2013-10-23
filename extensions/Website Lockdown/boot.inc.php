@@ -7,7 +7,7 @@ if(defined("LOCKDOWN_PASSWORD") && !array_key_exists("lockdown-bypass", $_SESSIO
             header("Content-Type: text/plain");
 			OutputFilter::resetToNative(false);
             ?>User-agent: *
-Disallow: /<?
+Disallow: /<?php
             exit;
         }
         if(REQUEST_URI != "/")
@@ -16,18 +16,18 @@ Disallow: /<?
 		OutputFilter::resetToNative(false);
         ?><!doctype html>
 <html><head><title>Private Website</title><meta name="robots" content="noindex, nofollow" /></head>
-<body><center><h1>Private Website</h1><p><?
+<body><center><h1>Private Website</h1><p><?php
 $path = fullpath("lockdown-message.html");
 if(is_file($path))
     echo file_get_contents($path);
 else
     echo "This website is under development and access to it has been restricted by its owners.";
 ?></p><br /><br /><h3>Staff Login</h3>
-<form style="display: table; text-align: left" action="<? echo BASE_URI; ?>" method="POST">
-<label style="font-size: 12px" for="pass">Authorization Password</label><br /><input type="password" name="lockdown_password" /><?
+<form style="display: table; text-align: left" action="<?php echo BASE_URI; ?>" method="POST">
+<label style="font-size: 12px" for="pass">Authorization Password</label><br /><input type="password" name="lockdown_password" /><?php
     if(array_key_exists("nextUrl", $_REQUEST))
         echo "<input type='hidden' value='" . htmlspecialchars($_REQUEST['nextUrl']) . "' name='nextUrl' />";
-?><div align="right"><input type="submit" value="Login" /></div></form></center></body></html><?
+?><div align="right"><input type="submit" value="Login" /></div></form></center></body></html><?php
         exit;
     } else {
         $_SESSION['lockdown-bypass'] = true;

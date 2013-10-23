@@ -1,8 +1,8 @@
 <widget><?php
 $classInfo = PageModule::getValue("ClassInfo");
-?><h1 style='text-transform: none !important;'><? echo $classInfo['name']; ?></h1>
-<p><? echo nl2br(htmlentities($classInfo['long-description'])); ?></p>
-<?
+?><h1 style='text-transform: none !important;'><?php echo $classInfo['name']; ?></h1>
+<p><?php echo nl2br(htmlentities($classInfo['long-description'])); ?></p>
+<?php
 if(array_key_exists("virtual-modifiers", $classInfo)) {
     echo "<h2>Virtual Modifiers</h2><p>";
     if(array_key_exists("virtual-modifiers-info", $classInfo))
@@ -18,7 +18,7 @@ if(array_key_exists("virtual-modifiers", $classInfo)) {
     echo "</table>";
 }
 ?>
-<?
+<?php
 if(array_key_exists("methods", $classInfo)) {
     echo "<h2>Methods</h2>";
     echo "<table><tr><th>Name</th><th>Arguments</th><th>Description</th></tr>";

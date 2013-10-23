@@ -152,7 +152,7 @@ window.onload = function(){
 		
 	}
 }
-</script><?
+</script><?php
 			self::$dumpedScript = true;
 		}
 		

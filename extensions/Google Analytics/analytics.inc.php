@@ -1,4 +1,4 @@
-<?
+<?php
 if(PageModule::hasError())
 	return; // Abort on Error Pages
 

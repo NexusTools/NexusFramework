@@ -17,10 +17,10 @@ if(isset($_POST['action'])) {
 ?><pagebuttons><?php
 ControlPanel::renderStockButton("create");
 ?></pagebuttons><form action="control://Mail Center/Create Template" method="POST">
-Name:<br /><?
+Name:<br /><?php
 EditCore::render("line", "name");
 ?><br />
 HTML Version:<br />
-<? EditCore::render("html", "html"); ?><br />
+<?php EditCore::render("html", "html"); ?><br />
 Text Version:<br />
-<? EditCore::render("text", "text"); ?></form>
+<?php EditCore::render("text", "text"); ?></form>

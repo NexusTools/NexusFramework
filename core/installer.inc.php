@@ -275,11 +275,11 @@ tooltip {
 <?php
 error_reporting(0);
 if(!is_writable(INDEX_PATH)){ ?>
-PHP Requires write permission to `<? echo INDEX_PATH; ?>`.<br/>
+PHP Requires write permission to `<?php echo INDEX_PATH; ?>`.<br/>
 This can be fixed automatically, please select an option.<br /><br />
 <input class="button" type="submit" value="Fix using FTP" /><br />
 <input class="button" type="submit" value="Fix using Host User Permissions" />
-<? } else { ?>
+<?php } else { ?>
 <tooltip for="admin_user">
 </tooltip>
 <form method="POST" action="/"><center><table><tr><td valign="top">
@@ -339,7 +339,7 @@ This can be fixed automatically, please select an option.<br /><br />
 			<td style="padding-bottom: 0px;">Account Manager</td>
 		</tr>
 		<tr>
-			<td><select><?
+			<td><select><?php
 					if(class_exists("PDO")){
 						echo "<optgroup LABEL=\"PDO Drivers\">";
 						$drivers = PDO::getAvailableDrivers();
@@ -363,8 +363,8 @@ This can be fixed automatically, please select an option.<br /><br />
 	<table>
 		<tr><td style="padding-bottom: 0px;">Directory</td><td style="padding-bottom: 0px;">Base URL</td></tr>
 		<tr>
-			<td><input label="" type="text" class="text disabled" name="title" value="<? echo INDEX_PATH; ?>" disabled /></td>
-			<td><input type="text" class="text disabled" name="title" value="<? echo ROOT_URL; ?>" disabled /></td>
+			<td><input label="" type="text" class="text disabled" name="title" value="<?php echo INDEX_PATH; ?>" disabled /></td>
+			<td><input type="text" class="text disabled" name="title" value="<?php echo ROOT_URL; ?>" disabled /></td>
 		</tr>
 	</table></groupbox></div>
 </td></tr>
@@ -378,7 +378,7 @@ This can be fixed automatically, please select an option.<br /><br />
 	</td>
 </tr>
 </table></center></form>
-<? } ?>
+<?php } ?>
 </div><script>
 function hide_element(el){
 	try{clearTimeout(el.opacityTimer);}catch(e){}

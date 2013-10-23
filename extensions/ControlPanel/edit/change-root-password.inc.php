@@ -12,7 +12,7 @@ if(isset($_POST['pass'])) {
 }
 
 ?><pagebuttons>
-<?
+<?php
 ControlPanel::renderStockButton("apply");
 ControlPanel::renderStockButton("discard", "ControlPanel::loadPage('Website', 'Configure')");
 ?>
@@ -20,5 +20,5 @@ ControlPanel::renderStockButton("discard", "ControlPanel::loadPage('Website', 'C
 <form method="" action="control://Website/Change Root Password">New Password<br />
 <input style="width: 350px" name="pass" type="password" class="text" /><br />
 Retype New Password<br />
-<input style="width: 350px" name="rpass" type="password" class="text" /></form><?
+<input style="width: 350px" name="rpass" type="password" class="text" /></form><?php
 ?>

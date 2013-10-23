@@ -1,7 +1,7 @@
 <framework:widgets>
 		<whiteout style="display: none;"><spinner></spinner><popup></popup></whiteout>
 		<toolbar style="position: relative; z-index: 300" align="left">
-			<?
+			<?php
 			$banner = fullpath("cp-banner.png");
 			if(file_exists($banner)) {
 				echo "<a title='Return to Website' href='";
@@ -30,8 +30,8 @@
 					echo $domain;
 					echo "' height='30px' /></a>";
 				}
-			?><widget style="cursor: pointer" onclick="location.href='<? echo BASE_URI; ?>control'"><? echo $domain; ?> Control Panel</widget><? } ?>
-			<?
+			?><widget style="cursor: pointer" onclick="location.href='<?php echo BASE_URI; ?>control'"><?php echo $domain; ?> Control Panel</widget><?php } ?>
+			<?php
 			$widgets = ControlPanel::getToolbarWidgets();
 			$count = count($widgets);
 			foreach($widgets as $widget) {
@@ -71,7 +71,7 @@
 				echo "</widget>";
 			}
 			?>
-			<widget class="last">Logged in as <? echo User::getFullName(); ?>
+			<widget class="last">Logged in as <?php echo User::getFullName(); ?>
 				<menu>
 					<a href="control://Users/Profile">Edit My Profile</a>
 					<a href="control://Users/Logout">Log Out</a>

@@ -171,29 +171,29 @@ echo "</table><center>";
 
 $end = $start + count($query['results']);
 if($page > 0) { ?>
-	<input onclick="ControlPanel.loadPage('<? echo self::$currentSection; ?>', '<? echo self::$currentPage; ?>', {p: 0})" type="button" value="First" class="button">
-	<input onclick="ControlPanel.loadPage('<? echo self::$currentSection; ?>', '<? echo self::$currentPage; ?>', {p: <? echo $page-1; ?>})" type="button" value="<<" class="button">
-<? } else { ?>
+	<input onclick="ControlPanel.loadPage('<?php echo self::$currentSection; ?>', '<?php echo self::$currentPage; ?>', {p: 0})" type="button" value="First" class="button">
+	<input onclick="ControlPanel.loadPage('<?php echo self::$currentSection; ?>', '<?php echo self::$currentPage; ?>', {p: <?php echo $page-1; ?>})" type="button" value="<<" class="button">
+<?php } else { ?>
 	<input type="button" value="First" class="button disabled" disabled>
 	<input type="button" value="<<" class="button disabled" disabled>
-<? }
+<?php }
 
 echo "&nbsp;&nbsp;&nbsp;";
 if($query['total'] == 0) {
 		echo "No Entries";
 } else { ?>
-Showing <? echo $start+1; ?> to <? echo $end; ?> of <? echo $query['total'];
+Showing <?php echo $start+1; ?> to <?php echo $end; ?> of <?php echo $query['total'];
 		echo " Entries";
 }
 echo "&nbsp;&nbsp;&nbsp;";
 
 if($end < $query['total']) { ?>
-	<input onclick="ControlPanel.loadPage('<? echo self::$currentSection; ?>', '<? echo self::$currentPage; ?>', {p: <? echo $page+1; ?>})" type="button" value=">>" class="button">
-	<input onclick="ControlPanel.loadPage('<? echo self::$currentSection; ?>', '<? echo self::$currentPage; ?>', {p: <? echo floor(($query['total']-1) / 15); ?>})" type="button" value="Last" class="button">
-<? } else { ?>
+	<input onclick="ControlPanel.loadPage('<?php echo self::$currentSection; ?>', '<?php echo self::$currentPage; ?>', {p: <?php echo $page+1; ?>})" type="button" value=">>" class="button">
+	<input onclick="ControlPanel.loadPage('<?php echo self::$currentSection; ?>', '<?php echo self::$currentPage; ?>', {p: <?php echo floor(($query['total']-1) / 15); ?>})" type="button" value="Last" class="button">
+<?php } else { ?>
 	<input type="button" value=">>" class="button disabled" disabled>
 	<input type="button" value="Last" class="button disabled" disabled>
-<? }
+<?php }
 echo "</center>";
 if(!$hasParenting)
 	return;

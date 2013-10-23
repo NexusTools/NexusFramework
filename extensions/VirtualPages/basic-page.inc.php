@@ -1,4 +1,4 @@
-<?
+<?php
 switch(VirtualPages::getMode()) {
 	case VirtualPages::CREATE:
 		$pageid = VirtualPages::getArguments();
@@ -62,11 +62,11 @@ switch(VirtualPages::getMode()) {
 	case VirtualPages::RENDER_EDITOR:
 		$page = VirtualPages::getArguments();
 		?>Path<br />
-<input value="<? echo htmlspecialchars($page['path']); ?>" name="path" style="width: 350px" type="text" class="text"><br />
-Layout<br /><?
+<input value="<?php echo htmlspecialchars($page['path']); ?>" name="path" style="width: 350px" type="text" class="text"><br />
+Layout<br /><?php
 		$layout = VirtualPages::getDatabase()->selectField("basic-pages", Array("id" => $page['rowid']), "layout");
 		VirtualPages::renderLayoutVisual($layout, 2);
-		?><br />Widgets<br /><?
+		?><br />Widgets<br /><?php
 		if($layout >= 2) {
 			echo "<button onclick=\"";
 			echo "ControlPanel.loadPage('Pages', 'Edit Widgets', {location: $page[rowid], title: ";
@@ -101,44 +101,44 @@ Layout<br /><?
 
 	case VirtualPages::RENDER_CREATOR:
 		?>Path<br />
-<input <? if(isset($_POST['path'])) echo "value=\"" .htmlspecialchars($_POST['path']). "\" "; ?>name="path" style="width: 350px" type="text" class="text"><br />
+<input <?php if(isset($_POST['path'])) echo "value=\"" .htmlspecialchars($_POST['path']). "\" "; ?>name="path" style="width: 350px" type="text" class="text"><br />
 Layout<br />
-<input id="__cp_basicPage_layout0" style="position: relative; top: -35px;" name="layout" value="0" type="radio"<?
+<input id="__cp_basicPage_layout0" style="position: relative; top: -35px;" name="layout" value="0" type="radio"<?php
 if(!isset($_POST['layout']) || $_POST['layout'] == 0)
 	echo " checked";
 ?> />
 <label style="cursor: pointer" for="__cp_basicPage_layout0">
-<? VirtualPages::renderLayoutVisual(0, 2); ?>
+<?php VirtualPages::renderLayoutVisual(0, 2); ?>
 </label>
 
-<input id="__cp_basicPage_layout1" style="position: relative; top: -35px;" name="layout" value="1" type="radio"<?
+<input id="__cp_basicPage_layout1" style="position: relative; top: -35px;" name="layout" value="1" type="radio"<?php
 if(isset($_POST['layout']) && $_POST['layout'] == 1)
 	echo " checked";
 ?> />
 <label style="cursor: pointer" for="__cp_basicPage_layout1">
-<? VirtualPages::renderLayoutVisual(1, 2); ?>
+<?php VirtualPages::renderLayoutVisual(1, 2); ?>
 </label>
 
-<input id="__cp_basicPage_layout2" style="position: relative; top: -35px;" name="layout" value="2" type="radio"<?
+<input id="__cp_basicPage_layout2" style="position: relative; top: -35px;" name="layout" value="2" type="radio"<?php
 if(isset($_POST['layout']) && $_POST['layout'] == 2)
 	echo " checked";
 ?> />
 <label style="cursor: pointer" for="__cp_basicPage_layout2">
-<? VirtualPages::renderLayoutVisual(2, 2); ?>
+<?php VirtualPages::renderLayoutVisual(2, 2); ?>
 </label>
 
-<input id="__cp_basicPage_layout3" style="position: relative; top: -35px;" name="layout" value="3" type="radio"<?
+<input id="__cp_basicPage_layout3" style="position: relative; top: -35px;" name="layout" value="3" type="radio"<?php
 if(isset($_POST['layout']) && $_POST['layout'] == 3)
 	echo " checked";
 ?> />
 <label style="cursor: pointer" for="__cp_basicPage_layout3">
-<?
+<?php
 VirtualPages::renderLayoutVisual(3, 2);
 $defaultWidget = isset($_POST['widget']) ? $_POST['widget'] : "html";
 ?><br />
 </label>Default Page Widget<br />
-<select value="<? echo htmlspecialchars($defaultWidget); ?>" name="widget" style="width: 350px">
-<?
+<select value="<?php echo htmlspecialchars($defaultWidget); ?>" name="widget" style="width: 350px">
+<?php
 foreach(VirtualPages::getWidgetTypes() as $type) {
 	echo "<option value=\"$type\"";
 	if($defaultWidget == $type)
@@ -146,7 +146,7 @@ foreach(VirtualPages::getWidgetTypes() as $type) {
 	echo ">" . StringFormat::displayForID($type) . "</option>";
 }
 ?>
-</select><?
+</select><?php
 	break;
 }
 ?>

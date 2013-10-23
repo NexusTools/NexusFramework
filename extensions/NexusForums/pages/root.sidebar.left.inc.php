@@ -1,4 +1,4 @@
-<?
+<?php
 require dirname(__DIR__) . DIRSEP . "root.sidebar.left.inc.php";
 ?><widget class="advertisement">
 <div style="width: 120px; height: 240px; background-image: url(/media/ad-holder.png); margin: 0 auto;">

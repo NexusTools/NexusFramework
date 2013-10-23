@@ -17,4 +17,4 @@ To view newer webstandard compliant websites, like this one, upgrade your browse
 <h3>Articles</h3>
 <a href="http://hothardware.com/News/Microsoft-Its-Time-to-Say-Goodbye-to-Internet-Explorer-6-/">Microsoft: It's Time to Say Goodbye to Internet Explorer 6 </a><br />
 <a href="http://www.theinquirer.net/inquirer/news/2031709/microsoft-pushes-internet-explorer">Microsoft pushes to end Internet Explorer 6</a></body></html>
-<? exit; ?>
+<?php exit; ?>

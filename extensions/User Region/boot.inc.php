@@ -1,1 +1,1 @@
-<? User::registerExtension("UserRegion"); ?>
+<?php User::registerExtension("UserRegion"); ?>

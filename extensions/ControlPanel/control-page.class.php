@@ -1,4 +1,4 @@
-<?
+<?php
 class ControlPanelPageDefinition extends CachedFile {
 
 	public function __construct($path){

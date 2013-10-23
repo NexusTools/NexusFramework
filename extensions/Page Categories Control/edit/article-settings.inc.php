@@ -5,47 +5,47 @@ if(isset($_POST['action']) && $_POST['action'] == "apply"){
 	$layout = $_POST['layout'];
 } else
 	$layout = PageCategories::getDefaultLayout();
-?><pagebuttons><?
+?><pagebuttons><?php
 ControlPanel::renderStockButton("apply");
 ControlPanel::renderStockButton("discard", "ControlPanel.loadPage('Pages', 'Manage')");
 ?></pagebuttons>
 <form action="control://Pages/Default Category">
 Layout<br />
-<input id="__cp_basicPage_layout0" style="position: relative; top: -35px;" name="layout" value="0" type="radio"<?
+<input id="__cp_basicPage_layout0" style="position: relative; top: -35px;" name="layout" value="0" type="radio"<?php
 if($layout == 0)
 	echo " checked";
 ?> />
 <label style="cursor: pointer" for="__cp_basicPage_layout0">
-<? VirtualPages::renderLayoutVisual(0, 2); ?>
+<?php VirtualPages::renderLayoutVisual(0, 2); ?>
 </label>
 
-<input id="__cp_basicPage_layout1" style="position: relative; top: -35px;" name="layout" value="1" type="radio"<?
+<input id="__cp_basicPage_layout1" style="position: relative; top: -35px;" name="layout" value="1" type="radio"<?php
 if($layout == 1)
 	echo " checked";
 ?> />
 <label style="cursor: pointer" for="__cp_basicPage_layout1">
-<? VirtualPages::renderLayoutVisual(1, 2); ?>
+<?php VirtualPages::renderLayoutVisual(1, 2); ?>
 </label>
 
-<input id="__cp_basicPage_layout2" style="position: relative; top: -35px;" name="layout" value="2" type="radio"<?
+<input id="__cp_basicPage_layout2" style="position: relative; top: -35px;" name="layout" value="2" type="radio"<?php
 if($layout == 2)
 	echo " checked";
 ?> />
 <label style="cursor: pointer" for="__cp_basicPage_layout2">
-<? VirtualPages::renderLayoutVisual(2, 2); ?>
+<?php VirtualPages::renderLayoutVisual(2, 2); ?>
 </label>
 
-<input id="__cp_basicPage_layout3" style="position: relative; top: -35px;" name="layout" value="3" type="radio"<?
+<input id="__cp_basicPage_layout3" style="position: relative; top: -35px;" name="layout" value="3" type="radio"<?php
 if($layout == 3)
 	echo " checked";
 ?> />
 <label style="cursor: pointer" for="__cp_basicPage_layout3">
-<?
+<?php
 VirtualPages::renderLayoutVisual(3, 2);
 $defaultWidget = isset($_POST['widget']) ? $_POST['widget'] : "html";
 ?></label><br />
 Header Widgets<br />
-<?
+<?php
 if($layout >= 2) {
 	echo "<button onclick=\"";
 	echo "ControlPanel.loadPage('Pages', 'Edit Widgets', {title: ";
@@ -72,7 +72,7 @@ if($layout == 1 || $layout == 3) {
 }
 ?>
 <br />Footer Widgets<br />
-<?
+<?php
 if($layout >= 2) {
 	echo "<button onclick=\"";
 	echo "ControlPanel.loadPage('Pages', 'Edit Widgets', {title: ";

@@ -1,4 +1,4 @@
-<?
+<?php
 if(!function_exists("createArticlePath")) {
     function createArticlePath($path, $page){
         $newPage = $page;
@@ -23,7 +23,7 @@ Inherit Header Widgets<br /><input type="radio" value="1" name="inherit-headers"
 <input type="radio" value="0" name="inherit-headers" id="__cp__inheritHeadersNo" /><label for="__cp__inheritHeadersNo">No</label><br />
 Inherit Footer Widgets<br /><input type="radio" value="1" name="inherit-footers" id="__cp__inheritFootersYes" checked /><label for="__cp__inheritFootersYes">Yes</label> 
 <input type="radio" value="0" name="inherit-footers" id="__cp__inheritFootersNo" /><label for="__cp__inheritFootersNo">No</label><br />Show in Website Header<br />Category<br />
-<?
+<?php
 $category = isset($_POST['category']) ? $_POST['category'] : 0;
 echo "<select style=\"width: 350px; font-family: monospace, courier new\" name=\"category\" value=\"$category\">";
 ControlPanel::renderRecursiveSelectOptions(PageCategories::getCategories(), $category);
@@ -34,7 +34,7 @@ Tags<br />
 Snippet <help title="a.k.a. Description, used in Article Links.">?</help><br />
 <textarea name="description" code="html" style="width: 350px; height: 200px; " resize="no"></textarea><br />
 Content<br />
-<textarea name="content" code="html" style="width: 100%; height: 500px; " resize="no"></textarea><?
+<textarea name="content" code="html" style="width: 100%; height: 500px; " resize="no"></textarea><?php
 	break;
 	
 	case VirtualPages::CREATE:
@@ -99,7 +99,7 @@ Content<br />
 		}
 		
 		$layout = PageCategories::getLayoutForCategory($data['category']);
-		?>Widgets<br /><?
+		?>Widgets<br /><?php
 		if($layout >= 2) {
 			echo "<button onclick=\"";
 			echo "ControlPanel.loadPage('Pages', 'Edit Widgets', {location: $page[rowid], title: ";
@@ -131,31 +131,31 @@ Content<br />
 			echo " Widgets</center></button>";
 		}
 		
-		?><br />Show in Website Navigation<br /><input type="radio" value="1" name="navbar" id="__cp__inNavbarYes"<? if($data['navbar']) echo " checked"; ?> /><label for="__cp__inNavbarYes">Yes</label> 
-<input type="radio" value="0" name="navbar" id="__cp__inNavbarNo"<? if(!$data['navbar']) echo " checked"; ?> /><label for="__cp__inNavbarNo">No</label><br />Show in Website Footer<br /><input type="radio" value="1" name="footer" id="__cp__inFooterYes"<? if($data['infooter']) echo " checked"; ?> /><label for="__cp__inFooterYes">Yes</label> 
-<input type="radio" value="0" name="footer" id="__cp__inFooterNo"<? if(!$data['infooter']) echo " checked"; ?> /><label for="__cp__inFooterNo">No</label><br />Inherit Header Widgets<br />
-<input type="radio" value="1" name="inherit-headers" id="__cp__inheritHeaderYes"<? if($data['inherit-headers']) echo " checked"; ?> /><label for="__cp__inheritHeaderYes">Yes</label> 
-<input type="radio" value="0" name="inherit-headers" id="__cp__inheritHeaderNo"<? if(!$data['inherit-headers']) echo " checked"; ?> /><label for="__cp__inheritHeaderNo">No</label>
-<br />Inherit Footer Widgets<br /><input type="radio" value="1" name="inherit-footers" id="__cp__inheritFooterYes"<? if($data['inherit-footers']) echo " checked"; ?> /><label for="__cp__inheritFooterYes">Yes</label> 
-<input type="radio" value="0" name="inherit-footers" id="__cp__inheritFooterNo"<? if(!$data['inherit-footers']) echo " checked"; ?> /><label for="__cp__inheritFooterNo">No</label><br />Category<br />
-<?
+		?><br />Show in Website Navigation<br /><input type="radio" value="1" name="navbar" id="__cp__inNavbarYes"<?php if($data['navbar']) echo " checked"; ?> /><label for="__cp__inNavbarYes">Yes</label> 
+<input type="radio" value="0" name="navbar" id="__cp__inNavbarNo"<?php if(!$data['navbar']) echo " checked"; ?> /><label for="__cp__inNavbarNo">No</label><br />Show in Website Footer<br /><input type="radio" value="1" name="footer" id="__cp__inFooterYes"<?php if($data['infooter']) echo " checked"; ?> /><label for="__cp__inFooterYes">Yes</label> 
+<input type="radio" value="0" name="footer" id="__cp__inFooterNo"<?php if(!$data['infooter']) echo " checked"; ?> /><label for="__cp__inFooterNo">No</label><br />Inherit Header Widgets<br />
+<input type="radio" value="1" name="inherit-headers" id="__cp__inheritHeaderYes"<?php if($data['inherit-headers']) echo " checked"; ?> /><label for="__cp__inheritHeaderYes">Yes</label> 
+<input type="radio" value="0" name="inherit-headers" id="__cp__inheritHeaderNo"<?php if(!$data['inherit-headers']) echo " checked"; ?> /><label for="__cp__inheritHeaderNo">No</label>
+<br />Inherit Footer Widgets<br /><input type="radio" value="1" name="inherit-footers" id="__cp__inheritFooterYes"<?php if($data['inherit-footers']) echo " checked"; ?> /><label for="__cp__inheritFooterYes">Yes</label> 
+<input type="radio" value="0" name="inherit-footers" id="__cp__inheritFooterNo"<?php if(!$data['inherit-footers']) echo " checked"; ?> /><label for="__cp__inheritFooterNo">No</label><br />Category<br />
+<?php
 echo "<select style=\"width: 350px; font-family: monospace, courier new\" name=\"category\" value=\"$data[category]\">";
 ControlPanel::renderRecursiveSelectOptions(PageCategories::getCategories(), $data['category']);
 echo "</select>";
 ?><br />
 Tags<br />
-<textarea name="tags" title="Comma Separated Tags" style="width: 350px; height: 50px;" resize="no"><?
+<textarea name="tags" title="Comma Separated Tags" style="width: 350px; height: 50px;" resize="no"><?php
 foreach(Articles::getDatabase()->selectArray("page-tags", Array("page" => $page['rowid']), "tag") as $tag)
 	echo htmlentities($tag) . ", ";
 ?></textarea><br />
 Snippet <help title="a.k.a. Description, used in Article Links.">?</help><br />
-<textarea name="description" code="html" style="width: 350px; height: 200px; " resize="no"><?
+<textarea name="description" code="html" style="width: 350px; height: 200px; " resize="no"><?php
 echo htmlspecialchars($data['description']);
 ?></textarea><br />
 Content<br />
-<textarea name="content" code="html" style="width: 100%; height: 500px; " resize="no"><?
+<textarea name="content" code="html" style="width: 100%; height: 500px; " resize="no"><?php
 echo htmlspecialchars($data['content']);
-?></textarea><?
+?></textarea><?php
 		break;
 		
 	case VirtualPages::RENDER:

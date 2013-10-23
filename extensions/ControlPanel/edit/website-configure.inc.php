@@ -1,4 +1,4 @@
-<pagebuttons><?
+<pagebuttons><?php
 ControlPanel::renderStockButton("apply");
 ControlPanel::renderStockButton("discard", "ControlPanel.loadPage('Website', 'Configure')");
 if(User::isSuperAdmin()) {
@@ -72,8 +72,8 @@ if(isset($_POST['title_format'])){
 <center><groupbox><label>General</label>
 <table style="height: 100%;"><tr><td>Title Format</td><td>Default Page Title</td></tr>
 <tr>
-	<td valign="top"><input name="title_format" value="<? echo $defines['TITLE_FORMAT']; ?>" type="text" class="text"></td>
-	<td valign="top"><input name="default_page_name" value="<? echo $defines['DEFAULT_PAGE_NAME']; ?>" type="text" class="text"></td>
+	<td valign="top"><input name="title_format" value="<?php echo $defines['TITLE_FORMAT']; ?>" type="text" class="text"></td>
+	<td valign="top"><input name="default_page_name" value="<?php echo $defines['DEFAULT_PAGE_NAME']; ?>" type="text" class="text"></td>
 </tr><tr><td colspan="2" style="padding-top: 20px;" align="center" valign="bottom"><input type="button" class="button" value="Advanced Options" onclick="ControlPanel.loadPopup('Website', 'Advanced Options')" /></td></tr></table>
 
 </groupbox>
@@ -81,8 +81,8 @@ if(isset($_POST['title_format'])){
 <label>MetaTags</label>
 <table><tr><td>Description</td><td>Keywords</td></tr>
 <tr>
-	<td valign="top"><input name="meta_description" value="<? echo $defines['META_DESCRIPTION']; ?>" type="text" class="text"></td>
-	<td rowspan="2"><textarea name="meta_keywords" style="height: 80px; resize:none;"><?
+	<td valign="top"><input name="meta_description" value="<?php echo $defines['META_DESCRIPTION']; ?>" type="text" class="text"></td>
+	<td rowspan="2"><textarea name="meta_keywords" style="height: 80px; resize:none;"><?php
 foreach(explode(",", $defines['META_KEYWORDS']) as $keyword)
 	echo trim($keyword) . "\n";
 ?></textarea></td></tr>
@@ -91,7 +91,7 @@ foreach(explode(",", $defines['META_KEYWORDS']) as $keyword)
 
 <groupbox style="width: 730px;">
 <label>Loader Script</label>
-<textarea name="script" style="width: 100%; height: 300px; box-sizing: border-box; resize:none;"><?
+<textarea name="script" style="width: 100%; height: 300px; box-sizing: border-box; resize:none;"><?php
 echo htmlentities($script);
 ?></textarea>
 </groupbox></center></form>

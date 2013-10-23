@@ -160,12 +160,12 @@ input.text:focus {
 	box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4);
 }
 </style>
-</head><body><div align="center" class="page"><?
+</head><body><div align="center" class="page"><?php
 if(false){ ?>
 
 <h1>A unrecoverable internal error occured.</h1>
 <h2>Login to review this issue.</h2>
-<form method="POST" action="<? echo ROOT_URL; ?>">
+<form method="POST" action="<?php echo ROOT_URL; ?>">
 	<center><table>
 		<tr><td style="padding-bottom: 0px;">Username</td></tr>
 		<tr><td><input type="text" class="text" name="user" /></td></tr>
@@ -174,20 +174,20 @@ if(false){ ?>
 		<tr><td align="right"><input class="button" type="submit" value="Login"></td></tr>
 	</table></center>
 </form>
-<?
+<?php
 } else {
 ?>
-<h1><?
+<h1><?php
 $exception = $data['exception'];
 if(array_key_exists("type", $exception) && $exception['type'] && !is_numeric($exception['type']))
 	echo "Uncaught $exception[type] Occured";
 else
 	echo "Unrecoverable Error Occured";
 ?></h1>
-<h2><? echo date("F j, Y, g:i a", $data['date']); ?></h2>
+<h2><?php echo date("F j, Y, g:i a", $data['date']); ?></h2>
 
 <h3>Error Message</h3><p>
-<?
+<?php
 
 if(array_key_exists("message", $exception)) {
 	echo $exception['message'];
@@ -203,19 +203,19 @@ if(array_key_exists("message", $exception)) {
 } else
 	echo "No message was associated with this error";
 ?></p>
-<?
+<?php
 if(array_key_exists("file", $exception) &&
 	array_key_exists("line", $exception)) {
 ?>
 <h3>File Location and Line</h3>
-<p>Occured in file <? echo $exception['file']; ?> on line <? echo $exception['line']; ?></p>
-<? } ?>
+<p>Occured in file <?php echo $exception['file']; ?> on line <?php echo $exception['line']; ?></p>
+<?php } ?>
 
-<?
+<?php
 if(array_key_exists("trace", $exception)) {
 ?>
 <h3><a style="font-size: 70%; float: right" id="previous-link" href="javascript:togglePrevious();void(0);">Open</a>Previous Exceptions</h3>
-<div style="display: none" class="container" id="previous" align="left"><?
+<div style="display: none" class="container" id="previous" align="left"><?php
 $prevExc = $exception;
 while(is_array($prevExc = $prevExc['previous'])) {
 	echo "<p style=\"margin-top: 8px\"><b>";
@@ -228,8 +228,8 @@ while(is_array($prevExc = $prevExc['previous'])) {
 	if(array_key_exists("file", $exception) &&
 		array_key_exists("line", $exception)) {
 	?><br />
-	Occured in file <? echo $exception['file']; ?> on line <? echo $exception['line']; ?>
-	<? }
+	Occured in file <?php echo $exception['file']; ?> on line <?php echo $exception['line']; ?>
+	<?php }
 	echo "</p>";
 }
 ?></div>
@@ -250,14 +250,14 @@ function togglePrevious(){
 	}
 }
 </script>
-<? } ?>
+<?php } ?>
 
 
-<?
+<?php
 if(array_key_exists("trace", $exception)) {
 ?>
 <h3><a style="font-size: 70%; float: right" id="trace-link" href="javascript:toggleTrace();void(0);">Open</a>Stack Trace</h3>
-<pre style="display: none" id="trace" align="left"><?
+<pre style="display: none" id="trace" align="left"><?php
 if(defined("JSON_PRETTY_PRINT"))
 	echo htmlentities(json_encode($exception['trace'], JSON_PRETTY_PRINT));
 else
@@ -281,9 +281,9 @@ function toggleTrace(){
 	}
 }
 </script>
-<? } ?>
+<?php } ?>
 <br /><br /><h2>Known Resolutions</h2>
 Sorry but this error doesn't match anything currently in the database.<br /><br />
-<? } ?></div></body></html><? 
+<?php } ?></div></body></html><?php 
 	}
 } ?>

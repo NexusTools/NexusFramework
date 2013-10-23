@@ -1,4 +1,4 @@
-<?
+<?php
 
 if(isset($_GET['delete'])){
 	$tpage = VirtualPages::fetchPage($_GET['delete']);

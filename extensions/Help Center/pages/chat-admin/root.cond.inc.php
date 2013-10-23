@@ -1,1 +1,1 @@
-<? return User::isStaff(); ?>
+<?php return User::isStaff(); ?>

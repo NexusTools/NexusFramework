@@ -321,12 +321,12 @@ echo "</table><center>";
 
 $end = $start + count($query['results']);
 if($page > 0) { ?>
-	<input onclick="ControlPanel.loadPage('<? echo self::$currentSection; ?>', '<? echo self::$currentPage; ?>', {f: '<? echo $filter; ?>', p: 0<? echo $sortJSON; ?>})" type="button" value="First" class="button">
-	<input onclick="ControlPanel.loadPage('<? echo self::$currentSection; ?>', '<? echo self::$currentPage; ?>', {f: '<? echo $filter; ?>', p: <? echo $page-1; echo $sortJSON; ?>})" type="button" value="<<" class="button">
-<? } else { ?>
+	<input onclick="ControlPanel.loadPage('<?php echo self::$currentSection; ?>', '<?php echo self::$currentPage; ?>', {f: '<?php echo $filter; ?>', p: 0<?php echo $sortJSON; ?>})" type="button" value="First" class="button">
+	<input onclick="ControlPanel.loadPage('<?php echo self::$currentSection; ?>', '<?php echo self::$currentPage; ?>', {f: '<?php echo $filter; ?>', p: <?php echo $page-1; echo $sortJSON; ?>})" type="button" value="<<" class="button">
+<?php } else { ?>
 	<input type="button" value="First" class="button disabled" disabled>
 	<input type="button" value="<<" class="button disabled" disabled>
-<? }
+<?php }
 
 echo "&nbsp;&nbsp;&nbsp;";
 if($query['total'] == 0) {
@@ -335,7 +335,7 @@ if($query['total'] == 0) {
 	else
 		echo "No Entries";
 } else { ?>
-Showing <? echo $start+1; ?> to <? echo $end; ?> of <? echo $query['total'];
+Showing <?php echo $start+1; ?> to <?php echo $end; ?> of <?php echo $query['total'];
 	if(strlen($filter))
 		echo " Results";
 	else
@@ -344,11 +344,11 @@ Showing <? echo $start+1; ?> to <? echo $end; ?> of <? echo $query['total'];
 echo "&nbsp;&nbsp;&nbsp;";
 
 if($end < $query['total']) { ?>
-	<input onclick="ControlPanel.loadPage('<? echo self::$currentSection; ?>', '<? echo self::$currentPage; ?>', {f: '<? echo $filter; ?>', p: <? echo $page+1; echo $sortJSON; ?>})" type="button" value=">>" class="button">
-	<input onclick="ControlPanel.loadPage('<? echo self::$currentSection; ?>', '<? echo self::$currentPage; ?>', {f: '<? echo $filter; ?>', p: <? echo floor(($query['total']-1) / 15); echo $sortJSON; ?>})" type="button" value="Last" class="button">
-<? } else { ?>
+	<input onclick="ControlPanel.loadPage('<?php echo self::$currentSection; ?>', '<?php echo self::$currentPage; ?>', {f: '<?php echo $filter; ?>', p: <?php echo $page+1; echo $sortJSON; ?>})" type="button" value=">>" class="button">
+	<input onclick="ControlPanel.loadPage('<?php echo self::$currentSection; ?>', '<?php echo self::$currentPage; ?>', {f: '<?php echo $filter; ?>', p: <?php echo floor(($query['total']-1) / 15); echo $sortJSON; ?>})" type="button" value="Last" class="button">
+<?php } else { ?>
 	<input type="button" value=">>" class="button disabled" disabled>
 	<input type="button" value="Last" class="button disabled" disabled>
-<? }
+<?php }
 echo "</center>";
 ?>

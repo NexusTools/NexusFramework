@@ -45,18 +45,18 @@ if(isset($_POST['condition'])) {
     }
 }
 
-?><pagebuttons><?
+?><pagebuttons><?php
 ControlPanel::renderStockButton("apply");
 ControlPanel::renderStockButton("discard", "ControlPanel::loadPage('ControlPanel', 'Access Rules')");
 ?></pagebuttons>
-<h3>For page `<? echo $page; ?>` of section `<? echo $section; ?>`</h3>
-<h4>This page is <? echo ControlPanel::isPageVisible($section, $page) ? "in the Navigation Bar" : "a Subpage"; ?></h4>
+<h3>For page `<?php echo $page; ?>` of section `<?php echo $section; ?>`</h3>
+<h4>This page is <?php echo ControlPanel::isPageVisible($section, $page) ? "in the Navigation Bar" : "a Subpage"; ?></h4>
 <form method="POST" action="control://ControlPanel/Edit Access Rule?<?php
 if($itemId)
     echo "id=" . $itemId;
 else
     echo "page=" . urlencode($page) . "&section=" . urlencode($section);
-?>"><?
+?>"><?php
 if($error)
     echo '<span style="color:red; font-size: 10px;">' . htmlentities($error) . '</span><br />';
-?><input class="text large" name="condition" value="<? echo htmlentities($value); ?>"></form>
+?><input class="text large" name="condition" value="<?php echo htmlentities($value); ?>"></form>

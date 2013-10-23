@@ -1,4 +1,4 @@
-<?
+<?php
 switch(VirtualPages::getMode()) {
 	case VirtualPages::RENDER_CREATOR:
 		?>Show in Website Navigation<br /><input type="radio" value="1" name="inputFormPage-navbar" id="__cp__inputFormPage_inNavbarYes" /><label for="__cp__inputFormPage_inNavbarYes">Yes</label> 
@@ -14,7 +14,7 @@ Inherit Footer Widgets<br /><input type="radio" value="1" name="inputFormPage-in
 <br />Recatcha Private Key<br /><input style="width: 350px" class="text" name="inputFormPage-captcha-private-key" type="text" /></div>
 Destination <help title="The form's destination url.">?</help><br />
 <input value="" style="width: 350px" class="text" name="inputFormPage-destination" type="text" /><br />Referrer <help title="The url to send from.">?</help><br />
-<input value="" style="width: 350px" class="text" name="inputFormPage-referrer" type="text" /><br />Category<br /><?
+<input value="" style="width: 350px" class="text" name="inputFormPage-referrer" type="text" /><br />Category<br /><?php
 $category = isset($_POST['category']) ? $_POST['category'] : 0;
 echo "<select style=\"width: 350px; font-family: monospace, courier new\" name=\"category\" value=\"$category\">";
 ControlPanel::renderRecursiveSelectOptions(PageCategories::getCategories(), $category);
@@ -27,7 +27,7 @@ Snippet <help title="a.k.a. Description, used in Article Links.">?</help><br />
 Content <help title="use {{FORM_URL}} to get this form's url, and RECAPTCHA to get the recaptcha block.">?</help><br />
 <textarea name="content" code="html" style="width: 350px; height: 200px; " resize="no"><form method="POST" action="{{FORM_URL}}">
 {{RECAPTCHA}}
-<input type="submit" value="Send"></form></textarea><?
+<input type="submit" value="Send"></form></textarea><?php
 	break;
 	
 	case VirtualPages::CREATE:
@@ -112,7 +112,7 @@ Content <help title="use {{FORM_URL}} to get this form's url, and RECAPTCHA to g
 		}
 		
 		$layout = PageCategories::getLayoutForCategory($data['category']);
-		?>Widgets<br /><?
+		?>Widgets<br /><?php
 		if($layout >= 2) {
 			echo "<button onclick=\"";
 			echo "ControlPanel.loadPage('Pages', 'Edit Widgets', {location: $page[rowid], title: ";
@@ -144,37 +144,37 @@ Content <help title="use {{FORM_URL}} to get this form's url, and RECAPTCHA to g
 			echo " Widgets</center></button>";
 		}
 		
-		?><br />Show in Website Navigation<br /><input type="radio" value="1" name="inputFormPage-navbar" id="__cp__inputFormPage_inNavbarYes"<? if($data['navbar']) echo " checked"; ?> /><label for="__cp__inputFormPage_inNavbarYes">Yes</label> 
-<input type="radio" value="0" name="inputFormPage-navbar" id="__cp__inputFormPage_inNavbarNo"<? if(!$data['navbar']) echo " checked"; ?> /><label for="__cp__inputFormPage_inNavbarNo">No</label><br />Show in Website Footer<br /><input type="radio" value="1" name="inputFormPage-footer" id="__cp__inputFormPage_inFooterYes"<? if($data['infooter']) echo " checked"; ?> /><label for="__cp__inputFormPage_inFooterYes">Yes</label> 
-<input type="radio" value="0" name="inputFormPage-footer" id="__cp__inputFormPage_inFooterNo"<? if(!$data['infooter']) echo " checked"; ?> /><label for="__cp__inputFormPage_inFooterNo">No</label><br />Inherit Header Widgets<br />
-<input type="radio" value="1" name="inputFormPage-inherit-headers" id="__cp__inputFormPage_inheritHeaderYes"<? if($data['inherit-headers']) echo " checked"; ?> /><label for="__cp__inputFormPage_inheritHeaderYes">Yes</label> 
-<input type="radio" value="0" name="inputFormPage-inherit-headers" id="__cp__inputFormPage_inheritHeaderNo"<? if(!$data['inherit-headers']) echo " checked"; ?> /><label for="__cp__inputFormPage_inheritHeaderNo">No</label>
-<br />Inherit Footer Widgets<br /><input type="radio" value="1" name="inputFormPage-inherit-footers" id="__cp__inputFormPage_inheritFooterYes"<? if($data['inherit-footers']) echo " checked"; ?> /><label for="__cp__inputFormPage_inheritFooterYes">Yes</label> 
-<input type="radio" value="0" name="inputFormPage-inherit-footers" id="__cp__inputFormPage_inheritFooterNo"<? if(!$data['inherit-footers']) echo " checked"; ?> /><label for="__cp__inputFormPage_inheritFooterNo">No</label>
-<div>Require Recaptcha<br /><input onchange="$('__cp_inputFormPage_recat').style.display=(this.checked ? '' : 'none')" type="radio" value="1" name="inputFormPage-require-captcha"<? if($formData['use-recaptcha']){echo " checked";} ?> id="__cp__inputFormPage_requireRecaptchaYes" /><label for="__cp__inputFormPage_requireRecaptchaYes">Yes</label> 
-<input onchange="$('__cp_inputFormPage_recat').style.display=(this.checked ? 'none' : '')"<? if(!$formData['use-recaptcha']){echo " checked";} ?> type="radio" value="0" name="inputFormPage-require-captcha" id="__cp__inputFormPage_requireRecaptchaNo" /><label for="__cp__inputFormPage_requireRecaptchaNo">No</label></div>
-<div id="__cp_inputFormPage_recat">Recatcha Public Key<br /><input value="<? echo htmlspecialchars($formData['recaptcha-public-key']); ?>" style="width: 350px" name="inputFormPage-captcha-public-key" class="text" type="text" />
-<br />Recatcha Private Key<br /><input value="<? echo htmlspecialchars($formData['recaptcha-private-key']); ?>" style="width: 350px" class="text" name="inputFormPage-captcha-private-key" type="text" /></div>
+		?><br />Show in Website Navigation<br /><input type="radio" value="1" name="inputFormPage-navbar" id="__cp__inputFormPage_inNavbarYes"<?php if($data['navbar']) echo " checked"; ?> /><label for="__cp__inputFormPage_inNavbarYes">Yes</label> 
+<input type="radio" value="0" name="inputFormPage-navbar" id="__cp__inputFormPage_inNavbarNo"<?php if(!$data['navbar']) echo " checked"; ?> /><label for="__cp__inputFormPage_inNavbarNo">No</label><br />Show in Website Footer<br /><input type="radio" value="1" name="inputFormPage-footer" id="__cp__inputFormPage_inFooterYes"<?php if($data['infooter']) echo " checked"; ?> /><label for="__cp__inputFormPage_inFooterYes">Yes</label> 
+<input type="radio" value="0" name="inputFormPage-footer" id="__cp__inputFormPage_inFooterNo"<?php if(!$data['infooter']) echo " checked"; ?> /><label for="__cp__inputFormPage_inFooterNo">No</label><br />Inherit Header Widgets<br />
+<input type="radio" value="1" name="inputFormPage-inherit-headers" id="__cp__inputFormPage_inheritHeaderYes"<?php if($data['inherit-headers']) echo " checked"; ?> /><label for="__cp__inputFormPage_inheritHeaderYes">Yes</label> 
+<input type="radio" value="0" name="inputFormPage-inherit-headers" id="__cp__inputFormPage_inheritHeaderNo"<?php if(!$data['inherit-headers']) echo " checked"; ?> /><label for="__cp__inputFormPage_inheritHeaderNo">No</label>
+<br />Inherit Footer Widgets<br /><input type="radio" value="1" name="inputFormPage-inherit-footers" id="__cp__inputFormPage_inheritFooterYes"<?php if($data['inherit-footers']) echo " checked"; ?> /><label for="__cp__inputFormPage_inheritFooterYes">Yes</label> 
+<input type="radio" value="0" name="inputFormPage-inherit-footers" id="__cp__inputFormPage_inheritFooterNo"<?php if(!$data['inherit-footers']) echo " checked"; ?> /><label for="__cp__inputFormPage_inheritFooterNo">No</label>
+<div>Require Recaptcha<br /><input onchange="$('__cp_inputFormPage_recat').style.display=(this.checked ? '' : 'none')" type="radio" value="1" name="inputFormPage-require-captcha"<?php if($formData['use-recaptcha']){echo " checked";} ?> id="__cp__inputFormPage_requireRecaptchaYes" /><label for="__cp__inputFormPage_requireRecaptchaYes">Yes</label> 
+<input onchange="$('__cp_inputFormPage_recat').style.display=(this.checked ? 'none' : '')"<?php if(!$formData['use-recaptcha']){echo " checked";} ?> type="radio" value="0" name="inputFormPage-require-captcha" id="__cp__inputFormPage_requireRecaptchaNo" /><label for="__cp__inputFormPage_requireRecaptchaNo">No</label></div>
+<div id="__cp_inputFormPage_recat">Recatcha Public Key<br /><input value="<?php echo htmlspecialchars($formData['recaptcha-public-key']); ?>" style="width: 350px" name="inputFormPage-captcha-public-key" class="text" type="text" />
+<br />Recatcha Private Key<br /><input value="<?php echo htmlspecialchars($formData['recaptcha-private-key']); ?>" style="width: 350px" class="text" name="inputFormPage-captcha-private-key" type="text" /></div>
 Destination <help title="The form's destination url.">?</help><br />
-<input value="<? echo htmlspecialchars($formData['destination']); ?>" style="width: 350px" class="text" name="inputFormPage-destination" type="text" /><br />Referrer <help title="The url to send from.">?</help><br />
-<input value="<? echo htmlspecialchars($formData['referrer']); ?>" style="width: 350px" class="text" name="inputFormPage-referrer" type="text" /><br />Category<br />
-<?
+<input value="<?php echo htmlspecialchars($formData['destination']); ?>" style="width: 350px" class="text" name="inputFormPage-destination" type="text" /><br />Referrer <help title="The url to send from.">?</help><br />
+<input value="<?php echo htmlspecialchars($formData['referrer']); ?>" style="width: 350px" class="text" name="inputFormPage-referrer" type="text" /><br />Category<br />
+<?php
 echo "<select style=\"width: 350px; font-family: monospace, courier new\" name=\"category\" value=\"$data[category]\">";
 ControlPanel::renderRecursiveSelectOptions(PageCategories::getCategories(), $data['category']);
 echo "</select>";
 ?><br />
 Tags<br />
-<textarea name="tags" title="Comma Separated Tags" style="width: 350px; height: 50px;" resize="no"><?
+<textarea name="tags" title="Comma Separated Tags" style="width: 350px; height: 50px;" resize="no"><?php
 foreach(Articles::getDatabase()->selectArray("page-tags", Array("page" => $page['rowid']), "tag") as $tag)
 	echo htmlspecialchars($tag) . ", ";
 ?></textarea><br />
 Snippet <help title="a.k.a. Description, used in Article Links.">?</help><br />
-<textarea name="description" code="html" style="width: 350px; height: 200px; " resize="no"><?
+<textarea name="description" code="html" style="width: 350px; height: 200px; " resize="no"><?php
 echo htmlspecialchars($data['description']);
 ?></textarea><br />Content <help title="use {{FORM_URL}} to get this form's url, and RECAPTCHA to get the recaptcha block.">?</help><br />
-<textarea name="content" code="html" style="width: 100%; height: 400px; " resize="no"><?
+<textarea name="content" code="html" style="width: 100%; height: 400px; " resize="no"><?php
 echo htmlspecialchars($data['content']);
-?></textarea><?
+?></textarea><?php
 		break;
 		
 	case VirtualPages::RENDER:

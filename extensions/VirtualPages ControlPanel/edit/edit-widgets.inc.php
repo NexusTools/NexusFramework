@@ -14,7 +14,7 @@ if(isset($_GET['swap'])) {
 
 ?>
 
-<h3>Widgets for <?
+<h3>Widgets for <?php
 echo $_GET['title'];
 
 if(isset($_GET['subtitle'])) {
@@ -22,7 +22,7 @@ if(isset($_GET['subtitle'])) {
 	echo $_GET['subtitle'];
 	echo "</span>";
 }
-?></h3><?
+?></h3><?php
 
 $state = "subtitle: " . htmlspecialchars('"' . $_GET['subtitle'] . '"')
 			. ", title: " . htmlspecialchars('"' . $_GET['title'] . '"')
@@ -71,8 +71,8 @@ if(count($widgets))
 	}
 else
 	echo "<h3>No Widgets</h3>";
-?><br /><select onchange="var value = $(this).getValue();if(value.length < 1)return;ControlPanel.loadPage('Pages', 'Create Widget', {slot: <? echo $slot; ?>, section: <? echo htmlspecialchars("\"$section\""); ?>, parent: <? echo $parent; ?>, location: <? echo $location; ?>, type: value});"><option value="">Add Widget</option>
-<option value="">------------------------</option><?
+?><br /><select onchange="var value = $(this).getValue();if(value.length < 1)return;ControlPanel.loadPage('Pages', 'Create Widget', {slot: <?php echo $slot; ?>, section: <?php echo htmlspecialchars("\"$section\""); ?>, parent: <?php echo $parent; ?>, location: <?php echo $location; ?>, type: value});"><option value="">Add Widget</option>
+<option value="">------------------------</option><?php
 if($parent > 0)
 	$slot = VirtualPages::EMBEDDABLE;
 else

@@ -9,21 +9,21 @@ if(isset($_POST['action']) && startsWith($_POST['action'], "save")){
 	
 }
 $page = VirtualPages::fetchPage($_GET['id']);
-?><pagebuttons><?
+?><pagebuttons><?php
 ControlPanel::renderStockButton("save");
 ControlPanel::renderStockButton("save-close");
 ControlPanel::renderStockButton("clone");
 ControlPanel::renderStockButton("delete", "ControlPanel.loadPopup('Pages', 'Delete', {id: $page[rowid]})");
 ControlPanel::renderStockButton("discard", "ControlPanel.loadPage('Pages', 'Manage')");
 ?></pagebuttons>
-<form action="control://Pages/Edit?id=<? echo $_GET['id']; ?>">
+<form action="control://Pages/Edit?id=<?php echo $_GET['id']; ?>">
 Title<br />
-<input name="title" type="text" class="text large" value="<? echo $page['title']; ?>"><br />
+<input name="title" type="text" class="text large" value="<?php echo $page['title']; ?>"><br />
 Condition<br />
-<input name="condition" style="width: 350px" type="condition" class="text" value="<? echo htmlentities($page['condition']); ?>"><br />
+<input name="condition" style="width: 350px" type="condition" class="text" value="<?php echo htmlentities($page['condition']); ?>"><br />
 Type<br />
-<input style="width: 350px" type="text" class="text" value="<? echo htmlentities(StringFormat::displayForID($page['type'])); ?>" readonly><br />
-<?
+<input style="width: 350px" type="text" class="text" value="<?php echo htmlentities(StringFormat::displayForID($page['type'])); ?>" readonly><br />
+<?php
 VirtualPages::runPage($page['type'], VirtualPages::RENDER_EDITOR, $page);
 ?>
 </form>

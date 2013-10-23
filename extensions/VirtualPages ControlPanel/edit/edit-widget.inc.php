@@ -26,7 +26,7 @@ if(!isset($widget['config']['title'])) {
 }
 
 VirtualPages::runWidget($widget['type'], VirtualPages::RENDER_EDITOR, $widget['config'], $widget['rowid']);
-?></form><pagebuttons><?
+?></form><pagebuttons><?php
 
 $oldstate = "id: " . $_GET['id'] . ", subtitle: \"" . (isset($_GET['subtitle']) ? $_GET['subtitle'] : "")
 			. "\", title: \"" . (isset($_GET['title']) ? $_GET['title'] : "Unknown")

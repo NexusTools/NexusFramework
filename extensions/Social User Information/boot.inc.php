@@ -1,1 +1,1 @@
-<? User::registerExtension("UserInfo"); ?>
+<?php User::registerExtension("UserInfo"); ?>

@@ -1,5 +1,5 @@
 <h1>NexusTools PHP/Website Framework</h1>
-<h2><? echo PageModule::getPageTitle(); ?></h2>
+<h2><?php echo PageModule::getPageTitle(); ?></h2>
 <p>Welcome to the NexusFramework installer,<br />
 fill in the form below to configure this website and complete the installation.</p>
 <form>

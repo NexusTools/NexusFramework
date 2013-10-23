@@ -3,7 +3,7 @@ set_time_limit(0);
 $database = isset($_GET['db']) ? $_GET['db'] : $_POST['db'];
 $table = isset($_GET['tab']) ? $_GET['tab'] : $_POST['tab'];
 
-?><center><h2>Import Table</h2><?
+?><center><h2>Import Table</h2><?php
 if(!$database) {
     echo "<h4>No Database Specified</h4>";
     return;
@@ -14,7 +14,7 @@ if(!$db->isValid()) {
     return;
 }
 ?>
-<h4 style="line-height: 100%;">Database: <? echo $database; ?></h4>
+<h4 style="line-height: 100%;">Database: <?php echo $database; ?></h4>
 This feature is highly experimental.<br />
 Databases that reference eachother, such as the VirtualPages database, cannot be properly imported.
 <br /><br />
@@ -22,7 +22,7 @@ The progress of an import cannot be measured, for larger databases it may take a
 <b>It is highly recommended you backup the config folder before proceeding</b>
 <br /><br /><br /><br />
 <form method="POST" action="control://Database/Export" style="text-align: left; display: inline-block; width: auto; margin: 0 auto">
-<input name="db" value="<? echo htmlentities($database); ?>" type="hidden" />
+<input name="db" value="<?php echo htmlentities($database); ?>" type="hidden" />
 
 File<br />
 <input type="file" name="dataFile" /><br />
@@ -36,7 +36,7 @@ Mode<br />
 </select>
 Table<br />
 <select style="width: 100%;" name="tab">
-<?
+<?php
 foreach($db->listTables()  as $t){
     echo "<option value='$t'";
     if($table == $t)

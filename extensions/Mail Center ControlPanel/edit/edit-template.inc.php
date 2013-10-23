@@ -33,11 +33,11 @@ if(isset($_POST['action'])) {
 ControlPanel::renderStockButton("save");
 ControlPanel::renderStockButton("save-close");
 ControlPanel::renderStockButton("discard");
-?></pagebuttons><form action="control://Mail Center/Edit Template?id=<? echo $_GET['id']; ?>" method="POST">
-Name:<br /><?
+?></pagebuttons><form action="control://Mail Center/Edit Template?id=<?php echo $_GET['id']; ?>" method="POST">
+Name:<br /><?php
 EditCore::render("line", "name", isset($_POST['name']) ? $_POST['name'] : MailCenter::nameForTemplateID($_GET['id']));
 ?><br />
 HTML Version:<br />
-<? EditCore::render("html", "html", isset($_POST['html']) ? $_POST['html'] : file_get_contents(MailCenter::getStoragePath("templates" . DIRSEP . $_GET['id']) . "payload.html")); ?><br />
+<?php EditCore::render("html", "html", isset($_POST['html']) ? $_POST['html'] : file_get_contents(MailCenter::getStoragePath("templates" . DIRSEP . $_GET['id']) . "payload.html")); ?><br />
 Text Version:<br />
-<? EditCore::render("text", "text", isset($_POST['text']) ? $_POST['text'] : file_get_contents(MailCenter::getStoragePath("templates" . DIRSEP . $_GET['id']) . "payload.txt")); ?></form>
+<?php EditCore::render("text", "text", isset($_POST['text']) ? $_POST['text'] : file_get_contents(MailCenter::getStoragePath("templates" . DIRSEP . $_GET['id']) . "payload.txt")); ?></form>

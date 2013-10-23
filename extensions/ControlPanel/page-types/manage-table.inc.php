@@ -1,4 +1,4 @@
-<?
+<?php
 if(isset($definition['sortField']))
 	$sortField = $definition['sortField'];
 else {

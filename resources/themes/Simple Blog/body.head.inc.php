@@ -1,4 +1,4 @@
-<ol class="navigation"><?
+<ol class="navigation"><?php
 $menu = Triggers::broadcast("Template", "GenerateMenuLayout");
 if(!$menu || !count($menu))
 	$menu = Array("Home" => "/", "About Framework" => "/about:framework");

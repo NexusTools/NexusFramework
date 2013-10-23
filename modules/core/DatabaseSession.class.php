@@ -1,4 +1,4 @@
-<?
+<?php
 class EncryptedSessionHandler extends SessionHandlerInterface
 {
 

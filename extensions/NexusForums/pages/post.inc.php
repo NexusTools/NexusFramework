@@ -1,14 +1,14 @@
-<?
+<?php
 function userBlockFor($user) {
 	$user = User::fetch($user, User::FETCH_ANY_USER);
-	?><div class="user <? echo StringFormat::idForDisplay($user->getLevelString()); ?>">
-	<h2><? echo $user->getDisplayName(); ?></h2>
-	<h3><? echo $user->getTitle(); ?></h3>
-	<img src="<? echo $user->getAvatar(84); ?>" />
+	?><div class="user <?php echo StringFormat::idForDisplay($user->getLevelString()); ?>">
+	<h2><?php echo $user->getDisplayName(); ?></h2>
+	<h3><?php echo $user->getTitle(); ?></h3>
+	<img src="<?php echo $user->getAvatar(84); ?>" />
 	<dl>
 		<dt>Website</dt> <dd>http://www.domain.com/</dd>
-		<dt>Popularity</dt> <dd><? echo $user->getLevel(); ?>pts</dd>
-	</dl></div><?
+		<dt>Popularity</dt> <dd><?php echo $user->getLevel(); ?>pts</dd>
+	</dl></div><?php
 }
 ?><widget class="forum head">
 <h1>Example Forum Thread</h1>
@@ -218,36 +218,36 @@ widget.forum.footer h3 {
 	font-size: 120%;
 	margin-bottom: 6px;
 }
-</style><post class="top"><?
+</style><post class="top"><?php
 echo userBlockFor("ktaeyln");
 ?>
-<p><timestamp>Posted on <? echo StringFormat::formatDate(time()); ?></timestamp>
+<p><timestamp>Posted on <?php echo StringFormat::formatDate(time()); ?></timestamp>
 Lorem ipsum dolor sit amet, eu quam ipsum ultricies ac, sed vestibulum ante, tincidunt laoreet sed sollicitudin ipsum, porttitor lectus libero quam convallis integer, venenatis tortor. Quis laoreet nec potenti id, vitae hendrerit morbi tortor integer. Vel mauris hac vitae velit morbi, urna laoreet nascetur suspendisse, tincidunt cubilia ante curabitur. Orci phasellus, ut rhoncus aenean suscipit porttitor eget, duis mattis sit in feugiat vel.</p>
-<buttons><a href="" class="button">Like/Share</a> <a href="" class="button">Quote</a> <a popup href="<? echo REQUEST_URI; ?>/reply" class="button">Reply</a></buttons>
-</post><post><?
+<buttons><a href="" class="button">Like/Share</a> <a href="" class="button">Quote</a> <a popup href="<?php echo REQUEST_URI; ?>/reply" class="button">Reply</a></buttons>
+</post><post><?php
 userBlockFor("root");
 ?>
-<p><timestamp>Posted on <? echo StringFormat::formatDate(time()); ?></timestamp>
+<p><timestamp>Posted on <?php echo StringFormat::formatDate(time()); ?></timestamp>
 Lorem ipsum dolor sit amet, eu quam ipsum ultricies ac, sed vestibulum ante, tincidunt laoreet sed sollicitudin ipsum, porttitor lectus libero quam convallis integer, venenatis tortor. Quis laoreet nec potenti id, vitae hendrerit morbi tortor integer. Vel mauris hac vitae velit morbi, urna laoreet nascetur suspendisse, tincidunt cubilia ante curabitur. Orci phasellus, ut rhoncus aenean suscipit porttitor eget, duis mattis sit in feugiat vel.</p>
-<buttons><a href="" class="button">Like/Share</a> <a href="" class="button">Quote</a> <a popup href="<? echo REQUEST_URI; ?>/reply" class="button">Reply</a></buttons>
-</post><post><?
+<buttons><a href="" class="button">Like/Share</a> <a href="" class="button">Quote</a> <a popup href="<?php echo REQUEST_URI; ?>/reply" class="button">Reply</a></buttons>
+</post><post><?php
 userBlockFor("system");
 ?>
-<p><timestamp>Posted on <? echo StringFormat::formatDate(time()); ?></timestamp>
+<p><timestamp>Posted on <?php echo StringFormat::formatDate(time()); ?></timestamp>
 Lorem ipsum dolor sit amet, eu quam ipsum ultricies ac, sed vestibulum ante, tincidunt laoreet sed sollicitudin ipsum, porttitor lectus libero quam convallis integer, venenatis tortor. Quis laoreet nec potenti id, vitae hendrerit morbi tortor integer. Vel mauris hac vitae velit morbi, urna laoreet nascetur suspendisse, tincidunt cubilia ante curabitur. Orci phasellus, ut rhoncus aenean suscipit porttitor eget, duis mattis sit in feugiat vel.</p>
-<buttons><a href="" class="button">Like/Share</a> <a href="" class="button">Quote</a> <a popup href="<? echo REQUEST_URI; ?>/reply" class="button">Reply</a></buttons>
-</post><post><?
+<buttons><a href="" class="button">Like/Share</a> <a href="" class="button">Quote</a> <a popup href="<?php echo REQUEST_URI; ?>/reply" class="button">Reply</a></buttons>
+</post><post><?php
 userBlockFor("guest");
 ?>
-<p><timestamp>Posted on <? echo StringFormat::formatDate(time()); ?></timestamp>
+<p><timestamp>Posted on <?php echo StringFormat::formatDate(time()); ?></timestamp>
 Lorem ipsum dolor sit amet, eu quam ipsum ultricies ac, sed vestibulum ante, tincidunt laoreet sed sollicitudin ipsum, porttitor lectus libero quam convallis integer, venenatis tortor. Quis laoreet nec potenti id, vitae hendrerit morbi tortor integer. Vel mauris hac vitae velit morbi, urna laoreet nascetur suspendisse, tincidunt cubilia ante curabitur. Orci phasellus, ut rhoncus aenean suscipit porttitor eget, duis mattis sit in feugiat vel.</p>
-<buttons><a href="" class="button">Like/Share</a> <a href="" class="button">Quote</a> <a popup href="<? echo REQUEST_URI; ?>/reply" class="button">Reply</a></buttons>
-</post><post class="bottom"><?
+<buttons><a href="" class="button">Like/Share</a> <a href="" class="button">Quote</a> <a popup href="<?php echo REQUEST_URI; ?>/reply" class="button">Reply</a></buttons>
+</post><post class="bottom"><?php
 userBlockFor("root");
 ?>
-<p><timestamp>Posted on <? echo StringFormat::formatDate(time()); ?></timestamp>
+<p><timestamp>Posted on <?php echo StringFormat::formatDate(time()); ?></timestamp>
 Lorem ipsum dolor sit amet, eu quam ipsum ultricies ac, sed vestibulum ante, tincidunt laoreet sed sollicitudin ipsum, porttitor lectus libero quam convallis integer, venenatis tortor. Quis laoreet nec potenti id, vitae hendrerit morbi tortor integer. Vel mauris hac vitae velit morbi, urna laoreet nascetur suspendisse, tincidunt cubilia ante curabitur. Orci phasellus, ut rhoncus aenean suscipit porttitor eget, duis mattis sit in feugiat vel.</p>
-<buttons><a href="" class="button">Like/Share</a> <a href="" class="button">Quote</a> <a popup href="<? echo REQUEST_URI; ?>/reply" class="button">Reply</a></buttons>
+<buttons><a href="" class="button">Like/Share</a> <a href="" class="button">Quote</a> <a popup href="<?php echo REQUEST_URI; ?>/reply" class="button">Reply</a></buttons>
 </post></widget>
 
 <widget class="forum footer">

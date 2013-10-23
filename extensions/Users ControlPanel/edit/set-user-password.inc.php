@@ -19,14 +19,14 @@ else {
     }
 
     ?><pagebuttons>
-    <?
+    <?php
     ControlPanel::renderStockButton("apply");
     ControlPanel::renderStockButton("discard", "ControlPanel::loadPage('Users', 'Manage')");
     ?>
     </pagebuttons>
-    <form method="" action="control://Users/Set User Password?id=<? echo $otherUser->getID(); ?>">New Password<br />
+    <form method="" action="control://Users/Set User Password?id=<?php echo $otherUser->getID(); ?>">New Password<br />
     <input style="width: 350px" name="pass" type="password" class="text" /><br />
     Retype New Password<br />
-    <input style="width: 350px" name="rpass" type="password" class="text" /></form><?
+    <input style="width: 350px" name="rpass" type="password" class="text" /></form><?php
 }
 ?>

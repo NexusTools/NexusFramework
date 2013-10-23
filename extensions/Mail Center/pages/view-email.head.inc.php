@@ -85,7 +85,7 @@ else {
 		}
 	}
 	fixFrameLinks();
-	emailFrame.onload = fixFrameLinks;</script><?
+	emailFrame.onload = fixFrameLinks;</script><?php
 	Template::writeFooter();
 }
 exit;

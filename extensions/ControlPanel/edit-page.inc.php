@@ -1,4 +1,4 @@
-<?
+<?php
 
 $processedFields = Array();
 
@@ -216,7 +216,7 @@ foreach($buttons as $button => $def){
 		}
 	ControlPanel::renderStockButton($button, $script, isset($def['text']) ? $def['text'] : false);
 }
-?></pagebuttons><?
+?></pagebuttons><?php
 
 if(array_key_exists("database", $errors)) {
     echo "<banner class='error'>A database error occured:\n<pre>";

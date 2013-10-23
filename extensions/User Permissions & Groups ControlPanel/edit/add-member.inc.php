@@ -1,4 +1,4 @@
-<?
+<?php
 if(isset($_POST['action'])) {
 	switch($_POST['action']) {
 		case "new":
@@ -17,11 +17,11 @@ if(isset($_POST['action'])) {
 			return;
 	}
 }
-?><pagebuttons><?
+?><pagebuttons><?php
 ControlPanel::renderStockButton("new", "ControlPanel.submitForm(this);", "Add Member");
 ?></pagebuttons>
-<form action="control://Users/Add Group Member?group=<? echo $_GET['group']; ?>" method="POST">Username, ID or Email<br />
+<form action="control://Users/Add Group Member?group=<?php echo $_GET['group']; ?>" method="POST">Username, ID or Email<br />
 <input name="user" class="text large" /></form>
-<?
+<?php
 return Array(false, Array("title" => "Groups", "action" => "ControlPanel.loadPage('Users', 'Groups');"), Array("title" => User::getGroupNameForID($_GET['group']), "action" => "ControlPanel.loadPage('Users', 'Group Members', {id: " .$_GET['group']. "});"), "Add Member");
 ?>

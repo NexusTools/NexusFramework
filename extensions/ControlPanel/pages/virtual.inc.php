@@ -4,7 +4,7 @@ try {
 } catch(Exception $e) {
 	$data = Array("breadcrumb" => Array("Exception Thrown"), "html" => $e->getMessage());
 }
-?><breadcrumb><?
+?><breadcrumb><?php
 $set = false;
 foreach($data['breadcrumb'] as $breadcrumb){
     if($set)
@@ -21,6 +21,6 @@ if($data['tools']) {
     foreach($data['tools'] as $tool)
         echo "&nbsp;&nbsp;<img onclick=\"" . $tool['action'] . "\" src='" . $tool['icon'] . "' />";
 }
-?></breadcrumb><content><?
+?></breadcrumb><content><?php
 echo $data['html'];
 ?></content>

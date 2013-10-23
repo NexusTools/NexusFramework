@@ -1,4 +1,4 @@
-<?
+<?php
 if(isset($_POST['title']))
 {
 	if(($id = VirtualPages::handlePageCreation())) {
@@ -33,12 +33,12 @@ $types = VirtualPages::getPageTypes();
 ?></pagebuttons>
 <form action="control://Pages/Create">
 Title<br />
-<input <? if(isset($_POST['condition'])) echo "value=\"" .htmlspecialchars($_POST['title']). "\" ";?>name="title" type="text" class="text large"><br />
+<input <?php if(isset($_POST['condition'])) echo "value=\"" .htmlspecialchars($_POST['title']). "\" ";?>name="title" type="text" class="text large"><br />
 Condition<br />
-<input <? if(isset($_POST['condition'])) echo "value=\"" .htmlspecialchars($_POST['condition']). "\" ";?>name="condition" style="width: 350px" type="condition" class="text"><br />
+<input <?php if(isset($_POST['condition'])) echo "value=\"" .htmlspecialchars($_POST['condition']). "\" ";?>name="condition" style="width: 350px" type="condition" class="text"><br />
 Type<br />
-<select value="<? echo $activeType; ?>" onchange="if(!this.oldType){this.oldType='<? echo $types[0]; ?>'} $('__cp_page_' + this.oldType).hide(); this.oldType = this.value; $('__cp_page_' + this.value).show();" name="type" style="width: 350px">
-<?
+<select value="<?php echo $activeType; ?>" onchange="if(!this.oldType){this.oldType='<?php echo $types[0]; ?>'} $('__cp_page_' + this.oldType).hide(); this.oldType = this.value; $('__cp_page_' + this.value).show();" name="type" style="width: 350px">
+<?php
 foreach($types as $type) {
 	echo "<option value=\"$type\"";
 	if($activeType == $type)
@@ -47,7 +47,7 @@ foreach($types as $type) {
 }
 ?>
 </select>
-<?
+<?php
 $first = true;
 foreach($types as $type){
 	echo "<div ";
