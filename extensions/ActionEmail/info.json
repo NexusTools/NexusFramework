@@ -8,6 +8,10 @@
 			"code": "BINARY(16)",
 			"callback": "VARCHAR(50)",
 			"arguments": "BINARY(2048)",
+			"single-use": {
+				"type": "BOOLEAN",
+				"default": 1
+			},
 			"expires": "TIMESTAMP"
 		}
 	}

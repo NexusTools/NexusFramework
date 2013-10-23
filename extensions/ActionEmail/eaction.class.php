@@ -12,7 +12,7 @@ class ActionEmail {
 		return self::$database ? self::$database : (self::$database = Database::getInstance());
 	}
 
-	public static function request($body, $actionCallback, $params =Array(), $actionText ="Continue", $to =null, $subject ="Confirmation required", $from =false, $expires ="+1 week") {
+	public static function request($body, $actionCallback, $params =Array(), $actionText ="Continue", $to =null, $subject ="Confirmation required", $from =false, $expires ="+1 week", $singleUse =true) {
 		if($to === null)
 			$to = User::getInstance();
 		if($to && !is_array($to)) {
@@ -26,6 +26,7 @@ class ActionEmail {
 		$id = self::getDatabase()->insert("actions", Array("code" => $unique,
 					"callback" => $actionCallback,
 					"arguments" => serialize($params),
+					"single-use" => $singleUse,
 					"expires" => DateFormat::formatSqlTimestamp($expires)));
 		if($id < 1)
 			throw new Exception("Failed to create action token");
@@ -39,13 +40,30 @@ class ActionEmail {
 		Framework::redirect($url);
 	}
 	
+	public static function disableActive() {
+		if(!array_key_exists('actionemail-activeid', $_SESSION))
+			return;
+		
+		$aid = $_SESSION['actionemail-activeid'];
+		self::getDatabase()->delete("actions", Array("rowid" => $aid));
+		unset($_SESSION['actionemail-activeid']);
+	}
+	
+	public static function cancelActive() {
+		if(!array_key_exists('actionemail-activeid', $_SESSION))
+			return;
+		
+		unset($_SESSION['actionemail-activeid']);
+	}
+	
 	public static function __handleToken() {
 		$data = self::getDatabase()->selectRow("actions", Array("rowid" => $_GET['id']), Array("code", "created", "expires"));
 		if(!$data)
 			throw new Exception("Unknown token id");
+		$_SESSION['actionemail-activeid'] = $_GET['id'];
 		$expires = Database::timestampToTime($data['expires']);
 		if($expires > time())  {
-			self::getDatabase()->delete("actions", Array("rowid" => $_GET['id']));
+			self::disableActive();
 			throw new Exception("Token expired");
 		}
 		if($data['code'] != base64_decode($_GET['token']))
@@ -53,17 +71,18 @@ class ActionEmail {
 		if(Database::timestampToTime($data['created']) != $_GET['created'])
 			throw new Exception("Token creation time mismatch");
 			
-		$data = self::getDatabase()->selectRow("actions", Array("rowid" => $_GET['id']), Array("callback", "arguments"));
+		$data = self::getDatabase()->selectRow("actions", Array("rowid" => $_GET['id']), Array("callback", "single-use", "arguments"));
 		if(!$data)
 			throw new Exception("Token callback data corrupt");
-			
+		
 		$data['arguments'] = unserialize($data['arguments']);
-		self::getDatabase()->delete("actions", Array("rowid" => $_GET['id']));
+		if($data['single-use'])
+			self::disableActive();
 		call_user_func_array($data['callback'], $data['arguments']);
 		die();
 	}
 	
-	public static function sendUrlSessionToken($body, $redirectUrl, $sessionKey, $subject ="Check it Out", $actionText ="Check it Out", $to =null, $from =false, $expires ="+1 week") {
+	public static function sendUrlSessionToken($body, $redirectUrl, $sessionKey, $subject ="Check it Out", $actionText ="Check it Out", $to =null, $from =false, $expires ="+1 week", $singleUse =true) {
 		$extraData = Array();
 		if(is_array($sessionKey)) {
 			$extraData = $sessionKey;
@@ -79,7 +98,7 @@ class ActionEmail {
 		}
 		
 		unset($_SESSION[$sessionKey]);
-		return self::request($body, "ActionEmail::__sessionCallback", Array($redirectUrl, $sessionKey, $sessionData), $actionText, $to, $subject, $from, $expires);
+		return self::request($body, "ActionEmail::__sessionCallback", Array($redirectUrl, $sessionKey, $sessionData), $actionText, $to, $subject, $from, $expires, $singleUse);
 	}
 
 	
