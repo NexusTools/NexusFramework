@@ -4,27 +4,27 @@ class EncryptedSessionHandler extends SessionHandlerInterface
 
     private $database = false;
 
-    public close() {
+    public function close() {
         $this->database = false;
     }
     
-    public destroy($session_id) {
+    public function destroy($session_id) {
         
     }
     
-    public gc($maxlifetime) {
+    public function gc($maxlifetime) {
         
     }
     
-    public open($save_path, $name) {
+    public function open($save_path, $name) {
         
     }
     
-    public read($session_id) {
+    public function read($session_id) {
         
     }
     
-    public write($session_id, $session_data) {
+    public function write($session_id, $session_data) {
         
     }
 }

@@ -235,7 +235,7 @@ while(is_array($prevExc = $prevExc['previous'])) {
 ?></div>
 <script>
 
-var prevExceptionOpen = false
+var prevExceptionOpen = false;
 function togglePrevious(){
 	var trace = document.getElementById("previous");
 	var link = document.getElementById("previous-link");
@@ -266,7 +266,7 @@ else
 
 <script>
 
-var traceOpen = false
+var traceOpen = false;
 function toggleTrace(){
 	var trace = document.getElementById("trace");
 	var link = document.getElementById("trace-link");

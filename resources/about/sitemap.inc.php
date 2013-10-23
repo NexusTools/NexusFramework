@@ -1,4 +1,4 @@
-<widget class="sitemap"><h1>Sitemap</h1><?
+<widget class="sitemap"><h1>Sitemap</h1><pre><?
 
 function __siteMap_injectPath(&$siteMap, $title, $url) {
 }

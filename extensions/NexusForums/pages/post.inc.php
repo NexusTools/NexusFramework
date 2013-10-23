@@ -270,7 +270,7 @@ BB code is On<br />
 Markdown code is On<br />
 HTML code is Off<br /><br />
 
-<center><a href="/forum/help/forum-code" class="button">Post Help</a></div></center>
+<center><a href="/forum/help/forum-code" class="button">Post Help</a></center></div>
 <h3>Permissions</h3><h4>In this thread</h4>
 You may not post replies<br />
 You may not post attachments<br />

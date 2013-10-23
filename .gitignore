@@ -1,2 +1,6 @@
 # Backup Files
 *~
+# Irrelevant Eclipse Files
+.buildpath
+.project
+.settings/
