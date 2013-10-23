@@ -1,12 +1,11 @@
 <?php
-if(isset($_POST['title']))
-{
-	if(($id = VirtualPages::handlePageCreation())) {
+if (isset($_POST['title'])) {
+	if (($id = VirtualPages::handlePageCreation())) {
 		$_POST = Array();
 		$_GET = Array();
 		$_GET["id"] = $id;
 		$_GET['created'] = true;
-		
+
 		echo "<banner class=\"success\">Page created successfully.</banner>";
 		ControlPanel::changePage("Edit");
 		return;
@@ -19,11 +18,10 @@ if(isset($_POST['title']))
 	}
 }
 
-if(isset($_POST['type']))
+if (isset($_POST['type']))
 	$activeType = $_POST['type'];
 else
 	$activeType = "basic";
-
 ?>
 <pagebuttons><?php
 ControlPanel::renderStockButton("save", false, "Create");
@@ -39,19 +37,19 @@ Condition<br />
 Type<br />
 <select value="<?php echo $activeType; ?>" onchange="if(!this.oldType){this.oldType='<?php echo $types[0]; ?>'} $('__cp_page_' + this.oldType).hide(); this.oldType = this.value; $('__cp_page_' + this.value).show();" name="type" style="width: 350px">
 <?php
-foreach($types as $type) {
+foreach ($types as $type) {
 	echo "<option value=\"$type\"";
-	if($activeType == $type)
+	if ($activeType == $type)
 		echo " selected";
-	echo ">" . StringFormat::displayForID($type) . "</option>";
+	echo ">".StringFormat::displayForID($type)."</option>";
 }
 ?>
 </select>
 <?php
 $first = true;
-foreach($types as $type){
+foreach ($types as $type) {
 	echo "<div ";
-	if($first)
+	if ($first)
 		$first = false;
 	else
 		echo "style=\"display: none\" ";
@@ -59,6 +57,5 @@ foreach($types as $type){
 	VirtualPages::runPage($type, VirtualPages::RENDER_CREATOR, false);
 	echo "</div>";
 }
-
 ?>
 </form>

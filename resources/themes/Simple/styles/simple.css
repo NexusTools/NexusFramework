@@ -20,15 +20,12 @@ Framework\:Page {
 	margin: 16px 0px;
 }
 
-input.text,
-textarea,
-select {
+input.text,textarea,select {
 	border: solid 1pt;
 	padding: 4px;
 }
 
-input.text,
-select {
+input.text,select {
 	height: 30px;
 }
 

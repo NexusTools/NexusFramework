@@ -7,6 +7,6 @@ class AbstractResourceRequest {
 
 	public abstract function write($data);
 	public abstract function read();
-	
+
 }
 ?>

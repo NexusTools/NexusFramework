@@ -2,45 +2,44 @@ groupbox Table TD input.button {
 	width: 162px;
 }
 
-select:focus,
-select:hover,
-widget.options:focus,
-widget.options:hover {
+select:focus,select:hover,widget.options:focus,widget.options:hover {
 	color: #333;
 	border: solid 1pt #444;
 }
 
-button.disabled,
-button.disabled:hover,
-button.disabled:active,
-input.button.disabled,
-input.button.disabled:hover,
-input.button.disabled:active {
-	background: rgb(242,242,242);
+button.disabled,button.disabled:hover,button.disabled:active,input.button.disabled,input.button.disabled:hover,input.button.disabled:active
+	{
+	background: rgb(242, 242, 242);
 	border: solid 1pt #ccc;
 	color: #aaa;
 }
 
-button,
-input.button {
+button,input.button {
 	color: #888;
 	font-weight: bold;
 	text-align: center;
-	background: rgb(242,242,242);
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YyZjJmMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjE2JSIgc3RvcC1jb2xvcj0iI2Q2ZDZkNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZmVmZWYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-	background: -moz-linear-gradient(top,  rgba(242,242,242,1) 0%, rgba(214,214,214,1) 16%, rgba(239,239,239,1) 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(242,242,242,1)), color-stop(16%,rgba(214,214,214,1)), color-stop(100%,rgba(239,239,239,1)));
-	background: -webkit-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 16%,rgba(239,239,239,1) 100%);
-	background: -o-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 16%,rgba(239,239,239,1) 100%);
-	background: -ms-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 16%,rgba(239,239,239,1) 100%);
-	background: linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 16%,rgba(239,239,239,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#efefef',GradientType=0 );
-
+	background: rgb(242, 242, 242);
+	background:
+		url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YyZjJmMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjE2JSIgc3RvcC1jb2xvcj0iI2Q2ZDZkNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZmVmZWYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top, rgba(242, 242, 242, 1) 0%,
+		rgba(214, 214, 214, 1) 16%, rgba(239, 239, 239, 1) 100% );
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(242,
+		242, 242, 1) ), color-stop(16%, rgba(214, 214, 214, 1) ),
+		color-stop(100%, rgba(239, 239, 239, 1) ) );
+	background: -webkit-linear-gradient(top, rgba(242, 242, 242, 1) 0%,
+		rgba(214, 214, 214, 1) 16%, rgba(239, 239, 239, 1) 100% );
+	background: -o-linear-gradient(top, rgba(242, 242, 242, 1) 0%,
+		rgba(214, 214, 214, 1) 16%, rgba(239, 239, 239, 1) 100% );
+	background: -ms-linear-gradient(top, rgba(242, 242, 242, 1) 0%,
+		rgba(214, 214, 214, 1) 16%, rgba(239, 239, 239, 1) 100% );
+	background: linear-gradient(top, rgba(242, 242, 242, 1) 0%,
+		rgba(214, 214, 214, 1) 16%, rgba(239, 239, 239, 1) 100% );
+	filter: progid : DXImageTransform.Microsoft.gradient (   startColorstr =
+		'#f2f2f2', endColorstr = '#efefef', GradientType = 0 );
 	transition: all 500ms ease;
 	-moz-transition: all 500ms ease; /* Firefox 4 */
 	-webkit-transition: all 500ms ease; /* Safari and Chrome */
 	-o-transition: all 500ms ease; /* Opera */
-	
 	font-family: Arial;
 	font-size: 13px;
 	border: solid 1pt #888;
@@ -49,22 +48,29 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', end
 	padding-left: 8px;
 }
 
-input.button:hover,
-button:hover {
+input.button:hover,button:hover {
 	color: #666;
-	background: rgb(242,242,242);
-background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YyZjJmMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjE0JSIgc3RvcC1jb2xvcj0iI2Q2ZDZkNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZGVkZWQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-background: -moz-linear-gradient(top,  rgba(242,242,242,1) 0%, rgba(214,214,214,1) 14%, rgba(237,237,237,1) 100%);
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(242,242,242,1)), color-stop(14%,rgba(214,214,214,1)), color-stop(100%,rgba(237,237,237,1)));
-background: -webkit-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 14%,rgba(237,237,237,1) 100%);
-background: -o-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 14%,rgba(237,237,237,1) 100%);
-background: -ms-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 14%,rgba(237,237,237,1) 100%);
-background: linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(214,214,214,1) 14%,rgba(237,237,237,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#ededed',GradientType=0 );
+	background: rgb(242, 242, 242);
+	background:
+		url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YyZjJmMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjE0JSIgc3RvcC1jb2xvcj0iI2Q2ZDZkNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZGVkZWQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top, rgba(242, 242, 242, 1) 0%,
+		rgba(214, 214, 214, 1) 14%, rgba(237, 237, 237, 1) 100% );
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(242,
+		242, 242, 1) ), color-stop(14%, rgba(214, 214, 214, 1) ),
+		color-stop(100%, rgba(237, 237, 237, 1) ) );
+	background: -webkit-linear-gradient(top, rgba(242, 242, 242, 1) 0%,
+		rgba(214, 214, 214, 1) 14%, rgba(237, 237, 237, 1) 100% );
+	background: -o-linear-gradient(top, rgba(242, 242, 242, 1) 0%,
+		rgba(214, 214, 214, 1) 14%, rgba(237, 237, 237, 1) 100% );
+	background: -ms-linear-gradient(top, rgba(242, 242, 242, 1) 0%,
+		rgba(214, 214, 214, 1) 14%, rgba(237, 237, 237, 1) 100% );
+	background: linear-gradient(top, rgba(242, 242, 242, 1) 0%,
+		rgba(214, 214, 214, 1) 14%, rgba(237, 237, 237, 1) 100% );
+	filter: progid : DXImageTransform.Microsoft.gradient (   startColorstr =
+		'#f2f2f2', endColorstr = '#ededed', GradientType = 0 );
 }
 
-button:active span.icon,
-button.disabled span.icon {
+button:active span.icon,button.disabled span.icon {
 	opacity: 0.5;
 }
 
@@ -75,23 +81,30 @@ button span.icon {
 	-o-transition: opacity 200ms ease; /* Opera */
 }
 
-input.button:active,
-button:active {
+input.button:active,button:active {
 	transition: all 200ms ease;
 	-moz-transition: all 200ms ease; /* Firefox 4 */
 	-webkit-transition: all 200ms ease; /* Safari and Chrome */
 	-o-transition: all 200ms ease; /* Opera */
 	color: #aaa;
-	background: rgb(201,201,201);
-background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2M5YzljOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjE2JSIgc3RvcC1jb2xvcj0iI2RiZGJkYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZGVkZWQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-background: -moz-linear-gradient(top,  rgba(201,201,201,1) 0%, rgba(219,219,219,1) 16%, rgba(237,237,237,1) 100%);
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(201,201,201,1)), color-stop(16%,rgba(219,219,219,1)), color-stop(100%,rgba(237,237,237,1)));
-background: -webkit-linear-gradient(top,  rgba(201,201,201,1) 0%,rgba(219,219,219,1) 16%,rgba(237,237,237,1) 100%);
-background: -o-linear-gradient(top,  rgba(201,201,201,1) 0%,rgba(219,219,219,1) 16%,rgba(237,237,237,1) 100%);
-background: -ms-linear-gradient(top,  rgba(201,201,201,1) 0%,rgba(219,219,219,1) 16%,rgba(237,237,237,1) 100%);
-background: linear-gradient(top,  rgba(201,201,201,1) 0%,rgba(219,219,219,1) 16%,rgba(237,237,237,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9c9c9', endColorstr='#ededed',GradientType=0 );
-
+	background: rgb(201, 201, 201);
+	background:
+		url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2M5YzljOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjE2JSIgc3RvcC1jb2xvcj0iI2RiZGJkYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZGVkZWQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top, rgba(201, 201, 201, 1) 0%,
+		rgba(219, 219, 219, 1) 16%, rgba(237, 237, 237, 1) 100% );
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(201,
+		201, 201, 1) ), color-stop(16%, rgba(219, 219, 219, 1) ),
+		color-stop(100%, rgba(237, 237, 237, 1) ) );
+	background: -webkit-linear-gradient(top, rgba(201, 201, 201, 1) 0%,
+		rgba(219, 219, 219, 1) 16%, rgba(237, 237, 237, 1) 100% );
+	background: -o-linear-gradient(top, rgba(201, 201, 201, 1) 0%,
+		rgba(219, 219, 219, 1) 16%, rgba(237, 237, 237, 1) 100% );
+	background: -ms-linear-gradient(top, rgba(201, 201, 201, 1) 0%,
+		rgba(219, 219, 219, 1) 16%, rgba(237, 237, 237, 1) 100% );
+	background: linear-gradient(top, rgba(201, 201, 201, 1) 0%,
+		rgba(219, 219, 219, 1) 16%, rgba(237, 237, 237, 1) 100% );
+	filter: progid : DXImageTransform.Microsoft.gradient (   startColorstr =
+		'#c9c9c9', endColorstr = '#ededed', GradientType = 0 );
 }
 
 input.text.large {
@@ -99,16 +112,8 @@ input.text.large {
 	width: 400px;
 }
 
-textarea.disabled,
-input.text.disabled,
-input.text.disabled:hover,
-input.text.disabled:focus,
-select.disabled,
-select.disabled:hover,
-select.disabled:focus,
-widget.options.disabled,
-widget.options.disabled:hover,
-widget.options.disabled:focus {
+textarea.disabled,input.text.disabled,input.text.disabled:hover,input.text.disabled:focus,select.disabled,select.disabled:hover,select.disabled:focus,widget.options.disabled,widget.options.disabled:hover,widget.options.disabled:focus
+	{
 	cursor: default;
 	border: solid 1pt #ccc;
 	color: #aaa;
@@ -117,7 +122,7 @@ widget.options.disabled:focus {
 Table {
 	width: 100%;
 	border: solid 1pt #ccc;
-	border-spacing:0px;
+	border-spacing: 0px;
 	color: #555;
 	font-size: 12px;
 	margin: 5px 0px;
@@ -125,7 +130,7 @@ Table {
 	font-family: arial, georgia;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	empty-cells:show;
+	empty-cells: show;
 }
 
 Table TH {
@@ -149,8 +154,7 @@ Table TD.icon {
 	width: 16px;
 }
 
-Table TD.last,
-Table TD.icon {
+Table TD.last,Table TD.icon {
 	border-right: none;
 }
 
@@ -166,10 +170,7 @@ help {
 	cursor: help;
 }
 
-select,
-widget.options,
-textarea,
-input.text {
+select,widget.options,textarea,input.text {
 	border: solid 1pt #aaa;
 	border-top: solid 1pt #777;
 	font-size: 13px;
@@ -178,21 +179,18 @@ input.text {
 	width: 350px;
 	background-color: white;
 	margin-bottom: 6px;
-	
 	transition: all 200ms ease;
 	-moz-transition: all 200ms ease; /* Firefox 4 */
 	-webkit-transition: all 200ms ease; /* Safari and Chrome */
 	-o-transition: all 200ms ease; /* Opera */
 }
 
-textarea:hover,
-input.text:hover {
+textarea:hover,input.text:hover {
 	color: #5a5a5a;
 	border: solid 1pt #666;
 }
 
-textarea:focus,
-input.text:focus {
+textarea:focus,input.text:focus {
 	color: #333;
 	border: solid 1pt #444;
 	-webkit-box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.4);
@@ -200,16 +198,11 @@ input.text:focus {
 	box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.4);
 }
 
-input,
-select,
-textarea,
-buttons,
-widget.options {
+input,select,textarea,buttons,widget.options {
 	margin-top: -1px;
 }
 
-bubble,
-groupbox label {
+bubble,groupbox label {
 	margin-left: 5px;
 	margin-bottom: 5px;
 	display: table;
@@ -241,7 +234,6 @@ groupbox {
 	text-align: left;
 	margin: 5px;
 	margin-top: 30px;
-	
 	display: inline-block;
 	border: solid 1pt lightGray;
 	-moz-box-sizing: border-box;
@@ -284,17 +276,24 @@ textarea {
 	resize: none;
 }
 
-Table TH,
-groupbox label {
+Table TH,groupbox label {
 	color: #444;
-	background: rgb(255,255,255);
-	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(249,249,249,1) 12%, rgba(255,255,255,1) 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(12%,rgba(249,249,249,1)), color-stop(100%,rgba(255,255,255,1)));
-	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(249,249,249,1) 12%,rgba(255,255,255,1) 100%);
-	background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(249,249,249,1) 12%,rgba(255,255,255,1) 100%);
-	background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(249,249,249,1) 12%,rgba(255,255,255,1) 100%);
-	background: linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(249,249,249,1) 12%,rgba(255,255,255,1) 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 );
+	background: rgb(255, 255, 255);
+	background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%,
+		rgba(249, 249, 249, 1) 12%, rgba(255, 255, 255, 1) 100% );
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,
+		255, 255, 1) ), color-stop(12%, rgba(249, 249, 249, 1) ),
+		color-stop(100%, rgba(255, 255, 255, 1) ) );
+	background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%,
+		rgba(249, 249, 249, 1) 12%, rgba(255, 255, 255, 1) 100% );
+	background: -o-linear-gradient(top, rgba(255, 255, 255, 1) 0%,
+		rgba(249, 249, 249, 1) 12%, rgba(255, 255, 255, 1) 100% );
+	background: -ms-linear-gradient(top, rgba(255, 255, 255, 1) 0%,
+		rgba(249, 249, 249, 1) 12%, rgba(255, 255, 255, 1) 100% );
+	background: linear-gradient(top, rgba(255, 255, 255, 1) 0%,
+		rgba(249, 249, 249, 1) 12%, rgba(255, 255, 255, 1) 100% );
+	filter: progid : DXImageTransform.Microsoft.gradient (   startColorstr =
+		'#ffffff', endColorstr = '#ffffff', GradientType = 0 );
 }
 
 GroupList GroupBox Label {

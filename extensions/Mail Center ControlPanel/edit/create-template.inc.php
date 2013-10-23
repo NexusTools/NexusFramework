@@ -1,17 +1,17 @@
 <?php
-if(isset($_POST['action'])) {
-	switch($_POST['action']){
-		case "create":
-			if(!trim($_POST['name'])) {
-				echo "<banner class=\"error\">Name Required.</banner>";
-				continue;
-			}
-			$_POST['name'] = trim($_POST['name']);
-			$_GET['id'] = MailCenter::createTemplate($_POST['name'], $_POST['text'], $_POST['html']);
-			echo "<banner class=\"success\">Template Created</banner>";
-			$_POST = Array();
-			ControlPanel::changePage("Edit Template");
-			return;
+if (isset($_POST['action'])) {
+	switch ($_POST['action']) {
+	case "create":
+		if (!trim($_POST['name'])) {
+			echo "<banner class=\"error\">Name Required.</banner>";
+			continue;
+		}
+		$_POST['name'] = trim($_POST['name']);
+		$_GET['id'] = MailCenter::createTemplate($_POST['name'], $_POST['text'], $_POST['html']);
+		echo "<banner class=\"success\">Template Created</banner>";
+		$_POST = Array();
+		ControlPanel::changePage("Edit Template");
+		return;
 	}
 }
 ?><pagebuttons><?php

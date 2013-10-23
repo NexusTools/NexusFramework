@@ -1,12 +1,12 @@
 <?php
-if(isset($_POST['action']) && startsWith($_POST['action'], "save")){
+if (isset($_POST['action']) && startsWith($_POST['action'], "save")) {
 	VirtualPages::processPageUpdate();
 	echo "<banner class=\"success\">All changes saved.</banner>";
-	if($_POST['action'] == "save-close") {
+	if ($_POST['action'] == "save-close") {
 		ControlPanel::changePage("Manage");
 		return;
 	}
-	
+
 }
 $page = VirtualPages::fetchPage($_GET['id']);
 ?><pagebuttons><?php

@@ -1,19 +1,19 @@
 <?php
 class UserSettings {
 
-    private $uid;
+	private $uid;
 
-    public function __construct($user){
-        $this->uid = $user->getID();
-    }
-    
-    public function readSetting($name, $default=null){
-        
-    }
-    
-    public function writeSetting($name, $value){
-        
-    }
+	public function __construct($user) {
+		$this->uid = $user->getID();
+	}
+
+	public function readSetting($name, $default = null) {
+
+	}
+
+	public function writeSetting($name, $value) {
+
+	}
 
 }
 ?>

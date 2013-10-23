@@ -5,7 +5,7 @@
 <hr />
 <a target="_blank" href="https://github.com/NexusTools/NexusFramework">Source</a></widget>
 <?php
-if(User::isStaff()) {
+if (User::isStaff()) {
 ?><widget><h1>Developer References</h1>
 <a target="_blank" href="<?php echo BASE_URI; ?>?api&format=help">API</a><br />
 <a href="<?php echo BASE_URI; ?>about:interpolation">Interpolation</a></widget><?php } ?>

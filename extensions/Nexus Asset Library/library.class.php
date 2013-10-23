@@ -2,10 +2,11 @@
 class AssetLibrary {
 
 	private static $db;
-	
-	public static function init(){
+
+	public static function init() {
 		$db = Database::getInstance();
 	}
 
-} AssetLibrary::init();
+}
+AssetLibrary::init();
 ?>

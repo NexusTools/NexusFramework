@@ -1,4 +1,4 @@
-html, body {
+html,body {
 	height: 100%;
 }
 
@@ -30,21 +30,15 @@ a img {
 	border: none;
 }
 
-Framework\:Config,
-.hidden {
+Framework\:Config,.hidden {
 	display: none;
 }
 
-Framework\:Theme,
-header,
-footer,
-clear {
+Framework\:Theme,header,footer,clear {
 	display: block;
 }
 
-Framework\:Page,
-content,
-widget {
+Framework\:Page,content,widget {
 	width: 100%;
 	display: table;
 }
@@ -66,9 +60,7 @@ Framework\:Theme {
 	width: 100%;
 }
 
-Framework\:Page,
-header,
-footer {
+Framework\:Page,header,footer {
 	width: 800px;
 	table-layout: fixed;
 	display: table;
@@ -116,8 +108,7 @@ Framework\:Page column.sidebar h3 {
 	font-size: 110%;
 }
 
-right,
-left {
+right,left {
 	display: inline-block;
 }
 
@@ -125,12 +116,10 @@ clear {
 	clear: both;
 }
 
-right,
-.float-right {
+right,.float-right {
 	float: right;
 }
 
-left,
-.float-left {
+left,.float-left {
 	float: left;
 }

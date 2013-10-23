@@ -2,18 +2,19 @@
 class EmailTriggers {
 
 	private static $database;
-	
-	public static function getDatabase(){
+
+	public static function getDatabase() {
 		return self::$database;
 	}
-	
-	public static function init(){
+
+	public static function init() {
 		self::$database = Database::getInstance();
 	}
-	
-	public static function callback($provider, $event, $data){
+
+	public static function callback($provider, $event, $data) {
 		// TODO: Implement
-	}	
-	
-} EmailTriggers::init();
+		}
+
+}
+EmailTriggers::init();
 ?>

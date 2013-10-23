@@ -2,9 +2,9 @@
 class ResolvedPath {
 
 	public static function resolve($path, $parent = null) {
-		if($path instanceof self)
+		if ($path instanceof self)
 			return $path;
-		if(is_string($parent)) {
+		if (is_string($parent)) {
 		} else {
 		}
 	}

@@ -1,13 +1,13 @@
 <?php
 $email = MailCenter::getEmail($_GET['id']);
 
-if($mail['expires'] < time() && $mail['expires'] > 0)
+if ($mail['expires'] < time() && $mail['expires'] > 0)
 	echo "<banner>This message has expired, it is no longer being tracked.</banner><br />";
 
 $basePath = MailCenter::getStoragePathForEmail($_GET['id'], false);
 $rawID = urlencode(base64_encode($_GET['id']));
 echo "<pagebuttons>";
-if(is_file($basePath . "payload.html")) {
+if (is_file($basePath."payload.html")) {
 	echo "<a href=\"";
 	echo BASE_URL;
 	echo "mail-center/view-email?html&$rawID";
@@ -35,5 +35,5 @@ echo "</td></tr><tr><td colspan=\"2\" style=\"height: 100%; border: solid 1pt bl
 echo BASE_URL;
 echo "mail-center/view-email?$format&$rawID\"></iframe></td></tr></table>";
 
-return Array(false, Array("title" => "Outbox", "action" => "ControlPanel.loadPage('Mail Center', 'Outbox');"), "Message `" . htmlentities(base64_encode($_GET['id'])) . "`");
+return Array(false, Array("title" => "Outbox", "action" => "ControlPanel.loadPage('Mail Center', 'Outbox');"), "Message `".htmlentities(base64_encode($_GET['id']))."`");
 ?>

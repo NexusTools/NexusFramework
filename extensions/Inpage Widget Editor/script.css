@@ -11,8 +11,7 @@ widget-toolbar {
 	opacity: 0.4;
 }
 
-widget-toolbar.widget-hover,
-widget-toolbar:hover {
+widget-toolbar.widget-hover,widget-toolbar:hover {
 	opacity: 1;
 }
 

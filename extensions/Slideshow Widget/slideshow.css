@@ -5,6 +5,7 @@ slideshow_widget {
 	position: relative;
 	display: block;
 }
+
 slideshow_widget img {
 	position: absolute;
 	width: 100%;
@@ -12,9 +13,11 @@ slideshow_widget img {
 	left: 0px;
 	top: 0px;
 }
+
 widget.slideshow {
-    padding: 0px;
+	padding: 0px;
 }
+
 slideshow_widget table {
 	opacity: 0;
 	background-color: rgba(0, 0, 0, 0.8);
@@ -24,27 +27,21 @@ slideshow_widget table {
 	width: 100%;
 	left: 0px;
 	top: 372px;
-	
 	transition-property: opacity;
 	transition-duration: 500ms;
 	transition-timing-function: ease;
-	
-	-o-transition-property:	opacity;
+	-o-transition-property: opacity;
 	-o-transition-duration: 500ms;
 	-o-transition-timing-function: ease;
-	
 	-ms-transition-property: opacity;
 	-ms-transition-duration: 500ms;
 	-ms-transition-timing-function: ease;
-	
 	-moz-transition-property: opacity;
 	-moz-transition-duration: 500ms;
 	-moz-transition-timing-function: ease;
-	
 	-webkit-transition-property: opacity;
 	-webkit-transition-duration: 500ms;
 	-webkit-transition-timing-function: ease;
-	
 	transition-delay: 2s;
 	-o-transition-delay: 2s;
 	-ms-transition-delay: 2s;
@@ -54,7 +51,6 @@ slideshow_widget table {
 
 slideshow_widget:hover table {
 	opacity: 1;
-	
 	transition-delay: 0s;
 	-o-transition-delay: 0s;
 	-ms-transition-delay: 0s;

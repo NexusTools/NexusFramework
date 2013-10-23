@@ -1,7 +1,7 @@
 <?php
 function userBlockFor($user) {
 	$user = User::fetch($user, User::FETCH_ANY_USER);
-	?><div class="user <?php echo StringFormat::idForDisplay($user->getLevelString()); ?>">
+?><div class="user <?php echo StringFormat::idForDisplay($user->getLevelString()); ?>">
 	<h2><?php echo $user->getDisplayName(); ?></h2>
 	<h3><?php echo $user->getTitle(); ?></h3>
 	<img src="<?php echo $user->getAvatar(84); ?>" />

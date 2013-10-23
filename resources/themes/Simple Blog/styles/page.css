@@ -46,9 +46,9 @@ popup contents iframe {
 
 framework\:page a * {
 	-moz-transition: all 200ms;
-    -webkit-transition: all 200ms;
-    -o-transition: all 200ms;
-    transition: all 200ms;
+	-webkit-transition: all 200ms;
+	-o-transition: all 200ms;
+	transition: all 200ms;
 }
 
 framework\:page a div {
@@ -76,7 +76,6 @@ framework\:page a div.banner {
 	top: 160px;
 }
 
-
 framework\:page a:hover div.banner {
 	top: 134px;
 }
@@ -96,8 +95,7 @@ framework\:page a div.play-container {
 }
 
 framework\:page a div.play-container div.play {
-	-webkit-border-radius: 5px;
-	-moz-border-radius- 5px;
+	-webkit-border-radius: 5px; -moz-border-radius- 5px;
 	border-radius: 5px;
 	position: relative;
 	padding: 4px;

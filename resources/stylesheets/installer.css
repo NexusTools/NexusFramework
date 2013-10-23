@@ -30,9 +30,8 @@ body {
 	border-radius: 15px;
 	background-color: #f0f0f0;
 	text-shadow: 2px 2px 5px #cfcfcf;
-	filter: dropshadow(color=#cfcfcf, offx=2, offy=2);
+	filter: dropshadow(color = #cfcfcf, offx = 2, offy = 2);
 	margin-bottom: 30px;
-	
 	transition: all 200ms ease;
 	-moz-transition: all 200ms ease; /* Firefox 4 */
 	-webkit-transition: all 200ms ease; /* Safari and Chrome */
@@ -53,5 +52,5 @@ pre {
 }
 
 * {
-    outline: none;
+	outline: none;
 }

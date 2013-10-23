@@ -1,6 +1,6 @@
 <pagebuttons><?php
 $settings = new Settings("Google Analytics");
-if(isset($_POST['action'])){
+if (isset($_POST['action'])) {
 	$settings->setValue("code", $_POST['code']);
 	$settings->setValue("domain", $_POST['domain']);
 }

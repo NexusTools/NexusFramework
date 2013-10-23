@@ -1,5 +1,5 @@
 <?php
-if(isset($_FILE['upload'])){
+if (isset($_FILE['upload'])) {
 	return;
 }
 ?>

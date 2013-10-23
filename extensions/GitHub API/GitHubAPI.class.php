@@ -11,7 +11,7 @@ class GitHubAPI extends GitHubAPICachedObject {
 	private $rateLimitResetAt;
 
 	public static function getInstance() {
-		if(!self::$instance)
+		if (!self::$instance)
 			self::$instance = new GitHubAPI();
 		return self::$instance;
 	}
@@ -61,8 +61,8 @@ class GitHubAPI extends GitHubAPICachedObject {
 	private function doRequest($turl) {
 		$c = curl_init();
 
-		if($this->isAuthenticated()) {
-			curl_setopt($c, CURLOPT_HTTPAUTH, CURLAUTH_BASIC); 
+		if ($this->isAuthenticated()) {
+			curl_setopt($c, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 			curl_setopt($c, CURLOPT_USERPWD, $this->username.':'.$this->password);
 		}
 
@@ -81,81 +81,84 @@ class GitHubAPI extends GitHubAPICachedObject {
 	}
 
 	public function request($suffixURL) {
-		$nurl = $this->url . $suffixURL;
+		$nurl = $this->url.$suffixURL;
 		$response = $this->doRequest($nurl);
 
 		$atHeader = true;
 		$content = array();
-		foreach(explode("\r\n", $response) as $line) {
-			if($atHeader && $line == '') {
+		foreach (explode("\r\n", $response) as $line) {
+			if ($atHeader && $line == '') {
 				$atHeader = false;
-			} else if($atHeader) {
-				$line = explode(': ', $line);
-				switch($line[0]) {
-					case 'Status': 
+			} else
+				if ($atHeader) {
+					$line = explode(': ', $line);
+					switch ($line[0]) {
+					case 'Status':
 						$this->status = intval(substr($line[1], 0, 3));
-					break;
-					case 'X-RateLimit-Limit': 
-						$this->rateLimit = intval($line[1]); 
-					break;
-					case 'X-RateLimit-Remaining': 
-						$this->rateLimitRemaining = intval($line[1]); 
-					break;
+						break;
+					case 'X-RateLimit-Limit':
+						$this->rateLimit = intval($line[1]);
+						break;
+					case 'X-RateLimit-Remaining':
+						$this->rateLimitRemaining = intval($line[1]);
+						break;
 					case 'X-RateLimit-Reset';
-						$this->rateLimitResetAt = intval($line[1]);
+					$this->rateLimitResetAt = intval($line[1]);
 					break;
 				}
 			} else {
 				array_push($content, $line);
 			}
-		}
-		$this->invalidate();
-		return $this->buildArray(json_decode(implode("\n", $content), true));
 	}
+	$this->invalidate();
+	return $this->buildArray(json_decode(implode("\n", $content), true));
+}
 
-	public function buildArray($content) {
-		$classType = false;
-		if(array_key_exists("type", $content)) {
-			$classType = $content["type"];
-		} else if(array_key_exists("fork", $content) || array_key_exists("_links", $content)) {
+public function buildArray($content) {
+	$classType = false;
+	if (array_key_exists("type", $content)) {
+		$classType = $content["type"];
+	} else
+		if (array_key_exists("fork", $content) || array_key_exists("_links", $content)) {
 			$classType = "Branch";
-		} else if(array_key_exists("commit", $content)) {
-			$classType = "Commit";
-		}
-		if($classType) {
-			$nkeys = array();
-			$nvalues = array();
-			foreach($content as $key => $value) {
-				array_push($nkeys, $key);
-				if(is_array($value))
-					$value = $this->buildArray($value);
-				array_push($nvalues, $value);
+		} else
+			if (array_key_exists("commit", $content)) {
+				$classType = "Commit";
 			}
-			return GitHubAPIClassConstructor::getInstance()->constructClass($classType, $nkeys, $nvalues);
-		} else {
-			$newArray = array();
-			foreach($content as $key => $value) {
-				if(is_array($value))
-					$value = $this->buildArray($value);
-				$newArray[$key] = $value;
-			}
-			return $newArray;
+	if ($classType) {
+		$nkeys = array();
+		$nvalues = array();
+		foreach ($content as $key => $value) {
+			array_push($nkeys, $key);
+			if (is_array($value))
+				$value = $this->buildArray($value);
+			array_push($nvalues, $value);
 		}
+		return GitHubAPIClassConstructor::getInstance()->constructClass($classType, $nkeys, $nvalues);
+	} else {
+		$newArray = array();
+		foreach ($content as $key => $value) {
+			if (is_array($value))
+				$value = $this->buildArray($value);
+			$newArray[$key] = $value;
+		}
+		return $newArray;
 	}
+}
 
-	public function getID() {
-		return Framework::uniqueHash($this->username);
-	}
+public function getID() {
+	return Framework::uniqueHash($this->username);
+}
 
-	public function update() {
-		return array("status" => $this->status,
-			"rateLimit" => $this->rateLimit,
-			"rateLimitRemaining" => $this->rateLimitRemaining,
-			"rateLimitResetAt" => $this->rateLimitResetAt);
-	}
+public function update() {
+	return array("status" => $this->status,
+		"rateLimit" => $this->rateLimit,
+		"rateLimitRemaining" => $this->rateLimitRemaining,
+		"rateLimitResetAt" => $this->rateLimitResetAt);
+}
 
-	protected function getLifetime() {
-		return 60*60*60;
-	}
+protected function getLifetime() {
+	return 60 * 60 * 60;
+}
 }
 ?>

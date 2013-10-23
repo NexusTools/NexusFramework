@@ -4,29 +4,29 @@ class FilesystemDatabase extends BasicEmuDatabase {
 	private $filepath;
 	private $basepath;
 	private $childpath;
-	
-	protected function isShared(){
-	    return false;
+
+	protected function isShared() {
+		return false;
 	}
 
-	public function __construct($basepath, $childpath=""){
+	public function __construct($basepath, $childpath = "") {
 		$this->basepath = fullpath($basepath);
-		if(!endsWith($this->basepath, "/"))
+		if (!endsWith($this->basepath, "/"))
 			$this->basepath .= "/";
 		$this->childpath = relativepath($childpath);
-		$this->filepath = $this->basepath . $this->childpath;
-		if(!endsWith($this->filepath, "/"))
+		$this->filepath = $this->basepath.$this->childpath;
+		if (!endsWith($this->filepath, "/"))
 			$this->filepath .= "/";
 	}
-	
-	public function getFilepath(){
+
+	public function getFilepath() {
 		return $this->filepath;
 	}
-	
-	public function getEntries(){
+
+	public function getEntries() {
 		$fsdb = new CachedFilesystemDatabase($this->filepath);
 		$entries = $fsdb->getData();
-		foreach($entries as &$entry)
+		foreach ($entries as & $entry)
 			$entry['uri'] = substr($entry['path'], strlen($this->basepath));
 		return $entries;
 	}
@@ -35,27 +35,27 @@ class FilesystemDatabase extends BasicEmuDatabase {
 
 class CachedFilesystemDatabase extends CachedFile {
 
-    protected function isShared(){
-	    return true;
+	protected function isShared() {
+		return true;
 	}
 
-	public function __construct($path){
+	public function __construct($path) {
 		parent::__construct($path);
 	}
-	
-	public function getMimeType(){
+
+	public function getMimeType() {
 		return "inode/directory";
 	}
-	
-	public function getPrefix(){
+
+	public function getPrefix() {
 		return "fs-database";
 	}
 
-	private function pushFile($fname, $path, &$array, $mime=false){
-		if(startsWith($fname, ".") || endsWith($fname, "~"))
+	private function pushFile($fname, $path, &$array, $mime = false) {
+		if (startsWith($fname, ".") || endsWith($fname, "~"))
 			return;
-	
-		if(is_readable($path)){
+
+		if (is_readable($path)) {
 			$stat = stat($path);
 			$info = Array("rowid" => $stat['ino'] ? $stat['ino'] : crc32($fname));
 			$info['path'] = $path;
@@ -64,13 +64,13 @@ class CachedFilesystemDatabase extends CachedFile {
 			$info['atime'] = $stat['atime'];
 			$info['mtime'] = $stat['mtime'];
 			$info['mode'] = $stat['mode'];
-			if(endsWith($fname, ".sqlite") && is_file($path))
+			if (endsWith($fname, ".sqlite") && is_file($path))
 				$info['mime'] = "application/x-sqlite";
 			else
 				$info['mime'] = $mime ? $mime : mime_content_type($path);
-			if(is_link($path)) {
+			if (is_link($path)) {
 				$info['target'] = readlink($path);
-				if($info['mime'] == "directory")
+				if ($info['mime'] == "directory")
 					$info['target'] .= "/";
 				$info['target'] = shortpath($info['target']);
 			} else
@@ -90,28 +90,28 @@ class CachedFilesystemDatabase extends CachedFile {
 		}
 		array_push($array, $info);
 	}
-	
-	public function update(){
+
+	public function update() {
 		return $this->getEntries();
 	}
-	
-	public function getEntries(){
+
+	public function getEntries() {
 		$entries = Array();
-		
+
 		$dir = opendir($this->getFilepath());
-		while(($fname = readdir($dir)) !== false) {
-			if($fname == "." || $fname == ".." || !is_dir($file = $this->getFilepath() . $fname))
+		while (($fname = readdir($dir)) !== false) {
+			if ($fname == "." || $fname == ".." || !is_dir($file = $this->getFilepath().$fname))
 				continue;
-		
+
 			$this->pushFile($fname, $file, $entries);
 		}
 		closedir($dir);
 		$dir = opendir($this->getFilepath());
-		while(($fname = readdir($dir)) !== false) {
-			$file = $this->getFilepath() . $fname;
-			if(is_dir($file))
+		while (($fname = readdir($dir)) !== false) {
+			$file = $this->getFilepath().$fname;
+			if (is_dir($file))
 				continue;
-		
+
 			$this->pushFile($fname, $file, $entries);
 		}
 		closedir($dir);

@@ -2,16 +2,16 @@
 abstract class RuntimeInstruction {
 
 	private $line = 0;
-	
-	public function setLine($line){
+
+	public function setLine($line) {
 		$this->line = $line;
 	}
-	
-	public function getLine(){
+
+	public function getLine() {
 		return $this->line;
 	}
-	
-	public abstract function run($program, $caller);	
-	
+
+	public abstract function run($program, $caller);
+
 }
 ?>

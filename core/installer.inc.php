@@ -274,7 +274,8 @@ tooltip {
 <a class="headbubble" href="http://www.nexustools.net/">Nexus Tools<br />PHP Framework</a>
 <?php
 error_reporting(0);
-if(!is_writable(INDEX_PATH)){ ?>
+if (!is_writable(INDEX_PATH)) {
+?>
 PHP Requires write permission to `<?php echo INDEX_PATH; ?>`.<br/>
 This can be fixed automatically, please select an option.<br /><br />
 <input class="button" type="submit" value="Fix using FTP" /><br />
@@ -340,17 +341,18 @@ This can be fixed automatically, please select an option.<br /><br />
 		</tr>
 		<tr>
 			<td><select><?php
-					if(class_exists("PDO")){
-						echo "<optgroup LABEL=\"PDO Drivers\">";
-						$drivers = PDO::getAvailableDrivers();
-						foreach($drivers as $driver) {
-							echo "<option";
-							if($driver == "sqlite")
-								echo " selected";
-							echo ">$driver</option>";
-						}
-						echo "</optgroup>";
-					} ?>
+	if (class_exists("PDO")) {
+		echo "<optgroup LABEL=\"PDO Drivers\">";
+		$drivers = PDO::getAvailableDrivers();
+		foreach ($drivers as $driver) {
+			echo "<option";
+			if ($driver == "sqlite")
+				echo " selected";
+			echo ">$driver</option>";
+		}
+		echo "</optgroup>";
+	}
+?>
 			</select></td>
 			<td><select>
 				<option>None</option>

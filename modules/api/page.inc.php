@@ -10,12 +10,13 @@ global $__bufferCapture;
 $__bufferCapture = "";
 function __captureOB($data, $phase) {
 	global $__bufferCapture;
-	if($phase == PHP_OUTPUT_HANDLER_START)
+	if ($phase == PHP_OUTPUT_HANDLER_START)
 		$__bufferCapture = "";
-	else if($phase == PHP_OUTPUT_HANDLER_CONT)
-		$__bufferCapture .= $data;
 	else
-		return false;
+		if ($phase == PHP_OUTPUT_HANDLER_CONT)
+			$__bufferCapture .= $data;
+		else
+			return false;
 	return "";
 }
 ob_start("__captureOB");

@@ -1,7 +1,7 @@
 <?php
-switch($mode){
-	case EditCore::RENDER:
-if(array_key_exists("allow-inherit", $meta)) {
+switch ($mode) {
+case EditCore::RENDER:
+	if (array_key_exists("allow-inherit", $meta)) {
 ?><input id="__cp_<?php echo $name; ?>_layout_inherit" style="position: relative; top: -35px;" name="<?php echo $name; ?>" value="-1" type="radio"<?php
 if($value===false || $value == -1)
 	echo " checked";
@@ -49,11 +49,11 @@ if($value == 3)
 ?> />
 <label style="cursor: pointer" for="__cp_<?php echo $name; ?>_layout3">
 <?php
-VirtualPages::renderLayoutVisual(3, 2);
+	VirtualPages::renderLayoutVisual(3, 2);
 ?></label><?php
 	break;
-	
-	case EditCore::VALIDATE:
-		return true;
+
+case EditCore::VALIDATE:
+	return true;
 }
 ?>

@@ -16,13 +16,13 @@ ControlPanel::registerPage("Shopping Cart", "Edit Category", "edit/edit-category
 ControlPanel::registerPage("Shopping Cart", "Create Inventory", "edit/create-inventory.json", false);
 ControlPanel::registerPage("Shopping Cart", "Edit Inventory", "edit/edit-inventory.json", false);
 
-function __paymentCore__ControlPanelWatcher($module, $event, $arguments){
-    switch($event){
-        case "Database Query Filter":
-            if($arguments[0] == "Shopping Cart" && $arguments[1] == "Invoice Products")
-                return Array("invoice" => $_GET['id']);
-        
-    }
+function __paymentCore__ControlPanelWatcher($module, $event, $arguments) {
+	switch ($event) {
+	case "Database Query Filter":
+		if ($arguments[0] == "Shopping Cart" && $arguments[1] == "Invoice Products")
+			return Array("invoice" => $_GET['id']);
+
+	}
 }
 
 Triggers::watchModule("ControlPanel", "__paymentCore__ControlPanelWatcher");

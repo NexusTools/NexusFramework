@@ -9,11 +9,11 @@ class UserRegion {
 	private $latitude;
 	private $longitude;
 	private $postal;
-	
-	public function __construct(&$user){
+
+	public function __construct(&$user) {
 		$this->database = Database::getInstance();
 		$data = $this->database->selectRow("account", Array("id" => $user->getID()));
-		if($data) {
+		if ($data) {
 			$this->city = $data['city'];
 			$this->country = $data['country'];
 			$this->region = $data['region'];
@@ -22,7 +22,7 @@ class UserRegion {
 			$this->longitude = $data['longitude'];
 			$this->radius = $data['radius'];
 		} else {
-			try{
+			try {
 				$record = geoip_record_by_name(ClientInfo::getRemoteAddress());
 				$this->city = $record['city'];
 				$this->country = $record['country-code'];
@@ -31,7 +31,7 @@ class UserRegion {
 				//$user->setTimeZone(geoip_time_zone_by_country_and_region($this->country, $this->region));
 				$this->latitude = $record['latitude'];
 				$this->longitude = $record['longitude'];
-			}catch(Error $e){
+			} catch (Error $e) {
 				$this->city = "Kitchener";
 				$this->country = "CA";
 				$this->region = "ON";
@@ -39,32 +39,32 @@ class UserRegion {
 				$this->latitude = 43.45;
 				$this->longitude = -80.5;
 			}
-			
+
 			$this->radius = 20;
 			$this->database->insert("account", Array(
-												"id" => $user->getID(),
-												"radius" => $this->radius,
-												"country" => $this->country,
-												"region" => $this->region,
-												"city" => $this->city,
-												"latitude" => $this->latitude,
-												"longitude" => $this->longitude,
-												"postal" => $this->postal
-													));
+				"id" => $user->getID(),
+				"radius" => $this->radius,
+				"country" => $this->country,
+				"region" => $this->region,
+				"city" => $this->city,
+				"latitude" => $this->latitude,
+				"longitude" => $this->longitude,
+				"postal" => $this->postal
+			));
 		}
 	}
-	
-	public function getState(){
-		
+
+	public function getState() {
+
 	}
-	
-	public function getProvince(){
+
+	public function getProvince() {
 		return $this->province;
 	}
-	
-	public function getTimeOffset(){
+
+	public function getTimeOffset() {
 		return $this->timezone;
 	}
-	
+
 }
 ?>

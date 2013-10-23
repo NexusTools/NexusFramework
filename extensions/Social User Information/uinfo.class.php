@@ -8,7 +8,7 @@ class UserInfo {
 	private $addr2;
 	private $phone = Array();
 
-	public function __construct($data){
+	public function __construct($data) {
 	}
 
 }

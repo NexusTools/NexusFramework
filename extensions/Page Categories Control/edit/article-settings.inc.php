@@ -1,5 +1,5 @@
 <?php
-if(isset($_POST['action']) && $_POST['action'] == "apply"){
+if (isset($_POST['action']) && $_POST['action'] == "apply") {
 	echo "<banner class=\"success\">Changed Applied.</banner>";
 	PageCategories::setDefaultLayout($_POST['layout']);
 	$layout = $_POST['layout'];
@@ -46,11 +46,11 @@ $defaultWidget = isset($_POST['widget']) ? $_POST['widget'] : "html";
 ?></label><br />
 Header Widgets<br />
 <?php
-if($layout >= 2) {
+if ($layout >= 2) {
 	echo "<button onclick=\"";
 	echo "ControlPanel.loadPage('Pages', 'Edit Widgets', {title: ";
 	echo htmlspecialchars("\"Default Category [Left Column]\"");
-	echo ", section: 'cathead', subtitle: 'Footer', slot: " . VirtualPages::LEFTCOLUMN;
+	echo ", section: 'cathead', subtitle: 'Footer', slot: ".VirtualPages::LEFTCOLUMN;
 	echo "});return false;\"><center>Left Column<br />";
 	echo VirtualPages::countWidgets(0, VirtualPages::LEFTCOLUMN, 0, "cathead");
 	echo " Widgets</center></button>";
@@ -61,11 +61,11 @@ echo htmlspecialchars("\"Default Category [Page Area]\"");
 echo ", section: 'cathead', subtitle: 'Footer'});return false;\"><center>Page Area<br />";
 echo VirtualPages::countWidgets(0, VirtualPages::PAGEAREA, 0, "cathead");
 echo " Widgets</center></button>";
-if($layout == 1 || $layout == 3) {
+if ($layout == 1 || $layout == 3) {
 	echo "<button onclick=\"";
 	echo "ControlPanel.loadPage('Pages', 'Edit Widgets', {title: ";
 	echo htmlspecialchars("\"Default Category [Right Column]\"");
-	echo ", subtitle: 'Footer', section: 'cathead', slot: " . VirtualPages::RIGHTCOLUMN;
+	echo ", subtitle: 'Footer', section: 'cathead', slot: ".VirtualPages::RIGHTCOLUMN;
 	echo "});return false;\"><center>Right Column<br />";
 	echo VirtualPages::countWidgets(0, VirtualPages::RIGHTCOLUMN, 0, "cathead");
 	echo " Widgets</center></button>";
@@ -73,11 +73,11 @@ if($layout == 1 || $layout == 3) {
 ?>
 <br />Footer Widgets<br />
 <?php
-if($layout >= 2) {
+if ($layout >= 2) {
 	echo "<button onclick=\"";
 	echo "ControlPanel.loadPage('Pages', 'Edit Widgets', {title: ";
 	echo htmlspecialchars("\"Default Category [Left Column]\"");
-	echo ", section: 'catfoot', subtitle: 'Footer', slot: " . VirtualPages::LEFTCOLUMN;
+	echo ", section: 'catfoot', subtitle: 'Footer', slot: ".VirtualPages::LEFTCOLUMN;
 	echo "});return false;\"><center>Left Column<br />";
 	echo VirtualPages::countWidgets(0, VirtualPages::LEFTCOLUMN, 0, "catfoot");
 	echo " Widgets</center></button>";
@@ -88,11 +88,11 @@ echo htmlspecialchars("\"Default Category [Page Area]\"");
 echo ", section: 'catfoot', subtitle: 'Footer'});return false;\"><center>Page Area<br />";
 echo VirtualPages::countWidgets(0, VirtualPages::PAGEAREA, 0, "catfoot");
 echo " Widgets</center></button>";
-if($layout == 1 || $layout == 3) {
+if ($layout == 1 || $layout == 3) {
 	echo "<button onclick=\"";
 	echo "ControlPanel.loadPage('Pages', 'Edit Widgets', {title: ";
 	echo htmlspecialchars("\"Default Category [Right Column]\"");
-	echo ", subtitle: 'Footer', section: 'catfoot', slot: " . VirtualPages::RIGHTCOLUMN;
+	echo ", subtitle: 'Footer', section: 'catfoot', slot: ".VirtualPages::RIGHTCOLUMN;
 	echo "});return false;\"><center>Right Column<br />";
 	echo VirtualPages::countWidgets(0, VirtualPages::RIGHTCOLUMN, 0, "catfoot");
 	echo " Widgets</center></button>";

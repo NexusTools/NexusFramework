@@ -1,11 +1,11 @@
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
 
-html, body {
-    width: 100%;
-    height: 100%;
-    margin: 0px;
-    overflow: hidden;
-    font-family: 'Source Sans Pro', sans-serif;
+html,body {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	overflow: hidden;
+	font-family: 'Source Sans Pro', sans-serif;
 	font-size: 80%;
 	display: block;
 }
@@ -29,47 +29,38 @@ FileDropTarget {
 }
 
 Framework\:Widgets {
-    cursor: default;
-    position: relative;
+	cursor: default;
+	position: relative;
 }
 
-Framework\:Widgets,
-WhiteOut {
+Framework\:Widgets,WhiteOut {
 	width: 100%;
-	height: 100%;	
-    display: block;
+	height: 100%;
+	display: block;
 }
 
-Framework\:Widgets h1,
-Framework\:Widgets h2,
-Framework\:Widgets h3,
-Framework\:Widgets h4,
-Framework\:Widgets h5,
-Framework\:Widgets BreadCrumb,
-Framework\:Widgets NavBar,
-Framework\:Widgets ToolBar,
-Framework\:Widgets label {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+Framework\:Widgets h1,Framework\:Widgets h2,Framework\:Widgets h3,Framework\:Widgets h4,Framework\:Widgets h5,Framework\:Widgets BreadCrumb,Framework\:Widgets NavBar,Framework\:Widgets ToolBar,Framework\:Widgets label
+	{
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 Framework\:Widgets BreadCrumb input.text {
 	-webkit-touch-callout: all;
-    -webkit-user-select: all;
-    -khtml-user-select: all;
-    -moz-user-select: all;
-    -ms-user-select: all;
-    user-select: all;
+	-webkit-user-select: all;
+	-khtml-user-select: all;
+	-moz-user-select: all;
+	-ms-user-select: all;
+	user-select: all;
 }
 
-Framework\:Widgets Framework\:Page,
-Framework\:Widgets Toolbar,
-Framework\:Widgets NavBar {
-    -webkit-transition: -webkit-filter 500ms;
+Framework\:Widgets Framework\:Page,Framework\:Widgets Toolbar,Framework\:Widgets NavBar
+	{
+	-webkit-transition: -webkit-filter 500ms;
 	-moz-transition: -moz-filter 500ms;
 	-o-transition: -o-filter 500ms;
 	-ms-transition: -ms-filter 500ms;
@@ -85,7 +76,6 @@ Framework\:Widgets.blurred NavBar {
     -ms-filter: blur(3px);
     filter: blur(3px);
 } */
-
 Framework\:Widgets WhiteOut {
 	background-color: rgba(255, 255, 255, 0.5);
 	/*display: none;*/
@@ -106,114 +96,114 @@ Framework\:Widgets WhiteOut Spinner {
 }
 
 Framework\:Widgets WhiteOut Popup {
-    padding: 40px;
-    padding-top: 30px;
-    display: block;
-    position: absolute;
-    max-width: 80%;
-    min-width: 230px;
-    
-    -webkit-transform: scale(0.75) rotate3d(1, 0, 0, 45deg) translateY(20%);
-    -moz-transform: scale(0.75) rotate3d(1, 0, 0, 45deg) translateY(20%);
-    -ms-transform: scale(0.75) rotate3d(1, 0, 0, 45deg) translateY(20%);
-    -o-transform: scale(0.75) rotate3d(1, 0, 0, 45deg) translateY(20%);
-    transform: scale(0.75) rotate3d(1, 0, 0, 45deg) translateY(20%);
-    
-    transition: transform 500ms ease, opacity 500ms ease, box-shadow 500ms ease;
-    -moz-transition: -moz-transform 500ms ease, opacity 500ms ease, box-shadow 500ms ease;
-    -webkit-transition: -webkit-transform 500ms ease, opacity 500ms ease, -webkit-box-shadow 500ms ease;
-    -o-transition: -o-transform 500ms ease, opacity 500ms ease, box-shadow 500ms ease;
-    -ms-transition: -ms-transform 500ms ease, opacity 500ms ease, box-shadow 500ms ease;
-    
-    opacity: 0;
-    top: 45%;
-    height: auto;
-    width: auto;
-    background-color: white;
-    background-color: rgba(255, 255, 255, 0.95);
-    border-radius: 5px;
-    -webkit-box-shadow:  0px 0px 15px 2px rgba(0, 0, 0, 0.0);
-    box-shadow:  0px 0px 15px 2px rgba(0, 0, 0, 0.0);
+	padding: 40px;
+	padding-top: 30px;
+	display: block;
+	position: absolute;
+	max-width: 80%;
+	min-width: 230px;
+	-webkit-transform: scale(0.75) rotate3d(1, 0, 0, 45deg) translateY(20%);
+	-moz-transform: scale(0.75) rotate3d(1, 0, 0, 45deg) translateY(20%);
+	-ms-transform: scale(0.75) rotate3d(1, 0, 0, 45deg) translateY(20%);
+	-o-transform: scale(0.75) rotate3d(1, 0, 0, 45deg) translateY(20%);
+	transform: scale(0.75) rotate3d(1, 0, 0, 45deg) translateY(20%);
+	transition: transform 500ms ease, opacity 500ms ease, box-shadow 500ms
+		ease;
+	-moz-transition: -moz-transform 500ms ease, opacity 500ms ease,
+		box-shadow 500ms ease;
+	-webkit-transition: -webkit-transform 500ms ease, opacity 500ms ease,
+		-webkit-box-shadow 500ms ease;
+	-o-transition: -o-transform 500ms ease, opacity 500ms ease, box-shadow
+		500ms ease;
+	-ms-transition: -ms-transform 500ms ease, opacity 500ms ease, box-shadow
+		500ms ease;
+	opacity: 0;
+	top: 45%;
+	height: auto;
+	width: auto;
+	background-color: white;
+	background-color: rgba(255, 255, 255, 0.95);
+	border-radius: 5px;
+	-webkit-box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.0);
+	box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.0);
 }
 
 Framework\:Widgets WhiteOut Popup div.tools {
-    position: absolute;
-    top: 5px;
-    right: 8px;
+	position: absolute;
+	top: 5px;
+	right: 8px;
 }
 
 Framework\:Widgets WhiteOut Popup.open {
-    transform: scale(1) rotate3d(1, 0, 0, 0deg) translateY(0px);
-    -moz-transform: scale(1) rotate3d(1, 0, 0, 0deg) translateY(0px);
-    -ms-transform: scale(1) rotate3d(1, 0, 0, 0deg) translateY(0px);
-    -o-transform: scale(1) rotate3d(1, 0, 0, 0deg) translateY(0px);
-    -webkit-transform: scale(1) rotate3d(1, 0, 0, 0deg) translateY(0px);
-    
-    -webkit-box-shadow:  0px 0px 15px 2px rgba(0, 0, 0, 0.5);
-    box-shadow:  0px 0px 15px 2px rgba(0, 0, 0, 0.5);
-    
-    opacity: 1;
+	transform: scale(1) rotate3d(1, 0, 0, 0deg) translateY(0px);
+	-moz-transform: scale(1) rotate3d(1, 0, 0, 0deg) translateY(0px);
+	-ms-transform: scale(1) rotate3d(1, 0, 0, 0deg) translateY(0px);
+	-o-transform: scale(1) rotate3d(1, 0, 0, 0deg) translateY(0px);
+	-webkit-transform: scale(1) rotate3d(1, 0, 0, 0deg) translateY(0px);
+	-webkit-box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.5);
+	box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.5);
+	opacity: 1;
 }
 
 Framework\:Widgets WhiteOut Popup Span.debug {
-    display: none;
+	display: none;
 }
 
 Framework\:Widgets WhiteOut Popup PageButtons {
-    margin-bottom: -25px;
-    margin-top: 25px;
-    display: block;
-    text-align:center;
+	margin-bottom: -25px;
+	margin-top: 25px;
+	display: block;
+	text-align: center;
 }
 
 Framework\:Widgets WhiteOut Popup img.item {
-    transform: scale(0.9);
-    -moz-transform: scale(0.9);
-    -ms-transform: scale(0.9);
-    -o-transform: scale(0.9);
-    -webkit-transform: scale(0.9);
-    
-    transition: transform 300ms ease, opacity 300ms ease;
-    -moz-transition: -moz-transform 300ms ease, opacity 300ms ease;
-    -webkit-transition: -webkit-transform 300ms ease, opacity 300ms ease;
-    -o-transition: -o-transform 300ms ease, opacity 300ms ease;
-    -ms-transition: -ms-transform 300ms ease, opacity 300ms ease;
-    cursor: pointer;
-    
-    opacity: 0.8;
+	transform: scale(0.9);
+	-moz-transform: scale(0.9);
+	-ms-transform: scale(0.9);
+	-o-transform: scale(0.9);
+	-webkit-transform: scale(0.9);
+	transition: transform 300ms ease, opacity 300ms ease;
+	-moz-transition: -moz-transform 300ms ease, opacity 300ms ease;
+	-webkit-transition: -webkit-transform 300ms ease, opacity 300ms ease;
+	-o-transition: -o-transform 300ms ease, opacity 300ms ease;
+	-ms-transition: -ms-transform 300ms ease, opacity 300ms ease;
+	cursor: pointer;
+	opacity: 0.8;
 }
 
 Framework\:Widgets WhiteOut Popup img:hover.item {
-    transform: scale(1);
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    -o-transform: scale(1);
-    -webkit-transform: scale(1);
-    
-    opacity: 1;
+	transform: scale(1);
+	-moz-transform: scale(1);
+	-ms-transform: scale(1);
+	-o-transform: scale(1);
+	-webkit-transform: scale(1);
+	opacity: 1;
 }
 
-Framework\:Widgets WhiteOut Popup h1,
-Framework\:Widgets WhiteOut Popup h2,
-Framework\:Widgets WhiteOut Popup h3,
-Framework\:Widgets WhiteOut Popup h4,
-Framework\:Widgets WhiteOut Popup h5 {
-    text-align: center;
+Framework\:Widgets WhiteOut Popup h1,Framework\:Widgets WhiteOut Popup h2,Framework\:Widgets WhiteOut Popup h3,Framework\:Widgets WhiteOut Popup h4,Framework\:Widgets WhiteOut Popup h5
+	{
+	text-align: center;
 }
-
 
 Toolbar {
 	height: 32px;
 	display: block;
-	background: rgb(6,21,35); /* Old browsers */
-	background: -moz-linear-gradient(top,  rgba(6,21,35,1) 0%, rgba(20,22,38,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(6,21,35,1)), color-stop(100%,rgba(20,22,38,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgba(6,21,35,1) 0%,rgba(20,22,38,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgba(6,21,35,1) 0%,rgba(20,22,38,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgba(6,21,35,1) 0%,rgba(20,22,38,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgba(6,21,35,1) 0%,rgba(20,22,38,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#061523', endColorstr='#141626',GradientType=0 ); /* IE6-9 */
-
+	background: rgb(6, 21, 35); /* Old browsers */
+	background: -moz-linear-gradient(top, rgba(6, 21, 35, 1) 0%,
+		rgba(20, 22, 38, 1) 100% ); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(6,
+		21, 35, 1) ), color-stop(100%, rgba(20, 22, 38, 1) ) );
+	/* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, rgba(6, 21, 35, 1) 0%,
+		rgba(20, 22, 38, 1) 100% ); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, rgba(6, 21, 35, 1) 0%,
+		rgba(20, 22, 38, 1) 100% ); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, rgba(6, 21, 35, 1) 0%,
+		rgba(20, 22, 38, 1) 100% ); /* IE10+ */
+	background: linear-gradient(to bottom, rgba(6, 21, 35, 1) 0%,
+		rgba(20, 22, 38, 1) 100% ); /* W3C */
+	filter: progid : DXImageTransform.Microsoft.gradient (   startColorstr =
+		'#061523', endColorstr = '#141626', GradientType = 0 ); /* IE6-9 */
 	font: normal 13px sans-serif;
 }
 
@@ -249,13 +239,11 @@ Toolbar Widget.alive {
 }
 
 Toolbar Widget Menu {
-    -webkit-box-shadow:  0px 1px 1px 1px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow:  0px 1px 1px 1px rgba(0, 0, 0, 0.25);
-    box-shadow:  0px 1px 1px 1px rgba(0, 0, 0, 0.25);
-
+	-webkit-box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.25);
+	-moz-box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.25);
+	box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.25);
 	-webkit-transition: all 300ms; /* Safari */
 	transition: all 300ms;
-	
 	width: 0px;
 	opacity: 0;
 	cursor: default;
@@ -272,7 +260,6 @@ Toolbar Widget Menu {
 	white-space: nowrap;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	
 	pointer-events: none;
 }
 
@@ -350,7 +337,6 @@ NavBar {
 	-webkit-box-shadow: inset -3px 3px 3px 2px rgba(1, 1, 1, 0.2);
 	-moz-box-shadow: inset -3px 3px 3px 2px rgba(1, 1, 1, 0.2);
 	box-shadow: inset -3px 3px 3px 2px rgba(1, 1, 1, 0.2);
-
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	padding-top: 28px;
@@ -426,7 +412,6 @@ NavBar Item {
 	margin-bottom: 2px;
 	padding-left: 15px;
 	text-align: left;
-	
 	-moz-transition: all 400ms ease; /* Firefox 4 */
 	-webkit-transition: all 400ms ease; /* Safari and Chrome */
 	-o-transition: all 400ms ease; /* Opera */
@@ -442,10 +427,9 @@ NavBar Item.active {
 	background-color: #fdfdfd;
 	font-weight: bold;
 	cursor: default;
-	
-    -webkit-box-shadow: -6px 0px 3px 5px rgba(1, 1, 1, 0.2);
-    -moz-box-shadow: -6px 0px 3px 5px rgba(1, 1, 1, 0.2);
-    box-shadow: -6px 0px 3px 5px rgba(1, 1, 1, 0.2);
+	-webkit-box-shadow: -6px 0px 3px 5px rgba(1, 1, 1, 0.2);
+	-moz-box-shadow: -6px 0px 3px 5px rgba(1, 1, 1, 0.2);
+	box-shadow: -6px 0px 3px 5px rgba(1, 1, 1, 0.2);
 }
 
 NavBar Item Submenu {
@@ -469,10 +453,9 @@ NavBar Item.active Submenu Item.active {
 	color: #333;
 	background-color: transparent;
 	cursor: default;
-	
-    -webkit-box-shadow:  none;
-    -moz-box-shadow:  none;
-    box-shadow: none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
 }
 
 NavBar Item Submenu Item {
@@ -506,63 +489,77 @@ Framework\:Page BreadCrumb {
 	min-height: 20px;
 }
 
-Framework\:Page BreadCrumb img,
-Framework\:Widgets WhiteOut Popup div.tools img {
-    top: 2px;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-    position: relative;
-    -webkit-filter: grayscale(1);
-    margin-left: 3px;
-    opacity: 0.8;
-    
-    transition: opacity 200ms;
-    -moz-transition: opacity 200ms; /* Firefox 4 */
-    -webkit-transition: opacity 200ms, -webkit-filter 200ms; /* Safari and Chrome */
-    -o-transition: opacity 200ms; /* Opera */
+Framework\:Page BreadCrumb img,Framework\:Widgets WhiteOut Popup div.tools img
+	{
+	top: 2px;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+	position: relative;
+	-webkit-filter: grayscale(1);
+	margin-left: 3px;
+	opacity: 0.8;
+	transition: opacity 200ms;
+	-moz-transition: opacity 200ms; /* Firefox 4 */
+	-webkit-transition: opacity 200ms, -webkit-filter 200ms;
+	/* Safari and Chrome */
+	-o-transition: opacity 200ms; /* Opera */
 }
 
-Framework\:Page BreadCrumb img:hover,
-Framework\:Widgets WhiteOut Popup div.tools img:hover {
-    -webkit-filter: grayscale(0);
-    opacity: 1;
+Framework\:Page BreadCrumb img:hover,Framework\:Widgets WhiteOut Popup div.tools img:hover
+	{
+	-webkit-filter: grayscale(0);
+	opacity: 1;
 }
 
 Framework\:Page BreadCrumb Item:hover {
 	cursor: pointer;
 	border: solid 1pt black;
 	border-radius: 5px;
-	
 	margin: -6px;
 	padding: 5px;
-	
 }
 
-@keyframes fadein
-{
-from {opacity: 0;}
-to {opacity: 1;}
+@
+keyframes fadein {
+	from {opacity: 0;
 }
 
-@-moz-keyframes fadein /* Firefox */
-{
-from {opacity: 0;}
-to {opacity: 1;}
+to {
+	opacity: 1;
 }
 
-@-webkit-keyframes fadein /* Safari and Chrome */
-{
-from {opacity: 0;}
-to {opacity: 1;}
+}
+@
+-moz-keyframes fadein /* Firefox */ {
+	from {opacity: 0;
 }
 
-@-o-keyframes fadein /* Opera */
-{
-from {opacity: 0;}
-to {opacity: 1;}
+to {
+	opacity: 1;
 }
 
+}
+@
+-webkit-keyframes fadein /* Safari and Chrome */ {
+	from {opacity: 0;
+}
+
+to {
+	opacity: 1;
+}
+
+}
+@
+-o-keyframes fadein /* Opera */ {
+	from {opacity: 0;
+}
+
+to {
+	opacity: 1;
+}
+
+}
 Framework\:Page BreadCrumb PageButtons {
 	display: block;
 	margin-right: 15px;
@@ -571,13 +568,13 @@ Framework\:Page BreadCrumb PageButtons {
 	right: 10px;
 	top: 10px;
 	animation: fadein 500ms;
-    -moz-animation: fadein 500ms; /* Firefox */
-    -webkit-animation: fadein 500ms; /* Safari and Chrome */
-    -o-animation: fadein 500ms; /* Opera */
+	-moz-animation: fadein 500ms; /* Firefox */
+	-webkit-animation: fadein 500ms; /* Safari and Chrome */
+	-o-animation: fadein 500ms; /* Opera */
 }
 
-Framework\:Page BreadCrumb PageButtons input.button,
-Framework\:Page BreadCrumb PageButtons button {
+Framework\:Page BreadCrumb PageButtons input.button,Framework\:Page BreadCrumb PageButtons button
+	{
 	margin-right: 3px;
 }
 
@@ -591,7 +588,6 @@ Framework\:Page Content {
 	padding-bottom: 20px;
 	margin-top: -40px;
 	padding-top: 40px;
-	
 	width: 100%;
 	height: 100%;
 	box-sizing: border-box;
@@ -604,7 +600,7 @@ Framework\:Page Content Center {
 }
 
 Framework\:Page Content PageButtons {
-    display: none;
+	display: none;
 }
 
 Framework\:Page Content FileDrop {
@@ -616,20 +612,20 @@ Framework\:Page Content FileDrop.dropHover {
 }
 
 Framework\:Page Content Table a {
-    color: black;
-    text-decoration: none;
-    transition: color 200ms;
-    -moz-transition: color 200ms; /* Firefox 4 */
-    -webkit-transition: color 200ms; /* Safari and Chrome */
-    -o-transition: color 200ms; /* Opera */
+	color: black;
+	text-decoration: none;
+	transition: color 200ms;
+	-moz-transition: color 200ms; /* Firefox 4 */
+	-webkit-transition: color 200ms; /* Safari and Chrome */
+	-o-transition: color 200ms; /* Opera */
 }
 
 Framework\:Page Content Table TR TD {
-    transition: background-color 200ms;
-    -moz-transition: background-color 200ms; /* Firefox 4 */
-    -webkit-transition: background-color 200ms; /* Safari and Chrome */
-    -o-transition: background-color 200ms; /* Opera */
-    padding: 8px;
+	transition: background-color 200ms;
+	-moz-transition: background-color 200ms; /* Firefox 4 */
+	-webkit-transition: background-color 200ms; /* Safari and Chrome */
+	-o-transition: background-color 200ms; /* Opera */
+	padding: 8px;
 }
 
 Framework\:Page Content Table TR TD a {

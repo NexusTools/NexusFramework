@@ -1,13 +1,12 @@
 <?php
 
-if(defined("INAPI")) {
+if (defined("INAPI")) {
 	function recovery_show_page($data) {
-		echo json_encode(Array("error" => (is_object($data)) ?
-				($data instanceof Exception ? $data->getMessage() : $data->toString()) : $data));
+		echo json_encode(Array("error" => (is_object($data)) ? ($data instanceof Exception ? $data->getMessage() : $data->toString()) : $data));
 	}
 } else {
 	function recovery_show_page($data) {
-		while(ob_get_level() > NATIVE_OB_LEVEL)
+		while (ob_get_level() > NATIVE_OB_LEVEL)
 			ob_end_clean();
 		@ob_start();
 
@@ -161,7 +160,8 @@ input.text:focus {
 }
 </style>
 </head><body><div align="center" class="page"><?php
-if(false){ ?>
+		if (false) {
+?>
 
 <h1>A unrecoverable internal error occured.</h1>
 <h2>Login to review this issue.</h2>
@@ -175,63 +175,62 @@ if(false){ ?>
 	</table></center>
 </form>
 <?php
-} else {
+		} else {
 ?>
 <h1><?php
-$exception = $data['exception'];
-if(array_key_exists("type", $exception) && $exception['type'] && !is_numeric($exception['type']))
-	echo "Uncaught $exception[type] Occured";
-else
-	echo "Unrecoverable Error Occured";
+			$exception = $data['exception'];
+			if (array_key_exists("type", $exception) && $exception['type'] && !is_numeric($exception['type']))
+				echo "Uncaught $exception[type] Occured";
+			else
+				echo "Unrecoverable Error Occured";
 ?></h1>
 <h2><?php echo date("F j, Y, g:i a", $data['date']); ?></h2>
 
 <h3>Error Message</h3><p>
 <?php
 
-if(array_key_exists("message", $exception)) {
-	echo $exception['message'];
-	if(array_key_exists("details", $exception) && $exception['details']) {
-		echo "<br /><pre style='text-align: left; margin-left: 8px'>";
-		print_r($exception['details']);
-		echo "</pre>";
-	}
-} else if(array_key_exists("details", $exception) && $exception['details']) {
-	echo "<pre style='text-align: left; margin-left: 8px'>";
-	print_r($exception['details']);
-	echo "</pre>";
-} else
-	echo "No message was associated with this error";
+			if (array_key_exists("message", $exception)) {
+				echo $exception['message'];
+				if (array_key_exists("details", $exception) && $exception['details']) {
+					echo "<br /><pre style='text-align: left; margin-left: 8px'>";
+					print_r($exception['details']);
+					echo "</pre>";
+				}
+			} else
+				if (array_key_exists("details", $exception) && $exception['details']) {
+					echo "<pre style='text-align: left; margin-left: 8px'>";
+					print_r($exception['details']);
+					echo "</pre>";
+				} else
+					echo "No message was associated with this error";
 ?></p>
 <?php
-if(array_key_exists("file", $exception) &&
-	array_key_exists("line", $exception)) {
+			if (array_key_exists("file", $exception) && array_key_exists("line", $exception)) {
 ?>
 <h3>File Location and Line</h3>
 <p>Occured in file <?php echo $exception['file']; ?> on line <?php echo $exception['line']; ?></p>
 <?php } ?>
 
 <?php
-if(array_key_exists("trace", $exception)) {
+			if (array_key_exists("trace", $exception)) {
 ?>
 <h3><a style="font-size: 70%; float: right" id="previous-link" href="javascript:togglePrevious();void(0);">Open</a>Previous Exceptions</h3>
 <div style="display: none" class="container" id="previous" align="left"><?php
-$prevExc = $exception;
-while(is_array($prevExc = $prevExc['previous'])) {
-	echo "<p style=\"margin-top: 8px\"><b>";
-	if(array_key_exists("type", $prevExc))
-		echo "$prevExc[type]: ";
-	else
-		echo "Error: ";
-	echo htmlentities($prevExc['message']);
-	echo "</b>";
-	if(array_key_exists("file", $exception) &&
-		array_key_exists("line", $exception)) {
-	?><br />
+				$prevExc = $exception;
+				while (is_array($prevExc = $prevExc['previous'])) {
+					echo "<p style=\"margin-top: 8px\"><b>";
+					if (array_key_exists("type", $prevExc))
+						echo "$prevExc[type]: ";
+					else
+						echo "Error: ";
+					echo htmlentities($prevExc['message']);
+					echo "</b>";
+					if (array_key_exists("file", $exception) && array_key_exists("line", $exception)) {
+?><br />
 	Occured in file <?php echo $exception['file']; ?> on line <?php echo $exception['line']; ?>
 	<?php }
-	echo "</p>";
-}
+					echo "</p>";
+				}
 ?></div>
 <script>
 
@@ -254,14 +253,14 @@ function togglePrevious(){
 
 
 <?php
-if(array_key_exists("trace", $exception)) {
+			if (array_key_exists("trace", $exception)) {
 ?>
 <h3><a style="font-size: 70%; float: right" id="trace-link" href="javascript:toggleTrace();void(0);">Open</a>Stack Trace</h3>
 <pre style="display: none" id="trace" align="left"><?php
-if(defined("JSON_PRETTY_PRINT"))
-	echo htmlentities(json_encode($exception['trace'], JSON_PRETTY_PRINT));
-else
-	echo htmlentities(print_r($exception['trace'], true));
+				if (defined("JSON_PRETTY_PRINT"))
+					echo htmlentities(json_encode($exception['trace'], JSON_PRETTY_PRINT));
+				else
+					echo htmlentities(print_r($exception['trace'], true));
 ?></pre>
 
 <script>
@@ -284,6 +283,7 @@ function toggleTrace(){
 <?php } ?>
 <br /><br /><h2>Known Resolutions</h2>
 Sorry but this error doesn't match anything currently in the database.<br /><br />
-<?php } ?></div></body></html><?php 
+<?php } ?></div></body></html><?php
 	}
-} ?>
+}
+?>

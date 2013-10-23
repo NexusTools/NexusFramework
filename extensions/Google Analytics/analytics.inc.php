@@ -1,5 +1,5 @@
 <?php
-if(PageModule::hasError())
+if (PageModule::hasError())
 	return; // Abort on Error Pages
 
 $analyticsScript = new AnalyticsScript();

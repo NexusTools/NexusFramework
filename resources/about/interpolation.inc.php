@@ -5,8 +5,8 @@ Exceptions thrown in these blocks are caught and output in JSON format without i
 <h2>Registered APIs</h2>
 <p>Select a class below to view more information about it.</p>
 <?php
-foreach(ClassLoader::getRegisteredClasses() as $class){
-    echo "<h2>$class</h2>";
-    echo "<p>This class does not yet have a description.</p>";
+foreach (ClassLoader::getRegisteredClasses() as $class) {
+	echo "<h2>$class</h2>";
+	echo "<p>This class does not yet have a description.</p>";
 }
 ?>

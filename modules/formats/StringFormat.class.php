@@ -2,101 +2,101 @@
 class StringFormat {
 
 	private static $keywords = Array(
-							"mysql" => "MySQL",
-							"sqlite" => "SQLite",
-							"html" => "HTML",
-							"nexustools" => "NexusTools"
-									);
-									
-	public static function formatTimeUntil($thanSecs){
+		"mysql" => "MySQL",
+		"sqlite" => "SQLite",
+		"html" => "HTML",
+		"nexustools" => "NexusTools"
+	);
+
+	public static function formatTimeUntil($thanSecs) {
 		return self::formatTimeLeft($thanSecs - time());
 	}
-	
-	public static function stringForBoolean($bool){
-	    return $bool ? "Yes" : "No";
+
+	public static function stringForBoolean($bool) {
+		return $bool ? "Yes" : "No";
 	}
-	
-	public static function cleanPhoneNumber($input){
+
+	public static function cleanPhoneNumber($input) {
 		return self::expandPhoneNumber(self::condensePhoneNumber($input));
 	}
-	
-	public static function expandPhoneNumber($input){
+
+	public static function expandPhoneNumber($input) {
 		$input = trim($input);
-		if(preg_match("/^(\+\d)?(\d\d\d)(\d\d\d)(\d\d\d\d)(x\d+)?$/", $input, $match)) {
+		if (preg_match("/^(\+\d)?(\d\d\d)(\d\d\d)(\d\d\d\d)(x\d+)?$/", $input, $match)) {
 			$out = "";
-			if($match[1])
-				$out .= $match[1] . " ";
-			
+			if ($match[1])
+				$out .= $match[1]." ";
+
 			$out .= "($match[2]) $match[3] $match[4]";
-			if($match[5])
-				$out .= " ext " . substr($match[5], 1);
+			if ($match[5])
+				$out .= " ext ".substr($match[5], 1);
 			echo $out;
 		} else
 			return $input;
 	}
-	
-	public static function condensePhoneNumber($input){
+
+	public static function condensePhoneNumber($input) {
 		$input = trim($input);
-		if(preg_match("/^(\d[\-\s\.]|\+\d)?[\-\s\.]*\(?(\d\d\d)\)?[\-\s\.]*(\d\d\d)[\-\s\.]*(\d\d\d\d)([\-\s]*(e(xt(ension)?)?|x|\+)[\-\s]*(\d+))?$/", $input, $match)) {
-		
+		if (preg_match("/^(\d[\-\s\.]|\+\d)?[\-\s\.]*\(?(\d\d\d)\)?[\-\s\.]*(\d\d\d)[\-\s\.]*(\d\d\d\d)([\-\s]*(e(xt(ension)?)?|x|\+)[\-\s]*(\d+))?$/", $input, $match)) {
+
 			$out = "";
-			if($match[1]){
-				if(startsWith($match[1], "+"))
+			if ($match[1]) {
+				if (startsWith($match[1], "+"))
 					$out .= $match[1];
 				else
-					$out .= "+" . intval($match[1]);
+					$out .= "+".intval($match[1]);
 			}
 			$out .= $match[2];
 			$out .= $match[3];
 			$out .= $match[4];
-		
-			if(($end = count($match)) > 5) {
+
+			if (($end = count($match)) > 5) {
 				$out .= "x";
-				$out .= intval($match[$end-1]);
+				$out .= intval($match[$end - 1]);
 			}
-		
+
 			return $out;
-		} else 
+		} else
 			return $input;
 	}
-	
-	public static function properCase($string){
+
+	public static function properCase($string) {
 		return preg_replace_callback("/[\w\.]+/", Array(__CLASS__, "caseWord"), $string);
 	}
-	
-	public static function caseWord($word){
+
+	public static function caseWord($word) {
 		$word = $word[0];
-		
-		if(strlen($word) > 2 && $word != "and")
+
+		if (strlen($word) > 2 && $word != "and")
 			return ucfirst($word);
 		else
 			return strtolower($word);
 	}
-	
-	public static function formatTimeLeft($secs){
-		if($secs <= 1 && $secs >= -1)
+
+	public static function formatTimeLeft($secs) {
+		if ($secs <= 1 && $secs >= - 1)
 			return "Now";
-	
-		if($secs < 0)
-			return self::formatTimeLeft(-$secs) . " Ago";
-		
+
+		if ($secs < 0)
+			return self::formatTimeLeft(-$secs)." Ago";
+
 		$unit = "Second";
-		if($secs >= 60){
+		if ($secs >= 60) {
 			$secs /= 60;
 			$unit = "Minute";
-			if($secs >= 60){
+			if ($secs >= 60) {
 				$secs /= 60;
 				$unit = "Hour";
-				if($secs >= 24){
+				if ($secs >= 24) {
 					$secs /= 24;
 					$unit = "Day";
-					if($secs >= 7){
+					if ($secs >= 7) {
 						$secs /= 7;
 						$unit = "Week";
-						if($secs >= 4){
+						if ($secs >= 4) {
 							$secs /= 4;
 							$unit = "Month";
-							if($secs >= 12){
+							if ($secs >= 12) {
 								$secs /= 12;
 								$unit = "Year";
 							}
@@ -105,67 +105,67 @@ class StringFormat {
 				}
 			}
 		}
-		
+
 		$secs = ceil($secs);
-		if($secs > 0)
+		if ($secs > 0)
 			$unit .= "s";
-		
+
 		return "$secs $unit";
 	}
-									
-	public static function __pregCallback($matches){
+
+	public static function __pregCallback($matches) {
 		return self::displayForKeyword($matches[0]);
 	}
-	
-	public static function formatFilesize($size, $bits=false){
+
+	public static function formatFilesize($size, $bits = false) {
 		$suffix = "B";
-	
-		if($bits){
-			if($size >= 1000) {
+
+		if ($bits) {
+			if ($size >= 1000) {
 				$suffix = "KiB";
 				$size /= 1000;
 			}
-			if($size >= 1000) {
+			if ($size >= 1000) {
 				$suffix = "MiB";
 				$size /= 1000;
 			}
-			if($size >= 1000) {
+			if ($size >= 1000) {
 				$suffix = "GiB";
 				$size /= 1000;
 			}
-			if($size >= 1000) {
+			if ($size >= 1000) {
 				$suffix = "TiB";
 				$size /= 1000;
 			}
 		} else {
-			if($size >= 1000) {
+			if ($size >= 1000) {
 				$suffix = "KB";
 				$size /= 1024;
 			}
-			if($size >= 1000) {
+			if ($size >= 1000) {
 				$suffix = "MB";
 				$size /= 1024;
 			}
-			if($size >= 1000) {
+			if ($size >= 1000) {
 				$suffix = "GB";
 				$size /= 1024;
 			}
-			if($size >= 1000) {
+			if ($size >= 1000) {
 				$suffix = "TB";
 				$size /= 1024;
 			}
 		}
-		
-		return (round($size * 100) / 100) . $suffix;
+
+		return (round($size * 100) / 100).$suffix;
 	}
-	
-	public static function idForDisplay($display){
+
+	public static function idForDisplay($display) {
 		$display = preg_replace("/([^\d\w\-\.\,]|\s)+/", "-", strtolower($display));
 		return preg_replace("/(^\-|\-$)/", "", $display);
 	}
-	
-	public static function formatCondition($condition){
-		if(strlen($condition)) {
+
+	public static function formatCondition($condition) {
+		if (strlen($condition)) {
 			$condition = str_replace("==", "Is", $condition);
 			$condition = str_replace("&&", "And", $condition);
 			$condition = str_replace("||", "Or", $condition);
@@ -174,40 +174,41 @@ class StringFormat {
 		} else
 			return "Always";
 	}
-	
-	public static function formatDateForTimestamp($stamp, $neverForZero=true){
+
+	public static function formatDateForTimestamp($stamp, $neverForZero = true) {
 		return self::formatDate(Database::timestampToTime($stamp), $neverForZero);
 	}
-	
-	public static function formatDate($time=false, $neverForZero=true, $inputTZ="UTC"){
+
+	public static function formatDate($time = false, $neverForZero = true, $inputTZ = "UTC") {
 		return DateFormat::format($time, $neverForZero, $inputTZ);
 	}
 
-	public static function displayForKeyword($keyword){
+	public static function displayForKeyword($keyword) {
 		$keyword = strtolower($keyword);
-		if(isset(self::$keywords[$keyword]))
+		if (isset(self::$keywords[$keyword]))
 			return self::$keywords[$keyword];
 		return ucfirst($keyword);
 	}
 
-	public static function displayForID($id){
-		if(preg_match("/^([\w\d]+-)+[\w\d]+$/", $id)) // dash separated id
+	public static function displayForID($id) {
+		if (preg_match("/^([\w\d]+-)+[\w\d]+$/", $id)) // dash separated id
 			$id = str_replace("-", " ", $id);
-		else if(preg_match("/^([\w\d]+_)+[\w\d]+$/", $id)) // underscore separated id
-			$id = str_replace("_", " ", $id);
+		else
+			if (preg_match("/^([\w\d]+_)+[\w\d]+$/", $id)) // underscore separated id
+				$id = str_replace("_", " ", $id);
 		$id = preg_replace_callback("/\w+/", Array(__CLASS__, "__pregCallback"), $id);
 		return $id;
 	}
-	
+
 	public static function cleanString($string) {
 		return self::displayForID(self::idForDisplay($string));
 	}
 
-	public static function formatPrice($price){
-		return "$" . number_format((float)$price, 2);
+	public static function formatPrice($price) {
+		return "$".number_format((float) $price, 2);
 	}
-	
-	public static function registerKeyword($keyword, $display){
+
+	public static function registerKeyword($keyword, $display) {
 		self::$keywords[$keyword] = $display;
 	}
 

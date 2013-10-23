@@ -2,16 +2,15 @@ div.searchResults {
 	z-index: 500;
 	position: absolute;
 	background-color: white;
-	-webkit-box-shadow:  0px 0px 5px 0px rgba(0, 0, 0, 0.8);
-    box-shadow:  0px 0px 5px 0px rgba(0, 0, 0, 0.8);
-    overflow: hidden;
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.8);
+	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.8);
+	overflow: hidden;
 	display: none;
 	left: 0px;
 	top: 0px;
 }
 
-div.searchResults a,
-div.searchResults p {
+div.searchResults a,div.searchResults p {
 	margin: 0px;
 	display: block;
 	-webkit-transition: background-color 200ms; /* Safari */

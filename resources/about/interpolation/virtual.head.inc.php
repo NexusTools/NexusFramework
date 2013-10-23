@@ -1,3 +1,3 @@
 <?php
-Template::setTitle(PageModule::getValue("ClassInfo", "name") . " - Interpolation Reference");
+Template::setTitle(PageModule::getValue("ClassInfo", "name")." - Interpolation Reference");
 ?>

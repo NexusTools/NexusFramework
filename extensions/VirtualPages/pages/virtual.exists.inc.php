@@ -1,6 +1,6 @@
 <?php
 $page = VirtualPages::fetchPage(PageModule::getWorkingPath(), true);
-if($page) {
+if ($page) {
 	PageModule::setValue("page", $page);
 	return true;
 }

@@ -6,17 +6,17 @@ $data['Server Software'] = $_SERVER['SERVER_SOFTWARE'];
 $data['PHP Version'] = phpversion();
 
 $alt = false;
-foreach($data as $key => $value){
-    echo "<tr";
-    if($alt) {
-        echo " class=\"alt\"";
-        $alt = false;
-    } else
-        $alt = true;
-    echo "><td>";
-    echo htmlentities($key);
-    echo "</td><td>";
-    echo htmlentities($value);
-    echo "</td></tr>";
-} 
+foreach ($data as $key => $value) {
+	echo "<tr";
+	if ($alt) {
+		echo " class=\"alt\"";
+		$alt = false;
+	} else
+		$alt = true;
+	echo "><td>";
+	echo htmlentities($key);
+	echo "</td><td>";
+	echo htmlentities($value);
+	echo "</td></tr>";
+}
 ?></table></center>

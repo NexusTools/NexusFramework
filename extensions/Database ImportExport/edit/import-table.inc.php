@@ -2,16 +2,15 @@
 set_time_limit(0);
 $database = isset($_GET['db']) ? $_GET['db'] : $_POST['db'];
 $table = isset($_GET['tab']) ? $_GET['tab'] : $_POST['tab'];
-
 ?><center><h2>Import Table</h2><?php
-if(!$database) {
-    echo "<h4>No Database Specified</h4>";
-    return;
+if (!$database) {
+	echo "<h4>No Database Specified</h4>";
+	return;
 }
 $db = Database::getInstance($database);
-if(!$db->isValid()) {
-    echo "<h4>Invalid Database</h4>";
-    return;
+if (!$db->isValid()) {
+	echo "<h4>Invalid Database</h4>";
+	return;
 }
 ?>
 <h4 style="line-height: 100%;">Database: <?php echo $database; ?></h4>
@@ -37,15 +36,15 @@ Mode<br />
 Table<br />
 <select style="width: 100%;" name="tab">
 <?php
-foreach($db->listTables()  as $t){
-    echo "<option value='$t'";
-    if($table == $t)
-        echo " selected";
-    echo ">";
-    echo StringFormat::displayForID($t);
-    if($table == $t)
-        echo " (Current)";
-    echo "</option>";
+foreach ($db->listTables() as $t) {
+	echo "<option value='$t'";
+	if ($table == $t)
+		echo " selected";
+	echo ">";
+	echo StringFormat::displayForID($t);
+	if ($table == $t)
+		echo " (Current)";
+	echo "</option>";
 }
 ?></select><br />
 Format<br />
@@ -59,6 +58,6 @@ Format<br />
 <option value="sqlbin">SQL Binary (.sqlbin)</option>
 <option value="sql">SQL Markup (.sql)</option></select></form>
 <?php
-ControlPanel::renderStockButton("Import", "ControlPanel.importTableData()", false, Framework::getReferenceURI(DBIERTICNSFR . "import.png"));
+ControlPanel::renderStockButton("Import", "ControlPanel.importTableData()", false, Framework::getReferenceURI(DBIERTICNSFR."import.png"));
 ControlPanel::renderStockButton("discard", "ControlPanel.closePopup()", "Close");
 ?></center>

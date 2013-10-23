@@ -6,7 +6,7 @@ class GitHubRepoFetch extends GitHubAPICachedObject {
 	private $repoName;
 	private $branchName;
 
-	public function __construct($lookupParams=null, $isOrg=false, $repoName=null, $branchName=null) {
+	public function __construct($lookupParams = null, $isOrg = false, $repoName = null, $branchName = null) {
 		$this->lookupParams = $lookupParams;
 		$this->isOrg = $isOrg;
 		$this->getBranches = $getBranches;
@@ -16,20 +16,21 @@ class GitHubRepoFetch extends GitHubAPICachedObject {
 
 	protected function update() {
 		$url = '/repositories';
-		if($this->lookupParams !== "__all__") {
-			if($this->repoName || ($this->repoName && $this->branchName)) {
-				$url = '/repos/' . $this->lookupParams . '/' . $this->repoName . '/branches' . ($this->branchName ? '/' . $this->branchName : '');
+		if ($this->lookupParams !== "__all__") {
+			if ($this->repoName || ($this->repoName && $this->branchName)) {
+				$url = '/repos/'.$this->lookupParams.'/'.$this->repoName.'/branches'.($this->branchName ? '/'.$this->branchName : '');
 			} else {
-				if($this->isOrg) {
-					if($this->lookupParams != null) {
-						$url = '/orgs/' . $this->lookupParams . '/repos';
+				if ($this->isOrg) {
+					if ($this->lookupParams != null) {
+						$url = '/orgs/'.$this->lookupParams.'/repos';
 					}
 				} else {
-					if($this->lookupParams != null) {
-						$url = '/users/' . $this->lookupParams . '/repos';
-					} else if(GitHubAPI::getInstance()->isAuthenticated()) {
-						$url = '/user/repos';
-					}
+					if ($this->lookupParams != null) {
+						$url = '/users/'.$this->lookupParams.'/repos';
+					} else
+						if (GitHubAPI::getInstance()->isAuthenticated()) {
+							$url = '/user/repos';
+						}
 				}
 			}
 		}
@@ -37,7 +38,7 @@ class GitHubRepoFetch extends GitHubAPICachedObject {
 	}
 
 	public function getID() {
-		return Framework::uniqueHash('repoentry' . GitHubAPI::getInstance()->isAuthenticated() . $this->lookupParams . $this->isOrg . $this->repoName . $this->branchName);
+		return Framework::uniqueHash('repoentry'.GitHubAPI::getInstance()->isAuthenticated().$this->lookupParams.$this->isOrg.$this->repoName.$this->branchName);
 	}
 }
 ?>
