@@ -287,7 +287,9 @@ class Template {
 		echo BASE_URL;
 		echo "\" /><title>";
 		echo interpolate(self::$titleFormat, true, Array("PAGENAME" => self::$title));
-		echo "</title><style type=\"text/css\">Framework\:Config,Framework\:AddonScript {display:none}</style>";
+		echo "</title><!--[if lt IE 9]>
+<script src=\"http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js\"></script>
+<![endif]--><style type=\"text/css\">Framework\:Config,Framework\:AddonScript {display:none}</style>";
 		foreach(self::$elements[Template::Header] as $data){
 			echo "<$data[tag]";
 			foreach($data['attr'] as $key => $value) {
