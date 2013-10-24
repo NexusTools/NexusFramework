@@ -166,13 +166,13 @@ input.text:focus {
 <h1>A unrecoverable internal error occured.</h1>
 <h2>Login to review this issue.</h2>
 <form method="POST" action="<?php echo ROOT_URL; ?>">
-	<center><table>
+	<table style="text-align: center;">
 		<tr><td style="padding-bottom: 0px;">Username</td></tr>
 		<tr><td><input type="text" class="text" name="user" /></td></tr>
 		<tr><td style="padding-bottom: 0px;">Password</td></tr>
 		<tr><td><input type="password" class="text" name="pass" /></td></tr>
 		<tr><td align="right"><input class="button" type="submit" value="Login"></td></tr>
-	</table></center>
+	</table>
 </form>
 <?php
 		} else {

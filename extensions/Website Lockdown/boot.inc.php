@@ -16,7 +16,7 @@ Disallow: /<?php
 		OutputFilter::resetToNative(false);
 ?><!doctype html>
 <html><head><title>Private Website</title><meta name="robots" content="noindex, nofollow" /></head>
-<body><center><h1>Private Website</h1><p><?php
+<body><h1 style="text-align: center;">Private Website</h1><p><?php
 		$path = fullpath("lockdown-message.html");
 		if (is_file($path))
 			echo file_get_contents($path);
@@ -27,7 +27,7 @@ Disallow: /<?php
 <label style="font-size: 12px" for="pass">Authorization Password</label><br /><input type="password" name="lockdown_password" /><?php
 		if (array_key_exists("nextUrl", $_REQUEST))
 			echo "<input type='hidden' value='".htmlspecialchars($_REQUEST['nextUrl'])."' name='nextUrl' />";
-?><div align="right"><input type="submit" value="Login" /></div></form></center></body></html><?php
+?><div align="right"><input type="submit" value="Login" /></div></form></body></html><?php
 		exit;
 	} else {
 		$_SESSION['lockdown-bypass'] = true;

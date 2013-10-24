@@ -283,7 +283,7 @@ This can be fixed automatically, please select an option.<br /><br />
 <?php } else { ?>
 <tooltip for="admin_user">
 </tooltip>
-<form method="POST" action="/"><center><table><tr><td valign="top">
+<form method="POST" action="/"><table style="text-align: center;"><tr><td valign="top">
 	<groupbox><label>Administration</label><table>
 		<tr><td style="padding-bottom: 0px;">Username</td><td style="padding-bottom: 0px;">Password</td></tr>
 		<tr>
@@ -379,7 +379,7 @@ This can be fixed automatically, please select an option.<br /><br />
 		<input class="button disabled" type="submit" value="Begin Install" disabled />
 	</td>
 </tr>
-</table></center></form>
+</table></form>
 <?php } ?>
 </div><script>
 function hide_element(el){

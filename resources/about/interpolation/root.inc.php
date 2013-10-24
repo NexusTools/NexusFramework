@@ -4,8 +4,8 @@ To use this functionality simply wrap your commands in {{ }} braces, the framewo
 Exceptions thrown in these blocks are caught and output in JSON format without interupting generation of the website.</p>
 <h2>Syntax</h2>
 <p>The syntax to use methods in interpolation is identical to how you would write them with PHP,<br />
-Except that you don't need to include quotes unless the argument contains a comma.<br />
-<pre>{{Class::method(arguments separated by commas)}}</pre></p>
+Except that you don't need to include quotes unless the argument contains a comma.</p>
+<pre>{{Class::method(arguments separated by commas)}}</pre>
 <h2>Select a class below to view more information about it.</h2></widget>
 <?php
 foreach (ClassLoader::getRegisteredClasses() as $class) {

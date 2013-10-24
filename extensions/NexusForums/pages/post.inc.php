@@ -252,9 +252,9 @@ Lorem ipsum dolor sit amet, eu quam ipsum ultricies ac, sed vestibulum ante, tin
 
 <widget class="forum footer">
 <table><tr><td valign="top">
-<div style="color: #767676; border: solid 1pt #ccc; padding: 3px; font-size: 90%; width: 140px; float: right; padding-bottom: 8px">Do not trust the text on the page, always check the colour of someone's name before assuming they're staff.<br /><br /><center>
-<a href="/forum/general/rules" class="button">Forum Rules</a>
-</center></div>
+<div style="color: #767676; border: solid 1pt #ccc; padding: 3px; font-size: 90%; width: 140px; float: right; padding-bottom: 8px">Do not trust the text on the page, always check the colour of someone's name before assuming they're staff.<br /><br />
+<a style="text-align: center;" href="/forum/general/rules" class="button">Forum Rules</a>
+</div>
 <h3>Name Colour Legend</h3>
 <color style="background-color: red"></color>Banned<br />
 <color style="background-color: #2a2a2a"></color>Member<br />
@@ -270,7 +270,7 @@ BB code is On<br />
 Markdown code is On<br />
 HTML code is Off<br /><br />
 
-<center><a href="/forum/help/forum-code" class="button">Post Help</a></center></div>
+<a style="text-align: center;" href="/forum/help/forum-code" class="button">Post Help</a></div>
 <h3>Permissions</h3><h4>In this thread</h4>
 You may not post replies<br />
 You may not post attachments<br />

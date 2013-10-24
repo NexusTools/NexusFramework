@@ -68,7 +68,7 @@ if (isset($_POST['title_format'])) {
 ?>
 
 <form method="post" action="control://Website/Configure">
-<center><groupbox><label>General</label>
+<groupbox style="text-align: center;"><label>General</label>
 <table style="height: 100%;"><tr><td>Title Format</td><td>Default Page Title</td></tr>
 <tr>
 	<td valign="top"><input name="title_format" value="<?php echo $defines['TITLE_FORMAT']; ?>" type="text" class="text"></td>
@@ -76,7 +76,7 @@ if (isset($_POST['title_format'])) {
 </tr><tr><td colspan="2" style="padding-top: 20px;" align="center" valign="bottom"><input type="button" class="button" value="Advanced Options" onclick="ControlPanel.loadPopup('Website', 'Advanced Options')" /></td></tr></table>
 
 </groupbox>
-<groupbox>
+<groupbox style="text-align: center;">
 <label>MetaTags</label>
 <table><tr><td>Description</td><td>Keywords</td></tr>
 <tr>
@@ -88,9 +88,9 @@ foreach (explode(",", $defines['META_KEYWORDS']) as $keyword)
 <tr><td valign="bottom"><input type="button" class="button" onclick="ControlPanel.loadPopup('Website', 'Advanced Meta Tags')" value="Advanced Tags"></td></tr></table>
 </groupbox><br />
 
-<groupbox style="width: 730px;">
+<groupbox style="width: 730px; text-align: center;">
 <label>Loader Script</label>
 <textarea name="script" style="width: 100%; height: 300px; box-sizing: border-box; resize:none;"><?php
 echo htmlentities($script);
 ?></textarea>
-</groupbox></center></form>
+</groupbox></form>
