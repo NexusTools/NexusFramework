@@ -3,8 +3,8 @@ var Framework = {
 	moduleStasis: [],
 	
 	getQuery: function(key) {
-		var matches = location.href.match(new RegExp("[\\?&]" +key+ "=(.+)(&|$)", "i"));
-		return matches && matches[1] || null;
+		var matches = location.href.match(new RegExp("(\\?|&)" +key+ "=([^&#]+?)(&|$)", "i"));
+		return matches && matches[2] || null;
 	},
 
 	registerModule: function(name, structure, reqs) {

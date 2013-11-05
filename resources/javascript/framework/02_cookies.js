@@ -1,12 +1,14 @@
 Framework.registerModule("Cookies", {
 
 	get: function(key) {
-		var matches = document.cookie.match(new RegExp("(;|^)" +key+ "=(.+)(;|$)", "i"));
+		var matches = document.cookie.match(new RegExp("(;\\s+|^)" +key+ "=([^;]+?)(;|$)", "i"));
 		return matches && matches[2] || null;
 	},
 	
-	set: function(key,value,days) {
+	set: function(key,value,path,days) {
 		var value=escape(value);
+		if(days === undefined)
+			days = 30; // default
 		if(days) {
 			var exdate=new Date();
 			exdate.setDate(exdate.getDate() + days);
