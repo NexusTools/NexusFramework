@@ -1,6 +1,11 @@
 var Framework = {
 
 	moduleStasis: [],
+	
+	getQuery: (key) {
+		var matches = location.href.match(new RegExp("[\\?&]" +key+ "=(.+)(&|$)", "i"));
+		return matches && matches[1] || null;
+	},
 
 	registerModule: function(name, structure, reqs) {
 		if(name in Framework)
