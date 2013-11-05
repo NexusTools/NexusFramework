@@ -2,7 +2,7 @@ var Framework = {
 
 	moduleStasis: [],
 	
-	getQuery: (key) {
+	getQuery: function(key) {
 		var matches = location.href.match(new RegExp("[\\?&]" +key+ "=(.+)(&|$)", "i"));
 		return matches && matches[1] || null;
 	},
