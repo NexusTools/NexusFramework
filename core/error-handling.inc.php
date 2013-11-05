@@ -192,7 +192,7 @@ function __framework_usable_error($type) {
 function __framework_error_recover($errno, $errstr, $errfile, $errline) {
 	if ($type = __framework_usable_error($errno)) {
 		if ($type == 2) {
-			if (!defined("INAPI")) {
+			if (!defined("INAPI") && defined("DEBUG_MODE")) {
 				echo "<!-- DEBUG ERROR CAUGHT\n";
 				echo "$errfile:$errline\n";
 				echo "$errstr\n";
