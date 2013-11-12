@@ -42,7 +42,7 @@ class FileMime extends CachedFile {
 				else {
 					if (function_exists("mime_content_type"))
 						$mime_type = mime_content_type($this->getFilepath());
-					else {
+					else if(function_exists("finfo_open")) {
 						$finfo = finfo_open(FILEINFO_MIME, "/usr/share/misc/magic.mgc");
 						$mime_type = finfo_file($finfo, $this->getFilepath());
 						finfo_close($finfo);
