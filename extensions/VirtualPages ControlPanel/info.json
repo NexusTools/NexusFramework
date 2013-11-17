@@ -1,7 +1,0 @@
-{
-	"name": "VirtualPages ControlPanel",
-	"description": "VirtualPages ControlPanel Integration",
-	"provides": "controlpanel-vpages",
-	"dependancies": ["controlpanel", "virtual-pages"],
-	"version": "0.0.1"
-}

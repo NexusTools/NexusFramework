@@ -1,6 +1,0 @@
-{
-	"name": "BeanStream Gateway",
-	"provides": "payment-beanstream",
-	"description": "A BeanStream Payment Gateway",
-	"dependancies": ["payment-core"]
-}

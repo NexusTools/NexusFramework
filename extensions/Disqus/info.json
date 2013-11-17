@@ -1,6 +1,0 @@
-{
-	"name": "Disqus",
-	"provides": "disqus-chat",
-	"description": "Provides Disqus Widgets",
-	"dependancies": ["virtual-pages"]
-}

@@ -1,7 +1,0 @@
-{
-	"name": "Social ControlPanel",
-	"description": "Social ControlPanel Integration",
-	"provides": "social-integration-control",
-	"dependancies": ["controlpanel", "social-integration"],
-	"version": "0.0.1"
-}

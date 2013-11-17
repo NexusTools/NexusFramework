@@ -1,5 +1,0 @@
-{
-	"name": "Data Tables Control",
-	"provides": "data-tables-control",
-	"dependancies": ["data-tables", "controlpanel"]
-}

@@ -1,5 +1,0 @@
-{
-	"name": "Fullscreen",
-	"description": "Provides an easy to use HTML5 fullscreen API class",
-	"provides": "client-fullscreen"
-}

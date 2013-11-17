@@ -1,5 +1,0 @@
-{
-    "name": "User Settings",
-    "description": "Store and Load Generic User Settings",
-    "provides": "user-settings"
-}

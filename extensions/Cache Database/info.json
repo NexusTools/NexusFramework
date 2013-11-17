@@ -1,5 +1,0 @@
-{
-	"name": "Cache Database",
-	"description": "Provides Database Emulation for Managing the Cache",
-	"provides": "cache-database"
-}

@@ -1,6 +1,0 @@
-{
-	"name": "Geshi BBC",
-	"provides": "bbc-script",
-	"description": "A BBC Script Highlighter using Geshi",
-	"dependancies": ["bbc-engine"]
-}

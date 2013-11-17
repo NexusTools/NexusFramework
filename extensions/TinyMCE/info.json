@@ -1,6 +1,0 @@
-{
-	"name": "TinyMCE",
-	"dependancies": ["edit-core"],
-	"description": "TinyMCE HTML Editor Plugin",
-	"provides": "edit-wysiwyg"
-}

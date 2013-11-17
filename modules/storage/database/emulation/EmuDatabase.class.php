@@ -1,5 +1,5 @@
 <?php
-abstract class EmuDatabase {
+abstract class EmuDatabase extends DatabaseInstance {
 
 	public abstract function listColumns();
 	protected abstract function nextEntry();

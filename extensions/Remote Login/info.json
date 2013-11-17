@@ -1,5 +1,0 @@
-{
-    "name": "Remote Login",
-    "description": "Provides an API that external software can use to login as a user within this framework",
-    "provides": "remote-login"
-}

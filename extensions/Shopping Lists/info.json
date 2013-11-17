@@ -1,6 +1,0 @@
-{
-	"name": "Shopping Lists",
-	"provides": "shopping-lists",
-	"description": "Private and Public Shopping Lists",
-	"dependancies": ["payment-core"]
-}

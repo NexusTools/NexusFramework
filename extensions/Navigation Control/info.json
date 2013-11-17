@@ -1,6 +1,0 @@
-{
-	"name": "Navigation Control",
-	"provides": "controlpanel-navigation",
-	"description": "ControlPanel for Managing Navigation Entries",
-	"dependancies": ["controlpanel", "navigation"]
-}

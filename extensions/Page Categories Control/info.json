@@ -1,6 +1,0 @@
-{
-	"name": "Page Categories Control",
-	"description": "Configure Page Categories",
-	"provides": "page-categories-control",
-	"dependancies": ["page-categories", "controlpanel"]
-}

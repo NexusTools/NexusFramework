@@ -1,1 +1,0 @@
-<?php User::registerExtension("UserRegion"); ?>

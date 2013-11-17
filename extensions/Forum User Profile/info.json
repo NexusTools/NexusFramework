@@ -1,6 +1,0 @@
-{
-	"name": "Forum User Profile",
-	"dependencies": ["user-information"],
-	"provides": "user-profile",
-	"page-root": "/user/"
-}

@@ -1,5 +1,0 @@
-{
-	"name": "SystemInfo",
-	"provides": "system-information",
-	"description": "Easily read system information"
-}

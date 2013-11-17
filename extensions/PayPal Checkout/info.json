@@ -1,6 +1,0 @@
-{
-	"name": "PayPal Checkout",
-	"provides": "payment-paypal",
-	"description": "PayPal plugin for payment core",
-	"dependancies": ["payment-gateways"]
-}

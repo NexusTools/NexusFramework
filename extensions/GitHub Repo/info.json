@@ -1,6 +1,0 @@
-{
-	"name": "GitHub Repo",
-	"description": "Obtains data about the repo(s) from GitHub.",
-	"provides": "github-repo",
-	"dependancies": "github-api"
-}

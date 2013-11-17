@@ -1,3 +1,0 @@
-<?php
-Framework::serveFile("/downloads/");
-?>

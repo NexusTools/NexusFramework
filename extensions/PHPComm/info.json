@@ -1,5 +1,0 @@
-{
-	"name": "PHPComm",
-	"provides": "phpcomm",
-	"description": "Socket and Protocol to Communicate with PHPComm Based Software"
-}
