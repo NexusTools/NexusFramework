@@ -706,7 +706,7 @@ Disallow: "
 			$data = $outputCapture->finish();
 			$data = preg_replace_callback("/<\\/?([\\w:]+)(\\s[^>]+)?>/", "Framework::fixModernTags", $data);
 			
-			self::serveData($data, "text/html");
+			self::serveData($data);
 		} else
 			$outputCapture->serve();
 	}
