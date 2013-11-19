@@ -1,15 +1,12 @@
 <?php
-
-// Detect Browser
-
-if (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false)
-	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.') !== FALSE || strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 5.') !== FALSE) {
-		while (ob_get_level() > NATIVE_OB_LEVEL)
-			ob_end_clean();
-		require FRAMEWORK_CORE_PATH."ie-upgrade.inc.php";
-		die();
-	} else
-		header("X-UA-Compatible: IE=Edge,chrome=1");
+// Decommissioned Browser
+if (IEVERSION < 7) {
+	while (ob_get_level() > NATIVE_OB_LEVEL)
+		ob_end_clean();
+	require FRAMEWORK_CORE_PATH."ie-upgrade.inc.php";
+	die();
+} else
+	header("X-UA-Compatible: IE=Edge,chrome=1");
 
 if (is_file(INDEX_PATH."framework.config.php"))
 	$runPath = INDEX_PATH;

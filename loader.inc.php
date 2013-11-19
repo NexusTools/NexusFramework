@@ -116,8 +116,20 @@ if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
 	define("RES_CONNECTOR", ":");
 }
 
-define("LEGACY_BROWSER", !isset($_SERVER['HTTP_USER_AGENT']) ||
- !preg_match('/^Mozilla\\/(\\d*)\\s+.+\\s+(AppleWebKit|Firefox)\\/(\\d+)/i',$_SERVER['HTTP_USER_AGENT']));
+// Detect Basic Browser Info
+if(isset($_SERVER['HTTP_USER_AGENT'])) {
+	preg_match("/(\\W)MSIE (\\d+(\\.\\d+)?);/i", $_SERVER['HTTP_USER_AGENT'], $ieVer);
+	define("LEGACY_BROWSER", !preg_match('/^Mozilla\\/[5-9]\\.\\d\\s+.+\\s+(AppleWebKit|Firefox)\\/(\\d+)/i',$_SERVER['HTTP_USER_AGENT']));
+	
+	if(!$ieVer || !($ieVer = floatval($ieVer[1])))
+		$ieVer = LEGACY_BROWSER ? 7 : 20;
+	
+	define("IEVERSION", $ieVer);
+	unset($ieVer);
+} else {
+	define("LEGACY_BROWSER", true);
+	define("IEVERSION", 7);
+}
 
 // Setup Custom REQUEST
 $_REQUEST = array_merge($_GET, $_POST);
