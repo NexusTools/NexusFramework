@@ -72,7 +72,7 @@ class Template {
 				$locale = Locale::parseLocale(Locale::getDefault());
 				$lang = $locale['language'];
 				if ($locale['region'])
-					$lang .= "_".$locale['region'];
+					$lang .= "-".$locale['region'];
 			}
 		} catch (Exception $e) {
 			$lang = "en";
@@ -319,7 +319,7 @@ class Template {
 					echo "\" storage=\"".$style->getStoragePath();
 			} else
 				echo "$style";
-			echo "\" resource-id=\"$id\" />";
+			echo "\" data-source=\"$id\" />";
 		}
 		foreach (self::$systemStyles as $id => $style) {
 			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
@@ -331,7 +331,7 @@ class Template {
 				echo "$style";
 			if (isset(self::$systemStyleMedia[$id]))
 				echo "\" media=\"".self::$systemStyleMedia[$id];
-			echo "\" resource-id=\"$id\" />";
+			echo "\" data-source=\"$id\" />";
 		}
 		foreach (self::$styles as $id => $style) {
 			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
@@ -343,7 +343,7 @@ class Template {
 				echo "$style";
 			if (isset(self::$styleMedia[$id]))
 				echo "\" media=\"".self::$styleMedia[$id];
-			echo "\" resource-id=\"$id\" />";
+			echo "\" data-source=\"$id\" />";
 		}
 		Triggers::broadcast("template", "header");
 		echo "</head><body";
@@ -375,28 +375,28 @@ class Template {
 		echo "<framework:config version=\"";
 		echo Framework::uniqueHash($fm_config, Framework::URLSafeHash);
 		echo "\"><!-- ($fm_config) --></framework:config>";
-		echo "<script resource-id=\"__framework-base__\" src=\"".SHARED_RESOURCE_URL."script\" language=\"javascript\"></script>";
+		echo "<script data-source=\"__framework-base__\" src=\"".SHARED_RESOURCE_URL."script\"></script>";
 
 		foreach (self::$globalScripts as $id => $script) {
-			echo "<script resource-id=\"$id\" src=\"";
+			echo "<script data-source=\"$id\" src=\"";
 			if ($script instanceof ScriptCompressor) {
 				echo $script->getReferenceURI("text/javascript");
 				if (DEBUG_MODE)
 					echo "\" storage=\"".$script->getStoragePath();
 			} else
 				echo "$script";
-			echo "\" language=\"javascript\"></script>";
+			echo "\"></script>";
 		}
 
 		foreach (self::$scripts as $id => $script) {
-			echo "<script resource-id=\"$id\" src=\"";
+			echo "<script data-source=\"$id\" src=\"";
 			if ($script instanceof ScriptCompressor) {
 				echo $script->getReferenceURI("text/javascript");
 				if (DEBUG_MODE)
 					echo "\" storage=\"".$script->getStoragePath();
 			} else
 				echo "$script";
-			echo "\" language=\"javascript\"></script>";
+			echo "\"></script>";
 		}
 
 		if (DEBUG_MODE) {
