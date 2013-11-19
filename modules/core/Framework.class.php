@@ -7,10 +7,18 @@ class Framework {
 	const FilenameSafeHash = 3;
 	const URLSafeHash = 4;
 
-	static $customTags = Array();
-	private static $pageContent = "";
+	private static $legacyTags = Array("A", "ABBR", "ACRONYM", "ADDRESS", "APPLET", "AREA", "B", "BASE", "BASEFONT", "BDO", "BIG", "BLOCKQUOTE", "BODY", "BR", "BUTTON", "CAPTION", "CENTER", "CITE", "CODE", "COL", "COLGROUP", "DD", "DEL", "DFN", "DIR", "DIV", "DL", "DT", "EM", "FIELDSET", "FONT", "FORM", "FRAME", "FRAMESET", "H1", "H2", "H3", "H4", "H5", "H6", "HEAD", "HR", "HTML", "I", "IFRAME", "IMG", "INPUT", "INS", "ISINDEX", "KBD", "LABEL", "LEGEND", "LI", "LINK", "MAP", "MENU", "META", "NOFRAMES", "NOSCRIPT", "OBJECT", "OL", "OPTGROUP", "OPTION", "P", "PARAM", "PRE", "Q", "S", "SAMP", "SCRIPT", "SELECT", "SMALL", "SPAN", "STRIKE", "STRONG", "STYLE", "SUB", "SUP", "TABLE", "TBODY", "TD", "TEXTAREA", "TFOOT", "TH", "THEAD", "TITLE", "TR", "TT", "U", "UL", "VAR");
 	private static $boundResourcePaths = array();
 	private static $suppressRedirects = false;
+	private static $pageContent = "";
+	
+	public static function getLegacyTags() {
+		return self::$legacyTags;
+	}
+	
+	public static function isLegacyTag($tag) {
+		return in_array(strtoupper($tag), self::$legacyTags);
+	}
 
 	public static function addResourcePath($key, $path = false) {
 		$path = fullpath($path ? $path : $key);
@@ -329,30 +337,6 @@ class Framework {
 		exit;
 	}
 
-	public static function registerCustomTag($name) {
-		if (!in_array($name, self::$customTags))
-			array_push(self::$customTags, $name);
-	}
-
-	public static function customTags() {
-		return self::legacyTags();
-	}
-
-	public static function legacyTags() {
-		return self::$customTags;
-	}
-
-	public static function legacyTagSwitch() {
-		$string = "";
-		foreach (self::legacyTags() as $tag) {
-			if (strlen($string))
-				$string .= "|";
-			$string .= preg_quote($tag);
-		}
-
-		return $string;
-	}
-
 	public static function formatGMTDate($timestamp = false) {
 		if (!$timestamp)
 			$timestamp = time();
@@ -654,6 +638,27 @@ Disallow: "
 	public static function output($code) {
 		return $code;
 	}
+	
+	public static function fixModernTags($matches) {
+		if(self::isLegacyTag($matches[1]) ||
+				startsWith($matches[0], "<!"))
+			return $matches[0];
+		
+		if(startsWith($matches[0], "</")) {
+			return "</div>";
+		}
+			
+		if(preg_match("/class=['\"](.+)['\"]/", $matches[2], $cMatch, PREG_OFFSET_CAPTURE)) {
+			$newClass = "";
+			if($cMatch[0][1] > 0)
+				$newClass = substr($matches[2], 0, $cMatch[0][1]);
+			$newClass .= "class=\"" . StringFormat::idForDisplay($matches[1]) . "-el " .$cMatch[1][0]. "\"";
+			$newClass .= substr($matches[2], $cMatch[0][1] + strlen($cMatch[0][0]));
+			$matches[2] = $newClass;
+		} else
+			$matches[2] = " class=\"" . StringFormat::idForDisplay($matches[1]) . "-el\"";
+		return "<div" . $matches[2] . ">";
+	}
 
 	public static function runPage($path, $changeStatus = true) {
 		if (array_key_exists("__nocache__", $_GET))
@@ -696,7 +701,14 @@ Disallow: "
 		$module->getTheme()->runFooter();
 		echo "</framework:theme>";
 		Template::writeFooter();
-		$outputCapture->serve();
+		
+		if(LEGACY_BROWSER) {
+			$data = $outputCapture->finish();
+			$data = preg_replace_callback("/<\\/?([\\w:]+)(\\s[^>]+)?>/", "Framework::fixModernTags", $data);
+			
+			self::serveData($data, "text/html");
+		} else
+			$outputCapture->serve();
 	}
 
 	public static function splitPath($path) {
@@ -727,13 +739,4 @@ Disallow: "
 	}
 
 }
-
-Framework::registerCustomTag("framework:theme");
-Framework::registerCustomTag("framework:page");
-Framework::registerCustomTag("framework:config");
-Framework::registerCustomTag("header");
-Framework::registerCustomTag("footer");
-Framework::registerCustomTag("column");
-Framework::registerCustomTag("contents");
-Framework::registerCustomTag("widget");
 ?>

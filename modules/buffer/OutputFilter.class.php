@@ -45,7 +45,7 @@ abstract class OutputFilter {
 	public static function startRawOutput($type = false) {
 		if (is_bool($type))
 			$type = $type ? "text/html" : "text/text";
-
+		
 		header("Content-Type: $type");
 		self::resetToNative(false);
 	}

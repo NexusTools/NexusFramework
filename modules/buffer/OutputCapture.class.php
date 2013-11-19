@@ -38,8 +38,7 @@ class OutputCapture extends OutputFilter {
 		$this->outputBuffer .= $data;
 	}
 
-	protected function __stop() {
-	}
+	protected function __stop() {}
 
 }
 ?>
