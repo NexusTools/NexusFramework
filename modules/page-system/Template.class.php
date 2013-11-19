@@ -290,7 +290,7 @@ class Template {
 			echo " prefix=\"$name: $url\"";
 		foreach (self::$htmlAttrs as $key => $val)
 			echo " $key=\"".htmlspecialchars($val)."\"";
-		echo "><head><base href=\"";
+		echo "><head><meta charset=\"UTF-8\"><base href=\"";
 		echo BASE_URL;
 		echo "\" /><title>";
 		echo interpolate(self::$titleFormat, true, Array("PAGENAME" => self::$title));
