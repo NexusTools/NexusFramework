@@ -836,7 +836,7 @@ var Template = Class.create("Template", {
     });
   }
 });
-Template.Pattern = /(^|.|\r|\n)(#\{(.*?)\})/;
+Template.Pattern = /(^|.|\r|\n)(\{{\s*(\w+)\s*}})/;
 
 var $break = { };
 
