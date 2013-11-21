@@ -18,8 +18,7 @@ if (function_exists("ob_gzhandler") && in_array("ob_gzhandler", ob_list_handlers
 if (function_exists("ob_deflatehandler") && in_array("ob_deflatehandler", ob_list_handlers()))
 	define("COMPRESSED_OUTPUT", "deflate");
 if (!defined("COMPRESSED_OUTPUT"))
-	while (ob_get_level() && @ob_end_clean())
-		;
+	while (ob_get_level() && @ob_end_clean());
 
 // Setup Output Buffering
 if (!function_exists("ob_void")) {
@@ -47,24 +46,30 @@ define("FRAMEWORK_RES_PATH", FRAMEWORK_PATH."resources".DIRSEP);
 define("FRAMEWORK_MODULE_PATH", FRAMEWORK_PATH."modules".DIRSEP);
 
 // Find Website Root
-if (array_key_exists("SCRIPT_FILENAME", $_SERVER)) {
-	define("INDEX_FILE", $_SERVER["SCRIPT_FILENAME"]);
-	define("INDEX_PATH", dirname(INDEX_FILE).DIRSEP);
-} else {
-	$pos = 0;
-	$stack = debug_backtrace(0);
-	$fmpath_len = strlen(FRAMEWORK_PATH);
-	while ($pos < count($stack)) {
-		if (substr_compare($stack[$pos]['file'], FRAMEWORK_PATH, 0, $fmpath_len) !== 0) {
-			define("INDEX_FILE", $stack[$pos]['file']);
-			define("INDEX_PATH", dirname(INDEX_FILE).DIRSEP);
-			break;
-		} else
-			$pos++;
+if (!defined("INDEX_FILE")) {
+	if (array_key_exists("SCRIPT_FILENAME", $_SERVER))
+		define("INDEX_FILE", $_SERVER["SCRIPT_FILENAME"]);
+	else {
+		$pos = 0;
+		$stack = debug_backtrace(0);
+		$fmpath_len = strlen(FRAMEWORK_PATH);
+		while ($pos < count($stack)) {
+			if (substr_compare($stack[$pos]['file'], FRAMEWORK_PATH, 0, $fmpath_len) !== 0) {
+				define("INDEX_FILE", $stack[$pos]['file']);
+				break;
+			} else
+				$pos++;
+		}
+		unset($fmpath_len);
+		unset($stack);
+		unset($pos);
 	}
-	unset($fmpath_len);
-	unset($stack);
-	unset($pos);
+}
+if(!defined("INDEX_PATH")) {
+	if(defined("PATH_SUBFOLDER"))
+		define("INDEX_PATH", dirname(INDEX_FILE).DIRSEP.PATH_SUBFOLDER.DIRSEP);
+	else
+		define("INDEX_PATH", dirname(INDEX_FILE).DIRSEP);
 }
 
 ini_set("error_log", INDEX_PATH."php.err");
