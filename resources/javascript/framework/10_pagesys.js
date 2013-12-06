@@ -75,6 +75,27 @@ Framework.registerModule("PageSystem", {
 					form.select("input, select, textarea").each(function(element) {
 						if(element.hasAttribute("disabled"))
 							return; // Continue
+						var type = element.readAttribute("type");
+						if(type && element.nodeName.toLowerCase() == "input")
+							switch(type.toLowerCase()) {
+								case "text":
+								case "number":
+								case "date":
+								case "datetime":
+								case "datetime-local":
+								case "month":
+								case "time":
+								case "url":
+								case "week":
+								case "range":
+								case "color":
+								case "password":
+								case "tel":
+									break; // Supported Types
+									
+								default:
+									return; // Skip
+							}
 						
 						element.focus();
 						throw $break;
