@@ -68,3 +68,10 @@ Framework.Components.registerComponent("form input, form submit, form textarea",
 				});
 			}
 		});
+		
+Framework.Components.registerComponent("input", {
+			hook: function(el) {
+				var type = el.readAttribute("type") || "text";
+				el.addClassName(("type-" + type).camelize());
+			}
+		});

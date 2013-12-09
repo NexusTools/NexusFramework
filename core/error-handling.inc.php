@@ -193,6 +193,17 @@ function __framework_error_recover($errno, $errstr, $errfile, $errline) {
 	if ($type = __framework_usable_error($errno)) {
 		if ($type == 2) {
 			if (!defined("INAPI") && defined("DEBUG_MODE")) {
+				$outputIsHTML = false;
+				foreach(headers_list() as $header) {
+					if(preg_match("#^content-type:\\s+text/html(;.+)$#i", $header)) {
+						$outputIsHTML = true;
+						break;
+					}
+				}
+				
+				if(!$outputIsHTML)
+					return true;
+				
 				echo "<!-- DEBUG ERROR CAUGHT\n";
 				echo "$errfile:$errline\n";
 				echo "$errstr\n";
