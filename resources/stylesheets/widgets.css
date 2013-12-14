@@ -28,7 +28,7 @@ button,input.button {
 	background-image: linear-gradient(#FFFFFF, #EAEAEA);
 	background-repeat: repeat-x;
 
-	border: solid 1pt #999;
+	border: solid 1pt #EEE;
 	font-weight: bold;
 	text-align: center;
 	font-family: Arial;
@@ -47,10 +47,13 @@ input.button:hover,button:hover {
 	cursor: pointer;
 	color: #000;
 	text-shadow: none;
+	
+	-webkit-box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.4);
+	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.4);
 }
 
 input.button.disabled, button.disabled {
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+	text-shadow: none!important;
 	-webkit-box-shadow: none!important;
 	box-shadow: none!important;
 }
@@ -71,7 +74,7 @@ input.button:active,button:active {
 	-moz-transition: all 200ms ease; /* Firefox 4 */
 	-webkit-transition: all 200ms ease; /* Safari and Chrome */
 	-o-transition: all 200ms ease; /* Opera */
-	color: #000;
+	color: #666;
 	background-color: #FFFFFF;
 	background-image: -moz-linear-gradient(#EAEAEA, #FFFFFF);
 	background-image: -webkit-linear-gradient(#EAEAEA, #FFFFFF);
