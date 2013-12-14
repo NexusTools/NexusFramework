@@ -28,7 +28,7 @@ button,input.button {
 	background-image: linear-gradient(#FFFFFF, #EAEAEA);
 	background-repeat: repeat-x;
 
-	border: solid 1pt #333;
+	border: solid 1pt #999;
 	font-weight: bold;
 	text-align: center;
 	font-family: Arial;
@@ -39,8 +39,8 @@ button,input.button {
 	border-radius: 4px 4px 4px 4px;
 
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-	-webkit-box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
-	box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
+	box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
 }
 
 input.button:hover,button:hover {
