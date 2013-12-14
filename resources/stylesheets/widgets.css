@@ -4,11 +4,12 @@ groupbox Table TD input.button {
 
 select:focus,select:hover,widget.options:focus,widget.options:hover {
 	color: #333;
-	border: solid 1pt #444;
+	border: solid 1pt #999;
+	-webkit-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.3);
+	box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.3);
 }
 
-button.disabled,button.disabled:hover,button.disabled:active,input.button.disabled,input.button.disabled:hover,input.button.disabled:active
-	{
+button.disabled,button.disabled:hover,button.disabled:active,input.button.disabled,input.button.disabled:hover,input.button.disabled:active {
 	background: rgb(242, 242, 242);
 	border: solid 1pt #ccc;
 	color: #aaa;
@@ -39,8 +40,8 @@ button,input.button {
 	border-radius: 4px 4px 4px 4px;
 
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-	-webkit-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.1);
-	box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
+	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1);
 }
 
 input.button:hover,button:hover {
@@ -53,6 +54,7 @@ input.button:hover,button:hover {
 }
 
 input.button.disabled, button.disabled {
+	cursor: default!important;
 	text-shadow: none!important;
 	-webkit-box-shadow: none!important;
 	box-shadow: none!important;
@@ -90,8 +92,7 @@ input.text.large {
 	width: 400px;
 }
 
-textarea.disabled,input.text.disabled,input.text.disabled:hover,input.text.disabled:focus,select.disabled,select.disabled:hover,select.disabled:focus,widget.options.disabled,widget.options.disabled:hover,widget.options.disabled:focus
-	{
+textarea.disabled,input.text.disabled,input.text.disabled:hover,input.text.disabled:focus,select.disabled,select.disabled:hover,select.disabled:focus,widget.options.disabled,widget.options.disabled:hover,widget.options.disabled:focus {
 	cursor: default;
 	border: solid 1pt #ccc;
 	color: #aaa;
@@ -150,14 +151,14 @@ help {
 	cursor: help;
 }
 
-select,widget.options,textarea,input.text {
-	border: solid 1pt #aaa;
-	border-top: solid 1pt #777;
+select,widget.options, textarea,input.text {
+	border: solid 1pt #DDD;
 	font-size: 13px;
-	color: #555;
+	color: #444;
 	padding: 4px;
 	background-color: white;
 	margin-bottom: 6px;
+	width: 350px;
 	transition: all 200ms ease;
 	-moz-transition: all 200ms ease; /* Firefox 4 */
 	-webkit-transition: all 200ms ease; /* Safari and Chrome */
@@ -166,12 +167,14 @@ select,widget.options,textarea,input.text {
 
 textarea:hover,input.text:hover {
 	color: #5a5a5a;
-	border: solid 1pt #666;
+	border: solid 1pt #AAA;
 }
 
 textarea:focus,input.text:focus {
 	color: #333;
-	border: solid 1pt #444;
+	border: solid 1pt #999;
+	-webkit-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.3);
+	box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.3);
 }
 
 input,select,textarea,buttons,widget.options {
@@ -213,23 +216,27 @@ groupbox {
 	margin: 5px;
 	margin-top: 30px;
 	display: inline-block;
-	border: solid 1pt #666;
+	border: solid 1pt #EEE;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	border-radius: 5px;
 	padding: 5px;
-	-webkit-box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
-	box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
+	box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
 }
 
 groupbox:hover {
-	-webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.4);
-	box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.4);
+	-webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.2);
 }
 
 groupbox label {
 	margin-top: -16px;
 	font-weight: 400;
+}
+
+groupbox textarea, groupbox input.text {
+	width: auto;
 }
 
 Banner {
@@ -261,24 +268,13 @@ textarea {
 	resize: none;
 }
 
-Table TH,groupbox label {
+Table TH, groupbox label {
 	color: #444;
-	background: rgb(255, 255, 255);
-	background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%,
-		rgba(249, 249, 249, 1) 12%, rgba(255, 255, 255, 1) 100% );
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255,
-		255, 255, 1) ), color-stop(12%, rgba(249, 249, 249, 1) ),
-		color-stop(100%, rgba(255, 255, 255, 1) ) );
-	background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%,
-		rgba(249, 249, 249, 1) 12%, rgba(255, 255, 255, 1) 100% );
-	background: -o-linear-gradient(top, rgba(255, 255, 255, 1) 0%,
-		rgba(249, 249, 249, 1) 12%, rgba(255, 255, 255, 1) 100% );
-	background: -ms-linear-gradient(top, rgba(255, 255, 255, 1) 0%,
-		rgba(249, 249, 249, 1) 12%, rgba(255, 255, 255, 1) 100% );
-	background: linear-gradient(top, rgba(255, 255, 255, 1) 0%,
-		rgba(249, 249, 249, 1) 12%, rgba(255, 255, 255, 1) 100% );
-	filter: progid : DXImageTransform.Microsoft.gradient (   startColorstr =
-		'#ffffff', endColorstr = '#ffffff', GradientType = 0 );
+	background-color: #FFFFFF;
+	background-image: -moz-linear-gradient(#FFFFFF, #f9f9f9);
+	background-image: -webkit-linear-gradient(#FFFFFF, #f9f9f9);
+	background-image: linear-gradient(#FFFFFF, #f9f9f9);
+	background-repeat: repeat-x;
 }
 
 GroupList GroupBox Label {
