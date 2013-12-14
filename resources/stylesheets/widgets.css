@@ -156,7 +156,6 @@ select,widget.options,textarea,input.text {
 	font-size: 13px;
 	color: #555;
 	padding: 4px;
-	width: 350px;
 	background-color: white;
 	margin-bottom: 6px;
 	transition: all 200ms ease;
