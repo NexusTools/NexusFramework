@@ -38,9 +38,9 @@ button,input.button {
 	-webkit-border-radius: 4px 4px 4px 4px;
 	border-radius: 4px 4px 4px 4px;
 
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-	-webkit-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
-	box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.2);
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.1);
+	box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.1);
 }
 
 input.button:hover,button:hover {
