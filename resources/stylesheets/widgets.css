@@ -198,17 +198,26 @@ GroupBox textarea {
 }
 
 groupbox {
+	transition: box-shadow 200ms;
+	-webkit-transition: -webkit-box-shadow: 200ms;
 	min-width: 340px;
 	min-height: 142px;
 	text-align: left;
 	margin: 5px;
 	margin-top: 30px;
 	display: inline-block;
-	border: solid 1pt lightGray;
+	border: solid 1pt #666;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	border-radius: 5px;
 	padding: 5px;
+	-webkit-box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
+	box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
+}
+
+groupbox:hover {
+	-webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.4);
+	box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.4);
 }
 
 groupbox label {
