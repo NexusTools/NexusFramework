@@ -20,7 +20,7 @@ button,input.button {
 	-webkit-transition: all 500ms ease; /* Safari and Chrome */
 	-o-transition: all 500ms ease; /* Opera */
 
-	color: #666;
+	color: #444;
 
 	background-color: #EAEAEA;
 	background-image: -moz-linear-gradient(#FFFFFF, #EAEAEA);
@@ -47,6 +47,12 @@ input.button:hover,button:hover {
 	cursor: pointer;
 	color: #000;
 	text-shadow: none;
+}
+
+input.button.disabled, button.disabled {
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: none!important;
+	box-shadow: none!important;
 }
 
 button:active span.icon,button.disabled span.icon {
