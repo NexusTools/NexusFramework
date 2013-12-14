@@ -126,16 +126,28 @@ class Framework {
 			self::runPage("/errordoc/404");
 		if (!is_readable($file))
 			self::runPage("/errordoc/403");
-
+		
 		if (is_dir($file)) {
 			$file = cleanpath($file);
-
+			
 			if (startsWith($file, FRAMEWORK_RES_PATH))
 				$path = "/res".RES_CONNECTOR.substr($file, strlen(FRAMEWORK_RES_PATH));
 			else {
-				if (!startsWith($file, INDEX_PATH))
-					self::runPage("/errordoc/404");
-				$path = substr($file, strlen(INDEX_PATH) - 1);
+				$path = false;
+				if (!startsWith($file, INDEX_PATH)) {
+					foreach(self::$boundResourcePaths as $key => $rpath) {
+						if(startsWith($file, $rpath)) {
+							$path = "/res" . RES_CONNECTOR . $key . "/" . substr($file, strlen($rpath));
+							break;
+						}
+					}
+				
+					if(!$path)
+						self::runPage("/errordoc/404");
+				} else
+					$path = substr($file, strlen(INDEX_PATH) - 1);
+			
+			
 			}
 			if (!($handle = opendir($file)))
 				self::runPage("/errordoc/500");
@@ -160,6 +172,16 @@ class Framework {
 <body><h1>Directory Listing: <?php echo $path; ?></h1>
 <table cellspacing="0" cellpadding="0"><tr><th colspan="2">Filename</th><th>Type</th><th>Size</th></tr>
 <?php
+
+			if($path == "/res:") {
+				foreach(self::$boundResourcePaths as $key => $rpath) {
+					?><tr><td><img src="<?php echo BASE_URI . "res" . RES_CONNECTOR . "icon/folder"; ?>" width="22" height="22" /></td><td><a href="<?php echo BASE_URI; ?>res:<?php
+	echo $key;
+	?>"><?php echo $key; ?></a></td><td>alias</td><td><?php
+				echo StringFormat::formatFilesize(filesize($rpath));
+?></td></tr><?php
+				}
+			}
 
 			chdir($file);
 			$files = Array();
