@@ -123,9 +123,7 @@ Table TH {
 
 Table TD {
 	height: 22px;
-	padding: 8px;
-	padding-top: 4px;
-	padding-bottom: 4px;
+	padding: 2px 8px;
 	font-size: 12px;
 	white-space: nowrap;
 	border-right: solid 1pt rgb(235, 235, 235);
@@ -181,7 +179,7 @@ input,select,textarea,buttons,widget.options {
 	margin-top: -1px;
 }
 
-bubble,groupbox label {
+bubble,groupbox > label {
 	margin-left: 5px;
 	margin-bottom: 5px;
 	display: table;
@@ -198,10 +196,6 @@ groupbox table {
 	border: none;
 }
 
-groupbox table td {
-	padding: 2px;
-}
-
 GroupBox textarea {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -215,6 +209,7 @@ groupbox {
 	text-align: left;
 	margin: 5px;
 	margin-top: 30px;
+	vertical-align: top;
 	display: inline-block;
 	border: solid 1pt #EEE;
 	-moz-box-sizing: border-box;
@@ -223,6 +218,13 @@ groupbox {
 	padding: 5px;
 	-webkit-box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
 	box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
+}
+
+table hr {
+	height: 1px;
+	margin: 0px;
+	background: rgb(235, 235, 235);
+	border: none;
 }
 
 groupbox:hover {
@@ -235,8 +237,8 @@ groupbox label {
 	font-weight: 400;
 }
 
-groupbox textarea, groupbox input.text {
-	width: auto;
+groupbox textarea, groupbox input.text, groupbox select {
+	width: 180px;
 }
 
 Banner {
