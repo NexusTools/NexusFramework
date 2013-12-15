@@ -16,7 +16,7 @@ class Theme extends CachedFile {
 
 	public static function initActivePath() {
 		if (!defined("THEME"))
-			define("THEME", "Blank");
+			define("THEME", "Basic");
 		self::$activePath = self::findThemePath(THEME);
 	}
 
