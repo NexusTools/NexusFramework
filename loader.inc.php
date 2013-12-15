@@ -4,6 +4,9 @@ error_reporting(E_ALL);
 ini_set("display_errors", 0);
 ini_set("error_log", "php.err");
 
+if (version_compare(PHP_VERSION, '5.3.0', '<'))
+	die('PHP Version 5.3.0 or higher is required to run NexusFramework.');
+
 // Test PHP Version
 if (!defined("PHP_MAJOR_VERSION"))
 	throw new Exception("PHP version incompatible.");

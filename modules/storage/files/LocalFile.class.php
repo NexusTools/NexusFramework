@@ -32,6 +32,11 @@ class LocalFile extends FileLocker {
 		}
 
 	}
+	
+	public static function getContentFor($file, $decode = true, $autoClose = true, $default = false, $checkFallback = true) {
+		$lFile = new LocalFile($file);
+		return $lFile->getContent($decode, $autoClose, $default, $checkFallback);
+	}
 
 	public function getContent($decode = true, $autoClose = true, $default = false, $checkFallback = true) {
 		if (!$this->exists())
