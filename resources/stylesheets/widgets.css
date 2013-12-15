@@ -123,10 +123,14 @@ Table TH {
 
 Table TD {
 	height: 22px;
-	padding: 2px 8px;
+	padding: 6px 8px;
 	font-size: 12px;
 	white-space: nowrap;
 	border-left: solid 1pt rgb(235, 235, 235);
+}
+
+GroupBox Table TD {
+	padding: 0px 8px;
 }
 
 Table TD:first-child {
