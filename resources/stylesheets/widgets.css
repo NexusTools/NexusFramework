@@ -126,7 +126,11 @@ Table TD {
 	padding: 2px 8px;
 	font-size: 12px;
 	white-space: nowrap;
-	border-right: solid 1pt rgb(235, 235, 235);
+	border-left: solid 1pt rgb(235, 235, 235);
+}
+
+Table TD:first-child {
+	border-left: none;
 }
 
 Table TD.icon {

@@ -418,7 +418,10 @@ class Framework {
 			$expiresAt = time() + rand(strtotime("+1 month", 0), strtotime("+2 month", 0));
 			header("Expires: ".self::formatGMTDate($expiresAt));
 			OutputFilter::startCompression();
-			die("<html><head><title>Internal Error Occured</title></head><body><h1>Internal Error Occured</h1><p>An internal error occured while processing your request,<br />This error has been logged and we are working to fix it.<br />Sorry for any inconvenience.</p></body></html>");
+			echo "<html><head><title>Internal Error Occured</title></head><body><h1>Internal Error Occured</h1><p>An internal error occured while processing your request,<br />This error has been logged and we are working to fix it.<br />Sorry for any inconvenience.</p><pre style='font-size: 70%; opacity: 0.7'>";
+			echo $_GET['__errMess'];
+			echo "</pre></body></html>";
+			die;
 
 		case "lgpl":
 			self::serveFile(FRAMEWORK_RES_PATH."LGPL3.0.html");
