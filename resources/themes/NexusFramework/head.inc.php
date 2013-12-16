@@ -1,3 +1,3 @@
 <?php
-Template::setFavicon("images".DIRSEP."favicon.ico");
+Template::addStyle("css/widgets.css");
 ?>

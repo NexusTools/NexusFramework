@@ -1,5 +1,5 @@
 {
 	"name": "NexusFramework",
 	"description": "The default theme of the NexusFramework Installer.",
-	"parent": "Simple Dark"
+	"parent": "Basic"
 }

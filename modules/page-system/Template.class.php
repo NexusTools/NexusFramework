@@ -58,8 +58,6 @@ class Template {
 		Template::setMetaTag("generator", "NexusFramework ".FRAMEWORK_VERSION." - OpenSource WebFramework");
 		self::setRobotsPolicy(!defined("NO_ROBOTS"));
 
-		self::addSystemStyle(FRAMEWORK_RES_PATH."stylesheets".DIRSEP."base.css");
-		self::addSystemStyle(FRAMEWORK_RES_PATH."stylesheets".DIRSEP."basic-widgets.css");
 		self::addNameSpace("framework", "http://framework.nexustools.net/ns#");
 
 		try {
