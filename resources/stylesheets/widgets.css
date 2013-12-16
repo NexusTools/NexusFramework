@@ -129,6 +129,24 @@ Table TD {
 	border-left: solid 1pt rgb(235, 235, 235);
 }
 
+
+
+hr {
+	border: none;
+	background-color: rgb(235, 235, 235);
+	height: 1px;
+}
+
+GroupBox a.item {
+	font-weight: bold;
+	-webkit-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2);
+	box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2);
+	display: inline-block;
+	font-size: 115%;
+	padding: 5px;
+	margin: 3px;
+}
+
 GroupBox Table TD {
 	padding: 0px 8px;
 }
