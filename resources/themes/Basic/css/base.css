@@ -123,3 +123,8 @@ right,.float-right {
 left,.float-left {
 	float: left;
 }
+
+widget.component {
+	display: inline-block;
+	width: auto;
+}

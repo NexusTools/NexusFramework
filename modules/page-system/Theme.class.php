@@ -121,9 +121,8 @@ class Theme extends CachedFile {
 			echo "<header>";
 			require_chdir($this->getValue('bhs'), $this->getFilepath());
 			echo "</header>";
-		} else
-			if ($this->parent)
-				$this->parent->runHeader();
+		} else if(!$this->hasKey("ths") && $this->parent)
+			$this->parent->runHeader();
 	}
 
 	public function runFooter() {
@@ -131,9 +130,8 @@ class Theme extends CachedFile {
 			echo "<footer>";
 			require_chdir($this->getValue('bfs'), $this->getFilepath());
 			echo "</footer>";
-		} else
-			if ($this->parent)
-				$this->parent->runFooter();
+		} else if(!$this->hasKey("tfs") && $this->parent)
+			$this->parent->runFooter();
 
 		if ($this->hasKey("tfs"))
 			require_chdir($this->getValue('tfs'), $this->getFilepath());
