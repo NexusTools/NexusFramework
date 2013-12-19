@@ -149,7 +149,17 @@ class ExtensionLoader extends CachedFile {
 		$enabled = json_decode(file_get_contents($this->getFilepath()));
 		foreach ($enabled as $extension) {
 			try {
-				if (is_dir(($path = EXT_PATH.$extension.DIRSEP)) || is_dir(($path = FRAMEWORK_EXT_PATH.$extension.DIRSEP))) {
+				if (!is_dir(($path = EXT_PATH.$extension.DIRSEP))) {
+					$path = false;
+					$dh  = opendir(FRAMEWORK_EXT_PATH);
+					while (false !== ($path = readdir($dh))) {
+						$path = FRAMEWORK_EXT_PATH . $path . DIRSEP . $extension . DIRSEP;
+						if(is_dir($path))
+							break;
+						$path = false;
+					}
+				}
+				if($path) {
 					$infofile = $path."info.json";
 					if (!file_exists($infofile))
 						throw new IOException($path."info.json", IOException::NotFound);
