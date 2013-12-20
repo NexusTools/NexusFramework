@@ -1,10 +1,10 @@
 <?php
 class PageModule {
 
-	private static $arguments;
-	private static $globals;
-	private static $workingPath;
 	private static $instance;
+	private $workingPath;
+	private $arguments;
+	private $globals;
 	private $theme;
 	private $error = false;
 	private $headscript = false;
@@ -35,7 +35,7 @@ class PageModule {
 	}
 
 	public static function getWorkingPath() {
-		return self::$workingPath;
+		return self::$instance->workingPath;
 	}
 
 	public static function pathExists($path) {
@@ -43,15 +43,16 @@ class PageModule {
 	}
 
 	public static function setValue($key, $val) {
-		self::$globals[$key] = $val;
+		self::$instance->globals[$key] = $val;
 	}
 
 	public static function hasValue($key) {
-		return isset(self::$globals[$key]) && self::$globals[$key] !== null;
+		return isset(self::$instance->globals[$key]) &&
+				self::$instance->globals[$key] !== null;
 	}
 
 	public static function getValue($key) {
-		$data = self::$globals;
+		$data = self::$instance->globals;
 		foreach (func_get_args() as $arg) {
 			if (!array_key_exists($arg, $data))
 				return false;
@@ -62,15 +63,15 @@ class PageModule {
 	}
 
 	public static function countArguments() {
-		return count(self::$arguments);
+		return count(self::$instance->arguments);
 	}
 
 	public static function getArgument($index) {
-		return self::$arguments[$index];
+		return self::$instance->arguments[$index];
 	}
 
 	public static function getArguments() {
-		return self::$arguments;
+		return self::$instance->arguments;
 	}
 
 	private function getError() {
@@ -152,8 +153,9 @@ class PageModule {
 			Profiler::start("PageModule");
 			Profiler::start("PageModule[Constructor]");
 		}
-
+		$oldInstance = self::$instance;
 		self::$instance = $this;
+
 		$this->get = $_GET;
 		$this->post = $_POST;
 		if (defined("THEME"))
@@ -161,29 +163,28 @@ class PageModule {
 		else
 			$this->themePath = FRAMEWORK_PATH."media-theme".DIRSEP;
 
-		self::$globals = Array();
-
+		$this->globals = Array();
 		if ((!LEGACY_OS && startsWith($path, "about:")) || (LEGACY_OS && startsWith($path, "about-"))) {
-			self::$workingPath = cleanpath("/$path");
-			self::$arguments = Framework::splitPath(substr($path, 6));
-			$this->findModule(FRAMEWORK_PATH."resources".DIRSEP."about".DIRSEP, self::$arguments);
+			$this->workingPath = cleanpath("/$path");
+			$this->arguments = Framework::splitPath(substr($path, 6));
+			$this->findModule(FRAMEWORK_PATH."resources".DIRSEP."about".DIRSEP, $this->arguments);
 		} else {
 			if (!defined("PATH_PREPEND") || $ignorePrepend)
-				self::$workingPath = cleanpath("/$path");
+				$this->workingPath = cleanpath("/$path");
 			else
-				self::$workingPath = cleanpath("/".PATH_PREPEND."/$path");
-			self::$arguments = Framework::splitPath(self::$workingPath);
+				$this->workingPath = cleanpath("/".PATH_PREPEND."/$path");
+			$this->arguments = Framework::splitPath($this->workingPath);
 
-			if (count(self::$arguments) == 2 && self::$arguments[0] == "errordoc" && is_numeric(self::$arguments[1]))
-				$this->setError(intval(self::$arguments[1]));
+			if (count($this->arguments) == 2 && $this->arguments[0] == "errordoc" && is_numeric($this->arguments[1]))
+				$this->setError(intval($this->arguments[1]));
 			else {
 				if (!isset($__framework_activePath))
 					$__framework_activePath = INDEX_PATH;
 
-				if (!$this->findModule($__framework_activePath."pages/", self::$arguments)) {
+				if (!$this->findModule($__framework_activePath."pages/", $this->arguments)) {
 					if ($pureVirtualPaths === false)
 						$pureVirtualPaths = ExtensionLoader::getVirtualPaths();
-					$this->exploreVirtualPaths(self::$arguments, $pureVirtualPaths);
+					$this->exploreVirtualPaths($this->arguments, $pureVirtualPaths);
 				}
 			}
 		}
@@ -192,14 +193,14 @@ class PageModule {
 			$this->setError($this->badCond ? BAD_CONDITION_STATUS : 404);
 
 		if ($this->error !== false) {
-			self::$workingPath = "/errordoc/".$this->error['code'];
-			self::$arguments = Array("errordoc", $this->error['code']);
+			$this->workingPath = "/errordoc/".$this->error['code'];
+			$this->arguments = Array("errordoc", $this->error['code']);
 
-			if (!$this->findModule(INDEX_PATH."pages/", self::$arguments)) {
+			if (!$this->findModule(INDEX_PATH."pages/", $this->arguments)) {
 				if ($pureVirtualPaths === false)
 					$pureVirtualPaths = ExtensionLoader::getVirtualPaths();
 
-				if (!$this->exploreVirtualPaths(self::$arguments, $pureVirtualPaths)) {
+				if (!$this->exploreVirtualPaths($this->arguments, $pureVirtualPaths)) {
 					//header("Content-Type: text/plain");
 					//OutputHandlerStack::stop();
 					$base = INDEX_PATH."pages".DIRSEP;
@@ -215,12 +216,14 @@ class PageModule {
 							$this->rightSidebarScript = "$base$path.sidebar.right.inc.php";
 					}
 					//die();
-					}
+				}
 			}
 		}
 
 		if (DEBUG_MODE)
 			Profiler::finish("PageModule[Constructor]");
+		
+		self::$instance = $oldInstance;
 	}
 
 	public static function setThemePath($path) {
@@ -235,6 +238,7 @@ class PageModule {
 			$_POST = $this->post;
 		} else
 			$oldInstance = self::$instance;
+		
 		self::$instance = $this;
 		if ($this->pageTitle)
 			Template::setTitle($this->pageTitle);
