@@ -34,25 +34,25 @@ class PageModule {
 		return $this->buffer;
 	}
 
-	public static function getWorkingPath() {
-		return self::$instance->workingPath;
+	public function _getWorkingPath() {
+		return $this->workingPath;
 	}
 
 	public static function pathExists($path) {
 		new PageModule($path);
 	}
 
-	public static function setValue($key, $val) {
-		self::$instance->globals[$key] = $val;
+	public function _setValue($key, $val) {
+		$this->globals[$key] = $val;
 	}
 
-	public static function hasValue($key) {
-		return isset(self::$instance->globals[$key]) &&
-				self::$instance->globals[$key] !== null;
+	public function _hasValue($key) {
+		return isset($this->globals[$key]) &&
+				$this->globals[$key] !== null;
 	}
 
-	public static function getValue($key) {
-		$data = self::$instance->globals;
+	public function _getValue($key) {
+		$data = $this->globals;
 		foreach (func_get_args() as $arg) {
 			if (!array_key_exists($arg, $data))
 				return false;
@@ -62,19 +62,19 @@ class PageModule {
 		return $data;
 	}
 
-	public static function countArguments() {
-		return count(self::$instance->arguments);
+	public function _countArguments() {
+		return count($this->arguments);
 	}
 
-	public static function getArgument($index) {
-		return self::$instance->arguments[$index];
+	public function _getArgument($index) {
+		return $this->arguments[$index];
 	}
 
-	public static function getArguments() {
-		return self::$instance->arguments;
+	public function _getArguments() {
+		return $this->arguments;
 	}
 
-	private function getError() {
+	private function _getError() {
 		return $this->error;
 	}
 
@@ -139,12 +139,12 @@ class PageModule {
 
 	}
 
-	public static function hasError() {
-		return self::$instance->error !== false;
+	public function _hasError() {
+		return $this->error !== false;
 	}
 
-	public static function getPageTitle() {
-		return self::$instance->pageTitle;
+	public function _getPageTitle() {
+		return $this->pageTitle;
 	}
 
 	public function __construct($path, $pureVirtualPaths = false, $ignorePrepend = false) {
@@ -497,6 +497,22 @@ class PageModule {
 	public function __toString() {
 		$this->run(true);
 		return $this->buffer;
+	}
+
+	public function __call($name, $args) {
+		$method = false;
+		try {
+			$method = new ReflectionMethod($this, "_$name");
+		} catch (Exception $e) {}
+
+		if ($method)
+			return $method->invokeArgs($this, $args);
+
+		throw new Exception("Call to undefined method PageModule::$name()");
+	}
+
+	public static function __callStatic($name, $args) {
+		return self::$instance->__call($name, $args);
 	}
 
 }
