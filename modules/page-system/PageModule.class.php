@@ -262,8 +262,8 @@ class PageModule {
 			}
 		} else {
 			self::$instance = $oldInstance;
-			$_POST = $oldPost;
-			$_GET = $oldGet;
+			$oldPost = $_POST;
+			$oldGet = $_GET;
 		}
 	}
 	
