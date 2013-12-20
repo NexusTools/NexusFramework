@@ -231,10 +231,14 @@ class PageModule {
 		if($real) {
 			if (DEBUG_MODE)
 				Profiler::start("PageModule[Initialize]");
-			$_GET = $this->get;
-			$_POST = $this->post;
-		} else
+		} else {
+			$oldGet = $_GET;
+			$oldPost = $_POST;
 			$oldInstance = self::$instance;
+		}
+		$_POST = $this->post;
+		$_GET = $this->get;
+		
 		self::$instance = $this;
 		if ($this->pageTitle)
 			Template::setTitle($this->pageTitle);
@@ -256,8 +260,11 @@ class PageModule {
 				Profiler::finish("PageModule[Initialize]");
 				Profiler::finish("PageModule");
 			}
-		} else
+		} else {
 			self::$instance = $oldInstance;
+			$_POST = $oldPost;
+			$_GET = $oldGet;
+		}
 	}
 	
 	public function initializeTheme($fully =true) {
