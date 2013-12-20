@@ -93,7 +93,7 @@ class Theme extends CachedFile {
 		return true;
 	}
 
-	public function initialize() {
+	public function initialize($actual =true) {
 		if ($this->hasKey("error"))
 			throw new Exception($this->getValue('error'));
 
@@ -101,16 +101,18 @@ class Theme extends CachedFile {
 			$metadata = $this->getValue("metadata");
 			if (array_key_exists("parent", $metadata)) {
 				$this->parent = new Theme(self::findThemePath($metadata["parent"]));
-				$this->parent->initialize();
+				$this->parent->initialize($actual);
 			}
 		}
-
+		
 		if ($this->hasKey('hs'))
 			require_chdir($this->getValue('hs'), $this->getFilepath());
-
-		if ($this->hasKey("cl"))
-			ClassLoader::registerClasses($this->getValue("cl"));
-		self::$activePath = $this->getFilepath();
+		
+		if($actual) {
+			if ($this->hasKey("cl"))
+				ClassLoader::registerClasses($this->getValue("cl"));
+			self::$activePath = $this->getFilepath();
+		}
 	}
 
 	public function runHeader() {

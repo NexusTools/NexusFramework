@@ -227,12 +227,15 @@ class PageModule {
 		self::$instance->themePath = fullpath($path);
 	}
 
-	public function initialize($changeStatus = true) {
-		if (DEBUG_MODE)
-			Profiler::start("PageModule[Initialize]");
-
-		$_GET = $this->get;
-		$_POST = $this->post;
+	public function initialize($real = true) {
+		if($real) {
+			if (DEBUG_MODE)
+				Profiler::start("PageModule[Initialize]");
+			$_GET = $this->get;
+			$_POST = $this->post;
+		} else
+			$oldInstance = self::$instance;
+		self::$instance = $this;
 		if ($this->pageTitle)
 			Template::setTitle($this->pageTitle);
 		if ($this->pageDescription)
@@ -240,19 +243,28 @@ class PageModule {
 		if ($this->pageKeywords)
 			Template::setMetaTag("keywords", $this->pageKeywords);
 
-		self::$instance = $this;
 		if ($this->headscript)
 			require $this->headscript;
 
+		$this->initializeTheme(false);
+
+		if($real) {
+			if ($this->error)
+				header("http/1.1 ".$this->error['code']." ".$this->error['message']);
+
+			if (DEBUG_MODE) {
+				Profiler::finish("PageModule[Initialize]");
+				Profiler::finish("PageModule");
+			}
+		} else
+			self::$instance = $oldInstance;
+	}
+	
+	public function initializeTheme($fully =true) {
 		$this->theme = new Theme($this->themePath);
-
-		if ($changeStatus && $this->error)
-			header("http/1.1 ".$this->error['code']." ".$this->error['message']);
-
-		if (DEBUG_MODE) {
-			Profiler::finish("PageModule[Initialize]");
-			Profiler::finish("PageModule");
-		}
+		
+		if($fully)
+			$this->theme->initialize();
 	}
 
 	private function findModule($basepath, $parts, $resetFindings = true) {

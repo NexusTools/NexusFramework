@@ -104,9 +104,17 @@ Framework.registerModule("Components", {
 			getElement: function(){
 				return this.element;
 			},
+			
+			giveFocus: function() {
+				this.getElement().focus();
+			},
 	
 			getValue: function() {
 				return this.getElement().value;
+			},
+	
+			setValue: function(val) {
+				this.getElement().value = val;
 			},
 			
 			hook: function(el) {

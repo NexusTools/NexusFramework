@@ -92,6 +92,15 @@ function relativepath($path) {
 	return $path;
 }
 
+function rootpath($path) {
+	$path = cleanpath($path);
+	if (endsWith($path, "/"))
+		$path = substr($path, 0, strlen($path)-1);
+	if (!startsWith($path, "/"))
+		return "/$path";
+	return $path;
+}
+
 function properpath($path) {
 	$path = cleanpath($path);
 	if (is_dir($path) && !endsWith($path, "/"))
