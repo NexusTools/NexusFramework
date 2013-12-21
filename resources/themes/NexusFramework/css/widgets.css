@@ -170,9 +170,54 @@ Table TR.alt TD {
 help {
 	display: inline;
 	font-size: 8px;
+	width: 8px;
+	height: 8px;
 	position: relative;
 	top: -5px;
 	cursor: help;
+}
+
+help {
+	display: inline;
+	font-size: 8px;
+	position: relative;
+	top: -5px;
+	cursor: help;
+}
+
+help:before {
+	top: 2px;
+	left: 4px;
+	z-index: 9;
+	content: '\f059';
+	background: white;
+	font-family: 'FontAwesome';
+	position: relative;
+	margin-left: -3px;
+	font-size: 11px;
+}
+
+warn,
+error {
+	color: yellow;
+	font-size: 10px;
+	display: inline;
+	margin-left: 8px;
+}
+
+error {
+	color: red;
+}
+
+warn:before,
+error:before {
+	z-index: 9;
+	content: '\f071';
+	background: white;
+	margin-right: 2px;
+	font-family: 'FontAwesome';
+	position: relative;
+	font-size: 11px;
 }
 
 select,widget.options, textarea,input.text {
