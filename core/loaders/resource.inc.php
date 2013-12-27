@@ -17,6 +17,7 @@ define("SHARED_TMP_PATH", BASE_TMP_PATH."Shared".DIRSEP);
 
 define("NOACCESS_MODE", true);
 define("DEBUG_MODE", false);
+define("DEV_MODE", false);
 
 if (is_file(INDEX_PATH."framework.config.php"))
 	require INDEX_PATH."framework.config.php";

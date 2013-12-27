@@ -49,6 +49,8 @@ if (!defined("CONFIG_PATH"))
 
 if (!defined("DEBUG_MODE"))
 	define("DEBUG_MODE", false);
+if (!defined("DEV_MODE"))
+	define("DEV_MODE", false);
 if (!defined("BAD_CONDITION_STATUS"))
 	define("BAD_CONDITION_STATUS", 403);
 

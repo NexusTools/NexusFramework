@@ -17,6 +17,8 @@ class Template {
 	private static $scripts = Array();
 	private static $styles = Array();
 	private static $styleMedia = Array();
+	private static $inlineStyles = Array();
+	private static $inlineStyleMedia = Array();
 	private static $elements = Array(Array(), Array(), Array());
 	private static $headerScripts = Array();
 	private static $footerScripts = Array();
@@ -228,6 +230,19 @@ class Template {
 			self::$systemStyleMedia[$id] = $media;
 	}
 
+	public static function addInlineStyle($style, $media = false) {
+		if(!($style = trim($style))
+			return;
+		if(!DEV_MODE && !DEBUG_MODE)
+			$style = StyleCompressor::compress($style);
+	
+		$id = Framework::uniqueHash($style);
+		if (!isset(self::$inlineStyles[$id]))
+			self::$inlineStyles[$id] = ;
+		if ($media)
+			self::$inlineStyleMedia[$id] = $media;
+	}
+
 	public static function addStyle($style, $media = false) {
 		$style = fullpath($style);
 		$id = Framework::uniqueHash($style);
@@ -342,6 +357,14 @@ class Template {
 			if (isset(self::$styleMedia[$id]))
 				echo "\" media=\"".self::$styleMedia[$id];
 			echo "\" data-source=\"$id\" />";
+		}
+		foreach (self::$inlineStyles as $id => $style) {
+			echo "<style type=\"text/css\"";
+			if (isset(self::$inlineStyleMedia[$id]))
+				echo " media=\"".self::$inlineStyleMedia[$id];
+			echo " data-source=\"$id\">";
+			echo $style;
+			echo "</style>";
 		}
 		Triggers::broadcast("template", "header");
 		echo "</head><body";
