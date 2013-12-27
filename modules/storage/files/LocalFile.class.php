@@ -11,13 +11,24 @@ class LocalFile extends FileLocker {
 			$this->open($autoOpen);
 	}
 
-	public function setContent( /* String */ $content, $autoClose = true, $encode = true, $unsafe = false) {
+	public function setContent( /* String */ $content, $encode = true, $autoClose = true, $unsafe = false) {
 		if ($unsafe) {
 			if (!$this->reopen(self::ReadWrite))
 				IOException::throwWriteError($this->getFileName());
 
-			if ($encode)
-				$content = json_encode($content);
+			if ($encode) {
+				if(!is_string($encode))
+					$encode = "json";
+				switch($encode) {
+					case "serialize":
+						$content = serialize($content);
+						break;
+						
+					default:
+						$content = json_encode($content);
+						break;
+				}
+			}
 			$this->write($content);
 
 			if ($autoClose)
@@ -26,16 +37,10 @@ class LocalFile extends FileLocker {
 			$this->close();
 
 			$tempFile = new LocalFile($this->getFileName().".tmp");
-			$tempFile->setContent($content, true, $encode, true);
+			$tempFile->setContent($content, $encode, true, true);
 			if (!$tempFile->move($this->getFileName(), true))
 				IOException::throwWriteError($this->getFileName());
 		}
-
-	}
-	
-	public static function getContentFor($file, $decode = true, $autoClose = true, $default = false, $checkFallback = true) {
-		$lFile = new LocalFile($file);
-		return $lFile->getContent($decode, $autoClose, $default, $checkFallback);
 	}
 
 	public function getContent($decode = true, $autoClose = true, $default = false, $checkFallback = true) {
@@ -47,9 +52,20 @@ class LocalFile extends FileLocker {
 			IOException::throwReadError($this->getFileName());
 
 		$content = fread($this->getResource(), $this->size());
-		if ($decode)
-			$content = json_decode($content, true);
-
+		if ($decode) {
+			if(!is_string($decode))
+				$decode = "json";
+			switch($decode) {
+				case "serialize":
+					$content = unserialize($content);
+					break;
+				
+				default:
+					$content = json_decode($content, true);
+					break;
+			}
+		}
+		
 		if ($autoClose)
 			$this->close();
 

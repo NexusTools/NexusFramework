@@ -231,14 +231,14 @@ class Template {
 	}
 
 	public static function addInlineStyle($style, $media = false) {
-		if(!($style = trim($style))
+		if(!($style = trim($style)))
 			return;
 		if(!DEV_MODE && !DEBUG_MODE)
 			$style = StyleCompressor::compress($style);
 	
 		$id = Framework::uniqueHash($style);
 		if (!isset(self::$inlineStyles[$id]))
-			self::$inlineStyles[$id] = ;
+			self::$inlineStyles[$id] = $style;
 		if ($media)
 			self::$inlineStyleMedia[$id] = $media;
 	}
