@@ -1,7 +1,8 @@
 Framework.registerModule("StringFormat", {
 	
 		idForDisplay: function(display){
-			return display;
+			return display.toLowerCase().replace(/([^\d\w\-\.\,]|\s)+/g, "-")
+					.replace(/(^\-|\-$)/g, "");
 		},
 		
 		displayForID: function(id){
