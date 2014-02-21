@@ -16,29 +16,26 @@ abstract class OutputFilter {
 		return $ret;
 	}
 
-	public static function startCompression() {
-		while (ob_get_level() > NATIVE_OB_LEVEL && ob_end_clean())
-			;
+	public static function startCompression($raw =false) {
+		while (ob_get_level() > NATIVE_OB_LEVEL && ob_end_clean());
 
 		if (defined("COMPRESSED_OUTPUT"))
 			return true;
 
-		if (defined("NO_COMPRESSED_OUTPUT")) {
-			ob_start(null, 5120);
+		if (defined("NO_COMPRESSED_OUTPUT"))
 			return true;
-		}
 
-		if (function_exists("ob_gzhandler") && array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) && preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) && ob_start("ob_gzhandler", 5120)) {
+		if (function_exists("ob_gzhandler") && array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) && preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) && ob_start("ob_gzhandler", 1048576)) {
 
 			define("COMPRESSED_OUTPUT", "gzip");
 			return true;
 		} else
-			if (function_exists("ob_deflatehandler") && array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) && preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) && ob_start("ob_deflatehandler", 5120)) {
+			if (function_exists("ob_deflatehandler") && array_key_exists("HTTP_ACCEPT_ENCODING", $_SERVER) && preg_match("/,?deflate,?/i", $_SERVER["HTTP_ACCEPT_ENCODING"]) && ob_start("ob_deflatehandler", 1048576)) {
 
-				define("COMPRESSED_OUTPUT", "deflate");
-				return true;
-			} else
-				return false;
+			define("COMPRESSED_OUTPUT", "deflate");
+			return true;
+		} else
+			return false;
 
 	}
 
@@ -55,13 +52,12 @@ abstract class OutputFilter {
 	 Used to reset the entire state of the output system.
 	 */
 	public static function resetToNative($attachVoid = true) {
-		while (ob_get_level() > NATIVE_OB_LEVEL && ob_end_clean())
-			;
+		while (ob_get_level() > NATIVE_OB_LEVEL && ob_end_clean());
 
 		if ($attachVoid)
-			ob_start("ob_void", 512);
+			ob_start("ob_void", 1048576);
 		else
-			ob_start();
+			ob_start(null, 1048576);
 	}
 
 	public function isActive() {

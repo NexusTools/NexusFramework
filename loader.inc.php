@@ -12,8 +12,6 @@ if (!defined("PHP_MAJOR_VERSION"))
 	throw new Exception("PHP version incompatible.");
 define("LOADER_START_TIME", microtime(true));
 
-ob_start(null, 5016, false); // Prevent destruction of built-in ob stack
-
 if (ini_get('zlib.output_compression'))
 	define("COMPRESSED_OUTPUT", true);
 if (function_exists("ob_gzhandler") && in_array("ob_gzhandler", ob_list_handlers()))
@@ -22,6 +20,8 @@ if (function_exists("ob_deflatehandler") && in_array("ob_deflatehandler", ob_lis
 	define("COMPRESSED_OUTPUT", "deflate");
 if (!defined("COMPRESSED_OUTPUT"))
 	while (ob_get_level() && @ob_end_clean());
+else
+	ob_start(null, 1048576, false); // Prevent destruction of built-in ob stack
 
 // Setup Output Buffering
 if (!function_exists("ob_void")) {
@@ -32,7 +32,7 @@ if (!function_exists("ob_void")) {
 	}
 }
 define("NATIVE_OB_LEVEL", ob_get_level());
-ob_start("ob_void", 512);
+ob_start("ob_void", 1048576);
 
 // Shorter Aliases
 define("DIRSEP", DIRECTORY_SEPARATOR);
