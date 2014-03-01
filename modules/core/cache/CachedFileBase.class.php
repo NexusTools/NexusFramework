@@ -45,7 +45,7 @@ abstract class CachedFileBase extends CachedObject {
 
 	public function getLifetime() {
 		return 2 + rand(0, 8); // 2 seconds to 10 seconds
-		}
+	}
 
 	protected abstract function getAdvancedID();
 	protected abstract function updateAdvancedMeta(&$meta);

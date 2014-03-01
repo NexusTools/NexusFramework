@@ -265,7 +265,7 @@ class PageModule {
 	}
 	
 	public function initializeTheme($fully =true) {
-		$this->theme = new Theme($this->themePath);
+		$this->theme = Theme::getInstanceByPath($this->themePath);
 		
 		if($fully)
 			$this->theme->initialize();
@@ -512,6 +512,8 @@ class PageModule {
 	}
 
 	public static function __callStatic($name, $args) {
+		if(!self::$instance)
+			throw new Exception("No active PageModule to call `$name` on");
 		return self::$instance->__call($name, $args);
 	}
 

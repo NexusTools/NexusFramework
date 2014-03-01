@@ -24,6 +24,8 @@ class Framework {
 		$path = fullpath($path ? $path : $key);
 		if (!endsWith($path, "/"))
 			$path .= "/";
+		if (endsWith($key, "/"))
+			$key = substr($key, 0, strlen($key)-1);
 		self::$boundResourcePaths[$key] = $path;
 	}
 
@@ -146,8 +148,6 @@ class Framework {
 						self::runPage("/errordoc/404");
 				} else
 					$path = substr($file, strlen(INDEX_PATH) - 1);
-			
-			
 			}
 			if (!($handle = opendir($file)))
 				self::runPage("/errordoc/500");
@@ -190,7 +190,7 @@ class Framework {
 					continue;
 
 				if (is_file($entry)) {
-					if (!endsWith($entry, ".php"))
+					if (!endsWith($entry, ".php") && !endsWith($entry, "~"))
 						array_push($files, $entry);
 					continue;
 				}
@@ -385,18 +385,21 @@ class Framework {
 			self::runPage("/errordoc/403");
 		self::serveFileInternal($path);
 	}
-
-	public static function serveResource($res, $onlyShared = false) {
-		if (startsWith($res, "ref/")) {
-			$res = substr($res, 4);
-			if (!$onlyShared && is_file($refFile = TMP_PATH."ref".DIRSEP.$res) && $data = unserialize(file_get_contents($refFile)))
+	
+	public static function serveReference($id, $onlyShared =false) {
+		if (!$onlyShared && is_file($refFile = TMP_PATH."ref".DIRSEP.$id) && $data = unserialize(file_get_contents($refFile)))
+			self::serveFile($data['path'], $data['mime'], isset($data['filename']) ? $data['filename'] : false);
+		else
+			if (is_file($refFile = SHARED_TMP_PATH."ref".DIRSEP.$id) && $data = unserialize(file_get_contents($refFile)))
 				self::serveFile($data['path'], $data['mime'], isset($data['filename']) ? $data['filename'] : false);
 			else
-				if (is_file($refFile = SHARED_TMP_PATH."ref".DIRSEP.$res) && $data = unserialize(file_get_contents($refFile)))
-					self::serveFile($data['path'], $data['mime'], isset($data['filename']) ? $data['filename'] : false);
-				else
-					self::runPage("/errordoc/404");
-		} else
+				self::runPage("/errordoc/404");
+	}
+
+	public static function serveResource($res, $onlyShared = false) {
+		if (startsWith($res, "ref/"))
+			self::serveReference(substr($res, 4));
+		else
 			if (startsWith($res, "badref/") && is_file($refFile = TMP_PATH."badref".DIRSEP.substr($res, 7)) && $data = unserialize(file_get_contents($refFile))) {
 				$expiresAt = time() + rand(strtotime("+1 month", 0), strtotime("+2 month", 0));
 				header("Expires: ".self::formatGMTDate($expiresAt));
@@ -469,6 +472,10 @@ class Framework {
 
 		}
 
+
+		if(startsWith($res, "user-themes/"))
+			self::serveFileInternal(INDEX_PATH . "themes" . DIRSEP . substr($res, 12));
+		
 		ExtensionLoader::loadEnabledExtensions();
 		foreach (self::$boundResourcePaths as $key => $path) {
 			if (startsWith($res, "$key/") || $key == $res)
@@ -515,7 +522,8 @@ Disallow: "
 				self::redirect($clean);
 			else
 				unset($clean);
-		}
+		} else if(isset($_GET['__refID']))
+			self::serveReference($_GET['__refID']);
 
 		if (startsWith($requestURI, "media")) {
 			if (file_exists($requestURI))
@@ -605,8 +613,39 @@ Disallow: "
 	public static function mimeForFile($path) {
 		return FileMime::forFile($path);
 	}
+	
+	public static function getBoundURI($rawPath) {
+		return self::getBoundPath($rawPath, true);
+	}
+	
+	public static function getBoundURL($rawPath) {
+		return self::getBoundPath($rawPath, false);
+	}
+	
+	private static function getBoundPath($rawPath, $relative) {
+		if (is_file($path = fullpath($rawPath))) {
+			if (startsWith($path, MEDIA_PATH))
+				return ($relative ? MEDIA_URI : MEDIA_URL).substr($path, strlen(MEDIA_PATH));
 
-	private static function getFileReference($rawPath, $mime_type, $realFilename, $shared, $relative) {
+			if (startsWith($path, FRAMEWORK_RES_PATH))
+				return ($relative ? BASE_URI : BASE_URL)."res".RES_CONNECTOR.substr($path, strlen(FRAMEWORK_RES_PATH));
+			
+			$themesPath = INDEX_PATH . "themes"  . DIRSEP;
+			
+			if(startsWith($path, $themesPath))
+				return ($relative ? BASE_URI : BASE_URL)."res".RES_CONNECTOR."user-themes/".substr($path, strlen($themesPath));
+			
+			foreach (self::$boundResourcePaths as $key => $boundPath) {
+				if (startsWith($path, $boundPath))
+					return ($relative ? BASE_URI : BASE_URL)."res".RES_CONNECTOR.$key."/".relativepath(substr($path, strlen($boundPath)));
+			}
+			
+		}
+			
+		return false;
+	}
+	
+	public static function getReferenceID($rawPath, $mime_type =false, $realFilename =false, $shared =false) {
 		if (!is_file($path = fullpath($rawPath))) {
 			if (!is_dir(($refPath = ($shared ? SHARED_TMP_PATH : TMP_PATH)."badref".DIRSEP)))
 				mkdir($refPath);
@@ -615,13 +654,7 @@ Disallow: "
 				file_put_contents($ref_file, serialize(Array("path" => $rawPath, "backtrace" => debug_backtrace(0))));
 			return ($relative ? BASE_URI : BASE_URL)."res".RES_CONNECTOR."badref/".urlencode($id);
 		}
-
-		if (startsWith($path, MEDIA_PATH))
-			return ($relative ? MEDIA_URI : MEDIA_URL).substr($path, strlen(MEDIA_PATH));
-
-		if (startsWith($path, FRAMEWORK_RES_PATH))
-			return ($relative ? BASE_URI."res".RES_CONNECTOR : BASE_URL."res".RES_CONNECTOR).substr($path, strlen(FRAMEWORK_RES_PATH));
-
+		
 		if ($shared && startsWith($rawPath, TMP_PATH))
 			$shared = false;
 
@@ -637,6 +670,15 @@ Disallow: "
 			else
 				file_put_contents($ref_file, serialize(Array("path" => $path, "mime" => $mime_type)));
 		}
+		
+		return $id;
+	}
+
+	private static function getFileReference($rawPath, $mime_type, $realFilename, $shared, $relative) {
+		if($boundPath = self::getBoundPath($rawPath, $relative))
+			return $boundPath;
+			
+		$id = self::getReferenceID($rawPath, $mime_type, $realFilename, $shared);
 
 		return ($shared ? ($relative ? SHARED_RESOURCE_URI : SHARED_RESOURCE_URL) : (($relative ? BASE_URI : BASE_URL)."res".RES_CONNECTOR))."ref/".urlencode($id);
 	}
@@ -653,7 +695,6 @@ Disallow: "
 	 */
 	public static function getReferenceURI($rawPath, $mime_type = false, $realFilename = false, $shared = true) {
 		return self::getFileReference($rawPath, $mime_type, $realFilename, $shared, true);
-
 	}
 
 	public static function getReferenceURL($rawPath, $mime_type = false, $realFilename = false, $shared = true) {

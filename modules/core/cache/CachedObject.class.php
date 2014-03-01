@@ -179,12 +179,28 @@ abstract class CachedObject {
 	public function getReferenceURI($mime_type = false, $realFilename = false) {
 		if (!$mime_type && method_exists($this, "getMimeType"))
 			$mime_type = $this->getMimeType();
+		if(method_exists($this, "getFilepath")) {
+			$boundPath = Framework::getBoundURI($this->getFilepath());
+			if($boundPath) {
+				$refID = Framework::getReferenceID($this->getStoragePath(), $mime_type, $realFilename, $this->isShared());
+				return $boundPath . "?__refID=" . urlencode($refID);
+			}
+		}
+		
 		return Framework::getReferenceURI($this->getStoragePath(), $mime_type, $realFilename, $this->isShared());
+		
 	}
 
 	public function getReferenceURL($mime_type = false, $realFilename = false) {
 		if (!$mime_type && method_exists($this, "getMimeType"))
 			$mime_type = $this->getMimeType();
+		if(method_exists($this, "getFilepath")) {
+			$boundPath = Framework::getBoundURL($this->getFilepath());
+			if($boundPath) {
+				$refID = Framework::getReferenceID($this->getStoragePath(), $mime_type, $realFilename, $this->isShared());
+				return $boundPath . "?__refID=" . urlencode($refID);
+			}
+		}
 		return Framework::getReferenceURL($this->getStoragePath(), $mime_type, $realFilename, $this->isShared());
 	}
 

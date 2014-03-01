@@ -197,6 +197,11 @@ class Template {
 	}
 
 	public static function addScripts($scripts) {
+		if(DEBUG_MODE || DEV_MODE) {
+			foreach($scripts as $script)
+				self::addScript($script);
+			return;
+		}
 		$compressedScripts = new ScriptCompressor();
 		foreach ($scripts as $script)
 			$compressedScripts->addScript(fullpath($script));
@@ -205,7 +210,7 @@ class Template {
 	}
 
 	public static function importPrototypeAddon($script) {
-		self::addScript("resources/javascript/addons/".StringFormat::idForDisplay($script).".js");
+		self::addScript(FRAMEWORK_RES_PATH . "javascript/addons/".StringFormat::idForDisplay($script).".js");
 	}
 
 	public static function addExternalStyle($style, $media = false) {
@@ -253,6 +258,11 @@ class Template {
 	}
 
 	public static function addStyles($styles, $media = false) {
+		if(DEBUG_MODE || DEV_MODE) {
+			foreach($styles as $style)
+				self::addStyle($style);
+			return;
+		}
 		$compressedStyles = new StyleCompressor();
 		foreach ($styles as $style)
 			$compressedStyles->addStyle(fullpath($style));

@@ -2,7 +2,8 @@
 class Theme extends CachedFile {
 
 	private static $activePath;
-	private $parent = false;
+	private static $instances = array();
+	private $parent = null;
 
 	protected static function findThemePath($name) {
 		if (file_exists($path = INDEX_PATH."themes".DIRSEP.$name))
@@ -19,12 +20,26 @@ class Theme extends CachedFile {
 			define("THEME", "Basic");
 		self::$activePath = self::findThemePath(THEME);
 	}
+	
+	public static function getInstanceByName($name) {
+		return self::getInstanceByPath(self::findThemePath($name));
+	}
+	
+	public static function getInstanceByPath($path) {
+		return self::getInstanceByPath0(fullpath($path));
+	}
+	
+	protected static function getInstanceByPath0($path) {
+		if(!array_key_exists($path, self::$instances))
+			return self::$instances[$path] = new Theme($path);
+		return self::$instances[$path];
+	}
 
 	public static function getPath() {
 		return self::$activePath;
 	}
 
-	public function __construct($path) {
+	protected function __construct($path) {
 		parent::__construct($path);
 	}
 
@@ -92,18 +107,28 @@ class Theme extends CachedFile {
 	protected function isShared() {
 		return true;
 	}
+	
+	public function getParent() {
+		if($this->parent === null) {
+				$this->parent = false;
+			if ($this->hasKey("metadata")) {
+				$metadata = $this->getValue("metadata");
+				if (array_key_exists("parent", $metadata))
+					$this->parent = Theme::getInstanceByName($metadata["parent"]);
+			}
+		}
+		return $this->parent;
+	}
 
 	public function initialize($actual =true) {
 		if ($this->hasKey("error"))
 			throw new Exception($this->getValue('error'));
+		
+		Framework::addResourcePath("themes/" . basename(self::getFilepath()), self::getFilepath());
 
-		if ($this->hasKey("metadata")) {
-			$metadata = $this->getValue("metadata");
-			if (array_key_exists("parent", $metadata)) {
-				$this->parent = new Theme(self::findThemePath($metadata["parent"]));
-				$this->parent->initialize($actual);
-			}
-		}
+		$parent = $this->getParent();
+		if($parent)
+			$parent->initialize($actual);
 		
 		if ($this->hasKey('hs'))
 			require_chdir($this->getValue('hs'), $this->getFilepath());

@@ -233,11 +233,19 @@ class ExtensionLoader extends CachedFile {
 			if (isset($extension['classes']))
 				ClassLoader::registerClasses($extension['classes']);
 
-			foreach ($extension['includes'] as $file) {
-				$file = fullpath($file);
-				if (!is_file($file))
-					throw new Exception("$file is Missing, while loading $provides, ".$extension['path']);
-				require $file;
+			if (DEBUG_MODE || DEV_MODE || isset($extension['bind-res-path']))
+				Framework::addResourcePath("extensions/" . $provides . "/", $extension['path']);
+
+			try {
+				foreach ($extension['includes'] as $file) {
+					$file = fullpath($file);
+					if (!is_file($file))
+						throw new Exception("$file is Missing, while loading $provides, ".$extension['path']);
+					require $file;
+				}
+			} catch(Exception $e) {
+				Framework::removeResourcePath("extensions/" . $provides . "/", $extension['path']);
+				throw $e;
 			}
 
 			self::$extensionInfoFiles[$extension['name']] = $extension['infofile'];
