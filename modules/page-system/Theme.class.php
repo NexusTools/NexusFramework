@@ -123,8 +123,6 @@ class Theme extends CachedFile {
 	public function initialize($actual =true) {
 		if ($this->hasKey("error"))
 			throw new Exception($this->getValue('error'));
-		
-		Framework::addResourcePath("themes/" . basename(self::getFilepath()), self::getFilepath());
 
 		$parent = $this->getParent();
 		if($parent)

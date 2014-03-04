@@ -631,7 +631,6 @@ Disallow: "
 				return ($relative ? BASE_URI : BASE_URL)."res".RES_CONNECTOR.substr($path, strlen(FRAMEWORK_RES_PATH));
 			
 			$themesPath = INDEX_PATH . "themes"  . DIRSEP;
-			
 			if(startsWith($path, $themesPath))
 				return ($relative ? BASE_URI : BASE_URL)."res".RES_CONNECTOR."user-themes/".substr($path, strlen($themesPath));
 			
