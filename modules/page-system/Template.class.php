@@ -144,9 +144,9 @@ class Template {
 	}
 
 	public static function addFooter($script) {
-		if (is_string($script) && file_exists(fullpath($script))) {
-			$id = Framework::uniqueHash($script);
-			$script = Array(new PHPInclude($script), "run");
+		if (is_string($script) && file_exists($fpath = fullpath($script))) {
+			$id = Framework::uniqueHash($fpath);
+			$script = Array(new PHPInclude($fpath), "run");
 		} else
 			if (is_array($script) && is_callable($script))
 				$id = Framework::uniqueHash($script);
@@ -346,11 +346,9 @@ class Template {
 		}
 		foreach (self::$systemStyles as $id => $style) {
 			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
-			if ($style instanceof StyleCompressor) {
+			if ($style instanceof CachedObject)
 				echo $style->getReferenceURI("text/css");
-				if (DEBUG_MODE)
-					echo "\" storage=\"".$style->getStoragePath();
-			} else
+			else
 				echo "$style";
 			if (isset(self::$systemStyleMedia[$id]))
 				echo "\" media=\"".self::$systemStyleMedia[$id];
@@ -358,11 +356,9 @@ class Template {
 		}
 		foreach (self::$styles as $id => $style) {
 			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
-			if ($style instanceof StyleCompressor) {
+			if ($style instanceof CachedObject)
 				echo $style->getReferenceURI("text/css");
-				if (DEBUG_MODE)
-					echo "\" storage=\"".$style->getStoragePath();
-			} else
+			else
 				echo "$style";
 			if (isset(self::$styleMedia[$id]))
 				echo "\" media=\"".self::$styleMedia[$id];
