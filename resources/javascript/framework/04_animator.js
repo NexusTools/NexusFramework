@@ -45,7 +45,7 @@ Framework.registerModule("Animator", {
 							element.__styleAnimator.set(pair.key, pair.value);
 							empty = false;
 						} else {
-							styleChanges[pair.key] = pair.value.target;
+							styleChanges[pair.key] = pair.value.target + pair.value.suffix;
 							if(pair.value.callback)
 								pair.value.callback(element);
 						}
@@ -67,6 +67,7 @@ Framework.registerModule("Animator", {
 	
 	animateStyle: function(element, style, target, opts) {
 		element = $(element);
+		target = Math.round(parseFloat(target) * 100) / 100;
 		
 		opts = opts || {};
 		opts.duration = parseFloat(opts.duration) || 200;
