@@ -7,10 +7,27 @@ Framework.registerModule("Animator", {
 			return time;
 		},
 		"easeIn": function(time) {
-			return Math.sqrt(time);
+			return time*time;
 		},
 		"easeOut": function(time) {
-			return time*time;
+			return Math.sqrt(time);
+		},
+		"easeInAndOut": function(time) {
+			if(time > 0.5) {
+				time -= 0.5;
+				time *= 2;
+				return 0.5+(time*time)/2;
+			} else
+				return Math.sqrt(time*2)/2;
+		},
+		"easeCenter": function(time) {
+			if(time > 0.5) {
+				time -= 0.5;
+				return 0.5+Math.sqrt(time*2)/2;
+			} else {
+				time *= 2;
+				return (time*time)/2;
+			}
 		}
 	},
 	
@@ -36,7 +53,7 @@ Framework.registerModule("Animator", {
 						if(dur > 1)
 							dur = 1;
 						
-						console.log(dur, pair);
+						//console.log(dur, pair);
 						if(!styleChanges)
 							styleChanges = {};
 						if(dur < 1) {
@@ -85,7 +102,7 @@ Framework.registerModule("Animator", {
 			opts.algorithm = Framework.Animator.algorithms.linear;
 		else if(!Object.isFunction(opts.algorithm))
 			opts.algorithm = Framework.Animator.algorithms[opts.algorithm];
-		console.log(opts.algorithm);
+		//console.log(opts.algorithm);
 			
 		if(!("__styleAnimator" in element))
 			element.__styleAnimator = $H();

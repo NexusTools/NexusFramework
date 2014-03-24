@@ -28,8 +28,18 @@ Framework.registerModule("Components", {
 					Element.select(container, component.key).each(function(element){
 						console.log(element);
 						try {
-							if(!element.components)
+							if(!element.components) {
 								element.components = {};
+								element.__componentsByName = {};
+								element.getComponentByName = function(name) {
+									return element.componentsByName[name];
+								}
+								element.invokeComponentMethod = function(component, method) {
+									component = element.getComponentByName(component);
+									method = component[method];
+									return method();
+								}
+							}
 						
 							var cComponent;
 							if(component.key in element.components) {
@@ -43,6 +53,9 @@ Framework.registerModule("Components", {
 							} else {
 								cComponent = new component.value(element);
 								element.components[component.key] = cComponent;
+								try{
+									element.__componentsByName[cComponent.getName()] = cComponent;
+								}catch(e) {}
 							}
 							cComponent.isSetup = true;
 						} catch(e) {
@@ -64,7 +77,7 @@ Framework.registerModule("Components", {
 			console.log("Destroying Container", container);
 			Framework.Components.registered.each(function(component){
 				console.log(component.key);
-				container.select(component.key).each(function(element){
+				Element.select(container, component.key).each(function(element){
 					console.log(element);
 					try {
 						console.log(element.components);
