@@ -134,7 +134,7 @@ class Database extends Lockable {
 		if ($stamp == "1970-01-01 00:00:00")
 			return 0;
 		
-		return DateFormat::format($stamp, false, "UTC", "U")*1;
+		return DateTime::createFromFormat("Y-m-d H:i:s", $stamp, "UTC")->format("U");
 	}
 
 	public static function timeToTimestamp($time = 0, $inputTZ ="UTC") {

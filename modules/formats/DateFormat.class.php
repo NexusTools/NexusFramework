@@ -18,16 +18,18 @@ class DateFormat {
 	}
 
 	public static function format($time, $neverForZero = true, $inputTZ = "UTC", $format = DEFAULT_DATE_FORMAT) {
-		if ($time === false)
-			$time = time();
-		else
-			if (is_numeric($time)) {
-				if ($time == 0)
-					return "Never";
+		if(!($time instanceof DateTime)) {
+			if ($time === false)
+				$time = time();
+			else 
+				if (is_numeric($time)) {
+					if ($time == 0)
+						return "Never";
 
-				$date = DateTime::createFromFormat("U", $time, self::getTimeZone($inputTZ));
-			} else
-				$date = new DateTime($time, self::getTimeZone($inputTZ));
+					$date = DateTime::createFromFormat("U", $time, self::getTimeZone($inputTZ));
+				} else
+					$date = new DateTime($time, self::getTimeZone($inputTZ));
+		}
 
 		$date->setTimeZone(self::getTimeZone());
 		return $date->format($format);
