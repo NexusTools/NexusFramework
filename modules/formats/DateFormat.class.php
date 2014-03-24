@@ -40,7 +40,7 @@ class DateFormat {
 	}
 	
 	public static function formatSqlTimestamp($time, $inputTZ = "UTC") {
-		return self::format($time, false, $inputTZ, "m-d-Y H:i:s", "GMT");
+		return self::format($time, false, $inputTZ, "m-d-Y H:i:s", "UTC");
 	}
 
 }

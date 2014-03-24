@@ -135,7 +135,12 @@ class Database extends Lockable {
 			return 0;
 		
 		return DateFormat::format(DateTime::createFromFormat(
-				"Y-m-d H:i:s", $stamp), false, "GMT", "U", "UTC");
+				"Y-m-d H:i:s", $stamp), false, "UTC", "U", "UTC");
+	}
+	
+	public static function formatTimestamp($stamp, $format =DEFAULT_DATE_FORMAT) {
+		return DateFormat::format(DateTime::createFromFormat(
+				"Y-m-d H:i:s", $stamp), false, "UTC", $format);
 	}
 
 	public static function timeToTimestamp($time = 0, $inputTZ ="UTC") {
