@@ -17,26 +17,30 @@ class DateFormat {
 		return self::$timezones[$zoneid];
 	}
 
-	public static function format($time, $neverForZero = true, $inputTZ = "UTC", $format = DEFAULT_DATE_FORMAT) {
-		if(!($time instanceof DateTime)) {
+	public static function format($time = false, $neverForZero = true, $inputTZ = "UTC", $format = DEFAULT_DATE_FORMAT, $outputFormat = false) {
+		if($time instanceof DateTime) 
+			$date = $time;
+		else {
 			if ($time === false)
 				$time = time();
-			else 
-				if (is_numeric($time)) {
-					if ($time == 0)
-						return "Never";
+			
+			if (is_numeric($time)) {
+				if ($time == 0)
+					return "Never";
 
-					$date = DateTime::createFromFormat("U", $time, self::getTimeZone($inputTZ));
-				} else
-					$date = new DateTime($time, self::getTimeZone($inputTZ));
+				$date = DateTime::createFromFormat("U", $time, self::getTimeZone($inputTZ));
+			} else
+				$date = new DateTime($time, self::getTimeZone($inputTZ));
 		}
 
-		$date->setTimeZone(self::getTimeZone());
+		if(!$outputFormat)
+			$outputFormat = self::getTimeZone();
+		$date->setTimeZone($outputFormat);
 		return $date->format($format);
 	}
-
+	
 	public static function formatSqlTimestamp($time, $inputTZ = "UTC") {
-		return self::format($time, false, $inputTZ, "m-d-Y H:i:s");
+		return self::format($time, false, $inputTZ, "m-d-Y H:i:s", "GMT");
 	}
 
 }

@@ -134,14 +134,15 @@ class Database extends Lockable {
 		if ($stamp == "1970-01-01 00:00:00")
 			return 0;
 		
-		return DateTime::createFromFormat("Y-m-d H:i:s", $stamp, "UTC")->format("U");
+		return DateFormat::format(DateTime::createFromFormat(
+				"Y-m-d H:i:s", $stamp), false, "GMT", "U", "UTC");
 	}
 
 	public static function timeToTimestamp($time = 0, $inputTZ ="UTC") {
 		if (!$time)
 			$time = time();
 			
-		return DateFormat::format($time, false, $inputTZ, "Y-m-d H:i:s");
+		return DateFormat::formatSqlTimestamp($time, $inputTZ);
 	}
 
 	public static function countQueries() {
