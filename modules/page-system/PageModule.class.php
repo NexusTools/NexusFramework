@@ -177,16 +177,12 @@ class PageModule {
 
 			if (count($this->arguments) == 2 && $this->arguments[0] == "errordoc" && is_numeric($this->arguments[1]))
 				$this->setError(intval($this->arguments[1]));
-			else {
-				if (!isset($__framework_activePath))
-					$__framework_activePath = INDEX_PATH;
-
-				if (!$this->findModule($__framework_activePath."pages/", $this->arguments)) {
-					if ($pureVirtualPaths === false)
-						$pureVirtualPaths = ExtensionLoader::getVirtualPaths();
-					$this->exploreVirtualPaths($this->arguments, $pureVirtualPaths);
-				}
+			else if (!$this->findModule(PAGES_PATH, $this->arguments)) {
+				if ($pureVirtualPaths === false)
+					$pureVirtualPaths = ExtensionLoader::getVirtualPaths();
+				$this->exploreVirtualPaths($this->arguments, $pureVirtualPaths);
 			}
+			
 		}
 
 		if (!$this->script && !$this->error)
@@ -196,14 +192,15 @@ class PageModule {
 			$this->workingPath = "/errordoc/".$this->error['code'];
 			$this->arguments = Array("errordoc", $this->error['code']);
 
-			if (!$this->findModule(INDEX_PATH."pages/", $this->arguments)) {
+			if (!$this->findModule(PAGES_PATH, $this->arguments)) {
 				if ($pureVirtualPaths === false)
 					$pureVirtualPaths = ExtensionLoader::getVirtualPaths();
 
 				if (!$this->exploreVirtualPaths($this->arguments, $pureVirtualPaths)) {
 					//header("Content-Type: text/plain");
 					//OutputHandlerStack::stop();
-					$base = INDEX_PATH."pages".DIRSEP;
+					
+					$base = PAGES_PATH;
 					$sidebarPaths = Array("errordoc/root", "errordoc", "root");
 
 					foreach ($sidebarPaths as $path) {

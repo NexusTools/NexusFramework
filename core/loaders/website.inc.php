@@ -15,6 +15,11 @@ else
 
 require $runPath."framework.config.php";
 
+if(!defined("RUN_PATH"))
+	define("RUN_PATH", $runPath);
+if(!defined("PAGES_PATH"));
+	define("PAGES_PATH", $runPath . "pages" . DIRSEP);
+
 if (!defined("BASE_TMP_PATH")) {
 	$tmpPath = cleanpath(sys_get_temp_dir().DIRSEP."NexusFramework");
 	if (!is_writable(sys_get_temp_dir()) || (!is_dir($tmpPath) && !mkdir($tmpPath, 0777, true))) {
@@ -94,5 +99,5 @@ if (array_key_exists("ClientID", $_SESSION) && $_SESSION["ClientID"] != ClientIn
 		}
 
 Profiler::finish("Loader");
-Framework::run(REQUEST_URI, $runPath);
+Framework::run(REQUEST_URI, RUN_PATH);
 ?>
