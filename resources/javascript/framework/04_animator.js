@@ -137,14 +137,22 @@ Framework.registerModule("Animator", {
 		Element.addMethods({
 			"animateStyle": thisInstance.animateStyle,
 			"fadeOut": function(element, opts) {
+				opts = opts || {};
+				opts.callback = opts.callback || function() {
+					Element.hide(element);
+				};
 				return thisInstance.animateStyle(element,
 						"opacity", 0, opts);
 			},
-			"fadeIn": function(element, opts) {
+			"fadeIn": function(element, opts, startInvisible) {
+				if(startInvisible || !Element.visible(element))
+					Element.setOpacity(element, 0);
+				
+				Element.show(element);
 				return thisInstance.animateStyle(element,
 						"opacity", 1, opts);
 			},
-			slideTo: function(element, target, opts) {
+			"slideTo": function(element, target, opts) {
 				opts = opts || {};
 				opts.suffix = opts.suffix || "px";
 				if("top" in target)
@@ -155,7 +163,7 @@ Framework.registerModule("Animator", {
 									"left", target.left, opts);
 				return element;
 			},
-			sizeTo: function(element, target, opts) {
+			"sizeTo": function(element, target, opts) {
 				opts = opts || {};
 				opts.suffix = opts.suffix || "px";
 				if("width" in target)
