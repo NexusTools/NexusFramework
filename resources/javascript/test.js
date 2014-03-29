@@ -1,5 +1,0 @@
-{
-	start: function(){
-		test();
-	}
-}

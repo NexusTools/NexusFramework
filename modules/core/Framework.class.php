@@ -430,18 +430,7 @@ class Framework {
 			self::serveFile(FRAMEWORK_RES_PATH."LGPL3.0.html");
 
 		case "script":
-			$expiresAt = time() + rand(strtotime("+1 month", 0), strtotime("+2 month", 0));
-			header("Expires: ".self::formatGMTDate($expiresAt));
-			OutputFilter::startCompression();
-			$scmpr = new ScriptCompressor(true);
-			$path = FRAMEWORK_RES_PATH."javascript".DIRSEP;
-
-			$scmpr->addScript($path."prototype.js");
-			foreach (glob($path."framework".DIRSEP."*.js") as $script) {
-				$scmpr->addScript($script);
-			}
-			$scmpr->dumpAsResponse();
-			exit;
+			throw new Exception("Discontinued Script");
 
 		case "dirstyle":
 			$expiresAt = time() + rand(strtotime("+1 month", 0), strtotime("+2 month", 0));

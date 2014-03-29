@@ -79,10 +79,10 @@ Framework.registerModule("Timers", {
 				this.queue = [];
 
 				while(activeQueue.length > 0){
-					var event = activeQueue.shift();
+					var eventInstance = activeQueue.shift();
 					try{
-						if(event() !== false)
-							this.queue.push(event);
+						if(eventInstance.callback() !== false)
+							this.queue.push(eventInstance);
 					}catch(e){}
 				}
 				
@@ -92,10 +92,24 @@ Framework.registerModule("Timers", {
 
 			queue: [],
 			addCallback: function(callback){
-				if(this.contains(callback))
-					return;
-				this.queue.push(callback);
-				this.start();
+				var eventInstance = this.eventForCallback(callback);
+				if(!eventInstance) {
+					var thisEventQueue = this;
+					eventInstance = {
+						"callback": callback,
+					
+						"isQueued": function() {
+							return !!thisEventQueue.contains(callback);
+						},
+						
+						"stop": function() {
+							thisEventQueue.removeCallback(this.callback);
+						}
+					};
+					this.queue.push(eventInstance);
+					this.start();
+				}
+				return eventInstance;
 			},
 		
 			removeCallback: function(callback){
@@ -106,11 +120,27 @@ Framework.registerModule("Timers", {
 						this.stop();
 				}
 			},
-		
-			indexOf: function(callback){
-				return this.queue.indexOf(callback);
+			
+			eventForCallback: function(callback) {
+				var pos = this.indexOf(callback);
+				if(pos > -1)
+					return this.queue[pos];
+				
+				return null;
 			},
 		
+			indexOf: function(callback){
+				var index = 0;
+				this.queue.each(function(event) {
+					if(event.callback == callback)
+						return index;
+					
+					index ++;
+				});
+				return -1;
+				return this.queue.indexOf(callback);
+			},
+			
 			contains: function(callback){
 				return this.indexOf(callback) != -1;
 			}

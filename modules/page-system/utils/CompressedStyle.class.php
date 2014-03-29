@@ -8,7 +8,7 @@ class CompressedStyle extends StyleCompressor {
 		$this->addStyle($path);
 	}
 
-	public function getFilename() {
+	public function getFilepath() {
 		return $this->filename;
 	}
 

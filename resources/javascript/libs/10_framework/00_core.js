@@ -10,7 +10,7 @@ var Framework = {
 	registerModule: function(name, structure, reqs) {
 		if(name in Framework)
 			throw "Module `" + name + "` Already Registered";
-			
+		
 		console.log("Loading Module `"+ name +"`");
 		var depsUnmet = [];
 		if(reqs instanceof Array)

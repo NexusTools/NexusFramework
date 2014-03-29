@@ -342,7 +342,7 @@ class Template {
 					echo "\" storage=\"".$style->getStoragePath();
 			} else
 				echo "$style";
-			echo "\" data-source=\"$id\" />";
+			echo "\" />";
 		}
 		foreach (self::$systemStyles as $id => $style) {
 			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
@@ -352,7 +352,7 @@ class Template {
 				echo "$style";
 			if (isset(self::$systemStyleMedia[$id]))
 				echo "\" media=\"".self::$systemStyleMedia[$id];
-			echo "\" data-source=\"$id\" />";
+			echo "\" />";
 		}
 		foreach (self::$styles as $id => $style) {
 			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
@@ -362,15 +362,13 @@ class Template {
 				echo "$style";
 			if (isset(self::$styleMedia[$id]))
 				echo "\" media=\"".self::$styleMedia[$id];
-			echo "\" data-source=\"$id\" />";
+			echo "\" />";
 		}
 		foreach (self::$inlineStyles as $id => $style) {
 			echo "<style type=\"text/css\"";
 			if (isset(self::$inlineStyleMedia[$id]))
 				echo " media=\"".self::$inlineStyleMedia[$id];
-			echo " data-source=\"$id\">";
-			echo $style;
-			echo "</style>";
+			echo ">$style</style>";
 		}
 		Triggers::broadcast("template", "header");
 		echo "</head><body";
@@ -395,28 +393,61 @@ class Template {
 
 		$fm_config = Triggers::broadcast("template", "config");
 
-		$fm_config = json_encode(array_merge_recursive($fm_config, Array("TITLE_FORMAT" => self::$titleFormat,
-			"DEFAULT_PAGE_NAME" => DEFAULT_PAGE_NAME,
-			"FRAMEWORK_VERSION" => FRAMEWORK_VERSION,
-			"LEGACY_BROWSER" => LEGACY_BROWSER)));
+		$fm_config = json_encode(array_merge_recursive($fm_config,
+			Array("TITLE_FORMAT" => self::$titleFormat,
+				"DEFAULT_PAGE_NAME" => DEFAULT_PAGE_NAME,
+				"FRAMEWORK_VERSION" => FRAMEWORK_VERSION,
+				"LEGACY_BROWSER" => LEGACY_BROWSER)));
 		echo "<framework:config version=\"";
 		echo Framework::uniqueHash($fm_config, Framework::URLSafeHash);
 		echo "\"><!-- ($fm_config) --></framework:config>";
-		echo "<script data-source=\"__framework-base__\" src=\"".SHARED_RESOURCE_URL."script\"></script>";
+		
+		$compress = !DEBUG_MODE && !DEV_MODE;
+		if(!$compress)
+			echo "<!-- Start NexusFrameworkLibs -->";
+		$path = FRAMEWORK_RES_PATH . "javascript" . DIRSEP . "libs" . DIRSEP;
+		foreach(glob("$path*", GLOB_MARK | GLOB_ONLYDIR) as $libPath) {
+			$script = false;
+			foreach(glob("$libPath*.js") as $libFile) {
+				if(!is_file($libFile) || !is_readable($libFile))
+					continue;
+				
+				if($compress) {
+					if(!$script)
+						$script = new ScriptCompressor(true);
+					
+					$script->addScript($libFile);
+				} else {
+					$script = new CompressedScript($libFile);
+					
+					echo "<script src=\"";
+					echo $script->getReferenceURI("text/javascript");
+					echo "\"></script>";
+					
+					$script = false;
+				}
+			}
+			
+			if($script) {
+				echo "<script src=\"";
+				echo $script->getReferenceURI("text/javascript");
+				echo "\"></script>";
+			}
+		}
+		if(!$compress)
+			echo "<!-- End NexusFrameworkLibs -->";
 
 		foreach (self::$globalScripts as $id => $script) {
-			echo "<script data-source=\"$id\" src=\"";
+			echo "<script src=\"";
 			if ($script instanceof ScriptCompressor) {
 				echo $script->getReferenceURI("text/javascript");
-				if (DEBUG_MODE)
-					echo "\" storage=\"".$script->getStoragePath();
 			} else
 				echo "$script";
 			echo "\"></script>";
 		}
 
 		foreach (self::$scripts as $id => $script) {
-			echo "<script data-source=\"$id\" src=\"";
+			echo "<script src=\"";
 			if ($script instanceof ScriptCompressor) {
 				echo $script->getReferenceURI("text/javascript");
 				if (DEBUG_MODE)

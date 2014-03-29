@@ -10,6 +10,10 @@ class LocalFile extends FileLocker {
 		if ($autoOpen !== false)
 			$this->open($autoOpen);
 	}
+	
+	public function setRawContent($content, $autoClose = true, $unsafe = false) {
+		$this->setContent($content, false, $autoClose, $unsafe);
+	}
 
 	public function setContent( /* String */ $content, $encode = true, $autoClose = true, $unsafe = false) {
 		if ($unsafe) {
@@ -41,6 +45,10 @@ class LocalFile extends FileLocker {
 			if (!$tempFile->move($this->getFileName(), true))
 				IOException::throwWriteError($this->getFileName());
 		}
+	}
+	
+	public function getRawContent($autoClose = true, $default = false, $checkFallback = true) {
+		return $this->getContent(false, $autoClose, $default, $checkFallback);
 	}
 
 	public function getContent($decode = true, $autoClose = true, $default = false, $checkFallback = true) {
