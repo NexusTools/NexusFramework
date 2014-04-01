@@ -19,8 +19,9 @@ Framework.registerModule("Timers", {
 				return (new Date()).getTime();
 			};
 		
-
-		this.AccurateTimer = Class.create({
+		
+		
+		this.AccurateTimer = Class.create("AccurateTimer", {
 			initialize: function(callback, frequency, autostart) {
 				this.callback = callback;
 				this.frequency = frequency*1 || 20; // Default 50fps
@@ -31,7 +32,7 @@ Framework.registerModule("Timers", {
 
 			start: function(){
 				if (this.timer !== undefined) return;
-				console.log("Starting Timer", this);
+				//console.log("Starting Timer", this);
 				this.nextTimeout = Framework.Timers.now();
 				this.onTimerEvent();
 			},
@@ -42,7 +43,7 @@ Framework.registerModule("Timers", {
 
 			stop: function() {
 				if (this.timer === undefined) return;
-				console.log("Stopping Timer", this);
+				//console.log("Stopping Timer", this);
 				try{clearTimeout(this.timer);}catch(e){}
 				this.timer = undefined;
 			},
@@ -61,15 +62,12 @@ Framework.registerModule("Timers", {
 					}
 					this.timer = setTimeout(this.onTimerEvent.bind(this), timeout);
 					return;
-				} catch(e) {
-					console.log(this, "" + e);
-					console.log(e.stack);
-				}
+				} catch(e) {}
 				this.timer = undefined;
 			}
 		});
 
-		this.EventQueue = Class.create(this.AccurateTimer, {
+		this.EventQueue = Class.create("EventQueue", this.AccurateTimer, {
 			initialize: function($super, frequency) {
 				$super(null, frequency);
 			},
@@ -102,7 +100,7 @@ Framework.registerModule("Timers", {
 							return !!thisEventQueue.contains(callback);
 						},
 						
-						"stop": function() {
+						"remove": function() {
 							thisEventQueue.removeCallback(this.callback);
 						}
 					};
@@ -145,6 +143,64 @@ Framework.registerModule("Timers", {
 				return this.indexOf(callback) != -1;
 			}
 
+		});
+		
+		this.DelayTimer = Class.create("DelayTimer", {
+		
+			initialize: function(actionToggleMode) {
+				this.actions = {};
+				this.actionToggleMode = actionToggleMode;
+				if(this.actionToggleMode)
+					this.activatedName = false;
+			},
+		
+			registerAction: function(name, callback, delay) {
+				delay = delay || 200;
+				
+				this.actions[name] = {
+					"callback": callback,
+					"delay": delay
+				}
+				
+				return {
+					"revoke": (function() {
+						this.revokeAction(name)
+					}).bind(this)
+				}
+			},
+			
+			revokeAction: function(name) {
+				delete this.actions[name];
+			},
+			
+			invoke: function(name) {
+				if(!(name in this.actions))
+					throw "`" + name + "` is not a registered action.";
+				
+				if(this.actionToggleMode)
+					this.activatedName = name;
+				
+				try{clearTimeout(this.activationTimeout);}catch(e){}
+				this.actions[name].callback();
+			},
+			
+			activate: function(name, delay) {
+				if(!(name in this.actions))
+					throw "`" + name + "` is not a registered action.";
+				
+				if(this.actionToggleMode) {
+					if(this.activatedName == name)
+						return;
+					
+					this.activatedName = name;
+				}
+				
+				//console.log("Activating", name);
+				var action = this.actions[name];
+				try{clearTimeout(this.activationTimeout);}catch(e){}
+				this.activationTimeout = setTimeout(action.callback, delay || action.delay);
+			}
+		
 		});
 		
 		this.SystemQueue = new this.EventQueue();

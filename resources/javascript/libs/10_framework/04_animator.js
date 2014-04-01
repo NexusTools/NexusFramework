@@ -122,7 +122,7 @@ Framework.registerModule("Animator", {
 			"duration": parseFloat(opts.duration),
 			"algorithm": opts.algorithm
 		});
-		console.log(element.__styleAnimator);
+		//console.log(element.__styleAnimator);
 		
 		if(Framework.Animator.active.indexOf(element))
 			Framework.Animator.active.push(element);

@@ -53,22 +53,16 @@ Framework.registerModule("Components", {
 			Framework.Components.isProcessing ++;
 			//console.log("Setup components on element", element);
 			try {
-				if(!element.components) {
-					element.components = {};
-					element.__componentsByName = {};
-					element.getComponentByName = function(name) {
-						return element.componentsByName[name];
-					}
-					element.invokeComponentMethod = function(component, method) {
-						component = element.getComponentByName(component);
-						method = component[method];
-						return method();
+				if(!element.__framework_components__) {
+					element.__framework_components__ = {
+						initialized: {},
+						byName: {}
 					}
 				}
 			
 				var cComponent;
-				if(component.key in element.components) {
-					cComponent = element.components[component.key];
+				if(component.key in element.__framework_components__.initialized) {
+					cComponent = element.__framework_components__.initialized[component.key];
 					if(cComponent.isSetup) {
 						Framework.Components.isProcessing --;
 						return;
@@ -77,9 +71,9 @@ Framework.registerModule("Components", {
 					cComponent.setup();
 				} else {
 					cComponent = new component.value(element);
-					element.components[component.key] = cComponent;
+					element.__framework_components__.initialized[component.key] = cComponent;
 					try{
-						element.__componentsByName[cComponent.getName()] = cComponent;
+						element.__framework_components__.byName[cComponent.getName()] = cComponent;
 					}catch(e) {}
 				}
 				cComponent.isSetup = true;
@@ -95,15 +89,17 @@ Framework.registerModule("Components", {
 		destroyComponent: function(element, component) {
 			Framework.Components.isProcessing ++;
 			try {
-				//console.log(element.components);
-				$H(element.components).each(function(pair) {
-					if(!pair.value.isSetup)
-						return; // Not setup, skip
+				if(!element.__framework_components__)
+					return;
 				
-					//console.log(pair);
-					pair.value.destroy(pair.value.getElement());
-					pair.value.isSetup = false;
-				});
+				var cComponent = element.__framework_components__.initialized[component.key];
+				if(cComponent) {
+					if(!cComponent.isSetup)
+						return; // Not setup, skip
+					
+					cComponent.destroy(element);
+					cComponent.isSetup = false;
+				}
 			} catch(e) {
 				if(typeof e.stack !== 'undefined')
 					console.log(e.stack);
@@ -164,6 +160,21 @@ Framework.registerModule("Components", {
 		
 		initialize: function() {
 			this.isProcessing = false;
+			Element.addMethods({
+				getComponentByName: function(element, name) {
+					try {
+						return element.__framework_components__.byName[name];
+					} catch(e) {}
+					return null;
+				},
+				invokeComponentMethod: function(element, component, method) {
+					var component = Element.getComponentByName(element, component);
+					if(!component)
+						throw "`" + component + "` is not initialized.";
+					
+					return (component[method])();
+				}
+			});
 		},
 		
 		baseClass: Class.create({
