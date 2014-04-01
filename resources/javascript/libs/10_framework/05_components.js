@@ -69,8 +69,10 @@ Framework.registerModule("Components", {
 				var cComponent;
 				if(component.key in element.components) {
 					cComponent = element.components[component.key];
-					if(cComponent.isSetup)
-						throw "Component already setup"
+					if(cComponent.isSetup) {
+						Framework.Components.isProcessing --;
+						return;
+					}
 			
 					cComponent.setup();
 				} else {
@@ -82,8 +84,10 @@ Framework.registerModule("Components", {
 				}
 				cComponent.isSetup = true;
 			} catch(e) {
-				console.log("" + e);
-				console.log(e.stack);
+				if(typeof e.stack !== 'undefined')
+					console.log(e.stack);
+				else
+					console.log("" + e);
 			}
 			Framework.Components.isProcessing --;
 		},
@@ -93,18 +97,18 @@ Framework.registerModule("Components", {
 			try {
 				//console.log(element.components);
 				$H(element.components).each(function(pair) {
-					if(!pair.value.isSetup) {
-						throw "Component not setup, aborting destroy";
+					if(!pair.value.isSetup)
 						return; // Not setup, skip
-					}
 				
 					//console.log(pair);
 					pair.value.destroy(pair.value.getElement());
 					pair.value.isSetup = false;
 				});
 			} catch(e) {
-				console.log("" + e);
-				console.trace(e);
+				if(typeof e.stack !== 'undefined')
+					console.log(e.stack);
+				else
+					console.log("" + e);
 			}
 			Framework.Components.isProcessing --;
 		},
