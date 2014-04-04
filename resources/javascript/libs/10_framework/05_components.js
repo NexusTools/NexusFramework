@@ -246,9 +246,9 @@ Framework.registerModule("Components", {
 		
 		initialize: function(el) {
 			this.__mutationHandler = (function() {
+				this.updateAttributes(el);
 				if(!this.__setupLayoutTimeout) {
 					this.__setupLayoutTimeout = setTimeout((function() {
-						this.updateAttributes(el);
 						this.updateLayout(el);
 				
 						delete this.__setupLayoutTimeout;
@@ -269,8 +269,8 @@ Framework.registerModule("Components", {
 			Event.observe(el, "dom:attrmodified", this.__mutationHandler);
 			
 			this.setup(el);
+			this.updateAttributes(el);
 			this.__setupLayoutTimeout = setTimeout((function() {
-				this.updateAttributes(el);
 				this.setupLayout(el);
 				this.updateLayout(el);
 				
@@ -283,10 +283,6 @@ Framework.registerModule("Components", {
 			if(!this.__setup)
 				return;
 			
-			if(this.__setupLayoutTimeout) {
-				clearTimeout(this.__setupLayoutTimeout);
-				delete this.__setupLayoutTimeout;
-			}
 			Event.stopObserving(el, "DOMAttrModified", this.__mutationHandler);
 			Event.stopObserving(el, "dom:attrmodified", this.__mutationHandler);
 			cComponent.destroy(el);
