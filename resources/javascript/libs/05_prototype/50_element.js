@@ -757,6 +757,7 @@
       attributes[name] = Object.isUndefined(value) ? true : value;
     }
 
+	Event.setFilters("DOMAttrModified");
     for (var attr in attributes) {
       name = table.names[attr] || attr;
       value = attributes[attr];
@@ -768,6 +769,8 @@
         element.setAttribute(name, name);
       else element.setAttribute(name, value);
     }
+    Event.fire(element, "dom:attrmodified");
+	Event.unsetFilters("DOMAttrModified");
 
     return element;
   }

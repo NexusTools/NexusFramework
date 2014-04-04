@@ -63,12 +63,7 @@ Framework.registerModule("Components", {
 			var cComponent;
 			if(component.key in element.__framework_components__.initialized) {
 				cComponent = element.__framework_components__.initialized[component.key];
-				if(cComponent.isSetup) {
-					Framework.Components.isProcessing --;
-					return;
-				}
-		
-				cComponent.setup();
+				cComponent.configure(element);
 			} else {
 				cComponent = new component.value(element);
 				element.__framework_components__.initialized[component.key] = cComponent;
@@ -76,7 +71,6 @@ Framework.registerModule("Components", {
 					element.__framework_components__.byName[cComponent.getName()] = cComponent;
 				}catch(e) {}
 			}
-			cComponent.isSetup = true;
 		} catch(e) {
 			if(typeof e.stack !== 'undefined')
 				console.log(e.stack);
@@ -93,13 +87,8 @@ Framework.registerModule("Components", {
 				return;
 			
 			var cComponent = element.__framework_components__.initialized[component.key];
-			if(cComponent) {
-				if(!cComponent.isSetup)
-					return; // Not setup, skip
-				
-				cComponent.destroy(element);
-				cComponent.isSetup = false;
-			}
+			if(cComponent)
+				cComponent.deconfigure(element);
 		} catch(e) {
 			if(typeof e.stack !== 'undefined')
 				console.log(e.stack);
@@ -256,10 +245,56 @@ Framework.registerModule("Components", {
 	baseClass: Class.create({
 		
 		initialize: function(el) {
-			this.isSetup = false;
+			this.__mutationHandler = (function() {
+				if(!this.__setupLayoutTimeout) {
+					this.__setupLayoutTimeout = setTimeout((function() {
+						this.updateAttributes(el);
+						this.updateLayout(el);
+				
+						delete this.__setupLayoutTimeout;
+					}).bind(this), 0);
+				}
+			}).bind(this, el);
 			this.element = el;
+			
 			this.hook(el);
+			this.configure(el);
+		},
+		
+		configure: function(el) {
+			if(this.__setup)
+				return;
+			
+			Event.observe(el, "DOMAttrModified", this.__mutationHandler);
+			Event.observe(el, "dom:attrmodified", this.__mutationHandler);
+			
 			this.setup(el);
+			this.__setupLayoutTimeout = setTimeout((function() {
+				this.updateAttributes(el);
+				this.setupLayout(el);
+				this.updateLayout(el);
+				
+				delete this.__setupLayoutTimeout;
+			}).bind(this), 0);
+			this.__setup = true;
+		},
+		
+		deconfigure: function(el) {
+			if(!this.__setup)
+				return;
+			
+			if(this.__setupLayoutTimeout) {
+				clearTimeout(this.__setupLayoutTimeout);
+				delete this.__setupLayoutTimeout;
+			}
+			Event.stopObserving(el, "DOMAttrModified", this.__mutationHandler);
+			Event.stopObserving(el, "dom:attrmodified", this.__mutationHandler);
+			cComponent.destroy(el);
+			cComponent.__setup = false;
+		},
+		
+		isSetup: function() {
+			return this.__setup;
 		},
 		
 		makeDraggable: function(el, filterTargets) {
@@ -302,6 +337,15 @@ Framework.registerModule("Components", {
 		},
 		
 		setup: function(el){
+		},
+		
+		updateAttributes: function(el) {
+		},
+		
+		updateLayout: function(el) {
+		},
+		
+		setupLayout: function(el) {
 		},
 		
 		destroy: function(el){
