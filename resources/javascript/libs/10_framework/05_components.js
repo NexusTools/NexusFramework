@@ -196,7 +196,7 @@ Framework.registerModule("Components", {
 			
 			if(Event.fire(target, "drag:start").stopped)
 				return; // allow preventing start events
-		
+			
 			if(this.active) {
 				Event.stopObserving(this.active, "mouseup", this.boundStopDragging);
 				Event.stopObserving(this.active, "mousemove", this.boundMouseMove);
