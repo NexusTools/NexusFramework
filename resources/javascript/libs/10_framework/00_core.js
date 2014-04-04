@@ -36,7 +36,12 @@ var Framework = {
 			while(Framework.moduleStasis.length)
 				Framework.registerModule.apply(this, Framework.moduleStasis.shift());
 		}catch(e) {
-			throw "Error Loading Module `" + name + "`\n" + e.toString();
+			console.error("Error Loading Module `" + name + "`");
+			if(Object.isUndefined(e.stack))
+				console.error(e.toString());
+			else
+				console.error(e.stack);
+			
 			delete Framework[name];
 		}
 	}

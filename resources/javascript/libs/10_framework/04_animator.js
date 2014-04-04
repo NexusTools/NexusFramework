@@ -88,7 +88,7 @@ Framework.registerModule("Animator", {
 		
 		opts = opts || {};
 		opts.duration = parseFloat(opts.duration) || 200;
-		opts.from = opts.from || parseFloat(element.getStyle(style)) || 0;
+		opts.from = opts.from || element.measure(style) || parseFloat(element.getStyle(style)) || 0;
 		opts.suffix = opts.suffix || "";
 		opts.from = Math.round(opts.from * 100) / 100;
 		var anitarget = Math.round((target - opts.from) * 100) / 100;

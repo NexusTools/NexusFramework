@@ -20,20 +20,15 @@ Framework.registerModule("PageSystem", {
 		},
 		
 		UpdateDynamicURL: function(link){
-			var page = false;
-			if(link.hasAttribute("href")){
+			var page = null;
+			if(!link.hasAttribute("extern") && link.hasAttribute("href")){
 				var page = link.getAttribute("href");
-				page = page.startsWith(Framework.baseURL) ? page.substring(Framework.baseURL.length) :
-						(!Framework.PageSystem.validProtocol.test(page) ? page : false);
+				page = page.startsWith(Framework.baseURL) ? page.substring(Framework.baseURL.length) : (!Framework.PageSystem.validProtocol.test(page) ? page : false);
 				if(page && page.startsWith("/"))
 					page = page.substring(1);
 			}
 			
-			if(!page) {
-				if(link.hasAttribute("page"))
-					link.removeAttribute("page");
-			} else
-				link.setAttribute("page", page);
+			link.writeAttribute("page", page);
 		},
 		
 		PopState: function(event) {
@@ -48,21 +43,6 @@ Framework.registerModule("PageSystem", {
 	
 		PageReady: function(){
 			document.body.style.cursor = "";
-		
-			if(false){
-				var links = Prototype.Selector.select("a[href]");
-				for(var i=0; i<links.length; i++){
-					var link = links[i];
-			
-					if(link.hasAttribute("fw_processed") || link.hasAttribute("extern"))
-						continue;
-				
-					Framework.PageSystem.UpdateDynamicURL(link);
-					link.observe("DOMAttrModified", Framework.PageSystem.UpdateDynamicURL);
-					link.observe("click", Framework.PageSystem.LinkCallback);
-					link.setAttribute("fw_processed", true);
-				}
-			}
 			
 			setTimeout(function() {
 				if(document.viewport.getScrollOffsets().top != 0)
@@ -107,17 +87,13 @@ Framework.registerModule("PageSystem", {
 		
 		PageUnloaded: function(e){
 			document.body.style.cursor = "progress";
-			Framework.PageElement.innerHTML = "<h1>Loading Page...</h1>";
+			Framework.PageElement.update("<working>Loading...</working>");
 		},
 		
 		LinkCallback: function(e){
-			return;
-		
-			var link = e.element();
-			while(link != null && link.tagName != "A")
-				link = link.parentNode;
-		
-			if(!link.hasAttribute("page"))
+			var link = e.findElement("a");
+			
+			if(!link || !link.hasAttribute("page"))
 				return;
 				
 			var page = link.getAttribute("page");
@@ -153,7 +129,7 @@ Framework.registerModule("PageSystem", {
 			Framework.PageElement.fire("pagesys:data", data);
 			
 			Framework.PageSystem.setTitle(data.title);
-			Framework.PageElement.innerHTML = data.html;
+			Framework.PageElement.update(data.html);
 			
 			Framework.PageElement.fire("pagesys:loaded", data);
 			Framework.PageElement.fire("pagesys:ready", data);
@@ -173,11 +149,25 @@ Framework.registerModule("PageSystem", {
 		},
 		
 		initialize: function(){
-			
 			Framework.API.registerHandler("page", this.PageCallback);
 			Framework.PageElement.observe("pagesys:ready", this.PageReady);
 			Framework.PageElement.observe("pagesys:unloaded", this.PageUnloaded);
 			this.redirectToMain = !history.pushState && Framework.activePage.length > 1;
+			
+			/*Framework.Components.registerComponent("a[href]", {
+				
+				setup: function(link) {
+					Framework.PageSystem.UpdateDynamicURL(link);
+					link.observe("dom:attrmodified[href]", Framework.PageSystem.UpdateDynamicURL);
+					link.observe("click", Framework.PageSystem.LinkCallback);
+				},
+				
+				destroy: function() {
+					link.stopObserving("dom:attrmodified[href]", Framework.PageSystem.UpdateDynamicURL);
+					link.stopObserving("click", Framework.PageSystem.LinkCallback);
+				}
+				
+			});*/
 			
 			if(history.replaceState){
 				var data = {title: document.title,

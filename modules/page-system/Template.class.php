@@ -168,6 +168,9 @@ class Template {
 		if (!is_file($script))
 			throw new Exception("Reference to Invalid File");
 		$id = Framework::uniqueHash($script);
+		if(isset(self::$globalScripts[$id]))
+			return; // Already included globally
+		
 		if (!isset(self::$scripts[$id])) {
 			self::$scripts[$id] = new CompressedScript($script);
 			self::$scripts[$id] = self::$scripts[$id]->getReferenceURI();
@@ -179,6 +182,9 @@ class Template {
 		if (!is_file($script))
 			throw new Exception("Reference to Invalid File");
 		$id = Framework::uniqueHash($script);
+		if(isset(self::$scripts[$id]))
+			unset(self::$scripts[$id]);
+		
 		if (!isset(self::$globalScripts[$id])) {
 			self::$globalScripts[$id] = new CompressedScript($script);
 			self::$globalScripts[$id] = self::$globalScripts[$id]->getReferenceURI();
@@ -190,6 +196,9 @@ class Template {
 		if (!is_file($style))
 			throw new Exception("Reference to Invalid File");
 		$id = Framework::uniqueHash($style);
+		if(isset(self::$styles[$id]))
+			unset(self::$styles[$id]);
+		
 		if (!isset(self::$globalStyles[$id])) {
 			self::$globalStyles[$id] = new CompressedStyle($style);
 			self::$globalStyles[$id] = self::$globalStyles[$id]->getReferenceURI();
@@ -209,8 +218,12 @@ class Template {
 			self::$scripts[$compressedScripts->getID()] = $compressedScripts;
 	}
 
-	public static function importPrototypeAddon($script) {
-		self::addScript(FRAMEWORK_RES_PATH . "javascript/addons/".StringFormat::idForDisplay($script).".js");
+	public static function importPrototypeAddon($script, $global =false) {
+		$script = FRAMEWORK_RES_PATH . "javascript/addons/".StringFormat::idForDisplay($script).".js";
+		if($global)
+			self::addGlobalScript($script);
+		else
+			self::addScript($script);
 	}
 
 	public static function addExternalStyle($style, $media = false) {
@@ -251,6 +264,9 @@ class Template {
 	public static function addStyle($style, $media = false) {
 		$style = fullpath($style);
 		$id = Framework::uniqueHash($style);
+		if(isset(self::$globalStyles[$id]))
+			return; // Already included globally
+		
 		if (!isset(self::$styles[$id]))
 			self::$styles[$id] = new CompressedStyle($style);
 		if ($media)
@@ -334,6 +350,8 @@ class Template {
 				echo " />";
 		}
 
+		if(DEV_MODE || DEBUG_MODE)
+			echo "<!-- Begin GlobalStyles -->";
 		foreach (self::$globalStyles as $id => $style) {
 			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
 			if ($style instanceof StyleCompressor) {
@@ -344,6 +362,8 @@ class Template {
 				echo "$style";
 			echo "\" />";
 		}
+		if(DEV_MODE || DEBUG_MODE)
+			echo "<!-- End GlobalStyles --><!-- Begin SystemStyles -->";
 		foreach (self::$systemStyles as $id => $style) {
 			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
 			if ($style instanceof CachedObject)
@@ -354,6 +374,8 @@ class Template {
 				echo "\" media=\"".self::$systemStyleMedia[$id];
 			echo "\" />";
 		}
+		if(DEV_MODE || DEBUG_MODE)
+			echo "<!-- End SystemStyles --><!-- Begin Styles -->";
 		foreach (self::$styles as $id => $style) {
 			echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"";
 			if ($style instanceof CachedObject)
@@ -364,12 +386,16 @@ class Template {
 				echo "\" media=\"".self::$styleMedia[$id];
 			echo "\" />";
 		}
+		if(DEV_MODE || DEBUG_MODE)
+			echo "<!-- End Styles --><!-- Begin InlineStyles -->";
 		foreach (self::$inlineStyles as $id => $style) {
 			echo "<style type=\"text/css\"";
 			if (isset(self::$inlineStyleMedia[$id]))
 				echo " media=\"".self::$inlineStyleMedia[$id];
 			echo ">$style</style>";
 		}
+		if(DEV_MODE || DEBUG_MODE)
+			echo "<!-- End InlineStyles -->";
 		Triggers::broadcast("template", "header");
 		echo "</head><body";
 		foreach (self::$bodyAttrs as $key => $val)
@@ -435,7 +461,7 @@ class Template {
 			}
 		}
 		if(!$compress)
-			echo "<!-- End NexusFrameworkLibs -->";
+			echo "<!-- End NexusFrameworkLibs --><!-- Begin GlobalScripts -->";
 
 		foreach (self::$globalScripts as $id => $script) {
 			echo "<script src=\"";
@@ -445,6 +471,8 @@ class Template {
 				echo "$script";
 			echo "\"></script>";
 		}
+		if(!$compress)
+			echo "<!-- End GlobalScripts --><!-- Begin Scripts -->";
 
 		foreach (self::$scripts as $id => $script) {
 			echo "<script src=\"";
@@ -505,8 +533,8 @@ class Template {
 
 }
 
-function requireAddon($script) {
-	Template::importPrototypeAddon($script);
+function requireAddon($script, $global =false) {
+	Template::importPrototypeAddon($script, $global);
 }
 
 Template::init();

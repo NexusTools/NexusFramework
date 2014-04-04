@@ -306,8 +306,37 @@
     return entry;
   }
 
+  var eventFilter = $H();
+  function setFilters(event, expr) {
+  	$w(event).each(function(ev) {
+  		eventFilter.set(ev, expr);
+  	});
+  }
+  function unsetFilters(event) {
+  	$w(event).each(function(ev) {
+  		eventFilter.unset(ev);
+  	});
+  }
 
-  function observe(element, eventName, handler) {
+  function observe(element, eventName, handler, core) {
+  	if(!core) {
+  		var realHandler = handler;
+  		handler = function(e) {
+  			try {
+	  			eventFilter.each(function(pair) {
+					if(pair.key == eventName &&
+						(!pair.value || !Event.findElement(e, pair.value)))
+							throw "Event Filtered";
+				});
+			}catch(x){
+				e.stop();
+				return;
+			}
+  		
+  			return realHandler.apply(this, arguments);
+  		}
+  	}
+
     element = $(element);
     var entry = register(element, eventName, handler);
 
@@ -500,10 +529,12 @@
   Object.extend(Event, Event.Methods);
 
   Object.extend(Event, {
-    fire:          fire,
-    observe:       observe,
-    stopObserving: stopObserving,
-    on:            on
+    fire:          	fire,
+    observe:       	observe,
+    setFilters:		setFilters,
+    unsetFilters:	unsetFilters,
+    stopObserving:	stopObserving,
+    on:				on
   });
 
   Element.addMethods({
