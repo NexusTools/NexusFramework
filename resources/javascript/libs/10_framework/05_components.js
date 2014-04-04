@@ -191,10 +191,13 @@ Framework.registerModule("Components", {
 		},
 		
 		startDragging: function(target, filterTargets, offset) {
+			if(target == this.active)
+				return;
+			
+			if(Event.fire(target, "drag:start").stopped)
+				return; // allow preventing start events
+		
 			if(this.active) {
-				if(target == this.active)
-					return;
-				
 				Event.stopObserving(this.active, "mouseup", this.boundStopDragging);
 				Event.stopObserving(this.active, "mousemove", this.boundMouseMove);
 				Element.removeClassName(this.active, "grabbed");
@@ -219,7 +222,6 @@ Framework.registerModule("Components", {
 			Element.addClassName(document.body, "dragging");
 			Element.addClassName(target, "grabbed");
 			this.filterTargets = filterTargets;
-			Event.fire(target, "drag:start");
 			if(target.setCapture)
 				target.setCapture(true);
 			this.active = target;
