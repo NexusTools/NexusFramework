@@ -195,12 +195,16 @@ Framework.registerModule("Components", {
 				if(target == this.active)
 					return;
 				
+				Event.stopObserving(this.active, "mouseup", this.boundStopDragging);
+				Event.stopObserving(this.active, "mousemove", this.boundMouseMove);
 				Element.removeClassName(this.active, "grabbed");
 				Event.fire(this.active, "drag:stop");
 			} else {
 				this.lastBodyCursor = Element.getStyle(document.body, "cursor");
-				Event.observe(document.body, "mouseup", this.boundStopDragging, true);
 				Event.observe(document.body, "mousemove", this.boundMouseMove, true);
+				Event.observe(document.body, "mouseup", this.boundStopDragging, true);
+				Event.observe(document, "mouseup", this.boundStopDragging, true);
+				Event.observe(document, "mousemove", this.boundMouseMove, true);
 				Event.observe(window, "blur", this.boundStopDragging, true);
 			}
 			
@@ -210,10 +214,14 @@ Framework.registerModule("Components", {
 			Element.setStyle(document.body, {
 				"cursor": Element.getStyle(target, "cursor")
 			});
+			Event.observe(target, "mouseup", this.boundStopDragging, true);
+			Event.observe(target, "mousemove", this.boundMouseMove, true);
 			Element.addClassName(document.body, "dragging");
 			Element.addClassName(target, "grabbed");
 			this.filterTargets = filterTargets;
 			Event.fire(target, "drag:start");
+			if(target.setCapture)
+				target.setCapture(true);
 			this.active = target;
 		},
 		
@@ -231,12 +239,18 @@ Framework.registerModule("Components", {
 			});
 			Element.removeClassName(document.body, "dragging");
 			Event.stopObserving(window, "blur", this.boundStopDragging);
-			Event.stopObserving(document.body, "mouseup", this.boundStopDragging);
-			Event.stopObserving(document.body, "mousemove", this.boundMouseMove);
+			Event.stopObserving(this.active, "mousemove", this.boundMouseMove);
+			Event.stopObserving(document.body, "mousemove", this.boundMouseMove, true);
+			Event.stopObserving(document.body, "mouseup", this.boundStopDragging, true);
+			Event.stopObserving(this.active, "mouseup", this.boundStopDragging);
+			Event.stopObserving(document, "mouseup", this.boundStopDragging);
+			Event.stopObserving(document, "mousemove", this.boundMouseMove);
 			Element.removeClassName(this.active, "grabbed");
 			Event.unsetFilters("mouseenter mousemove");
 			Event.fire(this.active, "drag:stop");
 			this.filterTargets = undefined;
+			if(document.releaseCapture)
+				document.releaseCapture();
 			this.active = undefined;
 		}
 	
@@ -295,6 +309,11 @@ Framework.registerModule("Components", {
 		
 		makeDraggable: function(el, filterTargets) {
 			Element.absolutize(el);
+			Element.writeAttribute(el, "unselectable", "on");
+			Element.setStyle({
+				"userSelected": "none"
+			});
+			Event.on(el, "select", Event.stop);
 			el.on("mousedown", function(e) {
 				var pointer = {
 					left: e.pointerX(),	
