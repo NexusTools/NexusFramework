@@ -211,6 +211,7 @@ Framework.registerModule("Components", {
 				Event.observe(window, "blur", this.boundStopDragging, true);
 			}
 			
+			Element.addClassName(target, "grabbed");
 			this.offset = offset || {top: 0, left: 0};
 			Event.setFilters("mouseenter mousemove", filterTargets);
 			Element.removeClassName(document.body, "dragging");
@@ -220,7 +221,6 @@ Framework.registerModule("Components", {
 			Event.observe(target, "mouseup", this.boundStopDragging, true);
 			Event.observe(target, "mousemove", this.boundMouseMove, true);
 			Element.addClassName(document.body, "dragging");
-			Element.addClassName(target, "grabbed");
 			this.filterTargets = filterTargets;
 			if(target.setCapture)
 				target.setCapture(true);
@@ -306,8 +306,10 @@ Framework.registerModule("Components", {
 					var attrs;
 					if("memo" in e)
 						attrs = e.memo;
-					else if("attrName" in e)
+					else if("attrName" in e) // DOMAttrChanged
 						attrs = [e.attrName];
+					else if("propertyName" in e) // IE PropertyChange event
+						attrs = [e.propertyName];
 				
 					var matches = false;
 					if(attrs) {

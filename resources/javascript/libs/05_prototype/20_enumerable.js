@@ -250,6 +250,12 @@ function $w(string) {
   return string ? string.split(/\s+/) : [];
 }
 
+function $s(string) {
+  if (!Object.isString(string)) return [];
+  string = string.strip();
+  return string ? string.split(/[\W]+/) : [];
+}
+
 Array.from = $A;
 
 (function() {
