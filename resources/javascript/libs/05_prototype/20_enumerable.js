@@ -256,10 +256,19 @@ function $s(string) {
   return string ? string.split(/[\W]+/) : [];
 }
 
-function $n(string) {
-  if (!Object.isString(string)) return [];
-  string = string.strip();
-  return string ? string.split(/[^\d]+/).collect(parseFloat) : [];
+function $n(input, defaults) {
+	defaults = defaults || [];
+	if(input && Object.isString(input))
+		input = input.split(/[^\d\.]+/).collect(function(num) {
+			num = parseFloat(num);
+			if(isNaN(num))
+				return defaults[index] || 0;
+			else
+				return num;
+		});
+	if(Object.isArray(input))
+		Object.extend(defaults, input);
+	return defaults;
 }
 
 Array.from = $A;
