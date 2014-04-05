@@ -53,8 +53,8 @@ Framework.registerModule("Timers", {
 				this.timer = true;
 				
 				try {
-					var timeout;
-					while((timeout = (this.nextTimeout - Framework.Timers.now())) <= 0) {
+					var timeout; // assume timer precision sucks
+					while((timeout = (this.nextTimeout - Framework.Timers.now())) <= 10) {
 						this.execute();
 						if(this.timer === undefined)
 							throw "Stopped While Executing";

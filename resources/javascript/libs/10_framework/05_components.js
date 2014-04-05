@@ -259,8 +259,32 @@ Framework.registerModule("Components", {
 	})),
 	
 	baseClass: Class.create({
+	
+		scheduleLayoutUpdate: function() {
+			if(this.__layoutUpdateScheduled) {
+				console.log("Schedule layout already registered");
+				return;
+			}
+			console.trace();
+			
+			this.__layoutUpdateScheduled = true;
+			if(!this.__ignoreLayoutScheduler)
+				this.layoutScheduleCallback.bind(this).defer();
+		},
+		
+		layoutScheduleCallback: function() {
+			if(!this.__layoutUpdateScheduled || this.__ignoreLayoutScheduler)
+				return;
+			
+			console.trace();
+			this.updateLayout(this.__element);
+			delete this.__layoutUpdateScheduled;
+		},
 		
 		checkLayoutChange: function() {
+			if(this.__layoutUpdateScheduled)
+				return true;
+		
 			var el = this.getElement();
 			var size = [el.getWidth(), el.getHeight()];
 			
@@ -275,31 +299,56 @@ Framework.registerModule("Components", {
 		
 		initialize: function(el) {
 			this.__mutationHandler = (function(e) {
-				var attrs;
-				if("memo" in e)
-					attrs = e.memo;
-				else if("attrName" in e)
-					attrs = [e.attrName];
+				this.__ignoreLayoutScheduler = true;
+				console.log("Mutation Handler");
+			
+				try {
+					var attrs;
+					if("memo" in e)
+						attrs = e.memo;
+					else if("attrName" in e)
+						attrs = [e.attrName];
 				
-				var matches = false;
-				if(attrs) {
-					var helper = {
-						needsUpdate: function(attr) {
-							var found = attrs.indexOf(attr) > -1;
-							if(found)
-								matches = true;
-							return found;
-						},
-						foundMatches: function() {
-							return matches;
-						}
-					};
-					this.updateAttributes(el, helper);
+					var matches = false;
+					if(attrs) {
+						var self = this;
+						var helper = {
+							needsUpdate: function(attr, simple) {
+								var found = attrs.indexOf(attr) > -1;
+								if(found) {
+									matches = true;
+									if(!simple)
+										self.scheduleLayoutUpdate();
+								}
+								return found;
+							},
+							foundMatches: function() {
+								return matches;
+							}
+						};
+						this.updateAttributes(el, helper);
+					}
+				} catch(e) {
+					if(Object.isUndefined(e.stack))
+						console.log(e.stack);
+					else
+						console.log("" + e);
 				}
-				if(this.checkLayoutChange() || matches)
-					this.updateLayout(el);
+				
+				try {
+					if(this.checkLayoutChange())
+						this.updateLayout(el);
+				} catch(e) {
+					if(Object.isUndefined(e.stack))
+						console.log(e.stack);
+					else
+						console.log("" + e);
+				}
+				
+				delete this.__layoutUpdateScheduled;
+				delete this.__ignoreLayoutScheduler;
 			}).bind(this);
-			this.element = el;
+			this.__element = el;
 			
 			this.hook(el);
 			this.configure(el);
@@ -315,6 +364,7 @@ Framework.registerModule("Components", {
 			
 			this.setup(el);
 			var matches = false;
+			this.ignoreLayoutScheduler = true;
 			this.updateAttributes(el, {
 				needsUpdate: function(){
 					matches = true;
@@ -326,6 +376,8 @@ Framework.registerModule("Components", {
 			});
 			this.setupLayout(el);
 			this.updateLayout(el);
+			delete this.__layoutUpdateScheduled;
+			delete this.__ignoreLayoutScheduler;
 			this.__setup = true;
 		},
 		
@@ -337,6 +389,7 @@ Framework.registerModule("Components", {
 			Event.stopObserving(el, "DOMAttrModified", this.__mutationHandler);
 			Event.stopObserving(el, "dom:attrmodified", this.__mutationHandler);
 			cComponent.destroy(el);
+			
 			cComponent.__setup = false;
 		},
 		
@@ -348,7 +401,7 @@ Framework.registerModule("Components", {
 			Element.absolutize(el);
 			Element.writeAttribute(el, "unselectable", "on");
 			Element.setStyle({
-				"userSelected": "none"
+				"userSelect": "none"
 			});
 			Event.on(el, "select", Event.stop);
 			el.on("mousedown", function(e) {
@@ -370,7 +423,7 @@ Framework.registerModule("Components", {
 		},
 		
 		getElement: function(){
-			return this.element;
+			return this.__element;
 		},
 		
 		giveFocus: function() {

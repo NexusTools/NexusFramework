@@ -770,7 +770,7 @@
         element.setAttribute(name, name);
       else element.setAttribute(name, value);
     }
-    Event.fire(element, "dom:attrmodified", $H(attributes).keys());
+    Event.fire(element, "dom:attrmodified", $H(attributes).keys(), false);
 	Event.unsetFilters("DOMSubtreeModified propertychange");
 
     return element;

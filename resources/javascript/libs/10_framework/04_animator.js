@@ -64,7 +64,7 @@ Framework.registerModule("Animator", {
 						} else {
 							styleChanges[pair.key] = pair.value.target + pair.value.suffix;
 							if(pair.value.callback)
-								pair.value.callback(element);
+								pair.value.callback(element, pair.key);
 						}
 					} catch(e) {}
 				});
@@ -87,25 +87,37 @@ Framework.registerModule("Animator", {
 		target = Math.round(parseFloat(target) * 100) / 100;
 		
 		opts = opts || {};
-		opts.duration = parseFloat(opts.duration) || 200;
-		opts.from = opts.from;
-		if(Object.isUndefined(opts.from)) {
-			opts.from = element.getStyle(style);
-			if(/\d+(\.\d+)?px/.match(opts.from))
-				opts.from = parseFloat(opts.from);
-			else {
-				opts.from = element.measure(style);
-				if(!Object.isNumber(opts.from))
-					opts.from = 0;
-			}
+		var anitarget = true;
+		if(!("__styleAnimator" in element))
+			element.__styleAnimator = $H();
+		else if(opts.unique) {
+			var styleState = element.__styleAnimator.get(style);
+			if(styleState && styleState.unique == opts.unique)
+				anitarget = 0;
 		}
+		
+		if(anitarget) {
+			opts.duration = parseFloat(opts.duration) || 200;
+			opts.from = opts.from;
+			if(Object.isUndefined(opts.from)) {
+				opts.from = element.getStyle(style);
+				if(/\d+(\.\d+)?px/.match(opts.from))
+					opts.from = parseFloat(opts.from);
+				else {
+					opts.from = element.measure(style);
+					if(!Object.isNumber(opts.from))
+						opts.from = 0;
+				}
+			}
 			
-		opts.suffix = opts.suffix || "";
-		opts.from = Math.round(opts.from * 100) / 100;
-		var anitarget = Math.round((target - opts.from) * 100) / 100;
+			opts.suffix = opts.suffix || "";
+			opts.from = Math.round(opts.from * 100) / 100;
+			anitarget = Math.round((target - opts.from) * 100) / 100;
+		}
+		
 		if(anitarget == 0) {
 			if(opts.callback)
-				opts.callback(element);
+				opts.callback(element, style);
 			return; // Already set
 		}
 		
@@ -113,10 +125,6 @@ Framework.registerModule("Animator", {
 			opts.algorithm = Framework.Animator.algorithms.linear;
 		else if(!Object.isFunction(opts.algorithm))
 			opts.algorithm = Framework.Animator.algorithms[opts.algorithm];
-		//console.log(opts.algorithm);
-			
-		if(!("__styleAnimator" in element))
-			element.__styleAnimator = $H();
 			
 		var start = (new Date()).getTime();
 		element.__styleAnimator.set(style, {
@@ -127,6 +135,7 @@ Framework.registerModule("Animator", {
 			"base": opts.from,
 			"suffix": opts.suffix,
 			"anitarget": anitarget,
+			"unique": opts.unique,
 			"target" : target,
 			
 			"start": start,
@@ -152,14 +161,17 @@ Framework.registerModule("Animator", {
 				opts.callback = opts.callback || function() {
 					Element.hide(element);
 				};
+				opts.unique = opts.unique || "fadeOut";
 				return thisInstance.animateStyle(element,
 						"opacity", 0, opts);
 			},
 			"fadeIn": function(element, opts, startInvisible) {
 				if(startInvisible || !Element.visible(element))
 					Element.setOpacity(element, 0);
-				
 				Element.show(element);
+				
+				opts = opts || {};
+				opts.unique = opts.unique || "fadeOut";
 				return thisInstance.animateStyle(element,
 						"opacity", 1, opts);
 			},
