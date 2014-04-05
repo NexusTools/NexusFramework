@@ -261,16 +261,36 @@ Framework.registerModule("Components", {
 	baseClass: Class.create({
 		
 		initialize: function(el) {
-			this.__mutationHandler = (function() {
-				this.updateAttributes(el);
-				if(!this.__setupLayoutTimeout) {
-					this.__setupLayoutTimeout = setTimeout((function() {
-						this.updateLayout(el);
+			this.__mutationHandler = (function(e) {
+				console.log("MutationHandler", e);
 				
-						delete this.__setupLayoutTimeout;
-					}).bind(this), 0);
-				}
-			}).bind(this, el);
+			
+				var attrs;
+				if("memo" in e)
+					attrs = e.memo;
+				else if("attrName" in e)
+					attrs = [e.attrName];
+				else
+					attrs = [];
+				
+				console.log(attrs, e);
+			
+				var matches = false;
+				var helper = {
+					needsUpdate: function(attr) {
+						var found = attrs.indexOf(attr) > -1;
+						if(found)
+							matches = true;
+						return found;
+					},
+					foundMatches: function() {
+						return matches;
+					}
+				};
+				this.updateAttributes(el, helper);
+				if(helper.foundMatches())
+					this.updateLayout(el);
+			}).bind(this);
 			this.element = el;
 			
 			this.hook(el);
@@ -285,13 +305,18 @@ Framework.registerModule("Components", {
 			Event.observe(el, "dom:attrmodified", this.__mutationHandler);
 			
 			this.setup(el);
-			this.updateAttributes(el);
-			this.__setupLayoutTimeout = setTimeout((function() {
-				this.setupLayout(el);
-				this.updateLayout(el);
-				
-				delete this.__setupLayoutTimeout;
-			}).bind(this), 0);
+			var matches = false;
+			this.updateAttributes(el, {
+				needsUpdate: function(){
+					matches = true;
+					return true;
+				},
+				foundMatches: function(){
+					return matches;
+				}
+			});
+			this.setupLayout(el);
+			this.updateLayout(el);
 			this.__setup = true;
 		},
 		

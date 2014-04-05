@@ -757,6 +757,7 @@
       attributes[name] = Object.isUndefined(value) ? true : value;
     }
 
+	// Block native event
 	Event.setFilters("DOMAttrModified");
     for (var attr in attributes) {
       name = table.names[attr] || attr;
@@ -769,7 +770,7 @@
         element.setAttribute(name, name);
       else element.setAttribute(name, value);
     }
-    Event.fire(element, "dom:attrmodified");
+    Event.fire(element, "dom:attrmodified", $H(attributes).keys());
 	Event.unsetFilters("DOMAttrModified");
 
     return element;
