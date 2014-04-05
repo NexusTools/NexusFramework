@@ -256,6 +256,12 @@ function $s(string) {
   return string ? string.split(/[\W]+/) : [];
 }
 
+function $n(string) {
+  if (!Object.isString(string)) return [];
+  string = string.strip();
+  return string ? string.split(/[^\d]+/).collect(parseFloat) : [];
+}
+
 Array.from = $A;
 
 (function() {
