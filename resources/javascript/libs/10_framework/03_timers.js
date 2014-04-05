@@ -54,13 +54,14 @@ Framework.registerModule("Timers", {
 				
 				try {
 					var timeout; // assume timer precision sucks
-					while((timeout = (this.nextTimeout - Framework.Timers.now())) <= 10) {
+					while((timeout = (this.nextTimeout - Framework.Timers.now())) < 10) {
 						this.execute();
 						if(this.timer === undefined)
 							throw "Stopped While Executing";
 						this.nextTimeout += this.frequency;
 					}
-					this.timer = setTimeout(this.onTimerEvent.bind(this), timeout);
+					
+					this.timer = setTimeout(this.onTimerEvent.bind(this), Math.round(timeout));
 					return;
 				} catch(e) {}
 				this.timer = undefined;

@@ -261,11 +261,8 @@ Framework.registerModule("Components", {
 	baseClass: Class.create({
 	
 		scheduleLayoutUpdate: function() {
-			if(this.__layoutUpdateScheduled) {
-				//console.log("Schedule layout already registered");
+			if(this.__layoutUpdateScheduled)
 				return;
-			}
-			//console.trace();
 			
 			this.__layoutUpdateScheduled = true;
 			if(!this.__ignoreLayoutScheduler)
@@ -273,12 +270,14 @@ Framework.registerModule("Components", {
 		},
 		
 		layoutScheduleCallback: function() {
+			delete this.__layoutUpdateScheduled;
 			if(!this.__layoutUpdateScheduled || this.__ignoreLayoutScheduler)
 				return;
 			
-			console.trace();
+			//console.trace();
+			this.__ignoreMutations = true;
 			this.updateLayout(this.__element);
-			delete this.__layoutUpdateScheduled;
+			delete this.__ignoreMutations;
 		},
 		
 		checkLayoutChange: function() {
@@ -298,26 +297,22 @@ Framework.registerModule("Components", {
 		},
 		
 		initialize: function(el) {
-			this.__mutationHandler = (function(e) {
+			var mutationQueue = [];
+			this.__mutationHandler = (function() {
+				this.__ignoreMutations = true;
 				this.__ignoreLayoutScheduler = true;
-				//console.log("Mutation Handler");
-			
-				try {
-					var attrs;
-					if("memo" in e)
-						attrs = e.memo;
-					else if("attrName" in e) // DOMAttrChanged
-						attrs = [e.attrName];
-					else if("propertyName" in e) // IE PropertyChange event
-						attrs = [e.propertyName];
+				//console.log("Handling Mutations", mutationQueue);
 				
-					var matches = false;
-					if(attrs) {
+				var matches = false;
+				if(mutationQueue.length) {
+					mutationQueue = mutationQueue.uniq();
+					try {
 						var self = this;
 						var helper = {
 							needsUpdate: function(attr, simple) {
-								var found = attrs.indexOf(attr) > -1;
+								var found = mutationQueue.indexOf(attr) > -1;
 								if(found) {
+									console.log("Mutation Requires Update", attr);
 									matches = true;
 									if(!simple)
 										self.scheduleLayoutUpdate();
@@ -329,12 +324,13 @@ Framework.registerModule("Components", {
 							}
 						};
 						this.updateAttributes(el, helper);
+					} catch(e) {
+						if(Object.isUndefined(e.stack))
+							console.log(e.stack);
+						else
+							console.log("" + e);
 					}
-				} catch(e) {
-					if(Object.isUndefined(e.stack))
-						console.log(e.stack);
-					else
-						console.log("" + e);
+					mutationQueue = [];
 				}
 				
 				try {
@@ -347,8 +343,31 @@ Framework.registerModule("Components", {
 						console.log("" + e);
 				}
 				
+				delete this.__ignoreMutations;
+				delete this.__mutationDeferred;
 				delete this.__layoutUpdateScheduled;
 				delete this.__ignoreLayoutScheduler;
+			}).bind(this);
+			this.__mutationCoupler = (function(attrs) {
+				if(this.__ignoreMutations || !attrs.length)
+					return;
+				
+				mutationQueue = mutationQueue.concat(attrs);
+				if(!this.__mutationDeferred)
+					this.__mutationDeferred = this.__mutationHandler.defer();
+			});
+			
+			this.__mutationCapture = (function(e) {
+				var attrs;
+				if("memo" in e)
+					attrs = e.memo;
+				else if("attrName" in e && e.attrName) // DOMAttrChanged
+					attrs = [e.attrName];
+				else if("propertyName" in e) // IE PropertyChange event
+					attrs = [e.propertyName];
+					
+				if(attrs)
+					this.__mutationCoupler(attrs);
 			}).bind(this);
 			this.__element = el;
 			
@@ -360,13 +379,28 @@ Framework.registerModule("Components", {
 			if(this.__setup)
 				return;
 			
-			Event.observe(el, "propertychange", this.__mutationHandler);
-			Event.observe(el, "DOMAttrModified", this.__mutationHandler);
-			Event.observe(el, "dom:attrmodified", this.__mutationHandler);
+			if("MutationObserver" in window) {
+				console.log("Has Mutation Observer");
+				this.__mutationObserver = new MutationObserver((function(mutations) {
+					var attrs = [];
+					mutations.each(function(mutation) {
+						if(mutation.attributeName)
+							attrs.push(mutation.attributeName);
+					});
+					if(attrs)
+						this.__mutationCoupler(attrs);
+				}).bind(this));
+				this.__mutationObserver.observe(el, {attributes:true});
+			} else {
+				Event.observe(el, "propertychange", this.__mutationCapture);
+				Event.observe(el, "DOMAttrModified", this.__mutationCapture);
+				Event.observe(el, "dom:attrmodified", this.__mutationCapture);
+			}
+			this.__ignoreMutations = true;
+			this.__ignoreLayoutScheduler = true;
 			
 			this.setup(el);
 			var matches = false;
-			this.ignoreLayoutScheduler = true;
 			this.updateAttributes(el, {
 				needsUpdate: function(){
 					matches = true;
@@ -380,6 +414,7 @@ Framework.registerModule("Components", {
 			this.updateLayout(el);
 			delete this.__layoutUpdateScheduled;
 			delete this.__ignoreLayoutScheduler;
+			delete this.__ignoreMutations;
 			this.__setup = true;
 		},
 		
@@ -387,9 +422,14 @@ Framework.registerModule("Components", {
 			if(!this.__setup)
 				return;
 			
-			Event.stopObserving(el, "propertychange", this.__mutationHandler);
-			Event.stopObserving(el, "DOMAttrModified", this.__mutationHandler);
-			Event.stopObserving(el, "dom:attrmodified", this.__mutationHandler);
+			if(this.__mutationObserver) {
+				this.__mutationObserver.disconnect();
+				delete this.__mutationObserver;
+			} else {
+				Event.stopObserving(el, "propertychange", this.__mutationCapture);
+				Event.stopObserving(el, "DOMAttrModified", this.__mutationCapture);
+				Event.stopObserving(el, "dom:attrmodified", this.__mutationCapture);
+			}
 			cComponent.destroy(el);
 			
 			cComponent.__setup = false;
@@ -406,22 +446,26 @@ Framework.registerModule("Components", {
 				"userSelect": "none"
 			});
 			Event.on(el, "select", Event.stop);
-			el.on("mousedown", function(e) {
-				var pointer = {
-					left: e.pointerX(),	
-					top: e.pointerY()
-				};
+			el.on("drag:stop", (function(e) {
+				delete this.__ignoreMutations;
+			}).bind(this));
+			el.on("mousedown", (function(e) {
+				if(e.button)
+					return;
+				
+				var pointer = e.pointer();
 				var offset = {
 					left: Element.measure(el, "left"),	
 					top: Element.measure(el, "top")
 				};
 				
-				offset.left = pointer.left - offset.left;
-				offset.top = pointer.top - offset.top;
+				offset.left = pointer.x - offset.left;
+				offset.top = pointer.y - offset.top;
+				this.__ignoreMutations = true;
 				
 				Framework.Components.dragHandler.startDragging(el, filterTargets, offset);
 				e.stop();
-			});
+			}).bind(this));
 		},
 		
 		getElement: function(){
