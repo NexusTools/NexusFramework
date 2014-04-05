@@ -758,7 +758,7 @@
     }
 
 	// Block native event
-	Event.setFilters("DOMAttrModified");
+	Event.setFilters("DOMSubtreeModified propertychange");
     for (var attr in attributes) {
       name = table.names[attr] || attr;
       value = attributes[attr];
@@ -771,7 +771,7 @@
       else element.setAttribute(name, value);
     }
     Event.fire(element, "dom:attrmodified", $H(attributes).keys());
-	Event.unsetFilters("DOMAttrModified");
+	Event.unsetFilters("DOMSubtreeModified propertychange");
 
     return element;
   }

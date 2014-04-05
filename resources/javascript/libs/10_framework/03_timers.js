@@ -145,6 +145,42 @@ Framework.registerModule("Timers", {
 
 		});
 		
+		this.DormanceTimer = Class.create("DormanceTimer", {
+		
+			initialize: function(test, callback, opts) {
+				this.test = test;
+				this.callback = callback;
+				
+				this.increment = opts.increment || 2;
+				this.decrement = opts.decrement || 10;
+				this.timeout = opts.timeout || Math.pow(increment, 4);
+				this.maxTimeout = opts.maxTimeout || 300+Math.random()*100;
+				this.minTimeout = opts.minTimeout || 10;
+				
+				setTimeout(this.process.bind(this), this.timeout);
+			},
+			
+			process: function() {
+				try {
+					if(!this.test())
+						throw "Test failed";
+					
+					this.callback();
+					this.timeout /= this.decrement;
+					this.timeout = Math.max(this.timeout, this.minTimeout);
+				} catch(e) {
+					if(!Object.isUndefined(e.stack))
+						console.log(e.stack);
+					
+					this.timeout *= this.increment;
+					this.timeout = Math.min(this.timeout, this.maxTimeout);
+				}
+			
+				setTimeout(this.process.bind(this), this.timeout);
+			}
+			
+		});
+		
 		this.DelayTimer = Class.create("DelayTimer", {
 		
 			initialize: function(actionToggleMode) {

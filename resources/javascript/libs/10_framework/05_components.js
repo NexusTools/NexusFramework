@@ -260,35 +260,43 @@ Framework.registerModule("Components", {
 	
 	baseClass: Class.create({
 		
+		checkLayoutChange: function() {
+			var el = this.getElement();
+			var size = [el.getWidth(), el.getHeight()];
+			
+			if(!this.__lastSize || !this.__lastSize[0]
+					!= size[0] || !this.__lastSize[1] != size[1]) {
+				this.__lastSize = size;
+				return true;
+			}
+			
+			return false;
+		},
+		
 		initialize: function(el) {
 			this.__mutationHandler = (function(e) {
-				console.log("MutationHandler", e);
-				
-			
 				var attrs;
 				if("memo" in e)
 					attrs = e.memo;
 				else if("attrName" in e)
 					attrs = [e.attrName];
-				else
-					attrs = [];
 				
-				console.log(attrs, e);
-			
 				var matches = false;
-				var helper = {
-					needsUpdate: function(attr) {
-						var found = attrs.indexOf(attr) > -1;
-						if(found)
-							matches = true;
-						return found;
-					},
-					foundMatches: function() {
-						return matches;
-					}
-				};
-				this.updateAttributes(el, helper);
-				if(helper.foundMatches())
+				if(attrs) {
+					var helper = {
+						needsUpdate: function(attr) {
+							var found = attrs.indexOf(attr) > -1;
+							if(found)
+								matches = true;
+							return found;
+						},
+						foundMatches: function() {
+							return matches;
+						}
+					};
+					this.updateAttributes(el, helper);
+				}
+				if(this.checkLayoutChange() || matches)
 					this.updateLayout(el);
 			}).bind(this);
 			this.element = el;
@@ -301,6 +309,7 @@ Framework.registerModule("Components", {
 			if(this.__setup)
 				return;
 			
+			Event.observe(el, "propertychange", this.__mutationHandler);
 			Event.observe(el, "DOMAttrModified", this.__mutationHandler);
 			Event.observe(el, "dom:attrmodified", this.__mutationHandler);
 			
@@ -324,6 +333,7 @@ Framework.registerModule("Components", {
 			if(!this.__setup)
 				return;
 			
+			Event.stopObserving(el, "propertychange", this.__mutationHandler);
 			Event.stopObserving(el, "DOMAttrModified", this.__mutationHandler);
 			Event.stopObserving(el, "dom:attrmodified", this.__mutationHandler);
 			cComponent.destroy(el);

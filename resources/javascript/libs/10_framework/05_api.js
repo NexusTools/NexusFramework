@@ -124,13 +124,13 @@ Framework.registerModule("API", {
 			var transport = Ajax.getTransport();
 			if(Object.keys(postData).length > 0){
 				postData = Object.toQueryString(postData);
-			
+				
 				transport.open("POST", requestURL, true);
 				transport.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 				transport.setRequestHeader("Content-length", postData.length);
 				transport.setRequestHeader("Connection", "close");
 			} else {
-				transport.open("GET", requestURL, false);
+				transport.open("GET", requestURL, true);
 				postData = null;
 			}
 			
