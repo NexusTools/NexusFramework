@@ -158,9 +158,7 @@ Framework.registerModule("Animator", {
 			"animateStyle": thisInstance.animateStyle,
 			"fadeOut": function(element, opts) {
 				opts = opts || {};
-				opts.callback = opts.callback || function() {
-					Element.hide(element);
-				};
+				opts.callback = opts.callback || Element.hide;
 				opts.unique = opts.unique || "fadeOut";
 				return thisInstance.animateStyle(element,
 						"opacity", 0, opts);
@@ -171,7 +169,7 @@ Framework.registerModule("Animator", {
 				Element.show(element);
 				
 				opts = opts || {};
-				opts.unique = opts.unique || "fadeOut";
+				opts.unique = opts.unique || "fadeIn";
 				return thisInstance.animateStyle(element,
 						"opacity", 1, opts);
 			},

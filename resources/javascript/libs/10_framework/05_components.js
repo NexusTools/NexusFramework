@@ -262,10 +262,10 @@ Framework.registerModule("Components", {
 	
 		scheduleLayoutUpdate: function() {
 			if(this.__layoutUpdateScheduled) {
-				console.log("Schedule layout already registered");
+				//console.log("Schedule layout already registered");
 				return;
 			}
-			console.trace();
+			//console.trace();
 			
 			this.__layoutUpdateScheduled = true;
 			if(!this.__ignoreLayoutScheduler)
@@ -300,7 +300,7 @@ Framework.registerModule("Components", {
 		initialize: function(el) {
 			this.__mutationHandler = (function(e) {
 				this.__ignoreLayoutScheduler = true;
-				console.log("Mutation Handler");
+				//console.log("Mutation Handler");
 			
 				try {
 					var attrs;
