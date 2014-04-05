@@ -312,7 +312,6 @@ Framework.registerModule("Components", {
 							needsUpdate: function(attr, simple) {
 								var found = mutationQueue.indexOf(attr) > -1;
 								if(found) {
-									console.log("Mutation Requires Update", attr);
 									matches = true;
 									if(!simple)
 										self.scheduleLayoutUpdate();
