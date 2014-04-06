@@ -101,7 +101,8 @@ Framework.registerModule("Animator", {
 			opts.from = opts.from;
 			if(Object.isUndefined(opts.from)) {
 				opts.from = element.getStyle(style);
-				if(/\d+(\.\d+)?px/.match(opts.from))
+				// Only allow pixel or raw values, ignore things like em and %
+				if(/^\d+(\.\d+)?(px)?$/.match(opts.from))
 					opts.from = parseFloat(opts.from);
 				else {
 					opts.from = element.measure(style);
