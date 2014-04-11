@@ -1,10 +1,16 @@
 function $C() { // [parent], expr, [raw]
+	var innerHTML;
 	var parent = null;
 	var args = Array.prototype.slice.call(arguments, 0);
 	if(Object.isElement(args[0]))
 		parent = args.shift();
+		
+	if(Object.isString(args[1])) {
+		innerHTML = args[1];
+		args[1] = args[2];
+	}
 	
-	if(!args[1] && Framework.Config.LEGACY_BROWSER)
+	if(args[1] !== true && Framework.Config.LEGACY_BROWSER)
 		expr = "div." + expr;
 	
 	var matches = /^(\w+)((\.\w+)*)?(#\w+)?$/.exec(args[0]);
@@ -40,6 +46,9 @@ function $C() { // [parent], expr, [raw]
 		
 		if(hashStr)
 			Element.writeAttribute(el, "id", hashStr.substring(1));
+		
+		if(innerHTML)
+			el.innerHTML = innerHTML;
 		
 		if(parent)
 			parent.appendChild(el);
