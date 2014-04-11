@@ -280,22 +280,6 @@ Framework.registerModule("Components", {
 			delete this.__ignoreMutations;
 		},
 		
-		checkLayoutChange: function() {
-			if(this.__layoutUpdateScheduled)
-				return true;
-		
-			var el = this.getElement();
-			var size = [el.getWidth(), el.getHeight()];
-			
-			if(!this.__lastSize || !this.__lastSize[0]
-					!= size[0] || !this.__lastSize[1] != size[1]) {
-				this.__lastSize = size;
-				return true;
-			}
-			
-			return false;
-		},
-		
 		initialize: function(el) {
 			var mutationQueue = [];
 			this.__mutationHandler = (function() {
@@ -333,7 +317,7 @@ Framework.registerModule("Components", {
 				}
 				
 				try {
-					if(this.checkLayoutChange())
+					if(this.__layoutUpdateScheduled)
 						this.updateLayout(el);
 				} catch(e) {
 					if(Object.isUndefined(e.stack))
@@ -364,9 +348,16 @@ Framework.registerModule("Components", {
 					attrs = [e.attrName];
 				else if("propertyName" in e) // IE PropertyChange event
 					attrs = [e.propertyName];
-					
-				if(attrs)
-					this.__mutationCoupler(attrs);
+				
+				if(attrs && attrs.length) {
+					var goodAttrs = [];
+					attrs.each(function(attr) {
+						if(!attr.match(/^style(\/|\.|$)/))
+							goodAttrs.push(attr);
+					});
+					if(goodAttrs.length)
+						this.__mutationCoupler(goodAttrs);
+				}
 			}).bind(this);
 			this.__element = el;
 			
@@ -383,7 +374,7 @@ Framework.registerModule("Components", {
 				this.__mutationObserver = new MutationObserver((function(mutations) {
 					var attrs = [];
 					mutations.each(function(mutation) {
-						if(mutation.attributeName)
+						if(mutation.attributeName && !mutation.attributeName.match(/^style(\/|\.|$)/))
 							attrs.push(mutation.attributeName);
 					});
 					if(attrs)
