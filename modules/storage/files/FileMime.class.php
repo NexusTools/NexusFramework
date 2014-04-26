@@ -33,21 +33,21 @@ class FileMime extends CachedFile {
 
 		if (endsWith($this->getFilepath(), ".js"))
 			$mime_type = "text/javascript";
-		else
-			if (endsWith($this->getFilepath(), ".css"))
-				$mime_type = "text/css";
-			else
-				if (endsWith($this->getFilepath(), ".htm") || endsWith($this->getFilepath(), ".html"))
-					$mime_type = "text/html";
-				else {
-					if (function_exists("mime_content_type"))
-						$mime_type = mime_content_type($this->getFilepath());
-					else if(function_exists("finfo_open")) {
-						$finfo = finfo_open(FILEINFO_MIME, "/usr/share/misc/magic.mgc");
-						$mime_type = finfo_file($finfo, $this->getFilepath());
-						finfo_close($finfo);
-					}
-				}
+		else if (endsWith($this->getFilepath(), ".json"))
+			$mime_type = "application/json";
+		else if (endsWith($this->getFilepath(), ".css"))
+			$mime_type = "text/css";
+		else if (endsWith($this->getFilepath(), ".htm") || endsWith($this->getFilepath(), ".html"))
+			$mime_type = "text/html";
+		else {
+			if (function_exists("mime_content_type"))
+				$mime_type = mime_content_type($this->getFilepath());
+			else if(function_exists("finfo_open")) {
+				$finfo = finfo_open(FILEINFO_MIME, "/usr/share/misc/magic.mgc");
+				$mime_type = finfo_file($finfo, $this->getFilepath());
+				finfo_close($finfo);
+			}
+		}
 
 		if (!$mime_type)
 			$mime_type = "text/plain";
