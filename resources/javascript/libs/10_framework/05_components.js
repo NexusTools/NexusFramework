@@ -263,18 +263,18 @@ Framework.registerModule("Components", {
 		scheduleLayoutUpdate: function() {
 			if(this.__layoutUpdateScheduled)
 				return;
+			this.__layoutUpdateScheduled = true;
 			
-			if(!this.__ignoreLayoutScheduler) {
-				this.__layoutUpdateScheduled = true;
+			if(!this.__ignoreLayoutScheduler)
 				this.layoutScheduleCallback.bind(this).defer();
-			} else if(this.__layoutUpdateScheduled)
-				delete this.__layoutUpdateScheduled;
 		},
 		
 		layoutScheduleCallback: function() {
-			if(!this.__layoutUpdateScheduled || this.__ignoreLayoutScheduler)
+			if(!this.__layoutUpdateScheduled)
 				return;
 			delete this.__layoutUpdateScheduled;
+			if(this.__ignoreLayoutScheduler)
+				return;
 			
 			//console.trace();
 			this.__ignoreMutations = true;
@@ -319,8 +319,10 @@ Framework.registerModule("Components", {
 				}
 				
 				try {
-					if(this.__layoutUpdateScheduled)
+					if(this.__layoutUpdateScheduled) {
+						delete this.__layoutUpdateScheduled;
 						this.updateLayout(el);
+					}
 				} catch(e) {
 					if(Object.isUndefined(e.stack))
 						console.log(e.stack);
@@ -331,8 +333,6 @@ Framework.registerModule("Components", {
 				delete this.__ignoreMutations;
 				delete this.__mutationDeferred;
 				delete this.__ignoreLayoutScheduler;
-				if(this.__layoutUpdateScheduled)
-					delete this.__layoutUpdateScheduled;
 			}).bind(this);
 			this.__mutationCoupler = (function(attrs) {
 				if(this.__ignoreMutations || !attrs.length)
