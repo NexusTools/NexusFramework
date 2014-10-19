@@ -45,7 +45,7 @@ class ClientInfo {
 
 	public static function getRemoteAddress() {
 		if (!self::$remoteAddr)
-			foreach (Array("HTTP_FORWARDED_FOR", "HTTP_X_FORWARDED", "HTTP_FORWARDED", "REMOTE_ADDR") as $remoteKey)
+			foreach (Array("HTTP_FORWARDED_FOR", "HTTP_X_FORWARDED", "HTTP_FORWARDED", "CF-Connecting-IP", "REMOTE_ADDR") as $remoteKey)
 				if (isset($_SERVER[$remoteKey]) && self::validateIP(self::$remoteAddr = $_SERVER[$remoteKey]))
 					break;
 
