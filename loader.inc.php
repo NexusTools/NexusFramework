@@ -98,7 +98,8 @@ if (preg_match("/([\w\d]+)\.(\w+)$/", $dmn, $matches)) {
 }
 unset($dmn);
 
-define("PROTOCOL_SECURE", isset($_SERVER['HTTPS']));
+define("PROTOCOL_SECURE", isset($_SERVER['HTTPS']) || ($_SERVER['HTTP_X_FORWARDED_PROTO'] && 
+												$_SERVER['HTTP_X_FORWARDED_PROTO'] != "http"));
 define("PROTOCOL", PROTOCOL_SECURE ? "https" : "http");
 
 $pathoffset = strlen(INDEX_PATH) - strlen($_SERVER['DOCUMENT_ROOT']);
